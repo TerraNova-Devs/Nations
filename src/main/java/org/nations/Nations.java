@@ -1,20 +1,22 @@
 package org.nations;
 
 import org.bukkit.Bukkit;
-import org.bukkit.block.Block;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.nations.database.HikariCP;
 import org.nations.listener.BlockPlaceListener;
 
-import java.sql.SQLException;
+import java.util.logging.Logger;
 
 public final class Nations extends JavaPlugin {
 
     HikariCP hikari;
+    Logger logger;
 
     @Override
     public void onEnable() {
+        logger = getLogger();
+        saveDefaultConfig();
+
         /*
         try {
             hikari = new HikariCP(this);
@@ -22,6 +24,7 @@ public final class Nations extends JavaPlugin {
             throw new RuntimeException(e);
         }
          */
+
         listenerRegistry();
     }
 
@@ -31,5 +34,6 @@ public final class Nations extends JavaPlugin {
 
     @Override
     public void onDisable() {
+
     }
 }

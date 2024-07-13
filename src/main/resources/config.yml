@@ -1,0 +1,9 @@
+common:
+  - DIAMOND_ORE
+  - IRON_ORE
+uncommon:
+  - BIRCH_LOG
+  - CHERRY_LOG
+rare:
+  - COBBLE_STONE
+  - DIRT
