@@ -1,0 +1,4 @@
+name: Nations
+version: '${version}'
+main: org.nations.Nations
+api-version: '1.21'
