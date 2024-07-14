@@ -13,10 +13,6 @@ public class NpcInteractListener implements Listener {
     public void click(NPCRightClickEvent event) {
         if (!event.getNPC().getEntity().hasMetadata("NPC")) return;
         Player player = event.getClicker();
-        player.sendMessage(event.getNPC().getFullName());
         new TownGUI(player).open();
-
-
-
     }
 }
