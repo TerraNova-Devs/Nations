@@ -31,5 +31,15 @@
       <option name="name" value="maven" />
       <option name="url" value="https://plugins.gradle.org/m2/" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="citizens-repo" />
+      <option name="name" value="citizens-repo" />
+      <option name="url" value="https://maven.citizensnpcs.co/repo" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="DecentHolograms" />
+      <option name="name" value="DecentHolograms" />
+      <option name="url" value="https://jitpack.io" />
+    </remote-repository>
   </component>
 </project>
