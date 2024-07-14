@@ -1,4 +1,4 @@
-package org.nations.customData;
+package org.nations.settlements;
 
 import java.util.UUID;
 

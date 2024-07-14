@@ -8,4 +8,4 @@ website: PixelParty.de
 commands:
   settle:
     description: Command facilitates settlements creation.
-depend: [Citizens]
+depend: [Citizens, WorldGuard]

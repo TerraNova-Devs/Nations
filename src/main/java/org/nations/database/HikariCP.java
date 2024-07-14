@@ -10,16 +10,16 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.*;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Properties;
 
 public class HikariCP {
 
     private final Nations plugin;
-    
-    public HikariDataSource dataSource;
-
     private final String user = "";
     private final String password = "";
+    public HikariDataSource dataSource;
 
 
     public HikariCP(Nations plugin) throws SQLException {

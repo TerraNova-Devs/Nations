@@ -41,5 +41,10 @@
       <option name="name" value="DecentHolograms" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
+    <remote-repository>
+      <option name="id" value="WorldGuard" />
+      <option name="name" value="WorldGuard" />
+      <option name="url" value="https://maven.enginehub.org/repo/" />
+    </remote-repository>
   </component>
 </project>

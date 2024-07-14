@@ -1,7 +1,6 @@
 package org.nations.gui;
 
 import mc.obliviate.inventory.Gui;
-import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,12 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TownGUI extends Gui {
-    public TownGUI(Player player) {
-        super(player, "town-gui", ChatUtils.returnBlueFade("Town Menu") , 4);
-    }
-
-
     String i = "10";
+
+
+    public TownGUI(Player player) {
+        super(player, "town-gui", ChatUtils.returnBlueFade("Town Menu"), 4);
+    }
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
