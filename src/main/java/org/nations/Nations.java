@@ -13,6 +13,10 @@ import java.util.logging.Logger;
 
 public final class Nations extends JavaPlugin {
 
+
+    //WAS PASSIER WENN 2 CLAIMS SICH ÜBERLAPPEN?
+    //NPC HOLOGRAM
+
     public settlementManager settlementManager = new settlementManager();
     HikariCP hikari;
     Logger logger;

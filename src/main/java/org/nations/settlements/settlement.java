@@ -7,17 +7,19 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 public class settlement {
 
     private final playerdata owner;
-    private final String name;
+    public final String name;
     private final Location location;
     private final int level;
 
@@ -65,17 +67,17 @@ public class settlement {
 
         npc.setAlwaysUseNameHologram(true);
         npc.data().setPersistent(NPC.Metadata.NAMEPLATE_VISIBLE, false);
-
-        updateHolo();
+        //npc.getEntity().addPassenger((Entity) Objects.requireNonNull(DHAPI.getHologram(name)));
         npc.spawn(location);
-
+        updateHolo();
+        hologram.setLocation(npc.getEntity().getLocation().add(0, 2.6, 0));
         this.npcid = npc.getId();
     }
 
     public void tpNPC(Location location) {
         NPC npc = CitizensAPI.getNPCRegistry().getById(npcid);
         npc.teleport(location, PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
-        tpHolo(location);
+        //tpHolo(location);
     }
 
     private void tpHolo(Location location) {

@@ -28,6 +28,7 @@ public class claim {
         regions.addRegion(region);
     }
 
+
     public static void remove(String name) {
 
     }

@@ -8,7 +8,7 @@ public class playerdata {
     public boolean canSettle;
 
     public playerdata(UUID uuid) {
-        canSettle = false;
+        canSettle = true;
         this.uuid = uuid;
     }
 
