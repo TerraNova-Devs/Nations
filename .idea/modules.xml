@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.terranova.paperweight.nations.nations-plugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/de.terranova.paperweight.nations.nations-plugin.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/io.papermc.paperweight.paperweight-test-plugin.test.iml" filepath="$PROJECT_DIR$/.idea/modules/io.papermc.paperweight.paperweight-test-plugin.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/paperweight-test-plugin.main.iml" filepath="$PROJECT_DIR$/.idea/modules/paperweight-test-plugin.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/paperweight-test-plugin.test.iml" filepath="$PROJECT_DIR$/.idea/modules/paperweight-test-plugin.test.iml" />
     </modules>

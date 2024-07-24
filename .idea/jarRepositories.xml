@@ -12,28 +12,8 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="paperweightDecompilerRepository" />
-      <option name="name" value="paperweightDecompilerRepository" />
-      <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven2" />
-      <option name="name" value="maven2" />
-      <option name="url" value="https://repo.maven.apache.org/maven2/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="spigotmc-repo" />
-      <option name="name" value="spigotmc-repo" />
-      <option name="url" value="https://hub.spigotmc.org/nexus/content/repositories/snapshots/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="sonatype" />
-      <option name="name" value="sonatype" />
-      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="DecentHolograms&amp;GUIs" />
-      <option name="name" value="DecentHolograms&amp;GUIs" />
+      <option name="id" value="DecentHolograms&amp;GUIs&amp;Hikari" />
+      <option name="name" value="DecentHolograms&amp;GUIs&amp;Hikari" />
       <option name="url" value="https://jitpack.io" />
     </remote-repository>
     <remote-repository>
@@ -42,9 +22,19 @@
       <option name="url" value="https://maven.citizensnpcs.co/repo" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="paperweightDecompilerRepository" />
+      <option name="name" value="paperweightDecompilerRepository" />
+      <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="WorldGuard" />
       <option name="name" value="WorldGuard" />
       <option name="url" value="https://maven.enginehub.org/repo/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="maven2" />
+      <option name="name" value="maven2" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
   </component>
 </project>
