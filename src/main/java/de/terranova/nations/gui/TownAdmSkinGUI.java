@@ -8,7 +8,6 @@ import de.terranova.nations.settlements.settlement;
 import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
-import mc.obliviate.inventory.pagination;
 import mc.obliviate.inventory.pagination.PaginationManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
