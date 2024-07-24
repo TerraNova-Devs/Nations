@@ -74,6 +74,9 @@ tasks {
   javadoc {
     options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
   }
+  shadowJar{
+    destinationDirectory.set(file("./testserver/plugins"))
+  }
 
   // Only relevant when going with option 2 above
   /*

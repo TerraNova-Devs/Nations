@@ -11,8 +11,60 @@
   <component name="ChangeListManager">
     <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/utils/YML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/utils/YMLHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/bukkit.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/bukkit.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/commands.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/commands.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/config/paper-global.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/config/paper-global.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/config/paper-world-defaults.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/config/paper-world-defaults.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/logs/latest.log" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/logs/latest.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/Nations.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/extra-plugins/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/extra-plugins/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/libraries/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/libraries/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/unknown-origin/index.json" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/.paper-remapped/unknown-origin/index.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Citizens/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Citizens/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Citizens/saves.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Citizens/saves.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/WorldGuard/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/WorldGuard/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world_nether/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world_nether/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world_the_end/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/WorldGuard/worlds/world_the_end/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/server.properties" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/server.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/spigot.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/spigot.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/data/raids.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/data/raids.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/datapacks/bukkit/pack.mcmeta" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/datapacks/bukkit/pack.mcmeta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/entities/r.-1.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/entities/r.-1.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/entities/r.-1.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/entities/r.-1.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/entities/r.0.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/entities/r.0.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/level.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/level.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/level.dat_old" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/level.dat_old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/paper-world.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/paper-world.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/region/r.-1.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/region/r.-1.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/region/r.-1.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/region/r.-1.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/region/r.0.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/region/r.0.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world/region/r.0.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world/region/r.0.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/DIM-1/data/raids.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/DIM-1/data/raids.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.-1.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.-1.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.-1.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.-1.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.0.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.0.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.0.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/DIM-1/region/r.0.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/level.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/level.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/level.dat_old" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/level.dat_old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/paper-world.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/paper-world.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_nether/session.lock" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_nether/session.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/data/raids_end.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/data/raids_end.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.-1.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.-1.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.-1.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.-1.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.0.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.0.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.0.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/entities/r.0.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.-1.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.-1.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.-1.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.-1.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.0.-1.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.0.-1.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.0.0.mca" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/DIM1/region/r.0.0.mca" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/level.dat" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/level.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/level.dat_old" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/level.dat_old" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/paper-world.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/paper-world.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/world_the_end/session.lock" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/world_the_end/session.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,28 +125,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Nations [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Nations [wrapper].executor&quot;: &quot;Run&quot;,
-    &quot;JAR Application.testserver.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/OneDrive/Desktop/TerraNova Repositories/Nations/src/main/resources&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Artifacts&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Nations [shadowJar].executor": "Run",
+    "Gradle.Nations [wrapper].executor": "Run",
+    "JAR Application.testserver.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marte/Desktop/TerraNova Repositories/Nations/testserver/paper-1.21-109.jar",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\java\de\terranova\nations" />
@@ -136,25 +188,10 @@
     <configuration name="testserver" type="JarApplication">
       <option name="JAR_PATH" value="$PROJECT_DIR$/testserver/paper-1.21-109.jar" />
       <option name="PROGRAM_PARAMETERS" value="nogui" />
-      <option name="WORKING_DIRECTORY" value="C:\Users\marte\OneDrive\Desktop\TerraNova Repositories\Nations\testserver" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver" />
       <option name="ALTERNATIVE_JRE_PATH" />
       <method v="2">
-        <option name="BuildArtifacts" enabled="true">
-          <artifact name="Nations" />
-        </option>
-      </method>
-    </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="Nations" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="Nations" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
+        <option name="Gradle.BeforeRunTask" enabled="false" tasks="shadowJar" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
       </method>
     </configuration>
     <list>
