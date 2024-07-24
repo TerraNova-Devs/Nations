@@ -1,6 +1,6 @@
 name: Nations
 version: 1.0.0-SNAPSHOT
-main: de.terranova.paperweight.nations.NationsPlugin
+main: de.terranova.nations.NationsPlugin
 api-version: '1.21'
 authors: [gerryxn]
 prefix: TerraNova

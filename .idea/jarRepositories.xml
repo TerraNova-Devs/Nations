@@ -12,6 +12,21 @@
       <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="MavenRepo" />
+      <option name="name" value="MavenRepo" />
+      <option name="url" value="https://repo.maven.apache.org/maven2/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="papermc-repo" />
+      <option name="name" value="papermc-repo" />
+      <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
+    </remote-repository>
+    <remote-repository>
+      <option name="id" value="sonatype" />
+      <option name="name" value="sonatype" />
+      <option name="url" value="https://oss.sonatype.org/content/groups/public/" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="DecentHolograms&amp;GUIs&amp;Hikari" />
       <option name="name" value="DecentHolograms&amp;GUIs&amp;Hikari" />
       <option name="url" value="https://jitpack.io" />
@@ -22,19 +37,9 @@
       <option name="url" value="https://maven.citizensnpcs.co/repo" />
     </remote-repository>
     <remote-repository>
-      <option name="id" value="paperweightDecompilerRepository" />
-      <option name="name" value="paperweightDecompilerRepository" />
-      <option name="url" value="https://repo.papermc.io/repository/maven-public/" />
-    </remote-repository>
-    <remote-repository>
       <option name="id" value="WorldGuard" />
       <option name="name" value="WorldGuard" />
       <option name="url" value="https://maven.enginehub.org/repo/" />
-    </remote-repository>
-    <remote-repository>
-      <option name="id" value="maven2" />
-      <option name="name" value="maven2" />
-      <option name="url" value="https://repo.maven.apache.org/maven2/" />
     </remote-repository>
   </component>
 </project>

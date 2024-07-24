@@ -1,8 +1,8 @@
-package de.terranova.paperweight.nations.database;
+package de.terranova.nations.database;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
-import de.terranova.paperweight.nations.NationsPlugin;
+import de.terranova.nations.NationsPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;

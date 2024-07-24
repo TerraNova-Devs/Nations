@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.worldguard;
+package de.terranova.nations.worldguard;
 
 import java.util.ArrayList;
 import java.util.Collections;

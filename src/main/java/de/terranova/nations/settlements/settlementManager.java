@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.settlements;
+package de.terranova.nations.settlements;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;

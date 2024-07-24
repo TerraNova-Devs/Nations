@@ -1,6 +1,6 @@
-package de.terranova.paperweight.nations.listener;
+package de.terranova.nations.listener;
 
-import de.terranova.paperweight.nations.gui.TownGUI;
+import de.terranova.nations.gui.TownGUI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

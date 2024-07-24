@@ -1,11 +1,11 @@
-package de.terranova.paperweight.nations.gui;
+package de.terranova.nations.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import de.terranova.paperweight.nations.NationsPlugin;
-import de.terranova.paperweight.nations.settlements.TownSkins;
-import de.terranova.paperweight.nations.settlements.settlement;
-import de.terranova.paperweight.nations.utils.ChatUtils;
+import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.TownSkins;
+import de.terranova.nations.settlements.settlement;
+import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import org.bukkit.Material;

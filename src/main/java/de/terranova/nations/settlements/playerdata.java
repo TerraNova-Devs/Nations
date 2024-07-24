@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.settlements;
+package de.terranova.nations.settlements;
 
 import java.util.UUID;
 

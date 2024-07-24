@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.utils;
+package de.terranova.nations.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.worldguard;
+package de.terranova.nations.worldguard;
 
 import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;

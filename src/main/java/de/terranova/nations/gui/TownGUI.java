@@ -1,7 +1,7 @@
-package de.terranova.paperweight.nations.gui;
+package de.terranova.nations.gui;
 
-import de.terranova.paperweight.nations.settlements.TownSkins;
-import de.terranova.paperweight.nations.utils.ChatUtils;
+import de.terranova.nations.settlements.TownSkins;
+import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;

@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.utils;
+package de.terranova.nations.utils;
 
 import java.time.Duration;
 import java.time.Instant;

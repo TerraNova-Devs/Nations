@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.commands;
+package de.terranova.nations.commands;
 
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
@@ -6,10 +6,12 @@ import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import de.terranova.paperweight.nations.NationsPlugin;
-import de.terranova.paperweight.nations.settlements.settlement;
-import de.terranova.paperweight.nations.utils.ChatUtils;
-import de.terranova.paperweight.nations.worldguard.claim;
+import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.settlement;
+import de.terranova.nations.utils.ChatUtils;
+import de.terranova.nations.worldguard.claim;
+import io.papermc.paper.command.brigadier.BasicCommand;
+import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -21,7 +23,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 import java.util.Optional;
 
-public class settle implements CommandExecutor, TabCompleter {
+public class settle implements BasicCommand, TabCompleter {
 
   NationsPlugin plugin;
 
@@ -29,41 +31,42 @@ public class settle implements CommandExecutor, TabCompleter {
     this.plugin = plugin;
   }
 
-  @Override
-  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    @Override
+    public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
 
-    if (!(sender instanceof Player p)) {
-      sender.sendMessage("Du musst für diesen Command ein Spieler sein!");
-      return false;
+    if (!(stack.getSender() instanceof Player p)) {
+      stack.getSender().sendMessage("Du musst für diesen Command ein Spieler sein!");
+      return;
     }
 
     if (args.length == 0) {
       ChatUtils.sendMessage(p, "Nations Plugin by gerryxn. Version 1.0.0 as of 13.07.2024 | Copyright Pixel Party.");
-      return false;
+      return;
     }
 
     if (!p.hasPermission("admin")) {
-      return false;
+      return;
     }
 
     if (args[0].equalsIgnoreCase("create")) {
       if (!(args.length == 2)) {
         p.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Syntax: /settle create <name>"));
-        return false;
+        return;
       }
       if (args[1].length() > 20) {
         p.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Der Name darf nicht laenger als 20 zeichen sein."));
-        return false;
+        return;
       }
       String name = args[1];
       if (!plugin.settlementManager.isNameAvaible(name)) {
         p.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Der Name ist bereits vergeben!"));
-        return false;
+        return;
       }
       if (claim.checkAreaForSettles(p)) {
         p.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Der Claim ist bereits vergeben!"));
-        return false;
+        return;
       }
+
       if (plugin.settlementManager.canSettle(p.getUniqueId())) {
 
         LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
@@ -72,7 +75,6 @@ public class settle implements CommandExecutor, TabCompleter {
         regions.getRegions().forEach((k, v) -> p.sendMessage(ChatUtils.returnGreenFade(" " + k + v)));
         settlement newsettle = new settlement(p.getUniqueId(), p.getLocation(), name);
         plugin.settlementManager.addSettlement(p.getUniqueId(), newsettle);
-
         claim.createClaim(name, p);
       }
     }
@@ -84,7 +86,7 @@ public class settle implements CommandExecutor, TabCompleter {
         p.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Zum teleportieren bitte innerhalb deines Claims stehen!"));
       }
 
-      return false;
+      return;
     }
 
 
@@ -99,7 +101,7 @@ public class settle implements CommandExecutor, TabCompleter {
 
     }
 
-    return false;
+      return;
   }
 
   @Override

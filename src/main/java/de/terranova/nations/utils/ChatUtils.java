@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.utils;
+package de.terranova.nations.utils;
 
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.minimessage.MiniMessage;

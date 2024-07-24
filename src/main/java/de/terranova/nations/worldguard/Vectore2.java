@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.worldguard;
+package de.terranova.nations.worldguard;
 
 public class Vectore2 {
     // Members

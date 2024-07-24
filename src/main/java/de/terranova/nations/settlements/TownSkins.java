@@ -1,4 +1,4 @@
-package de.terranova.paperweight.nations.settlements;
+package de.terranova.nations.settlements;
 
 //Skin bei https://mineskin.org/ hochladen für signature & texture values.
 public enum TownSkins {

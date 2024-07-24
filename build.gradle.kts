@@ -8,7 +8,7 @@ plugins {
   id("io.github.goooler.shadow") version "8.1.8"
 }
 
-group = "io.papermc.paperweight"
+group = "de.terranova.nations"
 version = "1.0.0-SNAPSHOT"
 description = "Test plugin for paperweight-userdev"
 
