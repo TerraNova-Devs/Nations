@@ -70,56 +70,54 @@ public class claim {
       }
 
 
-      for (Vectore2 v : newPoints) {
-        p.sendMessage("New: x:" + v.x + " | z:" + v.z);
-
-      }
       for (Vectore2 v : oldPoints) {
         p.sendMessage("Old: x:" + v.x + " | z:" + v.z);
 
       }
+      for (Vectore2 v : newPoints) {
+        p.sendMessage("New: x:" + v.x + " | z:" + v.z);
+
+      }
 
       //change direction of new points to clockwise
-      List<Vectore2> newPointsRotated = new ArrayList<>();
+      List<Vectore2> oldPointsRotated = new ArrayList<>();
 
       for (int i = newPoints.size() - 1; i >= 0; i--) {
-        newPointsRotated.add(newPoints.get(i));
+        oldPointsRotated.add(newPoints.get(i));
       }
-      for (Vectore2 v : newPointsRotated) {
-        p.sendMessage("NewR: x:" + v.x + " | z:" + v.z);
+      for (Vectore2 v : oldPointsRotated) {
+        p.sendMessage("OldR: x:" + v.x + " | z:" + v.z);
       }
       List<Vectore2> newPointsRotatedNormalized = new ArrayList<>();
 
       int index = 1;
-      for (Vectore2 v : newPointsRotated) {
+      for (Vectore2 v : oldPointsRotated) {
         //System.out.println("Debug x:" + v.x + " | z:" + v.z);
         //System.out.println("Debug2 x:" + newPointsRotated.get(index).x + " | z:" + newPointsRotated.get(index).z);
-        if (index == newPointsRotated.size()) {
+        if (index == oldPointsRotated.size()) {
           index = 0;
         }
-        System.out.println("Debug3 " + v.z + "|" + newPointsRotated.get(index).z);
-        System.out.println("Debug3 " + v.x + "|" + newPointsRotated.get(index).x);
-        if (v.x == newPointsRotated.get(index).x) {
-          System.out.println("Bierber");
-          if (v.z < newPointsRotated.get(index).z) {
+        System.out.println("Debug3 " + v.z + "|" + oldPointsRotated.get(index).z);
+        System.out.println("Debug3 " + v.x + "|" + oldPointsRotated.get(index).x);
+        if (v.x == oldPointsRotated.get(index).x) {
+          if (v.z < oldPointsRotated.get(index).z) {
             newPointsRotatedNormalized.add(new Vectore2(v.x + 1.5,v.z+0.5));
             index++;
             continue;
           }
-          if (v.z > newPointsRotated.get(index).z) {
+          if (v.z > oldPointsRotated.get(index).z) {
             newPointsRotatedNormalized.add(new Vectore2(v.x + 1.5,v.z +0.5));
             index++;
             continue;
           }
         }
-        if (v.z == newPointsRotated.get(index).z) {
-          System.out.println("Ameise");
-          if (v.x < newPointsRotated.get(index).x) {
+        if (v.z == oldPointsRotated.get(index).z) {
+          if (v.x < oldPointsRotated.get(index).x) {
             newPointsRotatedNormalized.add(new Vectore2(v.x,v.z + 0.5));
             index++;
             continue;
           }
-          if (v.x > newPointsRotated.get(index).x) {
+          if (v.x > oldPointsRotated.get(index).x) {
             newPointsRotatedNormalized.add(new Vectore2( v.x,v.z - 0.5));
             index++;
           }
@@ -128,7 +126,7 @@ public class claim {
       }
 
       for (Vectore2 v : newPointsRotatedNormalized) {
-        p.sendMessage("NewA: x:" + v.x + " | z:" + v.z);
+        p.sendMessage("OldA: x:" + v.x + " | z:" + v.z);
       }
 
             /*

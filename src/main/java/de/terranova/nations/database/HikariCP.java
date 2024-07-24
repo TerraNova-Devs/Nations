@@ -17,13 +17,15 @@ import java.util.Properties;
 public class HikariCP {
 
   private final NationsPlugin plugin;
-  private final String user = "";
-  private final String password = "";
+  private String user = "";
+  private String password = "";
   public HikariDataSource dataSource;
 
 
   public HikariCP(NationsPlugin plugin) throws SQLException {
     this.plugin = plugin;
+    this.password = System.getenv("PASSWORD");
+    this.user = System.getenv("USERNAME");
     HikariConfig config = getHikariConfig();
     dataSource = new HikariDataSource(config);
     final Properties properties = getHikariConfigProperties();
