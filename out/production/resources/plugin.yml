@@ -1,0 +1,8 @@
+api-version: '1.21'
+name: Nations
+version: 1.0.0-SNAPSHOT
+main: io.papermc.paperweight.testplugin.TestPlugin
+description: Test plugin for paperweight-userdev
+load: STARTUP
+authors:
+- Author

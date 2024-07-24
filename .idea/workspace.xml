@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Nations" />
+    </artifacts-to-build>
+  </component>
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
@@ -53,6 +58,9 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 3
 }</component>
@@ -65,15 +73,21 @@
   "keyToString": {
     "Gradle.Nations [shadowJar].executor": "Run",
     "Gradle.Nations [wrapper].executor": "Run",
+    "JAR Application.testserver.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/marte/Desktop/TerraNova Repositories/Nations/src/main/java/de/terranova/nations",
+    "last_opened_file_path": "C:/Users/marte/OneDrive/Desktop/TerraNova Repositories/Nations/src/main/resources",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "org.jetbrains.plugins.github.ui.GithubSettingsConfigurable",
+    "project.structure.last.edited": "Artifacts",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -83,12 +97,16 @@
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\resources" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations" />
     </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\marte\OneDrive\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
+      <recent name="C:\Users\marte\OneDrive\Desktop\TerraNova Repositories\Nations\testserver" />
+    </key>
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="de.terranova.nations.worldguard" />
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JAR Application.testserver">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -111,6 +129,17 @@
       <RunAsTest>false</RunAsTest>
       <method v="2" />
     </configuration>
+    <configuration name="testserver" type="JarApplication">
+      <option name="JAR_PATH" value="$PROJECT_DIR$/testserver/paper-1.21-109.jar" />
+      <option name="PROGRAM_PARAMETERS" value="nogui" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\marte\OneDrive\Desktop\TerraNova Repositories\Nations\testserver" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method v="2">
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Nations" />
+        </option>
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="Nations" />
       <method v="2">
@@ -124,6 +153,10 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <list>
+      <item itemvalue="Gradle.Nations [shadowJar]" />
+      <item itemvalue="JAR Application.testserver" />
+    </list>
     <recent_temporary>
       <list>
         <item itemvalue="Gradle.Nations [shadowJar]" />
@@ -148,10 +181,15 @@
       <updated>1721783505347</updated>
       <workItem from="1721783506416" duration="601000" />
       <workItem from="1721784165378" duration="2738000" />
+      <workItem from="1721822842226" duration="2913000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="dependencySupport" implementationName="java:net.kyori:adventure-api" />
+    <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
 </project>
