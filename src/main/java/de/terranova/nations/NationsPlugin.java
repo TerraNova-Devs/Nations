@@ -1,12 +1,11 @@
 package de.terranova.nations;
 
-import com.mojang.brigadier.Command;
 import de.terranova.nations.commands.settle;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.listener.NpcInteractListener;
 import de.terranova.nations.settlements.settlementManager;
+import de.terranova.nations.utils.YMLHandler;
 import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.bootstrap.BootstrapContext;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import mc.obliviate.inventory.InventoryAPI;
@@ -14,16 +13,17 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
 
+    public settlementManager settlementManager = new settlementManager();
 
     //WAS PASSIER WENN 2 CLAIMS SICH ÜBERLAPPEN?
     //NPC HOLOGRAM
-
-    public settlementManager settlementManager = new settlementManager();
+    YMLHandler skins;
     HikariCP hikari;
     Logger logger;
 
@@ -31,6 +31,11 @@ public final class NationsPlugin extends JavaPlugin {
     public void onEnable() {
         logger = getLogger();
         saveDefaultConfig();
+        try {
+            skins = new YMLHandler("skins.yml", this.getDataFolder());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
         new InventoryAPI(this).init();
         /*
         try {
@@ -50,7 +55,7 @@ public final class NationsPlugin extends JavaPlugin {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("settle", "Command facilitates settlements creation.",List.of("s"), new settle(this));
+            commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new settle(this));
         });
     }
     //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));
@@ -65,7 +70,7 @@ public final class NationsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-
+        skins.unloadYAML();
     }
 }
 
