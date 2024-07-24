@@ -8,6 +8,8 @@ import de.terranova.nations.settlements.settlement;
 import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
+import mc.obliviate.inventory.pagination;
+import mc.obliviate.inventory.pagination.PaginationManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
@@ -22,10 +24,16 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class TownAdmSkinGUI extends Gui {
+
+  private final PaginationManager pagination =new PaginationManager(this);
+
+
+
   private static Method metaSetProfileMethod;
 
   public TownAdmSkinGUI(Player player, int townskins) {
     super(player, "town-admn-skin-gui", ChatUtils.returnBlueFade("Skin Menu"), townskins);
+    this.pagination.registerPageSlotsBetween(10,44);
   }
 
   @Override
@@ -36,7 +44,6 @@ public class TownAdmSkinGUI extends Gui {
     mfiller.displayName(ChatUtils.stringToComponent(""));
     filler.setItemMeta(mfiller);
     fillGui(filler);
-
     int index = 0;
     for (TownSkins skin : TownSkins.values()) {
 

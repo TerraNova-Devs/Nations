@@ -58,6 +58,7 @@ dependencies {
   }
   //compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.9")
   implementation("com.github.hamza-cskn.obliviate-invs:core:4.3.0")
+  implementation("com.github.hamza-cskn.obliviate-invs:pagination:4.3.0")
   implementation("com.github.hamza-cskn.obliviate-invs:configurablegui:4.3.0")
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
 }
