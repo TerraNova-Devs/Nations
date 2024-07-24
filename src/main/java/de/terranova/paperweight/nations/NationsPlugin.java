@@ -1,23 +1,23 @@
-package org.nations;
+package de.terranova.paperweight.nations;
 
+import de.terranova.paperweight.nations.settlements.settlementManager;
+import de.terranova.paperweight.nations.commands.settle;
+import de.terranova.paperweight.nations.database.HikariCP;
+import de.terranova.paperweight.nations.listener.NpcInteractListener;
 import mc.obliviate.inventory.InventoryAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.nations.commands.settle;
-import org.nations.database.HikariCP;
-import org.nations.listener.NpcInteractListener;
-import org.nations.settlements.settlementManager;
 
 import java.util.Objects;
 import java.util.logging.Logger;
 
-public final class Nations extends JavaPlugin {
+public final class NationsPlugin extends JavaPlugin {
 
 
     //WAS PASSIER WENN 2 CLAIMS SICH ÜBERLAPPEN?
     //NPC HOLOGRAM
 
-    public settlementManager settlementManager = new settlementManager();
+    public de.terranova.paperweight.nations.settlements.settlementManager settlementManager = new settlementManager();
     HikariCP hikari;
     Logger logger;
 

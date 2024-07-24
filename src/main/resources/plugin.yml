@@ -1,11 +1,12 @@
 name: Nations
-version: '${version}'
-main: org.nations.Nations
+version: 1.0.0-SNAPSHOT
+main: de.terranova.paperweight.nations.NationsPlugin
 api-version: '1.21'
 authors: [gerryxn]
-prefix: PP
-website: PixelParty.de
+prefix: TerraNova
+website: mcterranova.de
+description: Nations Plugin tailored & written by & for TerraNova.
 commands:
   settle:
     description: Command facilitates settlements creation.
-depend: [Citizens, WorldGuard]
+depend: [WorldGuard, Citizens]

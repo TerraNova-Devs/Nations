@@ -1,4 +1,4 @@
-package org.nations.utils;
+package de.terranova.paperweight.nations.utils;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -19,6 +19,7 @@ public class YML {
 
     public YML(String name, File datafolder) throws IOException {
         file = new File(datafolder, name);
+        //noinspection ResultOfMethodCallIgnored
         file.createNewFile();
         modifyFile = YamlConfiguration.loadConfiguration(file);
     }
