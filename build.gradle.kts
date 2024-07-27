@@ -25,7 +25,7 @@ repositories {
   }
 
   maven {
-    name = "DecentHolograms&GUIs&Hikari"
+    name = "DecentHolograms&GUIs&Hikari&Shadow"
     url = uri("https://jitpack.io")
   }
 
@@ -61,6 +61,7 @@ dependencies {
   implementation("com.github.hamza-cskn.obliviate-invs:pagination:4.3.0")
   implementation("com.github.hamza-cskn.obliviate-invs:configurablegui:4.3.0")
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
+  compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
 }
 
 
@@ -76,24 +77,25 @@ tasks {
   }
   shadowJar{
     destinationDirectory.set(file("./testserver/plugins"))
+    //relocate("kotlin.", "your.mod.package.kotlin.")
   }
 
-  // Only relevant when going with option 2 above
-  /*
-  reobfJar {
-    // This is an example of how you might change the output location for reobfJar. It's recommended not to do this
-    // for a variety of reasons, however it's asked frequently enough that an example of how to do it is included here.
-    outputJar = layout.buildDirectory.file("libs/PaperweightTestPlugin-${project.version}.jar")
-  }
-   */
 }
-// Configure plugin.yml generation
-// - name, version, and description are inherited from the Gradle project.
+
 bukkitPluginYaml {
+  name = "Nations"
+  version = "1.0.0-SNAPSHOT"
   main = "io.papermc.paperweight.testplugin.TestPlugin"
   load = BukkitPluginYaml.PluginLoadOrder.STARTUP
-  authors.add("Author")
+  authors.add("gerryxn")
   apiVersion = "1.21"
+  prefix = "TerraNova"
+  website = "mcterranova.de"
+  description = "Nations Plugin tailored & written by & for TerraNova."
+  //commands:
+  //settle:
+  //description: Command facilitates settlements creation.
+  //depend: [WorldGuard, Citizens]
 }
 
 tasks.processResources {

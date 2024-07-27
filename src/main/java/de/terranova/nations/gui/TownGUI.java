@@ -1,7 +1,7 @@
 package de.terranova.nations.gui;
 
+import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.settlements.TownSkins;
-import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
@@ -19,7 +19,7 @@ public class TownGUI extends Gui {
 
 
   public TownGUI(Player player) {
-    super(player, "town-gui", ChatUtils.returnBlueFade("Town Menu"), 4);
+    super(player, "town-gui", Chat.returnBlueFade("Town Menu"), 4);
   }
 
   @Override
@@ -27,7 +27,7 @@ public class TownGUI extends Gui {
 
     ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
     ItemMeta mfiller = filler.getItemMeta();
-    mfiller.displayName(ChatUtils.stringToComponent(""));
+    mfiller.displayName(Chat.stringToComponent(""));
     filler.setItemMeta(mfiller);
     fillGui(filler);
 
@@ -45,27 +45,27 @@ public class TownGUI extends Gui {
     ItemMeta mfarm = farm.getItemMeta();
 
     List<Component> llevel = new ArrayList<>();
-    llevel.add(ChatUtils.stringToComponent("<italic><color:#5EE118>Vorteile Level 8:</italic>"));
-    llevel.add(ChatUtils.stringToComponent("<italic><color:#5EE118>7->8 Claims</italic>"));
+    llevel.add(Chat.stringToComponent("<italic><color:#5EE118>Vorteile Level 8:</italic>"));
+    llevel.add(Chat.stringToComponent("<italic><color:#5EE118>7->8 Claims</italic>"));
     mlevel.lore(llevel);
     List<Component> lskins = new ArrayList<>();
-    lskins.add(ChatUtils.stringToComponent("<italic><color:#E1679C>Hier klicken um den Skin zu ändern.</italic>"));
+    lskins.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um den Skin zu ändern.</italic>"));
     mskins.lore(lskins);
     List<Component> lscore = new ArrayList<>();
-    lscore.add(ChatUtils.stringToComponent("<italic><color:#E1679C>Hier klicken fuer mehr infos.</italic>"));
+    lscore.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken fuer mehr infos.</italic>"));
     mscore.lore(lscore);
     List<Component> lupgrades = new ArrayList<>();
-    lupgrades.add(ChatUtils.stringToComponent("<italic><color:#E1679C>Hier klicken um die Stadt zu verbessern.</italic>"));
+    lupgrades.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um die Stadt zu verbessern.</italic>"));
     mupgrades.lore(lupgrades);
     List<Component> lfarm = new ArrayList<>();
-    lfarm.add(ChatUtils.stringToComponent("<italic><color:#E1679C>Hier klicken um die Farmwelt zu betreten.</italic>"));
+    lfarm.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um die Farmwelt zu betreten.</italic>"));
     mfarm.lore(lfarm);
 
-    mlevel.displayName(ChatUtils.returnRedFade("Stadtlevel"));
-    mskins.displayName(ChatUtils.returnYellowFade("Skins"));
-    mscore.displayName(ChatUtils.returnYellowFade("Score"));
-    mupgrades.displayName(ChatUtils.returnYellowFade("Upgrades"));
-    mfarm.displayName(ChatUtils.returnYellowFade("Farm"));
+    mlevel.displayName(Chat.returnRedFade("Stadtlevel"));
+    mskins.displayName(Chat.returnYellowFade("Skins"));
+    mscore.displayName(Chat.returnYellowFade("Score"));
+    mupgrades.displayName(Chat.returnYellowFade("Upgrades"));
+    mfarm.displayName(Chat.returnYellowFade("Farm"));
 
     level.setItemMeta(mlevel);
     skins.setItemMeta(mskins);

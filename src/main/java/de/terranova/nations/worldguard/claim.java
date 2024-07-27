@@ -31,7 +31,7 @@ public class claim {
     BlockVector2 se = BlockVector2.at(nx + 47, nz + 47);
     BlockVector2 ne = BlockVector2.at(nx + 47, nz);
 
-    List<BlockVector2> corners = Arrays.asList(nw, ne, se, sw);
+    List<BlockVector2> corners = Arrays.asList(se, sw, nw, ne);
 
     LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
 
@@ -65,139 +65,17 @@ public class claim {
       List<Vectore2> oldPoints = new ArrayList<>();
 
       for (BlockVector2 v : oldPolygonalRegion.getPoints()) {
-
         oldPoints.add(new Vectore2(v.x(), v.z()));
       }
 
 
-      for (Vectore2 v : oldPoints) {
-        p.sendMessage("Old: x:" + v.x + " | z:" + v.z);
-
-      }
-      for (Vectore2 v : newPoints) {
-        p.sendMessage("New: x:" + v.x + " | z:" + v.z);
-
-      }
-
-      //change direction of new points to clockwise
-      List<Vectore2> oldPointsRotated = new ArrayList<>();
-
-      for (int i = newPoints.size() - 1; i >= 0; i--) {
-        oldPointsRotated.add(newPoints.get(i));
-      }
-      for (Vectore2 v : oldPointsRotated) {
-        p.sendMessage("OldR: x:" + v.x + " | z:" + v.z);
-      }
-      List<Vectore2> newPointsRotatedNormalized = new ArrayList<>();
-
-      int index = 1;
-      for (Vectore2 v : oldPointsRotated) {
-        //System.out.println("Debug x:" + v.x + " | z:" + v.z);
-        //System.out.println("Debug2 x:" + newPointsRotated.get(index).x + " | z:" + newPointsRotated.get(index).z);
-        if (index == oldPointsRotated.size()) {
-          index = 0;
-        }
-        System.out.println("Debug3 " + v.z + "|" + oldPointsRotated.get(index).z);
-        System.out.println("Debug3 " + v.x + "|" + oldPointsRotated.get(index).x);
-        if (v.x == oldPointsRotated.get(index).x) {
-          if (v.z < oldPointsRotated.get(index).z) {
-            newPointsRotatedNormalized.add(new Vectore2(v.x + 1.5,v.z+0.5));
-            index++;
-            continue;
-          }
-          if (v.z > oldPointsRotated.get(index).z) {
-            newPointsRotatedNormalized.add(new Vectore2(v.x + 1.5,v.z +0.5));
-            index++;
-            continue;
-          }
-        }
-        if (v.z == oldPointsRotated.get(index).z) {
-          if (v.x < oldPointsRotated.get(index).x) {
-            newPointsRotatedNormalized.add(new Vectore2(v.x,v.z + 0.5));
-            index++;
-            continue;
-          }
-          if (v.x > oldPointsRotated.get(index).x) {
-            newPointsRotatedNormalized.add(new Vectore2( v.x,v.z - 0.5));
-            index++;
-          }
-        }
-
-      }
-
-      for (Vectore2 v : newPointsRotatedNormalized) {
-        p.sendMessage("OldA: x:" + v.x + " | z:" + v.z);
-      }
-
-            /*
-            ArrayList<BlockVector2> newTest = new ArrayList<>(newPoints);
-            ArrayList<BlockVector2> oldTest = new ArrayList<>(oldPoints);
-
-            p.sendMessage(newTest.size() + " | " + oldTest.size());
-
-            int sizeOld = oldTest.size();
-            int sizeNew = newPoints.size();
-            int offsets = 0;
-
-            if(newTest.get(0).getZ()>oldTest.get(0).getZ()) {
-                p.sendMessage("z");
-                for(int i = 0; i < sizeOld;i++) {
-                    p.sendMessage("Stage 1");
-                    for(int n = 0; n < sizeNew;n++) {
-                        p.sendMessage("Gut 2");
-                        if(newTest.get(n).getZ()- oldTest.get(i).getZ() == 1 || newTest.get(n).getZ()- oldTest.get(i).getZ() == -1) {
-                            p.sendMessage("Fehler 3");
-                            p.sendMessage("i:" + i + " n:" + n);
-                            oldTest.remove(i-offsets);
-                            newTest.remove(n-offsets);
-                            offsets++;
-                            sizeNew--;
-                            sizeOld--;
-                        }
-                    }
-                }
-            }
-
-
-
-            if(newTest.get(0).getX()>oldTest.get(0).getX()) {
-                p.sendMessage("x");
-                for(int i = 0; i < sizeOld;i++) {
-                    p.sendMessage("1");
-                    for(int n = 0; n < sizeNew;n++) {
-                        p.sendMessage("2");
-                        if(newTest.get(n).getX()- oldTest.get(i).getX() == 1 || newTest.get(n).getX()- oldTest.get(i).getX() == -1) {
-                            p.sendMessage("Fehler 3");
-                            p.sendMessage("i:" + i + " n:" + n);
-                            oldTest.remove(i-offsets);
-                            newTest.remove(n-offsets);
-                            offsets++;
-                            sizeNew--;
-                            sizeOld--;
-                        }
-                    }
-                }
-            }
-
-            List<BlockVector2> newRegionPoints = Stream.concat(oldTest.stream(), newTest.stream()).toList();
-
-             */
-
-      //List<Vectore2> oldPointsPlustered = claimpolycalc.aufplustern(oldPoints);
-      //List<Vectore2> newPointsPlustered = claimpolycalc.aufplustern(newPoints);
-      List<Vectore2> oldPointsProj = claimpolycalc.projezieren(oldPoints);
-      Optional<List<Vectore2>> mergedPoints = claimpolycalc.mergen(oldPointsProj, newPoints);
-      if (mergedPoints.isEmpty()) {
-        return;
-      }
-      List<Vectore2> entprojPoints = claimpolycalc.entprojezieren(mergedPoints.get());
-      //List<Vectore2> reversePlusteredPoints = claimpolycalc.reverseaufplustern(entprojPoints);
+      List<Vectore2> claims = claimre.dothatshitforme(oldPoints, newPoints);
 
       List<BlockVector2> finalNewRegion = new ArrayList<>();
 
-      for (Vectore2 v : entprojPoints) {
-        finalNewRegion.add(BlockVector2.at(v.x, v.z));
-        p.sendMessage(String.valueOf(BlockVector2.at(v.x, v.z)));
+      for (Vectore2 v : claims) {
+        finalNewRegion.add(BlockVector2.at(v.z, v.x));
+        p.sendMessage(String.valueOf(BlockVector2.at(v.z, v.x)));
       }
 
 

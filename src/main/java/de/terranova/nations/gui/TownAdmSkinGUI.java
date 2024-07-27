@@ -2,10 +2,10 @@ package de.terranova.nations.gui;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
+import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.TownSkins;
 import de.terranova.nations.settlements.settlement;
-import de.terranova.nations.utils.ChatUtils;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import mc.obliviate.inventory.pagination.PaginationManager;
@@ -31,16 +31,15 @@ public class TownAdmSkinGUI extends Gui {
   private static Method metaSetProfileMethod;
 
   public TownAdmSkinGUI(Player player, int townskins) {
-    super(player, "town-admn-skin-gui", ChatUtils.returnBlueFade("Skin Menu"), townskins);
+    super(player, "town-admn-skin-gui", Chat.returnBlueFade("Skin Menu"), townskins);
     this.pagination.registerPageSlotsBetween(10,44);
   }
 
   @Override
   public void onOpen(InventoryOpenEvent event) {
-
     ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
     ItemMeta mfiller = filler.getItemMeta();
-    mfiller.displayName(ChatUtils.stringToComponent(""));
+    mfiller.displayName(Chat.stringToComponent(""));
     filler.setItemMeta(mfiller);
     fillGui(filler);
     int index = 0;
@@ -50,7 +49,6 @@ public class TownAdmSkinGUI extends Gui {
 
       Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsInsideHisClaim(player);
       if (settlement.isPresent()) {
-
         ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
         SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
         mutateSkullMetaSkinBy64(skin.getSkinTexture(), skullMeta);
@@ -62,8 +60,8 @@ public class TownAdmSkinGUI extends Gui {
         });
         index++;
       } else {
-        player.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Bitte befinde dich innerhalb deines Claimes für diese Aktion."));
-        player.sendMessage(ChatUtils.returnRedFade(ChatUtils.chatPrefix + "Meistens hilft schon ein kleiner Schritt zur Seite. ^^"));
+        player.sendMessage(Chat.returnRedFade(String.format("Bitte befinde dich innerhalb deines Claimes f%sr diese Aktion.", 0xC3)));
+        player.sendMessage(Chat.returnRedFade("Meistens hilft schon ein kleiner Schritt zur Seite. ^^"));
         break;
       }
     }

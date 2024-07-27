@@ -16,3 +16,6 @@ dependencies:
     Citizens:
       load: BEFORE
       required: true
+    Bona:
+      load: BEFORE
+      required: true

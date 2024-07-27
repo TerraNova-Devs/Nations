@@ -1,3 +1,1558 @@
 # Citizens NPC Storage
 
-{}
+last-created-npc-id: 36
+npc:
+  '0':
+    metadata:
+      cached-skin-uuid-name: lady
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lfuka</gradient>
+    uuid: b9bf28a1-a58b-4656-a9e8-e9644b62456b
+    traits:
+      skintrait:
+        signature: Xc75FMmJ20FtJ+eQgAfTsCXMrDl+YPb0cmGh8m5HwaZLDPtlFDac18wNBh7/KURBXVxLFi9ogpD/yrB+CiU2Q0e5OcGn/3ioWJyGw0DN+lvowIPH4orzDY72f+/8+Ig0ASdSnkXhWg0jnFMdY5jZDULzbwz04GXxnJg8zLw5VYHJYuDTGgGvRxyIrX/yCc3P+8jJOP3681WETYAA749jLnJtnfaVOMe3YkctDXL5mF/9YlNYvbIRqt9oMiqzE9eKaqDye5rr1UgDpfCJc/7GYQ+OVfg3pFHER3bNpkhGN02hBEdqFF+RHpe80Gq4XW0HA2n7Q5fWO8O5MxjCIIbYFwoze5aJ2nc+zTiFMV8kfUkQzhEZWEHC8oSVY0O8MWPR9ocpvdqMvIrPLlMBazXvrQs8JaN70EQj1aUoDilvxa7LEg33qjPuZoudZxHrMzENr84JuZNLTcouR3CiQFUIHQSRJFOLBVpl1B3O86KTxI0Zko285O5VAt4mHN/cwX8UPxa8YWxcP+9jZZ4SoMfZigOofUkcMTjVaaDvXjV8rOAGKX8GIqtu+9zTSgqb/2OXblhkl/kDv4FrxvyFCV3+/usnwiMCwl80IujRpIBHpAylKSormzg9ehTcm6G3VmyhzwHpVYFA9IMXaUuck9cA/1PLrKzK7xpn0Py7m/lEyqo=
+        skinName: LADY
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2ODE0NzY1NTMxOSwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xYmI1NjliMzBmMDgwZGI0OGRjY2UyNmM1YzhmMzAwNmRjZTMzMjZhZDYxN2U5YjBlZjY3NDQ2NTNjN2ZmNGUzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -164.50943
+        world: world
+        x: 18.1045
+        y: 130.0
+        z: 53.2342
+        yaw: -164.5094
+        pitch: -26.4974
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '1':
+    metadata:
+      cached-skin-uuid-name: lady
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lfukahiro</gradient>
+    uuid: 5fcc1183-4755-42b7-b140-cc5d465f68ce
+    traits:
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      location:
+        bodyYaw: 63.07434
+        world: world
+        x: 104.1683
+        y: 119.0
+        z: -9.3877
+        yaw: 63.0743
+        pitch: -11.6586
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: Xc75FMmJ20FtJ+eQgAfTsCXMrDl+YPb0cmGh8m5HwaZLDPtlFDac18wNBh7/KURBXVxLFi9ogpD/yrB+CiU2Q0e5OcGn/3ioWJyGw0DN+lvowIPH4orzDY72f+/8+Ig0ASdSnkXhWg0jnFMdY5jZDULzbwz04GXxnJg8zLw5VYHJYuDTGgGvRxyIrX/yCc3P+8jJOP3681WETYAA749jLnJtnfaVOMe3YkctDXL5mF/9YlNYvbIRqt9oMiqzE9eKaqDye5rr1UgDpfCJc/7GYQ+OVfg3pFHER3bNpkhGN02hBEdqFF+RHpe80Gq4XW0HA2n7Q5fWO8O5MxjCIIbYFwoze5aJ2nc+zTiFMV8kfUkQzhEZWEHC8oSVY0O8MWPR9ocpvdqMvIrPLlMBazXvrQs8JaN70EQj1aUoDilvxa7LEg33qjPuZoudZxHrMzENr84JuZNLTcouR3CiQFUIHQSRJFOLBVpl1B3O86KTxI0Zko285O5VAt4mHN/cwX8UPxa8YWxcP+9jZZ4SoMfZigOofUkcMTjVaaDvXjV8rOAGKX8GIqtu+9zTSgqb/2OXblhkl/kDv4FrxvyFCV3+/usnwiMCwl80IujRpIBHpAylKSormzg9ehTcm6G3VmyhzwHpVYFA9IMXaUuck9cA/1PLrKzK7xpn0Py7m/lEyqo=
+        skinName: LADY
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2ODE0NzY1NTMxOSwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xYmI1NjliMzBmMDgwZGI0OGRjY2UyNmM1YzhmMzAwNmRjZTMzMjZhZDYxN2U5YjBlZjY3NDQ2NTNjN2ZmNGUzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '2':
+    metadata:
+      cached-skin-uuid-name: lady
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lhufofo</gradient>
+    uuid: 39900d25-3c42-4726-9f4d-4531a4f5189d
+    traits:
+      location:
+        bodyYaw: -166.21982
+        world: world
+        x: 193.7424
+        y: 95.0
+        z: -34.6156
+        yaw: 176.5571
+        pitch: -51.5065
+      spawned: true
+      type: PLAYER
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      skintrait:
+        signature: Xc75FMmJ20FtJ+eQgAfTsCXMrDl+YPb0cmGh8m5HwaZLDPtlFDac18wNBh7/KURBXVxLFi9ogpD/yrB+CiU2Q0e5OcGn/3ioWJyGw0DN+lvowIPH4orzDY72f+/8+Ig0ASdSnkXhWg0jnFMdY5jZDULzbwz04GXxnJg8zLw5VYHJYuDTGgGvRxyIrX/yCc3P+8jJOP3681WETYAA749jLnJtnfaVOMe3YkctDXL5mF/9YlNYvbIRqt9oMiqzE9eKaqDye5rr1UgDpfCJc/7GYQ+OVfg3pFHER3bNpkhGN02hBEdqFF+RHpe80Gq4XW0HA2n7Q5fWO8O5MxjCIIbYFwoze5aJ2nc+zTiFMV8kfUkQzhEZWEHC8oSVY0O8MWPR9ocpvdqMvIrPLlMBazXvrQs8JaN70EQj1aUoDilvxa7LEg33qjPuZoudZxHrMzENr84JuZNLTcouR3CiQFUIHQSRJFOLBVpl1B3O86KTxI0Zko285O5VAt4mHN/cwX8UPxa8YWxcP+9jZZ4SoMfZigOofUkcMTjVaaDvXjV8rOAGKX8GIqtu+9zTSgqb/2OXblhkl/kDv4FrxvyFCV3+/usnwiMCwl80IujRpIBHpAylKSormzg9ehTcm6G3VmyhzwHpVYFA9IMXaUuck9cA/1PLrKzK7xpn0Py7m/lEyqo=
+        skinName: LADY
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2ODE0NzY1NTMxOSwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xYmI1NjliMzBmMDgwZGI0OGRjY2UyNmM1YzhmMzAwNmRjZTMzMjZhZDYxN2U5YjBlZjY3NDQ2NTNjN2ZmNGUzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '3':
+    metadata:
+      cached-skin-uuid-name: t
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lt</gradient>
+    uuid: 0792bdbd-aec7-4275-beb3-a0d41e5221d0
+    traits:
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: t
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: -93.23576
+        world: world
+        x: 41.2428
+        y: 126.0
+        z: 21.6434
+        yaw: -93.2358
+        pitch: -50.9366
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '4':
+    metadata:
+      cached-skin-uuid-name: hu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lhu</gradient>
+    uuid: 12d26dd0-9356-49d2-9849-a31ed1c0f2c1
+    traits:
+      location:
+        bodyYaw: 152.25046
+        world: world
+        x: 38.1572
+        y: 126.0
+        z: 27.1687
+        yaw: 172.2505
+        pitch: -18.7653
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: hu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '5':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: bdbad840-4c46-4dcc-9c8e-554ac0ee5832
+    traits:
+      type: PLAYER
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -94.45578
+        world: world
+        x: 32.6232
+        y: 126.0
+        z: 6.7617
+        yaw: -94.4558
+        pitch: -24.5603
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '6':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: 8090d9b4-1aee-4a83-af91-d4383c868295
+    traits:
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: -24.166374
+        world: world
+        x: 40.5009
+        y: 126.0
+        z: 6.2392
+        yaw: -24.1664
+        pitch: -18.2271
+      type: PLAYER
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '7':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: a9e3548a-75b2-4045-a531-e5948c1cd387
+    traits:
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+      location:
+        bodyYaw: 0.9981613
+        world: world
+        x: 45.2203
+        y: 126.0
+        z: 6.709
+        yaw: 0.9982
+        pitch: -17.6456
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '8':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: be2bbd34-625a-4237-9b1e-469748ba634a
+    traits:
+      spawned: true
+      type: PLAYER
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: 147.38786
+        world: world
+        x: 38.1018
+        y: 126.0
+        z: 34.1072
+        yaw: 167.3879
+        pitch: -10.3687
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '9':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: 83b099e6-eb55-49b8-8f6d-d25393c1db77
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: -43.57586
+        world: world
+        x: 38.1779
+        y: 126.0
+        z: 5.4756
+        yaw: -43.5759
+        pitch: -16.2348
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '10':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: fd3aa6d4-36e8-4a22-9b23-47952faca93b
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      type: PLAYER
+      location:
+        bodyYaw: -90.32438
+        world: world
+        x: 34.2612
+        y: 126.0
+        z: 4.9299
+        yaw: -90.3244
+        pitch: -22.4064
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '11':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: 44087e7d-4239-4d1f-8aa5-da9e1b44e299
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: -121.06063
+        world: world
+        x: 39.5313
+        y: 126.0
+        z: 24.4685
+        yaw: -121.0606
+        pitch: -34.8075
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '12':
+    metadata:
+      cached-skin-uuid-name: jui
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljui</gradient>
+    uuid: 44cc5b26-071b-4309-9ebb-70c387a9edee
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jui
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: 153.99261
+        world: world
+        x: 37.6616
+        y: 126.0
+        z: 26.4823
+        yaw: 173.9926
+        pitch: -19.7458
+      spawned: true
+      type: PLAYER
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '14':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 56c3b00a-2be8-442b-9ca9-f81843f44010
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: 149.13885
+        world: world
+        x: 38.8417
+        y: 126.0
+        z: 26.7467
+        yaw: 169.1389
+        pitch: -19.1585
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '13':
+    metadata:
+      cached-skin-uuid-name: jizz
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljizz</gradient>
+    uuid: 711d5b58-0e18-49a6-bff5-5e0c30a00744
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jizz
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: -100.69521
+        world: world
+        x: 25.2985
+        y: 126.0
+        z: 10.6723
+        yaw: -100.6952
+        pitch: -20.4522
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '15':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 6ec6a593-1f72-4210-b0b5-5aa5aa8c033b
+    traits:
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      location:
+        bodyYaw: -30.343163
+        world: world
+        x: 42.5224
+        y: 126.0
+        z: 18.0272
+        yaw: -30.3432
+        pitch: -45.5871
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '16':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 13c3f4e2-a00f-4594-adf5-2c6efa857e6c
+    traits:
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: -55.277275
+        world: world
+        x: 37.7656
+        y: 126.0
+        z: 16.7694
+        yaw: -55.2773
+        pitch: -26.2405
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '17':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: c3323db2-c00d-488f-9354-05762242f470
+    traits:
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: -159.37599
+        world: world
+        x: 30.8361
+        y: 126.0
+        z: 33.3846
+        yaw: -159.376
+        pitch: -10.5471
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '18':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: c178bca0-41ec-4678-a08e-139fb5adece4
+    traits:
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: 150.24576
+        world: world
+        x: 38.638
+        y: 126.0
+        z: 27.106
+        yaw: 170.2458
+        pitch: -18.7512
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '19':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: fbf5d1dc-d4cd-4032-a9eb-631f37023a98
+    traits:
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: 2.232376
+        world: world
+        x: 46.078
+        y: 126.0
+        z: 2.2934
+        yaw: 2.2324
+        pitch: -14.9069
+      type: PLAYER
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '20':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: c50f6bfb-5141-47f9-a76e-a3826dd720a5
+    traits:
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -3.6625366
+        world: world
+        x: 44.6541
+        y: 126.0
+        z: 4.2898
+        yaw: -3.6625
+        pitch: -17.0391
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '21':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 223f85f8-be8a-4214-a780-9e651d8409d3
+    traits:
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      spawned: true
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: -33.226185
+        world: world
+        x: 39.1422
+        y: 126.0
+        z: 7.6676
+        yaw: -33.2262
+        pitch: -19.1077
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '22':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 1a472b83-e946-430f-941f-a9075f0fb51a
+    traits:
+      location:
+        bodyYaw: 126.41728
+        world: world
+        x: 39.1553
+        y: 126.0
+        z: 36.9606
+        yaw: 116.7941
+        pitch: -5.2977
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '23':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 610ab606-62e0-4e72-914b-969280ad8c1b
+    traits:
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: -120.03183
+        world: world
+        x: 19.8709
+        y: 126.0
+        z: 7.5368
+        yaw: -120.0318
+        pitch: -5.7122
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      type: PLAYER
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '24':
+    metadata:
+      cached-skin-uuid-name: tutu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltutu</gradient>
+    uuid: 4bb26ca8-6220-4850-ba40-7c98e564f083
+    traits:
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -5.4321136
+        world: world
+        x: 43.9366
+        y: 126.0
+        z: 15.2132
+        yaw: -5.4321
+        pitch: -32.8953
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: tutu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '25':
+    metadata:
+      cached-skin-uuid-name: huhu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lhuhu</gradient>
+    uuid: 4e5cff53-c376-45a9-a594-20a1a753cc8b
+    traits:
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: huhu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: -139.32317
+        world: world
+        x: 27.6729
+        y: 126.0
+        z: 26.903
+        yaw: -139.3232
+        pitch: -19.123
+      spawned: true
+      type: PLAYER
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '27':
+    metadata:
+      cached-skin-uuid-name: huhu
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lhuhu</gradient>
+    uuid: 1eeb6528-c944-4da3-8f7f-f2a978f89181
+    traits:
+      location:
+        bodyYaw: -112.37945
+        world: world
+        x: 89.6855
+        y: 94.0
+        z: 154.9776
+        yaw: -112.3794
+        pitch: -56.358
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: huhu
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '26':
+    metadata:
+      cached-skin-uuid-name: test
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltest</gradient>
+    uuid: 675e8a42-d08d-4b7e-97a8-3968d9a5274a
+    traits:
+      location:
+        bodyYaw: -136.41266
+        world: world
+        x: 40.5434
+        y: 126.0
+        z: 37.7637
+        yaw: -136.4127
+        pitch: -12.1125
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: test
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+      spawned: true
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '29':
+    metadata:
+      cached-skin-uuid-name: lady
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&laidosuehclsocpd0eudh</gradient>
+    uuid: efc687a6-0cc6-4905-82cb-fd25ce7792ec
+    traits:
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: Xc75FMmJ20FtJ+eQgAfTsCXMrDl+YPb0cmGh8m5HwaZLDPtlFDac18wNBh7/KURBXVxLFi9ogpD/yrB+CiU2Q0e5OcGn/3ioWJyGw0DN+lvowIPH4orzDY72f+/8+Ig0ASdSnkXhWg0jnFMdY5jZDULzbwz04GXxnJg8zLw5VYHJYuDTGgGvRxyIrX/yCc3P+8jJOP3681WETYAA749jLnJtnfaVOMe3YkctDXL5mF/9YlNYvbIRqt9oMiqzE9eKaqDye5rr1UgDpfCJc/7GYQ+OVfg3pFHER3bNpkhGN02hBEdqFF+RHpe80Gq4XW0HA2n7Q5fWO8O5MxjCIIbYFwoze5aJ2nc+zTiFMV8kfUkQzhEZWEHC8oSVY0O8MWPR9ocpvdqMvIrPLlMBazXvrQs8JaN70EQj1aUoDilvxa7LEg33qjPuZoudZxHrMzENr84JuZNLTcouR3CiQFUIHQSRJFOLBVpl1B3O86KTxI0Zko285O5VAt4mHN/cwX8UPxa8YWxcP+9jZZ4SoMfZigOofUkcMTjVaaDvXjV8rOAGKX8GIqtu+9zTSgqb/2OXblhkl/kDv4FrxvyFCV3+/usnwiMCwl80IujRpIBHpAylKSormzg9ehTcm6G3VmyhzwHpVYFA9IMXaUuck9cA/1PLrKzK7xpn0Py7m/lEyqo=
+        skinName: LADY
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2ODE0NzY1NTMxOSwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xYmI1NjliMzBmMDgwZGI0OGRjY2UyNmM1YzhmMzAwNmRjZTMzMjZhZDYxN2U5YjBlZjY3NDQ2NTNjN2ZmNGUzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=
+      location:
+        bodyYaw: -101.92136
+        world: world
+        x: -9.3429
+        y: 88.0
+        z: 151.414
+        yaw: -101.9214
+        pitch: -37.7778
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '28':
+    metadata:
+      cached-skin-uuid-name: poor_lady_horns
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lminitimi</gradient>
+    uuid: 008dfbc5-5830-4902-88f7-088cec308a56
+    traits:
+      type: PLAYER
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: BXjbANPcQHbHDxvpAxjQC5j/XZNqfXeqzTNn1z2uuTb8mCaCQTWhUQahBw4yliOk11uIkJUqRWPE89XhFK7qIMKV0gsdXdww98TR5KG538K1gWIuJjw8K1LA0prA77dcqVgHCg3TDp/3c/cIqmIOf0fsE/auXgqtwrqbcgGD6DFDoo7xgK0TK0DlNM06+jrHzgaXH/2zCCZ3+jrZS5H5qjGCFDq6XengmWwI07dMP1qImdMiNlpVPsX0deQSmvoTs7G6bgxk87SHmSPFR5nTfeQUFc2g58KFR5bIarHDk9XCMJEQbLuHfahluv8asdfKKdwqexja/0mmtjPWDii/BoUvdw7/bo5FwGLmk84x9SuRFdiEyNx+h0itnANQUmSKwuVnDfRzDACjc3X9LYbuRS/LrdgWbgvXI2xyQJTLy1R7vHXlHJlgFOoP5eFP94vHMzJbDV9JXNs20jTn3ArdePyTiLP33NNTgV9TkgbNpd0x4vX3pyKm2DieegyvHXCp1VI8yrofvGgad+3WPc8yCmY8SHK55URDj14mWcJsZTRHHmOEPaX7gvHJy4AA9ayN7vD+0UjXr++PD1meOZgpoB+nFua7RtowEwh4tDOX/Qn9lKqZrn2TMfDYfPZE2eOf3bBHrKu4STe27g+kXvPwntJjYr4IbjnNHlKMbpsvwTM=
+        skinName: POOR_LADY_HORNS
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2NTI0ODYwNDA1NCwKICAicHJvZmlsZUlkIiA6ICJjOWRlZTM4MDUzYjg0YzI5YjZlZjA5YjJlMDM5OTc0ZiIsCiAgInByb2ZpbGVOYW1lIiA6ICJTQVJfRGVjZW1iZXI1IiwKICAic2lnbmF0dXJlUmVxdWlyZWQiIDogdHJ1ZSwKICAidGV4dHVyZXMiIDogewogICAgIlNLSU4iIDogewogICAgICAidXJsIiA6ICJodHRwOi8vdGV4dHVyZXMubWluZWNyYWZ0Lm5ldC90ZXh0dXJlLzY2ZmNjYWRjOGU3YjRiYTAyNWJlYzMxY2E1NTY2YzNmNDUyNDA4MjFlMmQ4MDE3NzczNzdiN2QxYmRlMzFkYjkiLAogICAgICAibWV0YWRhdGEiIDogewogICAgICAgICJtb2RlbCIgOiAic2xpbSIKICAgICAgfQogICAgfQogIH0KfQ==
+      location:
+        bodyYaw: 57.458282
+        world: world
+        x: 21.6393
+        y: 113.0
+        z: 77.7512
+        yaw: 57.4583
+        pitch: -10.823
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '30':
+    metadata:
+      cached-skin-uuid-name: test
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltest</gradient>
+    uuid: edba1cb6-f8bc-4476-9d87-a0a2720be541
+    traits:
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      type: PLAYER
+      location:
+        bodyYaw: 133.97694
+        world: world
+        x: 41.8293
+        y: 126.0
+        z: 30.6027
+        yaw: 153.9769
+        pitch: -16.3136
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: test
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '31':
+    metadata:
+      cached-skin-uuid-name: test
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltest</gradient>
+    uuid: 7101d620-d723-4905-8b8e-40e3b4b89bb5
+    traits:
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -166.3735
+        world: world
+        x: 32.2709
+        y: 126.0
+        z: 31.2608
+        yaw: -166.3735
+        pitch: -16.7584
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: test
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '32':
+    metadata:
+      cached-skin-uuid-name: lady
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltest</gradient>
+    uuid: 00f6a979-74b0-41b8-9a84-44ed8256191e
+    traits:
+      skintrait:
+        signature: Xc75FMmJ20FtJ+eQgAfTsCXMrDl+YPb0cmGh8m5HwaZLDPtlFDac18wNBh7/KURBXVxLFi9ogpD/yrB+CiU2Q0e5OcGn/3ioWJyGw0DN+lvowIPH4orzDY72f+/8+Ig0ASdSnkXhWg0jnFMdY5jZDULzbwz04GXxnJg8zLw5VYHJYuDTGgGvRxyIrX/yCc3P+8jJOP3681WETYAA749jLnJtnfaVOMe3YkctDXL5mF/9YlNYvbIRqt9oMiqzE9eKaqDye5rr1UgDpfCJc/7GYQ+OVfg3pFHER3bNpkhGN02hBEdqFF+RHpe80Gq4XW0HA2n7Q5fWO8O5MxjCIIbYFwoze5aJ2nc+zTiFMV8kfUkQzhEZWEHC8oSVY0O8MWPR9ocpvdqMvIrPLlMBazXvrQs8JaN70EQj1aUoDilvxa7LEg33qjPuZoudZxHrMzENr84JuZNLTcouR3CiQFUIHQSRJFOLBVpl1B3O86KTxI0Zko285O5VAt4mHN/cwX8UPxa8YWxcP+9jZZ4SoMfZigOofUkcMTjVaaDvXjV8rOAGKX8GIqtu+9zTSgqb/2OXblhkl/kDv4FrxvyFCV3+/usnwiMCwl80IujRpIBHpAylKSormzg9ehTcm6G3VmyhzwHpVYFA9IMXaUuck9cA/1PLrKzK7xpn0Py7m/lEyqo=
+        skinName: LADY
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY2ODE0NzY1NTMxOSwKICAicHJvZmlsZUlkIiA6ICI1NjY3NWIyMjMyZjA0ZWUwODkxNzllOWM5MjA2Y2ZlOCIsCiAgInByb2ZpbGVOYW1lIiA6ICJUaGVJbmRyYSIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS8xYmI1NjliMzBmMDgwZGI0OGRjY2UyNmM1YzhmMzAwNmRjZTMzMjZhZDYxN2U5YjBlZjY3NDQ2NTNjN2ZmNGUzIiwKICAgICAgIm1ldGFkYXRhIiA6IHsKICAgICAgICAibW9kZWwiIDogInNsaW0iCiAgICAgIH0KICAgIH0KICB9Cn0=
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      spawned: true
+      type: PLAYER
+      location:
+        bodyYaw: -0.9106598
+        world: world
+        x: 44.8134
+        y: 126.0
+        z: 7.841
+        yaw: -0.9107
+        pitch: -19.2436
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '33':
+    metadata:
+      cached-skin-uuid-name: mini
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lmini</gradient>
+    uuid: 8aa2a065-e71e-4ed5-99a7-92cd0c043209
+    traits:
+      location:
+        bodyYaw: -30.02584
+        world: world
+        x: 39.6985
+        y: 126.0
+        z: 10.2919
+        yaw: -30.0258
+        pitch: -20.9606
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: mini
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      type: PLAYER
+      spawned: true
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '34':
+    metadata:
+      cached-skin-uuid-name: jio
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ljio</gradient>
+    uuid: b7d39616-7598-4fa0-8df1-ecc6949cdba4
+    traits:
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: jio
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+      location:
+        bodyYaw: -96.824745
+        world: world
+        x: 34.2879
+        y: 126.0
+        z: 6.2663
+        yaw: -96.8247
+        pitch: -22.3092
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '35':
+    metadata:
+      cached-skin-uuid-name: test
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&ltest</gradient>
+    uuid: 96a3aa81-bd50-41e0-adfc-d50bb03151dc
+    traits:
+      type: PLAYER
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: test
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      spawned: true
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      location:
+        bodyYaw: 149.62357
+        world: world
+        x: 38.7664
+        y: 126.0
+        z: 26.9716
+        yaw: 169.6236
+        pitch: -18.8905
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false
+  '36':
+    metadata:
+      cached-skin-uuid-name: ß
+      always-use-name-hologram: true
+    name: <gradient:#AAE3E9:#DFBDEA>&lß</gradient>
+    uuid: 358b3718-b5a6-4d8e-8240-25ecaec922eb
+    traits:
+      lookclose:
+        range: 10.0
+        enabled: true
+        randomPitchRange:
+          '0': 0.0
+          '1': 0.0
+        randomYawRange:
+          '0': 0.0
+          '1': 360.0
+      type: PLAYER
+      location:
+        bodyYaw: -98.764046
+        world: world
+        x: 19.9737
+        y: 96.0
+        z: 106.5764
+        yaw: -98.764
+        pitch: -11.046
+      spawned: true
+      skintrait:
+        signature: pIy+sAOaqt70OtSP5DgR0KjBL/PvY9f/+ofULATfjGraa6JVWj5sZ1PTU8L+0xSz07saePgfHPehmV6YnpSvKS+ot7MmZZcUFMq/1PXthwusk7VcjUjwPJCFZgMGG4Fd3v5xQAZG7+xhavWap94lZpvm6fO/IyIkrG+UYQRdDt2GvGSeIxJXCE0OYr3kptxQmKRyWGc7Kpwfx8kcwRW19TIJ94GD51xmWM5jQ8Drro1ycJROtETG9rDuuyy7axdLJFN/WZ4c+JiWDE4F2oRNNfX19tawyIDIYLTqisjWPms0tp0j/TT3DPgW2EZceMq6SVuSLvinT+qO+xkCPKqq9VTGT65QFXSESKSYPsojTKKjsGcFaFUF826VYA+cZJfr8jbGfOvyX3aobOq4vaRomqojlR+GI7/UOxkWpjTAbEjkxRXH0fhcSv5fFbPNqFEb/Sx9/YBn09dPh0d1KfzCfe01zRfrzfqrlBWJdB5uvQHXSVcJt56ArPxb1gWTQInAVeQKQeiwmyr7fTkc+2JL/86reF1OhUVLlG8q7iIi38S5R02oQaQQrqEpLgysJ32q6iwuHqqxZgwga3cBmPCn4DDG4mR1EPoeEOHv9TWlFkopT7ha187JO6YthlBZis9u/Fa/crdIqyic7ej/GwopW+YsYwbw102QpDSc+ZwT1Do=
+        skinName: ß
+        textureRaw: ewogICJ0aW1lc3RhbXAiIDogMTY3MzIxODMyOTczMCwKICAicHJvZmlsZUlkIiA6ICJmMjc0YzRkNjI1MDQ0ZTQxOGVmYmYwNmM3NWIyMDIxMyIsCiAgInByb2ZpbGVOYW1lIiA6ICJIeXBpZ3NlbCIsCiAgInNpZ25hdHVyZVJlcXVpcmVkIiA6IHRydWUsCiAgInRleHR1cmVzIiA6IHsKICAgICJTS0lOIiA6IHsKICAgICAgInVybCIgOiAiaHR0cDovL3RleHR1cmVzLm1pbmVjcmFmdC5uZXQvdGV4dHVyZS9kOTFlMmQ2ODk0NTcyZjA5ZDY0N2I5MmVhOWNmMjE2MDFjZThmNzgzNGMzYzhkZTM0NmI3NGM4ZjMxM2E2MDUwIgogICAgfQogIH0KfQ==
+      hologramtrait:
+        lines:
+          '0':
+            text: '<#B0EB94>Level: [100]'
+            margin:
+              top: 0.0
+              bottom: 0.0
+    traitnames: spawned,scoreboardtrait,inventory,hologramtrait,skintrait,type,location,lookclose,rotationtrait
+    navigator:
+      speedmodifier: 1.0
+      avoidwater: false
+      usedefaultstuckaction: false

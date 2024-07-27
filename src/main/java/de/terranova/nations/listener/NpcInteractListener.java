@@ -15,4 +15,5 @@ public class NpcInteractListener implements Listener {
     Player player = event.getClicker();
     new TownGUI(player).open();
   }
+
 }
