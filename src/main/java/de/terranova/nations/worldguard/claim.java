@@ -13,6 +13,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import de.mcterranova.bona.lib.chat.Chat;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class claim {
     BlockVector2 se = BlockVector2.at(nx + 47, nz + 47);
     BlockVector2 ne = BlockVector2.at(nx + 47, nz);
 
-    List<BlockVector2> corners = Arrays.asList(se, sw, nw, ne);
+    List<BlockVector2> corners = Arrays.asList(nw, ne, se, sw);
 
     LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
 
@@ -56,10 +57,11 @@ public class claim {
       int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
       int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
 
-      Vectore2 nw = new Vectore2(nx, nz);
-      Vectore2 sw = new Vectore2(nx, nz + 47);
-      Vectore2 se = new Vectore2(nx + 47, nz + 47);
-      Vectore2 ne = new Vectore2(nx + 47, nz);
+      Vectore2 nw = new Vectore2(nx + 0.5, nz + 0.5);
+      Vectore2 ne = new Vectore2(nx  + 0.5 + 47, nz  + 0.5);
+      Vectore2 sw = new Vectore2(nx  + 0.5 , nz + 47  + 0.5);
+      Vectore2 se = new Vectore2(nx + 47  + 0.5, nz + 47 + 0.5);
+
 
       List<Vectore2> newPoints = Arrays.asList(nw, ne, se, sw);
       List<Vectore2> oldPoints = new ArrayList<>();
@@ -69,13 +71,18 @@ public class claim {
       }
 
 
-      List<Vectore2> claims = claimre.dothatshitforme(oldPoints, newPoints);
+      Optional<List<Vectore2>> claims = claimre.dothatshitforme(oldPoints, newPoints);
+      if(claims.isEmpty()){
+        p.sendMessage(Chat.returnRedFade("Bitte keine leeren flächen umclaimen."));
+        return;
+      }
+
 
       List<BlockVector2> finalNewRegion = new ArrayList<>();
 
-      for (Vectore2 v : claims) {
-        finalNewRegion.add(BlockVector2.at(v.z, v.x));
-        p.sendMessage(String.valueOf(BlockVector2.at(v.z, v.x)));
+      for (Vectore2 v : claims.get()) {
+        finalNewRegion.add(BlockVector2.at(v.x, v.z));
+        p.sendMessage(String.valueOf(BlockVector2.at(v.x, v.z)));
       }
 
 

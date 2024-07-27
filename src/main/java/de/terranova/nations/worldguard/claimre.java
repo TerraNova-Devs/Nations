@@ -1,44 +1,41 @@
 package de.terranova.nations.worldguard;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 
 public class claimre {
 
-    static List<Vectore2> dothatshitforme(List<Vectore2> oldlist, List<Vectore2> newlist) {
+    static Optional<List<Vectore2>> dothatshitforme(List<Vectore2> oldlist, List<Vectore2> newlist) {
 
         System.out.println(".");
         System.out.println("OLDLIST");
-        for(Vectore2 v : oldlist) {
+        for (Vectore2 v : oldlist) {
             System.out.println("x: " + v.x + ", z: " + v.z);
         }
         System.out.println("NEWLIST");
-        for(Vectore2 v : newlist) {
+        for (Vectore2 v : newlist) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
         List<Vectore2> normedold = normalisieren(oldlist);
-        List<Vectore2> normednew = normalisieren(newlist);
 
         System.out.println("OLD NORMED");
-        for(Vectore2 v : normedold) {
+        for (Vectore2 v : normedold) {
             System.out.println("x: " + v.x + ", z: " + v.z);
         }
-        System.out.println("NEW NORMED");
-        for(Vectore2 v : normednew) {
-            System.out.println("x: " + v.x + ", z: " + v.z);
-        }
-
 
         List<Vectore2> oldaufplustern = aufplustern(normedold);
-        List<Vectore2> newaufplustern = aufplustern(normednew);
+        List<Vectore2> newaufplustern = aufplustern(newlist);
 
 
         System.out.println("ALT PLUSTERED");
-        for(Vectore2 v : oldaufplustern) {
+        for (Vectore2 v : oldaufplustern) {
             System.out.println("x: " + v.x + ", z: " + v.z);
         }
         System.out.println("NEW PLUSTERED");
-        for(Vectore2 v : newaufplustern) {
+        for (Vectore2 v : newaufplustern) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
@@ -46,43 +43,47 @@ public class claimre {
         List<Vectore2> newproj = projezieren(newaufplustern);
 
         System.out.println("ALT PROJ");
-        for(Vectore2 v : oldproj) {
+        for (Vectore2 v : oldproj) {
             System.out.println("x: " + v.x + ", z: " + v.z);
         }
         System.out.println("NEW PROJ");
-        for(Vectore2 v : newproj) {
+        for (Vectore2 v : newproj) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
         Optional<List<Vectore2>> merged = mergen(oldproj, newproj);
 
+        if(merged.isEmpty()){
+            return Optional.empty();
+        }
+
         System.out.println("MERGED");
-        for(Vectore2 v : merged.get()) {
+        for (Vectore2 v : merged.get()) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
         List<Vectore2> entproj = entprojezieren(merged.get());
 
         System.out.println("ENTPROJ");
-        for(Vectore2 v : entproj) {
+        for (Vectore2 v : entproj) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
         List<Vectore2> entplustern = reverseaufplustern(entproj);
 
         System.out.println("ENTPLUSTERT");
-        for(Vectore2 v : entplustern) {
+        for (Vectore2 v : entplustern) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
         List<Vectore2> entnormalisieren = entnormalisieren(entplustern);
 
         System.out.println("ENTNORMALISIEREN");
-        for(Vectore2 v : entnormalisieren) {
+        for (Vectore2 v : entnormalisieren) {
             System.out.println("x: " + v.x + ", z " + v.z);
         }
 
-        return entnormalisieren;
+        return Optional.of(entnormalisieren);
 
     }
 
@@ -90,7 +91,7 @@ public class claimre {
 
         List<Vectore2> output = new ArrayList<>();
 
-        for (Vectore2 v : current){
+        for (Vectore2 v : current) {
             output.add(new Vectore2(v.x + 0.5, v.z + 0.5));
         }
 
@@ -102,7 +103,7 @@ public class claimre {
 
         List<Vectore2> output = new ArrayList<>();
 
-        for (Vectore2 v : current){
+        for (Vectore2 v : current) {
             output.add(new Vectore2(v.x - 0.5, v.z - 0.5));
         }
 
@@ -138,7 +139,6 @@ public class claimre {
         }
 
 
-
         MarkedVector2 last2 = markedOld.getLast();
         MarkedVector2 current2;
         MarkedVector2 next2;
@@ -148,18 +148,17 @@ public class claimre {
         for (MarkedVector2 v : markedOld) {
 
 
-
             current2 = markedOld.get(k);
-            if(k == markedOld.size()-1) {
-                k=-1;
+            if (k == markedOld.size() - 1) {
+                k = -1;
             }
             next2 = markedOld.get(k + 1);
-            if(current2.bool){
-                if((next2.bool || last2.bool)){
-                    if(v.v2.equals(current2.v2)){
+            if (current2.bool) {
+                if ((next2.bool || last2.bool)) {
+                    if (v.v2.equals(current2.v2)) {
 
-                        for(int o = 0; o < newk.size(); o++){
-                            if(newk.get(o).equals(current2.v2)) {
+                        for (int o = 0; o < newk.size(); o++) {
+                            if (newk.get(o).equals(current2.v2)) {
                                 newk.remove(o);
                             }
                         }
@@ -171,9 +170,6 @@ public class claimre {
             k++;
 
         }
-
-
-
 
 
         // BETRACHTUNG
@@ -230,13 +226,20 @@ public class claimre {
 
         if (pairs >= 4) return Optional.empty();
 
-
         if (marker >= 0 && !newRegion.isEmpty()) {
+            if (newRegion.size() == 2 && (newRegion.get(0).x == newRegion.get(1).x)) {
 
-            if(newRegion.size() == 2){
-                if(newRegion.get(0).x == newRegion.get(1).x){
+                double abstand;
+                if (marker == 0) {
+                    abstand = (Math.sqrt((Math.pow((output.getLast().x - newRegion.getFirst().x), 2) + Math.pow((output.getLast().z - newRegion.getFirst().z), 2))));
+                } else {
+                    abstand = (Math.sqrt((Math.pow((output.get(marker - 1).x - newRegion.getFirst().x), 2) + Math.pow((output.get(marker - 1).z - newRegion.getFirst().z), 2))));
+                }
+                if (!(abstand == 48)) {
+                    System.out.println("SWAP");
                     Collections.rotate(newRegion, 1);
                 }
+
             }
 
             Collections.rotate(output, output.size() - marker);
@@ -249,7 +252,6 @@ public class claimre {
 
 
     }
-
 
 
     static List<Vectore2> projezieren(List<Vectore2> current) {
@@ -352,22 +354,22 @@ public class claimre {
         Vectore2 next;
         int i = 0;
 
-        for(Vectore2 list : current){
+        for (Vectore2 list : current) {
 
-            if (i == current.size()-1) {
+            if (i == current.size() - 1) {
                 i = 0;
             }
 
-            next = current.get(i+1);
+            next = current.get(i + 1);
 
-            if(list.z == last.z){
-                if(list.z == next.z){
+            if (list.z == last.z) {
+                if (list.z == next.z) {
                     i++;
                     continue;
                 }
             }
-            if(list.x == last.x){
-                if(list.x == next.x){
+            if (list.x == last.x) {
+                if (list.x == next.x) {
                     i++;
                     continue;
                 }

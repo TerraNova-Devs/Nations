@@ -10,7 +10,7 @@
 # REMEMBER TO KEEP PERIODICAL BACKUPS.
 #
 regions:
-    test:
+    gerry:
         members: {}
         flags: {}
         owners:
@@ -20,80 +20,21 @@ regions:
         max-y: 320
         min-y: -64
         points:
-        - {x: 48, z: -1}
-        - {x: 0, z: 0}
-    gmwgamer:
-        members: {}
-        flags: {}
-        owners: {}
-        type: poly2d
-        priority: 0
-        max-y: 125
-        min-y: 125
-        points:
-        - {x: 95, z: 47}
-        - {x: 48, z: 47}
-        - {x: 48, z: 0}
-        - {x: 95, z: 0}
-    hufofo:
-        members: {}
-        flags: {}
-        owners:
-            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
-        type: poly2d
-        priority: 0
-        max-y: 320
-        min-y: -64
-        points:
-        - {x: -48, z: 192}
-        - {x: -48, z: 239}
-        - {x: -1, z: 239}
-        - {x: -1, z: 192}
-    aidosuehclsocpd0eudh:
-        members: {}
-        flags: {}
-        owners:
-            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
-        type: poly2d
-        priority: 0
-        max-y: 320
-        min-y: -64
-        points:
-        - {x: -48, z: 144}
-        - {x: -1, z: 144}
-        - {x: -1, z: 191}
-        - {x: -48, z: 191}
-    huhu:
-        members: {}
-        flags: {}
-        owners:
-            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
-        type: poly2d
-        priority: 0
-        max-y: 320
-        min-y: -64
-        points:
+        - {x: 48, z: 96}
+        - {x: 96, z: 96}
+        - {x: 96, z: 48}
+        - {x: 191, z: 48}
+        - {x: 191, z: 192}
+        - {x: 240, z: 192}
+        - {x: 240, z: 96}
+        - {x: 287, z: 96}
+        - {x: 287, z: 239}
+        - {x: 191, z: 239}
+        - {x: 191, z: 287}
+        - {x: 96, z: 287}
+        - {x: 96, z: 239}
+        - {x: 48, z: 239}
+        - {x: 48, z: 191}
+        - {x: 0, z: 191}
+        - {x: 0, z: 144}
         - {x: 48, z: 144}
-        - {x: 95, z: 144}
-        - {x: 95, z: 191}
-        - {x: 47, z: 191}
-    fukahiro:
-        members: {}
-        flags: {}
-        owners:
-            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
-        type: poly2d
-        priority: 0
-        max-y: 320
-        min-y: -64
-        points:
-        - {x: -48, z: 96}
-        - {x: -48, z: 143}
-        - {x: -1, z: 143}
-        - {x: -1, z: 96}
-    __global__:
-        members: {}
-        flags: {}
-        owners: {}
-        type: global
-        priority: 0

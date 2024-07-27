@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Nations.iml" filepath="$PROJECT_DIR$/.idea/modules/Nations.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Nations.main.iml" filepath="$PROJECT_DIR$/.idea/modules/Nations.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Nations.test.iml" filepath="$PROJECT_DIR$/.idea/modules/Nations.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/de.terranova.nations.Nations.main.iml" filepath="$PROJECT_DIR$/.idea/modules/de.terranova.nations.Nations.main.iml" />
