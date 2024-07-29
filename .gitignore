@@ -3,5 +3,7 @@
 /.idea/
 /build/
 /testserver/world/
+/testserver/world_nether/
+/testserver/world_the_end/
 # Project exlude data types
 *.env
