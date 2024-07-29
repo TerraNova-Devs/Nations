@@ -4,16 +4,18 @@ import de.mcterranova.bona.lib.YMLHandler;
 import de.terranova.nations.commands.settle;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.listener.NpcInteractListener;
+import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.settlementManager;
+import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import mc.obliviate.inventory.InventoryAPI;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,37 +24,49 @@ public final class NationsPlugin extends JavaPlugin {
 
     public settlementManager settlementManager = new settlementManager();
 
-    //WAS PASSIER WENN 2 CLAIMS SICH ÜBERLAPPEN?
-    //NPC HOLOGRAM
-    YMLHandler skins;
+    public YMLHandler skinsYML;
+    public Logger logger;
+    //public YMLHandler levelYML;
     HikariCP hikari;
-    Logger logger;
 
+    @Override
+    public void onLoad() {
+        worldguardFlagRegistry();
+    }
 
-
-
+    // version savedata
     @Override
     public void onEnable() {
         logger = getLogger();
         saveDefaultConfig();
-        try {
-            skins = new YMLHandler("skins.yml", this.getDataFolder());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
         new InventoryAPI(this).init();
-        /*
-        try {
-            hikari = new HikariCP(this);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-         */
         commandRegistry();
         listenerRegistry();
         serilizationRegistry();
-
+        citizensTraitRegiystry();
+        try {
+            loadConfigs();
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
+
+    private void citizensTraitRegiystry() {
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettlementTrait.class));
+    }
+
+    private void worldguardFlagRegistry() {
+        settlementFlag.registerSettlementFlag();
+    }
+
+    @Override
+    public void onDisable() {
+        //unloaden wenn ausgelesen nicht erst am Ende
+        skinsYML.unloadYAML();
+        //levelYML.unloadYAML();
+    }
+
 
     public void commandRegistry() {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
@@ -68,13 +82,30 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     public void serilizationRegistry() {
-
+        //  ConfigurationSerialization.registerClass(Objective.class, "objective");
     }
 
-    @Override
-    public void onDisable() {
-        skins.unloadYAML();
+    public void loadConfigs() throws FileNotFoundException {
+        try {
+            skinsYML = new YMLHandler("skins.yml", this.getDataFolder());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        //LinkedList<Objective> d = yaml.load(new FileInputStream(new File(this.getDataFolder(),"level.yml")));
+
+
+        /*
+        try {
+            levelYML = new YMLHandler("level.yml", this.getDataFolder());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+         */
     }
+
 }
 
 

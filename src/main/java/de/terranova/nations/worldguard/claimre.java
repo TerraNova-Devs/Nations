@@ -7,82 +7,98 @@ import java.util.Optional;
 
 public class claimre {
 
+    static boolean debug = false;
+
     static Optional<List<Vectore2>> dothatshitforme(List<Vectore2> oldlist, List<Vectore2> newlist) {
 
-        System.out.println(".");
-        System.out.println("OLDLIST");
-        for (Vectore2 v : oldlist) {
-            System.out.println("x: " + v.x + ", z: " + v.z);
-        }
-        System.out.println("NEWLIST");
-        for (Vectore2 v : newlist) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println(".");
+            System.out.println("OLDLIST");
+            for (Vectore2 v : oldlist) {
+                System.out.println("x: " + v.x + ", z: " + v.z);
+            }
+            System.out.println("NEWLIST");
+            for (Vectore2 v : newlist) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         List<Vectore2> normedold = normalisieren(oldlist);
 
-        System.out.println("OLD NORMED");
-        for (Vectore2 v : normedold) {
-            System.out.println("x: " + v.x + ", z: " + v.z);
+        if (debug) {
+            System.out.println("OLD NORMED");
+            for (Vectore2 v : normedold) {
+                System.out.println("x: " + v.x + ", z: " + v.z);
+            }
         }
 
         List<Vectore2> oldaufplustern = aufplustern(normedold);
         List<Vectore2> newaufplustern = aufplustern(newlist);
 
-
-        System.out.println("ALT PLUSTERED");
-        for (Vectore2 v : oldaufplustern) {
-            System.out.println("x: " + v.x + ", z: " + v.z);
-        }
-        System.out.println("NEW PLUSTERED");
-        for (Vectore2 v : newaufplustern) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("ALT PLUSTERED");
+            for (Vectore2 v : oldaufplustern) {
+                System.out.println("x: " + v.x + ", z: " + v.z);
+            }
+            System.out.println("NEW PLUSTERED");
+            for (Vectore2 v : newaufplustern) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         List<Vectore2> oldproj = projezieren(oldaufplustern);
         List<Vectore2> newproj = projezieren(newaufplustern);
 
-        System.out.println("ALT PROJ");
-        for (Vectore2 v : oldproj) {
-            System.out.println("x: " + v.x + ", z: " + v.z);
-        }
-        System.out.println("NEW PROJ");
-        for (Vectore2 v : newproj) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("ALT PROJ");
+            for (Vectore2 v : oldproj) {
+                System.out.println("x: " + v.x + ", z: " + v.z);
+            }
+            System.out.println("NEW PROJ");
+            for (Vectore2 v : newproj) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         Optional<List<Vectore2>> merged = mergen(oldproj, newproj);
 
-        if(merged.isEmpty()){
+        if (merged.isEmpty()) {
             return Optional.empty();
         }
 
-        System.out.println("MERGED");
-        for (Vectore2 v : merged.get()) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("MERGED");
+            for (Vectore2 v : merged.get()) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         List<Vectore2> entproj = entprojezieren(merged.get());
 
-        System.out.println("ENTPROJ");
-        for (Vectore2 v : entproj) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("ENTPROJ");
+            for (Vectore2 v : entproj) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         List<Vectore2> entplustern = reverseaufplustern(entproj);
 
-        System.out.println("ENTPLUSTERT");
-        for (Vectore2 v : entplustern) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("ENTPLUSTERT");
+            for (Vectore2 v : entplustern) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
 
         List<Vectore2> entnormalisieren = entnormalisieren(entplustern);
 
-        System.out.println("ENTNORMALISIEREN");
-        for (Vectore2 v : entnormalisieren) {
-            System.out.println("x: " + v.x + ", z " + v.z);
+        if (debug) {
+            System.out.println("ENTNORMALISIEREN");
+            for (Vectore2 v : entnormalisieren) {
+                System.out.println("x: " + v.x + ", z " + v.z);
+            }
         }
-
         return Optional.of(entnormalisieren);
 
     }
@@ -171,7 +187,6 @@ public class claimre {
 
         }
 
-
         // BETRACHTUNG
 
         int marker = -1;
@@ -236,7 +251,6 @@ public class claimre {
                     abstand = (Math.sqrt((Math.pow((output.get(marker - 1).x - newRegion.getFirst().x), 2) + Math.pow((output.get(marker - 1).z - newRegion.getFirst().z), 2))));
                 }
                 if (!(abstand == 48)) {
-                    System.out.println("SWAP");
                     Collections.rotate(newRegion, 1);
                 }
 

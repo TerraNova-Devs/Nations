@@ -10,7 +10,7 @@
 # REMEMBER TO KEEP PERIODICAL BACKUPS.
 #
 regions:
-    gerry:
+    ballabude:
         members: {}
         flags: {}
         owners:
@@ -20,21 +20,168 @@ regions:
         max-y: 320
         min-y: -64
         points:
-        - {x: 48, z: 96}
-        - {x: 96, z: 96}
-        - {x: 96, z: 48}
-        - {x: 191, z: 48}
-        - {x: 191, z: 192}
-        - {x: 240, z: 192}
-        - {x: 240, z: 96}
-        - {x: 287, z: 96}
-        - {x: 287, z: 239}
-        - {x: 191, z: 239}
-        - {x: 191, z: 287}
-        - {x: 96, z: 287}
-        - {x: 96, z: 239}
-        - {x: 48, z: 239}
-        - {x: 48, z: 191}
-        - {x: 0, z: 191}
-        - {x: 0, z: 144}
-        - {x: 48, z: 144}
+        - {x: 9935, z: 10079}
+        - {x: 9840, z: 10079}
+        - {x: 9840, z: 10032}
+        - {x: 9888, z: 10032}
+        - {x: 9888, z: 9984}
+        - {x: 9983, z: 9984}
+        - {x: 9983, z: 10031}
+        - {x: 9935, z: 10031}
+    tobitown:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: -3408, z: -1824}
+        - {x: -3361, z: -1824}
+        - {x: -3361, z: -1777}
+        - {x: -3408, z: -1777}
+    uniporn:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: -10032, z: -10032}
+        - {x: -9937, z: -10032}
+        - {x: -9937, z: -9985}
+        - {x: -9985, z: -9985}
+        - {x: -9985, z: -9937}
+        - {x: -10032, z: -9937}
+        - {x: -10032, z: -9984}
+    huhuuu:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: -384, z: -1200}
+        - {x: -337, z: -1200}
+        - {x: -337, z: -1153}
+        - {x: -384, z: -1153}
+    test:
+        members: {}
+        flags: {nations-settlement-uuid: 285943-wegfwrgerg-324rf23f23-3f2f32}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: -4944, z: -1680}
+        - {x: -4897, z: -1680}
+        - {x: -4897, z: -1633}
+        - {x: -4944, z: -1633}
+    milantown:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: -240, z: -961}
+        - {x: -240, z: -1008}
+        - {x: -97, z: -1008}
+        - {x: -97, z: -961}
+    koala:
+        members: {}
+        flags: {nations-settlement-uuid: GMWgamer}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: 11232, z: 11664}
+        - {x: 11279, z: 11664}
+        - {x: 11279, z: 11711}
+        - {x: 11232, z: 11711}
+    barcelona:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: 960, z: 96}
+        - {x: 1103, z: 96}
+        - {x: 1103, z: 143}
+        - {x: 960, z: 143}
+    snoodles:
+        members: {}
+        flags: {nations-settlement-uuid: GMWgamer}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: 11136, z: 11808}
+        - {x: 11183, z: 11808}
+        - {x: 11183, z: 11855}
+        - {x: 11136, z: 11855}
+    axo:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: 912, z: 144}
+        - {x: 959, z: 144}
+        - {x: 959, z: 191}
+        - {x: 912, z: 191}
+    huhu:
+        members: {}
+        flags: {}
+        owners:
+            unique-ids: [dbc80a73-4ec5-484a-b1cd-252786d6e47a]
+        type: poly2d
+        priority: 0
+        max-y: 320
+        min-y: -64
+        points:
+        - {x: 912, z: 47}
+        - {x: 912, z: -49}
+        - {x: 863, z: -49}
+        - {x: 863, z: 47}
+        - {x: 816, z: 47}
+        - {x: 816, z: -96}
+        - {x: 1007, z: -96}
+        - {x: 1007, z: -48}
+        - {x: 1055, z: -48}
+        - {x: 1055, z: -1}
+        - {x: 959, z: -1}
+        - {x: 959, z: 47}
+    __global__:
+        members: {}
+        flags: {}
+        owners: {}
+        type: global
+        priority: 0

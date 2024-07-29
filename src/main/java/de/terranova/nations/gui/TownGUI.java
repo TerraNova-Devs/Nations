@@ -15,82 +15,87 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TownGUI extends Gui {
-  String i = "10";
+    String i = "10";
 
 
-  public TownGUI(Player player) {
-    super(player, "town-gui", Chat.returnBlueFade("Town Menu"), 4);
-  }
+    public TownGUI(Player player) {
+        super(player, "town-gui", Chat.blueFade("Town Menu"), 4);
+    }
 
-  @Override
-  public void onOpen(InventoryOpenEvent event) {
+    @Override
+    public void onOpen(InventoryOpenEvent event) {
 
-    ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-    ItemMeta mfiller = filler.getItemMeta();
-    mfiller.displayName(Chat.stringToComponent(""));
-    filler.setItemMeta(mfiller);
-    fillGui(filler);
+        ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
+        ItemMeta mfiller = filler.getItemMeta();
+        mfiller.displayName(Chat.stringToComponent(""));
+        filler.setItemMeta(mfiller);
+        fillGui(filler);
 
-    ItemStack level = new ItemStack(Material.NETHER_STAR);
-    level.setAmount(7);
-    ItemStack skins = new ItemStack(Material.PLAYER_HEAD);
-    ItemStack score = new ItemStack(Material.GOLD_INGOT);
-    ItemStack upgrades = new ItemStack(Material.IRON_INGOT);
-    ItemStack farm = new ItemStack(Material.GRASS_BLOCK);
+        ItemStack level = new ItemStack(Material.NETHER_STAR);
+        level.setAmount(7);
+        ItemStack skins = new ItemStack(Material.PLAYER_HEAD);
+        ItemStack score = new ItemStack(Material.GOLD_INGOT);
+        ItemStack upgrades = new ItemStack(Material.IRON_INGOT);
+        ItemStack farm = new ItemStack(Material.GRASS_BLOCK);
 
-    ItemMeta mlevel = level.getItemMeta();
-    ItemMeta mskins = skins.getItemMeta();
-    ItemMeta mscore = score.getItemMeta();
-    ItemMeta mupgrades = upgrades.getItemMeta();
-    ItemMeta mfarm = farm.getItemMeta();
+        ItemMeta mlevel = level.getItemMeta();
+        ItemMeta mskins = skins.getItemMeta();
+        ItemMeta mscore = score.getItemMeta();
+        ItemMeta mupgrades = upgrades.getItemMeta();
+        ItemMeta mfarm = farm.getItemMeta();
 
-    List<Component> llevel = new ArrayList<>();
-    llevel.add(Chat.stringToComponent("<italic><color:#5EE118>Vorteile Level 8:</italic>"));
-    llevel.add(Chat.stringToComponent("<italic><color:#5EE118>7->8 Claims</italic>"));
-    mlevel.lore(llevel);
-    List<Component> lskins = new ArrayList<>();
-    lskins.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um den Skin zu ändern.</italic>"));
-    mskins.lore(lskins);
-    List<Component> lscore = new ArrayList<>();
-    lscore.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken fuer mehr infos.</italic>"));
-    mscore.lore(lscore);
-    List<Component> lupgrades = new ArrayList<>();
-    lupgrades.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um die Stadt zu verbessern.</italic>"));
-    mupgrades.lore(lupgrades);
-    List<Component> lfarm = new ArrayList<>();
-    lfarm.add(Chat.stringToComponent("<italic><color:#E1679C>Hier klicken um die Farmwelt zu betreten.</italic>"));
-    mfarm.lore(lfarm);
+        List<Component> llevel = new ArrayList<>();
+        llevel.add(Chat.cottonCandy("<i>Vorteile Level 8:"));
+        llevel.add(Chat.cottonCandy("<i>7->8 Claims"));
+        mlevel.lore(llevel);
+        List<Component> lskins = new ArrayList<>();
+        lskins.add(Chat.cottonCandy("<i>Hier klicken um den Skin zu ändern."));
+        mskins.lore(lskins);
+        List<Component> lscore = new ArrayList<>();
+        lscore.add(Chat.cottonCandy("<i>Hier klicken fuer mehr infos."));
+        mscore.lore(lscore);
+        List<Component> lupgrades = new ArrayList<>();
+        lupgrades.add(Chat.cottonCandy("<i>Hier klicken um die Stadt zu verbessern."));
+        mupgrades.lore(lupgrades);
+        List<Component> lfarm = new ArrayList<>();
+        lfarm.add(Chat.cottonCandy("<i>Hier klicken um die Farmwelt zu betreten."));
+        mfarm.lore(lfarm);
 
-    mlevel.displayName(Chat.returnRedFade("Stadtlevel"));
-    mskins.displayName(Chat.returnYellowFade("Skins"));
-    mscore.displayName(Chat.returnYellowFade("Score"));
-    mupgrades.displayName(Chat.returnYellowFade("Upgrades"));
-    mfarm.displayName(Chat.returnYellowFade("Farm"));
+        mlevel.displayName(Chat.redFade("Stadtlevel"));
+        mskins.displayName(Chat.yellowFade("Skins"));
+        mscore.displayName(Chat.yellowFade("Score"));
+        mupgrades.displayName(Chat.yellowFade("Upgrades"));
+        mfarm.displayName(Chat.yellowFade("Farm"));
 
-    level.setItemMeta(mlevel);
-    skins.setItemMeta(mskins);
-    score.setItemMeta(mscore);
-    upgrades.setItemMeta(mupgrades);
-    farm.setItemMeta(mfarm);
+        level.setItemMeta(mlevel);
+        skins.setItemMeta(mskins);
+        score.setItemMeta(mscore);
+        upgrades.setItemMeta(mupgrades);
+        farm.setItemMeta(mfarm);
 
-    Icon iskins = new Icon(skins);
-    addItem(13, level);
-    addItem(19, iskins);
+        Icon iskins = new Icon(skins);
+        Icon iupgrades = new Icon(upgrades);
 
-    iskins.onClick(e -> {
-      int rowsSkins = 3;
-      if (TownSkins.values().length >= 8) {
-        rowsSkins = 4;
-      } else if (TownSkins.values().length >= 15) {
-        rowsSkins = 5;
-      } else if (TownSkins.values().length >= 22) {
-        rowsSkins = 6;
-      }
+        addItem(13, level);
+        addItem(19, iskins);
+        addItem(23, iupgrades);
 
-      new TownAdmSkinGUI(player, rowsSkins).open();
-    });
-    addItem(21, score);
-    addItem(23, upgrades);
-    addItem(25, farm);
-  }
+        iupgrades.onClick(e -> {
+            new TownUpgradeGUI(player).open();
+        });
+
+        iskins.onClick(e -> {
+            int rowsSkins = 3;
+            if (TownSkins.values().length >= 8) {
+                rowsSkins = 4;
+            } else if (TownSkins.values().length >= 15) {
+                rowsSkins = 5;
+            } else if (TownSkins.values().length >= 22) {
+                rowsSkins = 6;
+            }
+            new TownSkinGUI(player, rowsSkins).open();
+        });
+        addItem(21, score);
+        addItem(25, farm);
+    }
 }

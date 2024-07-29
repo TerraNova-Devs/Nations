@@ -21,5 +21,4 @@ public class Vectore2 {
     }
 
 
-
 }

@@ -1,0 +1,5 @@
+groups:
+  '10000': '[DIAMOND_ORE, IRON_ORE]'
+  '1': '[STONE]'
+  '10': '[ANDESITE]'
+excluded: '[DIRT, GRASS_BLOCK, DIORITE, GRANITE]'

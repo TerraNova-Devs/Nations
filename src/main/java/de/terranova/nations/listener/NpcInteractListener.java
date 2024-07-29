@@ -9,11 +9,11 @@ import org.bukkit.event.Listener;
 public class NpcInteractListener implements Listener {
 
 
-  @EventHandler
-  public void click(NPCRightClickEvent event) {
-    if (!event.getNPC().getEntity().hasMetadata("NPC")) return;
-    Player player = event.getClicker();
-    new TownGUI(player).open();
-  }
+    @EventHandler
+    public void click(NPCRightClickEvent event) {
+        if (!event.getNPC().getEntity().hasMetadata("NPC")) return;
+        Player player = event.getClicker();
+        new TownGUI(player).open();
+    }
 
 }

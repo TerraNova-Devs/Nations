@@ -1,117 +1,175 @@
-[16:48:25] [ServerMain/INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.3+7-LTS-152; Oracle Corporation null) on Windows 11 10.0 (amd64)
-[16:48:25] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21-109-master@5a5035b (2024-07-23T08:16:30Z) for Minecraft 1.21
-[16:48:25] [ServerMain/WARN]: [oshi.driver.windows.perfmon.PerfmonDisabled] Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
-[16:48:25] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
-[16:48:26] [ServerMain/INFO]: [PluginInitializerManager] Initialized 6 plugins
-[16:48:26] [ServerMain/INFO]: [PluginInitializerManager] Paper plugins (1):
+[19:10:48] [ServerMain/INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.3+7-LTS-152; Oracle Corporation null) on Windows 11 10.0 (amd64)
+[19:10:48] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21-111-master@66165f7 (2024-07-27T14:44:39Z) for Minecraft 1.21
+[19:10:49] [ServerMain/WARN]: [oshi.driver.windows.perfmon.PerfmonDisabled] Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[19:10:49] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[19:10:50] [ServerMain/INFO]: [PluginInitializerManager] Initialized 8 plugins
+[19:10:50] [ServerMain/INFO]: [PluginInitializerManager] Paper plugins (1):
  - Nations (1.0.0-SNAPSHOT)
-[16:48:26] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (5):
- - Bona (0.1.1), Citizens (2.0.35-SNAPSHOT (build 3484)), FastAsyncWorldEdit (2.11.1-SNAPSHOT-858;ddacb97), Pl3xMap (1.21-501), WorldGuard (7.0.11-beta1+a801a9d)
-[16:48:30] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[16:48:32] [ServerMain/INFO]: Loaded 1290 recipes
-[16:48:32] [ServerMain/INFO]: Loaded 1399 advancements
-[16:48:32] [Server thread/INFO]: Starting minecraft server version 1.21
-[16:48:32] [Server thread/INFO]: Loading properties
-[16:48:32] [Server thread/INFO]: This server is running Paper version 1.21-109-master@5a5035b (2024-07-23T08:16:30Z) (Implementing API version 1.21-R0.1-SNAPSHOT)
-[16:48:33] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
-[16:48:33] [Server thread/INFO]: Server Ping Player Sample Count: 12
-[16:48:33] [Server thread/INFO]: Using 4 threads for Netty based IO
-[16:48:33] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 6 worker threads, and population gen parallelism of 6 threads
-[16:48:33] [Server thread/INFO]: Default game type: SURVIVAL
-[16:48:33] [Server thread/INFO]: Generating keypair
-[16:48:33] [Server thread/INFO]: Starting Minecraft server on *:44971
-[16:48:33] [Server thread/INFO]: Using default channel type
-[16:48:34] [Server thread/INFO]: Paper: Using Java compression from Velocity.
-[16:48:34] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
-[16:48:34] [Server thread/INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
-[16:48:36] [Server thread/INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@478e7a1f]
-[16:48:36] [Server thread/INFO]: [WorldGuard] Loading server plugin WorldGuard v7.0.11-beta1+a801a9d
-[16:48:36] [Server thread/INFO]: [Bona] Loading server plugin Bona v0.1.1
-[16:48:36] [Server thread/INFO]: [Citizens] Loading server plugin Citizens v2.0.35-SNAPSHOT (build 3484)
-[16:48:36] [Server thread/INFO]: [Pl3xMap] Loading server plugin Pl3xMap v1.21-501
-[16:48:36] [Server thread/INFO]: [TerraNova] Loading server plugin Nations v1.0.0-SNAPSHOT
-[16:48:36] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
-[16:48:36] [Server thread/INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
-[16:48:36] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
-[16:48:36] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
-[16:48:36] [Server thread/INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
-[16:48:36] [Server thread/INFO]: WEPIF: Using the Bukkit Permissions API.
-[16:48:37] [Server thread/INFO]: Using com.sk89q.worldedit.bukkit.adapter.impl.fawe.v1_21_R1.PaperweightFaweAdapter as the Bukkit adapter
-[16:48:37] [Server thread/INFO]: Preparing level "world"
-[16:48:38] [ForkJoinPool.commonPool-worker-1/WARN]: [com.fastasyncworldedit.core.util.UpdateNotification] An update for FastAsyncWorldEdit is available. You are 3 build(s) out of date.
-You are running build 858, the latest version is build 861.
+[19:10:50] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (7):
+ - Bona (0.1.1), Citizens (2.0.35-SNAPSHOT (build 3484)), FastAsyncWorldEdit (2.11.1-SNAPSHOT-858;ddacb97), Opibus (1.0.0-SNAPSHOT), Pl3xMap (1.21-501), WorldGuard (7.0.11-beta1+a801a9d), WorldGuardExtraFlags (4.2.4-SNAPSHOT)
+[19:10:54] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[19:10:56] [ServerMain/INFO]: Loaded 1290 recipes
+[19:10:56] [ServerMain/INFO]: Loaded 1399 advancements
+[19:10:56] [Server thread/INFO]: Starting minecraft server version 1.21
+[19:10:56] [Server thread/INFO]: Loading properties
+[19:10:56] [Server thread/INFO]: This server is running Paper version 1.21-111-master@66165f7 (2024-07-27T14:44:39Z) (Implementing API version 1.21-R0.1-SNAPSHOT)
+[19:10:57] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[19:10:57] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[19:10:57] [Server thread/INFO]: Using 4 threads for Netty based IO
+[19:10:57] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 6 worker threads, and population gen parallelism of 6 threads
+[19:10:57] [Server thread/INFO]: Default game type: SURVIVAL
+[19:10:57] [Server thread/INFO]: Generating keypair
+[19:10:57] [Server thread/INFO]: Starting Minecraft server on *:44971
+[19:10:57] [Server thread/INFO]: Using default channel type
+[19:10:57] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[19:10:57] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[19:10:58] [Server thread/INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
+[19:10:59] [Server thread/INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@43ce1e7b]
+[19:10:59] [Server thread/INFO]: [WorldGuard] Loading server plugin WorldGuard v7.0.11-beta1+a801a9d
+[19:10:59] [Server thread/INFO]: [Bona] Loading server plugin Bona v0.1.1
+[19:10:59] [Server thread/INFO]: [Citizens] Loading server plugin Citizens v2.0.35-SNAPSHOT (build 3484)
+[19:10:59] [Server thread/INFO]: [WorldGuardExtraFlags] Loading server plugin WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[19:10:59] [Server thread/INFO]: [Pl3xMap] Loading server plugin Pl3xMap v1.21-501
+[19:10:59] [Server thread/INFO]: [TerraNova] Loading server plugin Opibus v1.0.0-SNAPSHOT
+[19:10:59] [Server thread/INFO]: [TerraNova] Loading server plugin Nations v1.0.0-SNAPSHOT
+[19:10:59] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[19:10:59] [Server thread/INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
+[19:10:59] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
+[19:11:00] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
+[19:11:00] [Server thread/INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
+[19:11:00] [Server thread/INFO]: WEPIF: Using the Bukkit Permissions API.
+[19:11:00] [Server thread/INFO]: Using com.sk89q.worldedit.bukkit.adapter.impl.fawe.v1_21_R1.PaperweightFaweAdapter as the Bukkit adapter
+[19:11:01] [Server thread/INFO]: Preparing level "world"
+[19:11:01] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[19:11:01] [ForkJoinPool.commonPool-worker-1/WARN]: [com.fastasyncworldedit.core.util.UpdateNotification] An update for FastAsyncWorldEdit is available. You are 7 build(s) out of date.
+You are running build 858, the latest version is build 865.
 Update at https://www.spigotmc.org/resources/13932/
-[16:48:38] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[16:48:39] [Server thread/INFO]: Time elapsed: 774 ms
-[16:48:39] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
-[16:48:39] [Server thread/INFO]: Time elapsed: 81 ms
-[16:48:39] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
-[16:48:39] [Server thread/INFO]: Time elapsed: 60 ms
-[16:48:39] [Server thread/INFO]: [WorldGuard] Enabling WorldGuard v7.0.11-beta1+a801a9d
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world) TNT ignition is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world) Lighters are PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world) Lava fire is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world) Fire spread is UNRESTRICTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world'
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_nether) TNT ignition is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_nether) Lighters are PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_nether) Lava fire is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_nether) Fire spread is UNRESTRICTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_nether'
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_the_end) TNT ignition is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_the_end) Lighters are PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_the_end) Lava fire is PERMITTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] (world_the_end) Fire spread is UNRESTRICTED.
-[16:48:39] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_the_end'
-[16:48:39] [Server thread/INFO]: [WorldGuard] Loading region data...
-[16:48:39] [Server thread/INFO]: [Bona] Enabling Bona v0.1.1
-[16:48:39] [Server thread/INFO]: [Citizens] Enabling Citizens v2.0.35-SNAPSHOT (build 3484)
-[16:48:39] [Server thread/INFO]: [Citizens] Loading external libraries
-[16:48:40] [Server thread/INFO]: [Citizens] Detected system language [[de]]. If youd like you can contribute to Citizens translations via our Discord! https://discord.gg/Q6pZGSR
-[16:48:40] [Server thread/INFO]: [Citizens] Using mojmapped server, avoiding server package checks
-[16:48:40] [Server thread/INFO]: [Citizens] Loaded 0 templates.
-[16:48:40] [Server thread/INFO]: [Pl3xMap] Enabling Pl3xMap v1.21-501
-[16:48:42] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver running on 0.0.0.0:44972
-[16:48:42] [Server thread/INFO]: [Pl3xMap] [INFO] Platform: paper
-[16:48:42] [Server thread/INFO]: [Pl3xMap] [INFO] Version: 1.21-501
-[16:48:42] [Server thread/INFO]: [TerraNova] Enabling Nations v1.0.0-SNAPSHOT
-[16:48:42] [Server thread/INFO]: [spark] Starting background profiler...
-[16:48:42] [Server thread/INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows11/amd64), so the built-in Java engine will be used instead.
-[16:48:43] [Server thread/INFO]: Done preparing level "world" (5.183s)
-[16:48:43] [Server thread/INFO]: Running delayed init tasks
-[16:48:43] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.regions.WorldGuardFeature] Plugin 'WorldGuard' found. Using it now.
-[16:48:43] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'WorldGuard'
-[16:48:43] [Server thread/INFO]: [Citizens] 15 NPCs geladen.
-[16:48:43] [Server thread/INFO]: Done (19.382s)! For help, type "help"
-[16:48:43] [Server thread/INFO]: Timings Reset
-[16:50:19] [Server thread/INFO]: Stopping server
-[16:50:19] [Server thread/INFO]: [TerraNova] Disabling Nations v1.0.0-SNAPSHOT
-[16:50:19] [Server thread/INFO]: [Pl3xMap] Disabling Pl3xMap v1.21-501
-[16:50:19] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver stopped
-[16:50:19] [Server thread/INFO]: [Citizens] Disabling Citizens v2.0.35-SNAPSHOT (build 3484)
-[16:50:19] [Server thread/INFO]: [Bona] Disabling Bona v0.1.1
-[16:50:19] [Server thread/INFO]: [WorldGuard] Disabling WorldGuard v7.0.11-beta1+a801a9d
-[16:50:19] [Server thread/INFO]: [WorldGuard] Shutting down executor and cancelling any pending tasks...
-[16:50:19] [Server thread/INFO]: [FastAsyncWorldEdit] Disabling FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
-[16:50:19] [Server thread/INFO]: Unregistering com.sk89q.worldedit.bukkit.BukkitServerInterface from WorldEdit
-[16:50:19] [Server thread/INFO]: Saving players
-[16:50:19] [Server thread/INFO]: Saving worlds
-[16:50:19] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
-[16:50:19] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
-[16:50:19] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
-[16:50:19] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world' in 0,16s
-[16:50:20] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_nether' in 0,06s
-[16:50:20] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
-[16:50:20] [Server thread/INFO]: [ChunkHolderManager] Saved 49 block chunks, 49 entity chunks, 0 poi chunks in world 'world_the_end' in 0,04s
-[16:50:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
-[16:50:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
-[16:50:20] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
-[16:50:20] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[19:11:02] [Server thread/INFO]: Time elapsed: 801 ms
+[19:11:02] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[19:11:02] [Server thread/INFO]: Time elapsed: 70 ms
+[19:11:02] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[19:11:02] [Server thread/INFO]: Time elapsed: 48 ms
+[19:11:02] [Server thread/INFO]: [WorldGuard] Enabling WorldGuard v7.0.11-beta1+a801a9d
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world) TNT ignition is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world) Lighters are PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world) Lava fire is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world) Fire spread is UNRESTRICTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world'
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_nether) TNT ignition is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_nether) Lighters are PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_nether) Lava fire is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_nether) Fire spread is UNRESTRICTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_nether'
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_the_end) TNT ignition is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_the_end) Lighters are PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_the_end) Lava fire is PERMITTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] (world_the_end) Fire spread is UNRESTRICTED.
+[19:11:02] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_the_end'
+[19:11:02] [Server thread/INFO]: [WorldGuard] Loading region data...
+[19:11:03] [Server thread/INFO]: [Bona] Enabling Bona v0.1.1
+[19:11:03] [Server thread/INFO]: [Citizens] Enabling Citizens v2.0.35-SNAPSHOT (build 3484)
+[19:11:03] [Server thread/INFO]: [Citizens] Loading external libraries
+[19:11:03] [Server thread/INFO]: [Citizens] Detected system language [[de]]. If youd like you can contribute to Citizens translations via our Discord! https://discord.gg/Q6pZGSR
+[19:11:03] [Server thread/INFO]: [Citizens] Using mojmapped server, avoiding server package checks
+[19:11:03] [Server thread/INFO]: [Citizens] Loaded 0 templates.
+[19:11:03] [Server thread/INFO]: [WorldGuardExtraFlags] Enabling WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[19:11:03] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.TeleportOnEntryFlagHandler
+[19:11:03] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.TeleportOnExitFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.WalkSpeedFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.FlySpeedFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.FlyFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GlideFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GodmodeFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.PlaySoundsFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.BlockedEffectsFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GiveEffectsFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.CommandOnEntryFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.CommandOnExitFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.ConsoleCommandOnEntryFlagHandler
+[19:11:04] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.ConsoleCommandOnExitFlagHandler
+[19:11:04] [Server thread/INFO]: [Pl3xMap] Enabling Pl3xMap v1.21-501
+[19:11:05] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver running on 0.0.0.0:44972
+[19:11:05] [Server thread/INFO]: [Pl3xMap] [INFO] Platform: paper
+[19:11:05] [Server thread/INFO]: [Pl3xMap] [INFO] Version: 1.21-501
+[19:11:06] [Server thread/INFO]: [TerraNova] Enabling Opibus v1.0.0-SNAPSHOT
+[19:11:06] [Server thread/INFO]: [TerraNova] Enabling Nations v1.0.0-SNAPSHOT
+[19:11:06] [Server thread/INFO]: [spark] Starting background profiler...
+[19:11:06] [Server thread/INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows11/amd64), so the built-in Java engine will be used instead.
+[19:11:06] [Server thread/INFO]: Done preparing level "world" (5.084s)
+[19:11:06] [Server thread/INFO]: Running delayed init tasks
+[19:11:06] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.regions.WorldGuardFeature] Plugin 'WorldGuard' found. Using it now.
+[19:11:06] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'WorldGuard'
+[19:11:07] [Server thread/INFO]: [Citizens] 31 NPCs geladen.
+[19:11:07] [Server thread/INFO]: Done (18.873s)! For help, type "help"
+[19:11:07] [Server thread/INFO]: Timings Reset
+[19:11:33] [User Authenticator #0/INFO]: UUID of player GMWgamer is dbc80a73-4ec5-484a-b1cd-252786d6e47a
+[19:11:34] [Server thread/INFO]: GMWgamer joined the game
+[19:11:34] [Server thread/INFO]: GMWgamer[/127.0.0.1:50287] logged in with entity id 233 at ([world]11148.957496461857, 71.0, 11774.700463474379)
+[19:11:44] [Server thread/INFO]: GMWgamer issued server command: /s create snoodles
+[19:11:50] [Server thread/ERROR]: Could not pass event InventoryCloseEvent to Nations v1.0.0-SNAPSHOT
+java.lang.IncompatibleClassChangeError: Found interface org.bukkit.inventory.InventoryView, but class was expected
+	at Nations-1.0.0-SNAPSHOT-all.jar/mc.obliviate.inventory.Gui.onClose(Gui.java:122) ~[Nations-1.0.0-SNAPSHOT-all.jar:?]
+	at Nations-1.0.0-SNAPSHOT-all.jar/mc.obliviate.inventory.InvListener.onClose(InvListener.java:72) ~[Nations-1.0.0-SNAPSHOT-all.jar:?]
+	at com.destroystokyo.paper.event.executor.asm.generated.GeneratedEventExecutor220.execute(Unknown Source) ~[?:?]
+	at org.bukkit.plugin.EventExecutor$2.execute(EventExecutor.java:77) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:?]
+	at co.aikar.timings.TimedEventExecutor.execute(TimedEventExecutor.java:80) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:1.21-111-66165f7]
+	at org.bukkit.plugin.RegisteredListener.callEvent(RegisteredListener.java:70) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:?]
+	at io.papermc.paper.plugin.manager.PaperEventManager.callEvent(PaperEventManager.java:54) ~[paper-1.21.jar:1.21-111-66165f7]
+	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.callEvent(PaperPluginManagerImpl.java:131) ~[paper-1.21.jar:1.21-111-66165f7]
+	at org.bukkit.plugin.SimplePluginManager.callEvent(SimplePluginManager.java:628) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:?]
+	at org.bukkit.craftbukkit.event.CraftEventFactory.handleInventoryCloseEvent(CraftEventFactory.java:1631) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.network.ServerGamePacketListenerImpl.handleContainerClose(ServerGamePacketListenerImpl.java:2874) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.network.ServerGamePacketListenerImpl.handleContainerClose(ServerGamePacketListenerImpl.java:2867) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.network.protocol.game.ServerboundContainerClosePacket.handle(ServerboundContainerClosePacket.java:33) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.network.protocol.game.ServerboundContainerClosePacket.handle(ServerboundContainerClosePacket.java:15) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.network.protocol.PacketUtils.lambda$ensureRunningOnSameThread$0(PacketUtils.java:56) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.TickTask.run(TickTask.java:18) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.util.thread.BlockableEventLoop.doRunTask(BlockableEventLoop.java:151) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.doRunTask(ReentrantBlockableEventLoop.java:24) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.doRunTask(MinecraftServer.java:1536) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.doRunTask(MinecraftServer.java:201) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.util.thread.BlockableEventLoop.pollTask(BlockableEventLoop.java:125) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.pollTaskInternal(MinecraftServer.java:1513) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.pollTask(MinecraftServer.java:1506) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.util.thread.BlockableEventLoop.managedBlock(BlockableEventLoop.java:135) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.managedBlock(MinecraftServer.java:1465) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.waitUntilNextTick(MinecraftServer.java:1472) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1317) ~[paper-1.21.jar:1.21-111-66165f7]
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:330) ~[paper-1.21.jar:1.21-111-66165f7]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
+[19:12:02] [WorldGuard Region I/O/INFO]: [WorldGuard] Region data changes made in 'world' have been background saved
+[19:30:04] [Server thread/INFO]: Stopping server
+[19:30:04] [Server thread/INFO]: [TerraNova] Disabling Nations v1.0.0-SNAPSHOT
+[19:30:04] [Server thread/INFO]: [TerraNova] Disabling Opibus v1.0.0-SNAPSHOT
+[19:30:04] [Server thread/INFO]: [Pl3xMap] Disabling Pl3xMap v1.21-501
+[19:30:04] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver stopped
+[19:30:04] [Server thread/INFO]: [WorldGuardExtraFlags] Disabling WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[19:30:04] [Server thread/INFO]: [Citizens] Disabling Citizens v2.0.35-SNAPSHOT (build 3484)
+[19:30:04] [Server thread/INFO]: [Bona] Disabling Bona v0.1.1
+[19:30:04] [Server thread/INFO]: [WorldGuard] Disabling WorldGuard v7.0.11-beta1+a801a9d
+[19:30:04] [Server thread/INFO]: [WorldGuard] Shutting down executor and cancelling any pending tasks...
+[19:30:04] [Server thread/INFO]: [FastAsyncWorldEdit] Disabling FastAsyncWorldEdit v2.11.1-SNAPSHOT-858;ddacb97
+[19:30:04] [Server thread/INFO]: Unregistering com.sk89q.worldedit.bukkit.BukkitServerInterface from WorldEdit
+[19:30:04] [Server thread/INFO]: Saving players
+[19:30:04] [Server thread/INFO]: GMWgamer lost connection: Server closed
+[19:30:04] [Server thread/INFO]: GMWgamer left the game
+[19:30:04] [Server thread/INFO]: Saving worlds
+[19:30:04] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Saved 295 block chunks, 205 entity chunks, 1 poi chunks in world 'world' in 0,33s
+[19:30:04] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[19:30:04] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[19:30:05] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'world_nether' in 0,01s
+[19:30:05] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[19:30:05] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[19:30:05] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[19:30:05] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[19:30:05] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 10 entity chunks, 0 poi chunks in world 'world_the_end' in 0,02s
+[19:30:05] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[19:30:05] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[19:30:05] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[19:30:05] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
