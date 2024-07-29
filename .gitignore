@@ -2,4 +2,6 @@
 /.gradle/
 /.idea/
 /build/
-/.env
+/testserver/world/
+# Project exlude data types
+*.env
