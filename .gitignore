@@ -2,9 +2,15 @@
 /.gradle/
 /.idea/
 /build/
-testserver/*
-!testserver/plugins/Bona-0.1.1-all.jar
-!testserver/paper-1.21-111.jar
-!testserver/eula.txt
+
+#testserver
+/testserver/*
+!/testserver/paper-1.21-111.jar
+!/testserver/eula.txt
+!/testserver/start.bat
+
+!/testserver/plugins/
+/testserver/plugins/**/
+
 # Project exlude data types
 *.env
