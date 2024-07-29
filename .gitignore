@@ -2,8 +2,9 @@
 /.gradle/
 /.idea/
 /build/
-/testserver/world/
-/testserver/world_nether/
-/testserver/world_the_end/
+testserver/*
+!testserver/plugins/*
+!testserver/paper-1.21-111.jar
+!testserver/eula.txt
 # Project exlude data types
 *.env
