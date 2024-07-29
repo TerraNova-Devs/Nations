@@ -3,7 +3,7 @@
 /.idea/
 /build/
 testserver/*
-!testserver/plugins/*
+!testserver/plugins/*.jar
 !testserver/paper-1.21-111.jar
 !testserver/eula.txt
 # Project exlude data types
