@@ -8,26 +8,32 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.worldguard.settlementFlag;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class settlementManager {
 
-    HashMap<UUID, ArrayList<settlement>> settlements;
+    HashMap<UUID, settlement> settlements;
+    HashMap<UUID, playerdata> playerdata;
 
     public settlementManager() {
         settlements = new HashMap<>();
     }
 
     public boolean canSettle(UUID uuid) {
-        if (!settlements.containsKey(uuid)) {
-            return true;
+
+
+
+        if (!playerdata.containsKey(uuid)) {
+            return false;
         }
 
-        for (settlement settlement : settlements.get(uuid)) {
-            if (settlement != null) {
-                if (settlement.canSettle()) {
+        for (playerdata playerdata : playerdata.values()) {
+            if (playerdata != null) {
+                if (playerdata.canSettle()) {
                     break;
                 } else {
                     return false;
@@ -37,41 +43,31 @@ public class settlementManager {
         return true;
     }
 
-    public void addSettlement(UUID uuid, settlement settlement) {
-
-        if (!settlements.containsKey(uuid)) {
-            ArrayList<settlement> s = new ArrayList<>();
-            settlements.put(uuid, s);
-        }
-
-        ArrayList<settlement> s = settlements.get(uuid);
-        s.add(settlement);
-        settlements.replace(uuid, s);
+    public void setSettlements(HashMap<UUID, settlement> settlements) {
+        this.settlements = settlements;
     }
 
-    public int howManySettlements(UUID uuid) {
-        if (!settlements.containsKey(uuid)) {
-            return 0;
-        }
-        return settlements.get(uuid).size();
+    public void addSettlement(UUID uuid, settlement settlement) {
+        settlements.put(uuid, settlement);
     }
 
     public boolean isNameAvaible(String name) {
 
-        for (ArrayList<settlement> settlements : settlements.values()) {
-            for (settlement settlement : settlements) {
-                if (Objects.equals(settlement.name.toLowerCase(), name.toLowerCase())) {
+        for (settlement settlements : settlements.values()) {
+
+                if (Objects.equals(settlements.name.toLowerCase(), name.toLowerCase())) {
                     return false;
                 }
-            }
         }
         return true;
     }
 
-    public Optional<settlement> checkIfPlayerIsInsideHisClaim(Player player) {
-        if (!settlements.containsKey(player.getUniqueId())) {
-            return Optional.empty();
-        }
+    public AccessLevelEnum getAcessLevel(Player p, UUID settlementUUID) {
+        return settlements.get(settlementUUID).members.get(p.getUniqueId());
+    }
+
+
+    public Optional<settlement> checkIfPlayerIsWithinClaim(Player player) {
         LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(player);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(lp.getWorld());
@@ -79,13 +75,25 @@ public class settlementManager {
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
         for (ProtectedRegion each : set) {
-            for (settlement s : settlements.get(player.getUniqueId())) {
-                if (Objects.equals(each.getId(), s.name.toLowerCase())) {
-                    return Optional.of(s);
+            for (settlement settle : settlements.values()) {
+                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(each.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
+                if(settle.id.equals(settlementUUID)) {
+                    return Optional.of(settlements.get(settlementUUID));
                 }
             }
         }
         return Optional.empty();
+    }
+
+    public boolean canSettle(Player p) {
+        for (settlement settlement : settlements.values()) {
+            for (AccessLevelEnum acess : settlement.members.values()) {
+                if(acess.equals(AccessLevelEnum.MAJOR)) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public void changeSkin(Player p, settlement settlement) {

@@ -14,16 +14,14 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.bona.lib.chat.Chat;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class claim {
 
-    public static void createClaim(String name, Player p) {
+    public static void createClaim(String name, Player p, UUID uuid) {
 
         int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
         int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
@@ -43,7 +41,7 @@ public class claim {
         DefaultDomain owners = region.getOwners();
         owners.addPlayer(lp);
         region.setOwners(owners);
-        region.setFlag(settlementFlag.MY_CUSTOM_FLAG, p.getName());
+        region.setFlag(settlementFlag.SETTLEMENT_UUID_FLAG, uuid.toString());
 
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -73,7 +71,7 @@ public class claim {
             }
 
 
-            Optional<List<Vectore2>> claims = claimre.dothatshitforme(oldPoints, newPoints);
+            Optional<List<Vectore2>> claims = claimCalc.dothatshitforme(oldPoints, newPoints);
             if (claims.isEmpty()) {
                 p.sendMessage(Chat.errorFade("Bitte keine leeren flächen umclaimen."));
                 return;
@@ -99,6 +97,12 @@ public class claim {
             regions.addRegion(region);
 
         }
+    }
+
+    public static Vectore2 getSChunkMiddle(Location location) {
+        int x = (int) (Math.floor(location.x() / 48) * 48);
+        int z = (int) (Math.floor(location.z() / 48) * 48);
+        return new Vectore2(x+24,z+24);
     }
 
     public static Optional<ProtectedRegion> checkSurrAreaForSettles(Player p) {

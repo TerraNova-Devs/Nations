@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
-public class claimre {
+public class claimCalc {
 
     static boolean debug = false;
 

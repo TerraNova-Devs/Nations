@@ -55,7 +55,7 @@ public class TownSkinGUI extends Gui {
 
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
-            Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsInsideHisClaim(player);
+            Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
             if (settlement.isPresent()) {
                 ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
                 SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();

@@ -10,8 +10,28 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSettingsGUI.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevelEnum.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/settle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/settle.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSkinGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSkinGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/listener/NpcInteractListener.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettlementTrait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettlementTrait.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlementManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlementManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/Vectore2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/Vectore2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claim.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claimre.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claimCalc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Citizens-2.0.35-b3484.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +77,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -94,7 +115,7 @@
     &quot;git-widget-placeholder&quot;: &quot;master&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/TerraNova Repositories/Nations/testserver/plugins&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/TerraNova Repositories/Nations/src/main/java/de/terranova/nations/database&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
     &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
@@ -109,11 +130,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\java\de\terranova\nations\database" />
+      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Nations" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\jars" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\java\de\terranova\nations" />
-      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\resources" />
-      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
@@ -211,7 +232,9 @@
       <workItem from="1722178106605" duration="2655000" />
       <workItem from="1722181515936" duration="4253000" />
       <workItem from="1722210410969" duration="3133000" />
-      <workItem from="1722258202121" duration="14314000" />
+      <workItem from="1722258202121" duration="19553000" />
+      <workItem from="1722329582689" duration="27874000" />
+      <workItem from="1722422274364" duration="6958000" />
     </task>
     <servers />
   </component>

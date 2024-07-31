@@ -3,9 +3,13 @@ package de.terranova.nations.commands;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.settlements.settlement;
+import de.terranova.nations.worldguard.Vectore2;
 import de.terranova.nations.worldguard.claim;
+import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Material;
@@ -22,9 +26,11 @@ import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 public class settle implements BasicCommand, TabCompleter {
 
@@ -67,27 +73,78 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
                 return;
             }
-            if (plugin.settlementManager.canSettle(p.getUniqueId())) {
-                settlement newsettle = new settlement(p.getUniqueId(), p.getLocation(), name);
-                plugin.settlementManager.addSettlement(p.getUniqueId(), newsettle);
-                claim.createClaim(name, p);
+            //plugin.settlementManager.canSettle(p)
+            if (true) {
+                UUID settlementID = UUID.randomUUID();
+                settlement newsettle = new settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
+                plugin.settlementManager.addSettlement(settlementID, newsettle);
+                try {
+                    SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
+                } catch (SQLException e) {
+                    throw new RuntimeException(e);
+                }
+                claim.createClaim(name, p, settlementID);
+            } else {
+                p.sendMessage(Chat.errorFade("Du hast leider keine Berechtigung eine Stadt zu gr\u00FCnden."));
             }
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
-            Optional<settlement> settlement = plugin.settlementManager.checkIfPlayerIsInsideHisClaim(p);
+            Optional<settlement> settlement = plugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settlement.isPresent()) {
-                settlement.get().tpNPC(p.getLocation());
+                AccessLevelEnum acess = plugin.settlementManager.getAcessLevel(p,settlement.get().id);
+                if(acess.equals(AccessLevelEnum.MAJOR) || acess.equals(AccessLevelEnum.VICE)){
+                    settlement.get().tpNPC(p.getLocation());
+                }
             } else {
-                p.sendMessage(Chat.errorFade("Zum teleportieren bitte innerhalb deines Claims stehen!"));
+                p.sendMessage(Chat.errorFade("Zum teleportieren bitte innerhalb deines Claims stehen."));
+            }
+            return;
+        }
+
+        if (args[0].equalsIgnoreCase("rename")) {
+            if (!(args.length == 2)) {
+                p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
+                return;
+            }
+            if (args[1].length() > 20) {
+                p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
+                return;
+            }
+            Optional<settlement> settlement = plugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            if (settlement.isPresent()) {
+                AccessLevelEnum access = plugin.settlementManager.getAcessLevel(p,settlement.get().id);
+                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)){
+                    settlement.get().rename(args[1]);
+                } else {
+                    p.sendMessage(Chat.errorFade("Du hast nicht genuegend Berechtigung um diese Stadt umzubenennen."));
+                }
+            } else {
+                p.sendMessage(Chat.errorFade("Zum umbenennen bitte innerhalb einer Stadt stehen."));
             }
             return;
         }
 
         if (args[0].equalsIgnoreCase("claim")) {
-            if (plugin.settlementManager.howManySettlements(p.getUniqueId()) >= 1) {
-                Optional<ProtectedRegion> t = claim.checkSurrAreaForSettles(p);
-                t.ifPresent(protectedRegion -> claim.addToExistingClaim(p, protectedRegion));
+            if (!p.hasPermission("terranova.nations.claim")) {
+                return;
+            }
+
+            Optional<ProtectedRegion> area = claim.checkSurrAreaForSettles(p);
+            if (area.isPresent()) {
+                ProtectedRegion protectedRegion = area.get();
+
+                String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
+                assert settlementUUID != null;
+                AccessLevelEnum access = plugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
+
+
+                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
+                    claim.addToExistingClaim(p, protectedRegion);
+                }
+
+
+
             }
         }
 

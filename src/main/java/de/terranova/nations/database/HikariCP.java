@@ -1,10 +1,13 @@
 package de.terranova.nations.database;
 
 import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariConfigMXBean;
 import com.zaxxer.hikari.HikariDataSource;
 import de.terranova.nations.NationsPlugin;
+import io.github.cdimascio.dotenv.Dotenv;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
@@ -16,28 +19,29 @@ import java.util.Properties;
 
 public class HikariCP {
 
+    //static Dotenv secret;
+
     private final NationsPlugin plugin;
     public HikariDataSource dataSource;
-    private String user = "";
-    private String password = "";
-
+    private final String user;
+    private final String password;
 
     public HikariCP(NationsPlugin plugin) throws SQLException {
+
+
         this.plugin = plugin;
-        this.password = System.getenv("PASSWORD");
-        this.user = System.getenv("USERNAME");
+        //secret = Dotenv.configure().directory().filename(".env").load();
+
+        //user = secret.get("USERNAME");
+        user = "root";
+        System.out.println(user);
+        //password = secret.get("PASSWORD");
+        password = "";
+        System.out.println(password);
+
         HikariConfig config = getHikariConfig();
         dataSource = new HikariDataSource(config);
-        final Properties properties = getHikariConfigProperties();
-        dataSource.setDataSourceProperties(properties);
         prepareTables();
-    }
-
-    private @NotNull Properties getHikariConfigProperties() {
-        Properties properties = new Properties();
-        properties.putAll(Map.of("cachePrepStmts", "true", "prepStmtCacheSize", "250", "prepStmtCacheSqlLimit", "2048", "useServerPrepStmts", "true", "useLocalSessionState", "true", "useLocalTransactionState", "true"));
-        properties.putAll(Map.of("rewriteBatchedStatements", "true", "cacheResultSetMetadata", "true", "cacheServerConfiguration", "true", "elideSetAutoCommits", "true", "maintainTimeStats", "false"));
-        return properties;
     }
 
     private @NotNull HikariConfig getHikariConfig() {
@@ -54,12 +58,20 @@ public class HikariCP {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+        config.addDataSourceProperty("useServerPrepStmts", "true");
+        config.addDataSourceProperty("useLocalSessionState", "true");
+        config.addDataSourceProperty("useLocalTransactionState", "true");
+        config.addDataSourceProperty("rewriteBatchedStatements", "true");
+        config.addDataSourceProperty("cacheServerConfiguration", "true");
+        config.addDataSourceProperty("cacheResultSetMetadata", "true");
+        config.addDataSourceProperty("elideSetAutoCommits", "true");
+        config.addDataSourceProperty("maintainTimeStats", "false");
         return config;
     }
 
     private void prepareTables() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-            final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/%s_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split(";");
+            final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split(";");
             try (Statement statement = connection.createStatement()) {
                 for (String tableCreationStatement : databaseSchema) {
                     statement.execute(tableCreationStatement);

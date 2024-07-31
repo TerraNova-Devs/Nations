@@ -1,5 +1,7 @@
 package de.terranova.nations.settlements;
 
+import de.terranova.nations.worldguard.Vectore2;
+import de.terranova.nations.worldguard.claim;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
@@ -9,32 +11,41 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.UUID;
 
 public class settlement {
 
-    public final String name;
-    private final playerdata owner;
-    private final Location location;
-    public ArrayList<Double> claims = new ArrayList<Double>();
+    public final UUID id;
+
+    public String name;
+    public final Vectore2 location;
+
     public int level;
+    public HashMap<UUID, AccessLevelEnum> members = new HashMap<UUID, AccessLevelEnum>();
 
-    private int npcid;
+    public settlement(UUID settlementUUID, UUID owner, Location location, String name) {
 
-    public settlement(UUID uuid, Location location, String name) {
-        this.owner = new playerdata(uuid);
+        this.id = settlementUUID;
+        this.name = name;
+
+        this.location = claim.getSChunkMiddle(location);
+
+        this.level = 100;
+        this.members.put(owner, AccessLevelEnum.MAJOR);
+
+        createNPC(name, location,settlementUUID);
+    }
+
+    public settlement(UUID settlementUUID, HashMap<UUID, AccessLevelEnum> members, Vectore2 location, String name, int level) {
+        this.id = settlementUUID;
         this.name = name;
         this.location = location;
-        this.level = 100;
-        createNPC(name);
+        this.level = level;
+        this.members = members;
     }
 
-    public boolean canSettle() {
-        return owner.canSettle;
-    }
-
-    private void createNPC(String name) {
+    private void createNPC(String name, Location location, UUID settlementUUID) {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
@@ -44,7 +55,7 @@ public class settlement {
         lookTrait.toggle();
 
         SettlementTrait settlementTrait = npc.getOrAddTrait(SettlementTrait.class);
-        settlementTrait.setUUID(name);
+        settlementTrait.setUUID(settlementUUID);
 
         HologramTrait hologram = npc.getOrAddTrait(HologramTrait.class);
         hologram.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
@@ -52,23 +63,48 @@ public class settlement {
         npc.setAlwaysUseNameHologram(true);
         npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
         npc.spawn(location);
-        this.npcid = npc.getId();
     }
 
     public void tpNPC(Location location) {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(npcid);
-        npc.teleport(location, PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+        for (NPC npc : CitizensAPI.getNPCRegistry()){
+            if(!npc.hasTrait(SettlementTrait.class)) {
+                continue;
+            }
+            System.out.println(npc.getOrAddTrait(SettlementTrait.class).getUUID() + " <o-o> " + this.id);
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+                npc.teleport(location, PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+            }
+        }
+
     }
 
     public void reskinNpc(TownSkins skin) {
-        NPC npc = CitizensAPI.getNPCRegistry().getById(npcid);
-        SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-        skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
+        for (NPC npc : CitizensAPI.getNPCRegistry()){
+            if(!npc.hasTrait(SettlementTrait.class)) {
+                continue;
+            }
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+                SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+                skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
+            };
+        }
+    }
+
+    public void rename(String name) {
+        for (NPC npc : CitizensAPI.getNPCRegistry()){
+            if(!npc.hasTrait(SettlementTrait.class)) {
+                continue;
+            }
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+                npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
+            }
+        }
     }
 
     public void levelUP() {
         this.level++;
     }
+
 
 }
 

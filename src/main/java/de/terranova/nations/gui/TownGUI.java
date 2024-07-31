@@ -19,7 +19,7 @@ public class TownGUI extends Gui {
 
 
     public TownGUI(Player player) {
-        super(player, "town-gui", Chat.blueFade("Town Menu"), 4);
+        super(player, "town-gui", Chat.blueFade("Town Menu"), 5);
     }
 
     @Override
@@ -37,12 +37,14 @@ public class TownGUI extends Gui {
         ItemStack score = new ItemStack(Material.GOLD_INGOT);
         ItemStack upgrades = new ItemStack(Material.IRON_INGOT);
         ItemStack farm = new ItemStack(Material.GRASS_BLOCK);
+        ItemStack settings = new ItemStack(Material.COMPARATOR);
 
         ItemMeta mlevel = level.getItemMeta();
         ItemMeta mskins = skins.getItemMeta();
         ItemMeta mscore = score.getItemMeta();
         ItemMeta mupgrades = upgrades.getItemMeta();
         ItemMeta mfarm = farm.getItemMeta();
+        ItemMeta msettings = settings.getItemMeta();
 
         List<Component> llevel = new ArrayList<>();
         llevel.add(Chat.cottonCandy("<i>Vorteile Level 8:"));
@@ -60,18 +62,23 @@ public class TownGUI extends Gui {
         List<Component> lfarm = new ArrayList<>();
         lfarm.add(Chat.cottonCandy("<i>Hier klicken um die Farmwelt zu betreten."));
         mfarm.lore(lfarm);
+        List<Component> lsettings = new ArrayList<>();
+        lsettings.add(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."));
+        msettings.lore(lsettings);
 
         mlevel.displayName(Chat.redFade("Stadtlevel"));
         mskins.displayName(Chat.yellowFade("Skins"));
         mscore.displayName(Chat.yellowFade("Score"));
         mupgrades.displayName(Chat.yellowFade("Upgrades"));
         mfarm.displayName(Chat.yellowFade("Farm"));
+        msettings.displayName(Chat.yellowFade("Settings"));
 
         level.setItemMeta(mlevel);
         skins.setItemMeta(mskins);
         score.setItemMeta(mscore);
         upgrades.setItemMeta(mupgrades);
         farm.setItemMeta(mfarm);
+        settings.setItemMeta(msettings);
 
         Icon iskins = new Icon(skins);
         Icon iupgrades = new Icon(upgrades);
@@ -79,6 +86,9 @@ public class TownGUI extends Gui {
         addItem(13, level);
         addItem(19, iskins);
         addItem(23, iupgrades);
+        addItem(21, score);
+        addItem(25, farm);
+        addItem(31, settings);
 
         iupgrades.onClick(e -> {
             new TownUpgradeGUI(player).open();
@@ -95,7 +105,6 @@ public class TownGUI extends Gui {
             }
             new TownSkinGUI(player, rowsSkins).open();
         });
-        addItem(21, score);
-        addItem(25, farm);
+
     }
 }

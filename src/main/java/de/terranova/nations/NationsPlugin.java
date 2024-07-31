@@ -1,12 +1,16 @@
 package de.terranova.nations;
 
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.bona.lib.YMLHandler;
 import de.terranova.nations.commands.settle;
 import de.terranova.nations.database.HikariCP;
-import de.terranova.nations.listener.NpcInteractListener;
+import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.settlementManager;
 import de.terranova.nations.worldguard.settlementFlag;
+import de.terranova.nations.worldguard.settlementHandler;
+import io.github.cdimascio.dotenv.Dotenv;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -17,29 +21,33 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
 
-    public settlementManager settlementManager = new settlementManager();
+    public static settlementManager settlementManager;
 
     public YMLHandler skinsYML;
     public Logger logger;
     //public YMLHandler levelYML;
-    HikariCP hikari;
+    public static HikariCP hikari;
 
     @Override
     public void onLoad() {
         worldguardFlagRegistry();
+        initDatabase();
     }
 
     // version savedata
     @Override
     public void onEnable() {
+        //Stillbugs is used to send Action Bar to player later
+        //worldguardHandlerRegistry();
+
         logger = getLogger();
         saveDefaultConfig();
-
         new InventoryAPI(this).init();
         commandRegistry();
         listenerRegistry();
@@ -48,6 +56,20 @@ public final class NationsPlugin extends JavaPlugin {
         try {
             loadConfigs();
         } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        settlementManager = new settlementManager();
+        try {
+            SettleDBstuff.getInitialSettlementData();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void initDatabase() {
+        try {
+            hikari = new HikariCP(this);
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -60,11 +82,21 @@ public final class NationsPlugin extends JavaPlugin {
         settlementFlag.registerSettlementFlag();
     }
 
+    private void worldguardHandlerRegistry() {
+        SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
+        sessionManager.registerHandler(settlementHandler.FACTORY, null);
+    }
+
     @Override
     public void onDisable() {
         //unloaden wenn ausgelesen nicht erst am Ende
         skinsYML.unloadYAML();
         //levelYML.unloadYAML();
+        try {
+            hikari.closeConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
@@ -78,11 +110,9 @@ public final class NationsPlugin extends JavaPlugin {
     //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));
 
     public void listenerRegistry() {
-        Bukkit.getPluginManager().registerEvents(new NpcInteractListener(), this);
     }
 
     public void serilizationRegistry() {
-        //  ConfigurationSerialization.registerClass(Objective.class, "objective");
     }
 
     public void loadConfigs() throws FileNotFoundException {
