@@ -33,6 +33,12 @@ repositories {
     name = "WorldGuard"
     url = uri("https://maven.enginehub.org/repo/")
   }
+  exclusiveContent {
+    forRepository {
+      maven("https://api.modrinth.com/maven")
+    }
+    filter { includeGroup("maven.modrinth") }
+  }
 
 
 }
@@ -57,6 +63,7 @@ dependencies {
     exclude(group = "*", module = "*")
   }
   //compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.9")
+  compileOnly("maven.modrinth:pl3xmap:1.21-500")
   implementation("com.github.hamza-cskn.obliviate-invs:core:4.3.0")
   implementation("com.github.hamza-cskn.obliviate-invs:pagination:4.3.0")
   implementation("com.github.hamza-cskn.obliviate-invs:configurablegui:4.3.0")

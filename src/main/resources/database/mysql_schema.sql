@@ -21,11 +21,10 @@ COLLATE=utf8_unicode_ci;
 
 # Create user settlements table to save access authorization
 CREATE TABLE IF NOT EXISTS `access_table` (
-    `ID` mediumint(11) NOT NULL AUTO_INCREMENT,
     `SUUID` varchar(36) NOT NULL,
     `PUUID` varchar(36) NOT NULL,
-    `access` varchar(100) NOT NULL,
-        PRIMARY KEY (`ID`)
+    `access` varchar(20) NOT NULL,
+        PRIMARY KEY (`SUUID`, `PUUID`)
 ) ENGINE=InnoDB
   DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci

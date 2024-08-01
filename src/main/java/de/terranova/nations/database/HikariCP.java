@@ -1,30 +1,25 @@
 package de.terranova.nations.database;
 
 import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariConfigMXBean;
 import com.zaxxer.hikari.HikariDataSource;
 import de.terranova.nations.NationsPlugin;
-import io.github.cdimascio.dotenv.Dotenv;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Map;
 import java.util.Objects;
-import java.util.Properties;
 
 public class HikariCP {
 
     //static Dotenv secret;
 
     private final NationsPlugin plugin;
-    public HikariDataSource dataSource;
     private final String user;
     private final String password;
+    public HikariDataSource dataSource;
 
     public HikariCP(NationsPlugin plugin) throws SQLException {
 

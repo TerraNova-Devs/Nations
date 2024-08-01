@@ -19,3 +19,6 @@ dependencies:
     Bona:
       load: BEFORE
       required: true
+    Pl3xMap:
+      load: BEFORE
+      required: true

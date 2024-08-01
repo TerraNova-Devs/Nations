@@ -22,7 +22,7 @@ public class settlement {
     public final Vectore2 location;
 
     public int level;
-    public HashMap<UUID, AccessLevelEnum> members = new HashMap<UUID, AccessLevelEnum>();
+    public HashMap<UUID, AccessLevelEnum> members = new HashMap<>();
 
     public settlement(UUID settlementUUID, UUID owner, Location location, String name) {
 

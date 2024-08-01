@@ -16,7 +16,7 @@ import java.util.*;
 
 public class settlementManager {
 
-    HashMap<UUID, settlement> settlements;
+    public HashMap<UUID, settlement> settlements;
     HashMap<UUID, playerdata> playerdata;
 
     public settlementManager() {

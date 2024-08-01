@@ -6,33 +6,37 @@ import de.mcterranova.bona.lib.YMLHandler;
 import de.terranova.nations.commands.settle;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
+import de.terranova.nations.pl3xmap.testLayer;
 import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.settlementManager;
 import de.terranova.nations.worldguard.settlementFlag;
 import de.terranova.nations.worldguard.settlementHandler;
-import io.github.cdimascio.dotenv.Dotenv;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import mc.obliviate.inventory.InventoryAPI;
-import org.bukkit.Bukkit;
+import net.pl3x.map.core.Pl3xMap;
+import net.pl3x.map.core.markers.layer.Layer;
+import net.pl3x.map.core.registry.Registry;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
 
     public static settlementManager settlementManager;
-
-    public YMLHandler skinsYML;
-    public Logger logger;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
+    public YMLHandler skinsYML;
+    public Logger logger;
 
     @Override
     public void onLoad() {
@@ -46,13 +50,15 @@ public final class NationsPlugin extends JavaPlugin {
         //Stillbugs is used to send Action Bar to player later
         //worldguardHandlerRegistry();
 
+        pl3xmapMarkerRegistry();
+
         logger = getLogger();
         saveDefaultConfig();
         new InventoryAPI(this).init();
         commandRegistry();
         listenerRegistry();
         serilizationRegistry();
-        citizensTraitRegiystry();
+        citizensTraitRegistry();
         try {
             loadConfigs();
         } catch (FileNotFoundException e) {
@@ -65,6 +71,12 @@ public final class NationsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
     }
+    private Registry<@NotNull Layer> layerRegistry;
+    private void pl3xmapMarkerRegistry() {
+        layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
+        layerRegistry.register("settlement",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+        layerRegistry.register("test",new testLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+    }
 
     private void initDatabase() {
         try {
@@ -74,7 +86,7 @@ public final class NationsPlugin extends JavaPlugin {
         }
     }
 
-    private void citizensTraitRegiystry() {
+    private void citizensTraitRegistry() {
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettlementTrait.class));
     }
 

@@ -32,7 +32,7 @@ public class SettlementTrait extends Trait {
     }
 
     public void save(DataKey key) {
-        key.setString("uuid", settlement_uuid.toString());
+        key.setString("settlement_uuid", settlement_uuid.toString());
     }
 
     @EventHandler

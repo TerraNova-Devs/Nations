@@ -148,6 +148,22 @@ public class settle implements BasicCommand, TabCompleter {
             }
         }
 
+        if (args[0].equalsIgnoreCase("testt")) {
+            if (!p.hasPermission("terranova.nations.admin")) {
+                return;
+            }
+
+            for(settlement s : NationsPlugin.settlementManager.settlements.values()){
+                System.out.println("values");
+                for(UUID uuid : s.members.keySet()){
+                    p.sendMessage("" + uuid.toString());
+                }
+
+            }
+
+
+        }
+
         if (args[0].equalsIgnoreCase("test")) {
             if (!p.hasPermission("terranova.nations.admin")) {
                 return;
