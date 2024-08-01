@@ -27,6 +27,9 @@ public class settlement {
     public int level;
     public HashMap<UUID, AccessLevelEnum> members = new HashMap<>();
 
+    public int claims;
+
+    //Beim neu erstellen
     public settlement(UUID settlementUUID, UUID owner, Location location, String name) {
 
         this.id = settlementUUID;
@@ -37,15 +40,19 @@ public class settlement {
         this.level = 100;
         this.members.put(owner, AccessLevelEnum.MAJOR);
 
+        this.claims = 1;
+
         createNPC(name, location,settlementUUID);
     }
 
+    //Von der Datenbank
     public settlement(UUID settlementUUID, HashMap<UUID, AccessLevelEnum> members, Vectore2 location, String name, int level) {
         this.id = settlementUUID;
         this.name = name;
         this.location = location;
         this.level = level;
         this.members = members;
+        this.claims = settlementClaim.getClaimAnzahl(settlementUUID);
     }
 
     private void createNPC(String name, Location location, UUID settlementUUID) {

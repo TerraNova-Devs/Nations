@@ -10,24 +10,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/TestTrait.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/settle.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/settle.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/createPl3xMapSettlementLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/createPl3xMapSettlementLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/testLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/testLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevelEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevelEnum.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettlementTrait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettlementTrait.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlementManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/settlementManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/MarkedVector2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/MarkedVectore2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/Vectore2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/Vectore2.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementClaim.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/claimCalc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/claimCalc.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/paper-1.21-111.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/claimCalc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/claimCalc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementClaim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/settlementClaim.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -237,7 +229,7 @@
       <workItem from="1722422274364" duration="8958000" />
       <workItem from="1722439632421" duration="7205000" />
       <workItem from="1722465696791" duration="8208000" />
-      <workItem from="1722510154413" duration="15400000" />
+      <workItem from="1722510154413" duration="28056000" />
     </task>
     <servers />
   </component>

@@ -6,20 +6,25 @@ import de.mcterranova.bona.lib.YMLHandler;
 import de.terranova.nations.commands.settle;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
-import de.terranova.nations.pl3xmap.testLayer;
 import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.settlementManager;
-import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementFlag;
 import de.terranova.nations.worldguard.settlementHandler;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import mc.obliviate.inventory.InventoryAPI;
+import net.citizensnpcs.api.CitizensAPI;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
+import net.citizensnpcs.api.npc.NPC;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.EntityType;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -27,12 +32,10 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import de.terranova.nations.settlements.settlement;
 
 public final class NationsPlugin extends JavaPlugin {
 
@@ -41,6 +44,7 @@ public final class NationsPlugin extends JavaPlugin {
     public static HikariCP hikari;
     public YMLHandler skinsYML;
     public Logger logger;
+    private Registry<@NotNull Layer> layerRegistry;
 
     @Override
     public void onLoad() {
@@ -77,13 +81,10 @@ public final class NationsPlugin extends JavaPlugin {
         }
     }
 
-
-    private Registry<@NotNull Layer> layerRegistry;
     private void pl3xmapMarkerRegistry() {
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
         //layerRegistry.register("test",new testLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
     }
-
 
 
     private void initDatabase() {

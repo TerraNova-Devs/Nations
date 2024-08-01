@@ -103,7 +103,34 @@ public class claimCalc {
 
     }
 
-    static List<Vectore2> normalisieren(List<Vectore2> current) {
+    public static double area(Vectore2[] vertices)
+    {
+        double sum = 0;
+        for (int i = 0; i < vertices.length ; i++)
+        {
+            if (i == 0)
+            {
+                System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[vertices.length - 1].z));
+                sum += vertices[i].x * (vertices[i + 1].z - vertices[vertices.length - 1].z);
+            }
+            else if (i == vertices.length - 1)
+            {
+                System.out.println(vertices[i].x + "x" + (vertices[0].z + "-" + vertices[i - 1].z));
+                sum += vertices[i].x * (vertices[0].z - vertices[i - 1].z);
+            }
+            else
+            {
+                System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[i - 1].z));
+                sum += vertices[i].x * (vertices[i + 1].z - vertices[i - 1].z);
+            }
+        }
+
+        double area = 0.5 * Math.abs(sum);
+        return area;
+
+    }
+
+    public static List<Vectore2> normalisieren(List<Vectore2> current) {
 
         List<Vectore2> output = new ArrayList<>();
 
@@ -397,7 +424,7 @@ public class claimCalc {
 
     }
 
-    static List<Vectore2> aufplustern(List<Vectore2> current) {
+    public static List<Vectore2> aufplustern(List<Vectore2> current) {
 
         List<Vectore2> output = new ArrayList<>();
 

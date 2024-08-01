@@ -1,6 +1,5 @@
 package de.terranova.nations.settlements;
 
-import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.gui.TownGUI;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
@@ -37,10 +36,10 @@ public class SettlementTrait extends Trait {
 
     @EventHandler
     public void onRightClickNPC(NPCRightClickEvent event) {
-        System.out.println(event.getNPC().getName());
+        if(event.getNPC() != this.getNPC()) return;
         Player player = event.getClicker().getPlayer();
         assert player != null;
-        player.sendMessage("test");
+        player.sendMessage("UUID:" +event.getNPC().getOrAddTrait(SettlementTrait.class).getUUID());
         new TownGUI(player).open();
     }
 

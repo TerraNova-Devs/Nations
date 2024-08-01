@@ -1,5 +1,6 @@
 package de.terranova.nations.worldguard;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.Vector2;
@@ -14,9 +15,13 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.bona.lib.chat.Chat;
+import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
+import net.pl3x.map.core.Pl3xMap;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -140,6 +145,28 @@ public class settlementClaim {
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
         return !(set.size() == 0);
+    }
+
+    public static int getClaimAnzahl(UUID settle) {
+        World world = Bukkit.getWorld("world");
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        assert world != null;
+        RegionManager regions = container.get(BukkitAdapter.adapt(world));
+
+        //System.out.println("starte adden");
+        for (ProtectedRegion region :regions.getRegions().values()){
+            //System.out.println("iteriere" + region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) + "fffffffff" +  settle.toString());
+            if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.toString()))continue;
+            //System.out.println("Volumen: " + region.getId());
+            //System.out.println("Volumen: " + region.volume());
+            List<Vectore2> list2 = new ArrayList();
+            list2.addAll(Vectore2.fromBlockVectorList(region.getPoints()));
+            List<Vectore2> list3;
+            list3 = claimCalc.aufplustern(claimCalc.normalisieren(list2));
+
+            //System.out.println((claimCalc.area(list3.toArray(new Vectore2[list3.size()]))/2304));
+        }
+        return 2000000000;
     }
 
 

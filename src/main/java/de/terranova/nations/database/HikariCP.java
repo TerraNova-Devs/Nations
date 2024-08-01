@@ -29,10 +29,10 @@ public class HikariCP {
 
         //user = secret.get("USERNAME");
         user = "root";
-        System.out.println(user);
+        //System.out.println(user);
         //password = secret.get("PASSWORD");
         password = "";
-        System.out.println(password);
+        //System.out.println(password);
 
         HikariConfig config = getHikariConfig();
         dataSource = new HikariDataSource(config);

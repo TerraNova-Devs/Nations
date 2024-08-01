@@ -8,6 +8,7 @@ import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.settlements.settlement;
 import de.terranova.nations.worldguard.math.Vectore2;
+import de.terranova.nations.worldguard.math.claimCalc;
 import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -154,14 +155,8 @@ public class settle implements BasicCommand, TabCompleter {
             if (!p.hasPermission("terranova.nations.admin")) {
                 return;
             }
-
-            for(settlement s : NationsPlugin.settlementManager.settlements.values()){
-                System.out.println("values");
-                for(UUID uuid : s.members.keySet()){
-                    p.sendMessage("" + uuid.toString());
-                }
-
-            }
+            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            settlementClaim.getClaimAnzahl(settlement.get().id);
 
 
         }

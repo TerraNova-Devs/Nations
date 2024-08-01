@@ -31,8 +31,8 @@ public class SettleDBstuff {
                 int obj_b = rs.getInt("obj_b");
                 int obj_c = rs.getInt("obj_c");
                 int obj_d = rs.getInt("obj_d");
-                System.out.println(SUUID);
-                System.out.println(name);
+                //System.out.println(SUUID);
+                //System.out.println(name);
                 settlements.put(SUUID, new settlement(SUUID, getMembersAccess(SUUID.toString()), new Vectore2(location), name, level));
             }
             NationsPlugin.settlementManager.setSettlements(settlements);
