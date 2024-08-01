@@ -32,7 +32,7 @@ public class testLayer extends WorldLayer {
      * @param world world
      */
     public testLayer(@NotNull World world) {
-        super("test", world, () -> Lang.UI_LAYER_SPAWN);
+        super("test", world, () -> "Lang.UI_LAYER_SPAWN");
 
         this.icon = SpawnLayerConfig.ICON;
 

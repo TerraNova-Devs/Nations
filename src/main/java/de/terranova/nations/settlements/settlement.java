@@ -1,16 +1,19 @@
 package de.terranova.nations.settlements;
 
-import de.terranova.nations.worldguard.Vectore2;
-import de.terranova.nations.worldguard.claim;
+import de.terranova.nations.worldguard.math.Vectore2;
+import de.terranova.nations.worldguard.settlementClaim;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
@@ -29,7 +32,7 @@ public class settlement {
         this.id = settlementUUID;
         this.name = name;
 
-        this.location = claim.getSChunkMiddle(location);
+        this.location = settlementClaim.getSChunkMiddle(location);
 
         this.level = 100;
         this.members.put(owner, AccessLevelEnum.MAJOR);
@@ -99,6 +102,17 @@ public class settlement {
                 npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
             }
         }
+
+    }
+
+    public Collection<UUID> getEveryMemberWithCertainAccessLevel(AccessLevelEnum access){
+        Collection<UUID> output = new ArrayList<>();
+        for(UUID uuid : members.keySet()){
+            if(members.get(uuid).equals(access)){
+                output.add(uuid);
+            }
+        }
+        return output;
     }
 
     public void levelUP() {

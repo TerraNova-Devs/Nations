@@ -10,6 +10,7 @@ import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
 import de.terranova.nations.pl3xmap.testLayer;
 import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.settlementManager;
+import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementFlag;
 import de.terranova.nations.worldguard.settlementHandler;
 import io.papermc.paper.command.brigadier.Commands;
@@ -26,9 +27,12 @@ import org.jetbrains.annotations.NotNull;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
+import de.terranova.nations.settlements.settlement;
 
 public final class NationsPlugin extends JavaPlugin {
 
@@ -67,16 +71,20 @@ public final class NationsPlugin extends JavaPlugin {
         settlementManager = new settlementManager();
         try {
             SettleDBstuff.getInitialSettlementData();
+            settlementManager.addSettlementsToPl3xmap();
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
+
+
     private Registry<@NotNull Layer> layerRegistry;
     private void pl3xmapMarkerRegistry() {
-        layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
-        layerRegistry.register("settlement",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
-        layerRegistry.register("test",new testLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+        this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
+        //layerRegistry.register("test",new testLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
     }
+
+
 
     private void initDatabase() {
         try {

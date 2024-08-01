@@ -15,8 +15,7 @@ CREATE TABLE IF NOT EXISTS `settlements_table` (
     `obj_c` mediumint(11) NOT NULL DEFAULT 0,
     `obj_d` mediumint(11) NOT NULL DEFAULT 0,
         PRIMARY KEY (`SUUID`)
-) ENGINE=InnoDB
-DEFAULT CHARSET=utf8
+) DEFAULT CHARSET=utf8
 COLLATE=utf8_unicode_ci;
 
 # Create user settlements table to save access authorization
@@ -25,6 +24,5 @@ CREATE TABLE IF NOT EXISTS `access_table` (
     `PUUID` varchar(36) NOT NULL,
     `access` varchar(20) NOT NULL,
         PRIMARY KEY (`SUUID`, `PUUID`)
-) ENGINE=InnoDB
-  DEFAULT CHARSET=utf8
-  COLLATE=utf8_unicode_ci
+) DEFAULT CHARSET=utf8
+COLLATE=utf8_unicode_ci

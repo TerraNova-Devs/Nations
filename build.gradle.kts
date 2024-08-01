@@ -58,7 +58,7 @@ tasks.assemble {
 
 dependencies {
   paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
-  implementation("com.zaxxer:HikariCP:5.0.1")
+  implementation("com.zaxxer:HikariCP:5.1.0")
   compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }

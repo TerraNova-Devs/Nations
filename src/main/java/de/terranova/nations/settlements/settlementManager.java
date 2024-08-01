@@ -1,5 +1,6 @@
 package de.terranova.nations.settlements;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -9,8 +10,17 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
+import de.terranova.nations.pl3xmap.testLayer;
+import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementFlag;
+import net.pl3x.map.core.Pl3xMap;
+import net.pl3x.map.core.markers.layer.Layer;
+import net.pl3x.map.core.registry.Registry;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -18,10 +28,14 @@ public class settlementManager {
 
     public HashMap<UUID, settlement> settlements;
     HashMap<UUID, playerdata> playerdata;
+    private Registry<@NotNull Layer> layerRegistry;
 
     public settlementManager() {
-        settlements = new HashMap<>();
+        this.settlements = new HashMap<>();
+        this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
     }
+
+
 
     public boolean canSettle(UUID uuid) {
 
@@ -66,6 +80,43 @@ public class settlementManager {
         return settlements.get(settlementUUID).members.get(p.getUniqueId());
     }
 
+    public void addSettlementsToPl3xmap() {
+
+        World world = Bukkit.getWorld("world");
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        assert world != null;
+        RegionManager regions = container.get(BukkitAdapter.adapt(world));
+
+        assert regions != null;
+        for (ProtectedRegion region :regions.getRegions().values()){
+            for (settlement settle : settlements.values()) {
+                if(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)== null)continue;
+                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
+                if(settle.id.equals(settlementUUID)) {
+                    layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
+                }
+            }
+        }
+    }
+
+    public settlement getSettlement(UUID settlementUUID){
+        return settlements.get(settlementUUID);
+    }
+
+    public void addSettlementToPl3xmap(settlement settle) {
+
+        World world = Bukkit.getWorld("world");
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        assert world != null;
+        RegionManager regions = container.get(BukkitAdapter.adapt(world));
+
+        System.out.println("starte adden");
+        for (ProtectedRegion region :regions.getRegions().values()){
+            System.out.println("iteriere" + region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) + "fffffffff" +  settle.id.toString());
+            if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.id.toString()))continue;
+            layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
+        }
+    }
 
     public Optional<settlement> checkIfPlayerIsWithinClaim(Player player) {
         LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(player);
@@ -74,9 +125,9 @@ public class settlementManager {
         assert regions != null;
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
-        for (ProtectedRegion each : set) {
+        for (ProtectedRegion region : set) {
             for (settlement settle : settlements.values()) {
-                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(each.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
+                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
                 if(settle.id.equals(settlementUUID)) {
                     return Optional.of(settlements.get(settlementUUID));
                 }

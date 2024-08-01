@@ -7,8 +7,8 @@ import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.settlements.settlement;
-import de.terranova.nations.worldguard.Vectore2;
-import de.terranova.nations.worldguard.claim;
+import de.terranova.nations.worldguard.math.Vectore2;
+import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -65,11 +65,11 @@ public class settle implements BasicCommand, TabCompleter {
                 return;
             }
             String name = args[1];
-            if (!plugin.settlementManager.isNameAvaible(name)) {
+            if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
                 return;
             }
-            if (claim.checkAreaForSettles(p)) {
+            if (settlementClaim.checkAreaForSettles(p)) {
                 p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
                 return;
             }
@@ -77,22 +77,23 @@ public class settle implements BasicCommand, TabCompleter {
             if (true) {
                 UUID settlementID = UUID.randomUUID();
                 settlement newsettle = new settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
-                plugin.settlementManager.addSettlement(settlementID, newsettle);
+                NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
                 try {
                     SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                claim.createClaim(name, p, settlementID);
+                settlementClaim.createClaim(name, p, settlementID);
+                NationsPlugin.settlementManager.addSettlementToPl3xmap(newsettle);
             } else {
                 p.sendMessage(Chat.errorFade("Du hast leider keine Berechtigung eine Stadt zu gr\u00FCnden."));
             }
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
-            Optional<settlement> settlement = plugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settlement.isPresent()) {
-                AccessLevelEnum acess = plugin.settlementManager.getAcessLevel(p,settlement.get().id);
+                AccessLevelEnum acess = NationsPlugin.settlementManager.getAcessLevel(p,settlement.get().id);
                 if(acess.equals(AccessLevelEnum.MAJOR) || acess.equals(AccessLevelEnum.VICE)){
                     settlement.get().tpNPC(p.getLocation());
                 }
@@ -111,9 +112,9 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
                 return;
             }
-            Optional<settlement> settlement = plugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settlement.isPresent()) {
-                AccessLevelEnum access = plugin.settlementManager.getAcessLevel(p,settlement.get().id);
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,settlement.get().id);
                 if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)){
                     settlement.get().rename(args[1]);
                 } else {
@@ -130,17 +131,18 @@ public class settle implements BasicCommand, TabCompleter {
                 return;
             }
 
-            Optional<ProtectedRegion> area = claim.checkSurrAreaForSettles(p);
+            Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
             if (area.isPresent()) {
                 ProtectedRegion protectedRegion = area.get();
 
                 String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
-                AccessLevelEnum access = plugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
 
 
                 if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
-                    claim.addToExistingClaim(p, protectedRegion);
+                    settlementClaim.addToExistingClaim(p, protectedRegion);
+                    NationsPlugin.settlementManager.addSettlementToPl3xmap(NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID)));
                 }
 
 

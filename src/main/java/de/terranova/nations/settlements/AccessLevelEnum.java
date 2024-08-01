@@ -4,5 +4,5 @@ public enum AccessLevelEnum {
     MAJOR,
     VICE,
     COUNCIL,
-    CITIZEN
+    CITIZEN;
 }

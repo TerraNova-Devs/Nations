@@ -44,11 +44,12 @@ public class HikariCP {
         config.setJdbcUrl("jdbc:mysql://localhost/nations");
         config.setUsername(user);
         config.setPassword(password);
-        config.setMaximumPoolSize(10);
+        config.setMaximumPoolSize(15);
         config.setMinimumIdle(10);
         config.setMaxLifetime(1800000);
         config.setKeepaliveTime(0);
         config.setConnectionTimeout(5000);
+        config.setLeakDetectionThreshold(100000);
         config.setPoolName("NationsHikariPool");
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
@@ -66,6 +67,7 @@ public class HikariCP {
 
     private void prepareTables() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
+
             final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split(";");
             try (Statement statement = connection.createStatement()) {
                 for (String tableCreationStatement : databaseSchema) {
@@ -74,9 +76,11 @@ public class HikariCP {
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to create database tables. Please ensure you are running MySQL v8.0+ " + "and that your connecting user account has privileges to create tables.", e);
             }
+
         } catch (SQLException | IOException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
         }
+
     }
 
     public void closeConnection() throws SQLException {
