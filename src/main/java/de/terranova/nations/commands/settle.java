@@ -96,11 +96,12 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
-            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            if (settlement.isPresent()) {
-                AccessLevelEnum acess = NationsPlugin.settlementManager.getAcessLevel(p,settlement.get().id);
-                if(acess.equals(AccessLevelEnum.MAJOR) || acess.equals(AccessLevelEnum.VICE)){
-                    settlement.get().tpNPC(p.getLocation());
+            Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+
+            if (settle.isPresent()) {
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,settle.get().id);
+                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)){
+                    settle.get().tpNPC(p.getLocation());
                 }
             } else {
                 p.sendMessage(Chat.errorFade("Zum teleportieren bitte innerhalb deines Claims stehen."));

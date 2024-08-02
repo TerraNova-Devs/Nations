@@ -80,8 +80,7 @@ public class settlement {
             if(!npc.hasTrait(SettlementTrait.class)) {
                 continue;
             }
-            System.out.println(npc.getOrAddTrait(SettlementTrait.class).getUUID() + " <o-o> " + this.id);
-            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
                 npc.teleport(location, PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
             }
         }
@@ -93,7 +92,7 @@ public class settlement {
             if(!npc.hasTrait(SettlementTrait.class)) {
                 continue;
             }
-            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
                 SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
                 skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
             };
@@ -105,7 +104,7 @@ public class settlement {
             if(!npc.hasTrait(SettlementTrait.class)) {
                 continue;
             }
-            if(npc.getOrAddTrait(SettlementTrait.class).getUUID() == this.id) {
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
                 npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
             }
         }
