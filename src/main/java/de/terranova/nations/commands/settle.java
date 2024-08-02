@@ -85,8 +85,8 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage("x: " + p.getLocation().x() + " z: " + p.getLocation().z() + " ABSTAND: " + abstand);
                 p.sendMessage("x: " + location.x + " z: " + location.z + " ABSTAND: " + abstand);
                 if(abstand <= 2000){
-                    p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens 2000 Blöcke Abstand muss eingehalten werden."));
-                    p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist %s meter von dir entfernt.", abstand)));
+                    p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
+                    p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
                     return;
                 }
             }
@@ -169,8 +169,8 @@ public class settle implements BasicCommand, TabCompleter {
                         double abstand = claimCalc.abstand(location,new Vectore2(p.getLocation()));
                         if(abstand <= 750){
                             if(settle.location == location) continue;
-                            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens 750 Blöcke Abstand muss eingehalten werden."));
-                            p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist %s meter von dir entfernt.", abstand)));
+                            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>750<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
+                            p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", Math.floor(abstand))));
                             return;
                         }
                     }
