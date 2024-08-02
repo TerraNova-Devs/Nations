@@ -32,6 +32,13 @@ public class TownGUI extends Gui {
     @Override
     public void onOpen(InventoryOpenEvent event) {
 
+        Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
+        AccessLevelEnum access;
+        if(settlement.isPresent()) access = NationsPlugin.settlementManager.getAcessLevel(player, settlement.get().id);
+        else {
+            return;
+        }
+
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta mfiller = filler.getItemMeta();
         mfiller.displayName(Chat.stringToComponent(""));
@@ -39,7 +46,7 @@ public class TownGUI extends Gui {
         fillGui(filler);
 
         ItemStack level = new ItemStack(Material.NETHER_STAR);
-        level.setAmount(7);
+        level.setAmount(settlement.get().level+1);
         ItemStack skins = new ItemStack(Material.PLAYER_HEAD);
         ItemStack score = new ItemStack(Material.GOLD_INGOT);
         ItemStack upgrades = new ItemStack(Material.IRON_INGOT);
@@ -54,8 +61,8 @@ public class TownGUI extends Gui {
         ItemMeta msettings = settings.getItemMeta();
 
         List<Component> llevel = new ArrayList<>();
-        llevel.add(Chat.cottonCandy("<i>Vorteile Level 8:"));
-        llevel.add(Chat.cottonCandy("<i>7->8 Claims"));
+        llevel.add(Chat.cottonCandy(String.format("<i>Vorteile Level %s:",settlement.get().level)));
+        llevel.add(Chat.cottonCandy(String.format("<i>%s/9 Claims",settlement.get().claims)));
         mlevel.lore(llevel);
         List<Component> lskins = new ArrayList<>();
         lskins.add(Chat.cottonCandy("<i>Hier klicken um den Skin zu ändern."));
@@ -98,12 +105,8 @@ public class TownGUI extends Gui {
         addItem(25, farm);
         addItem(31, isettings);
 
-        Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
-        AccessLevelEnum access;
-        if(settlement.isPresent()) access = NationsPlugin.settlementManager.getAcessLevel(player, settlement.get().id);
-        else {
-            access = null;
-        }
+
+
 
 
         iupgrades.onClick(e -> {

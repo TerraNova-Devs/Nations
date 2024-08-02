@@ -145,22 +145,43 @@ public class settle implements BasicCommand, TabCompleter {
             if (!p.hasPermission("terranova.nations.claim")) {
                 return;
             }
-
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
             if (area.isPresent()) {
                 ProtectedRegion protectedRegion = area.get();
-
                 String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
                 AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
-
-
                 if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
+                    settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
+                    if(NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()){
+                        p.sendMessage(Chat.errorFade("Dieses Claim gehört deiner Stadt bereits an."));
+                        return;
+                    }
+                    if(settle.claims >= 9) {
+                        p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
+                        return;
+                    }
                     settlementClaim.addToExistingClaim(p, protectedRegion);
-                    NationsPlugin.settlementManager.addSettlementToPl3xmap(NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID)));
+
+                    NationsPlugin.settlementManager.addSettlementToPl3xmap(settle);
+                    settle.claims = settlementClaim.getClaimAnzahl(settle.id);
                 }
+            }
+        }
 
-
+        if (args[0].equalsIgnoreCase("forceclaim")) {
+            if (!p.hasPermission("terranova.nations.admin.claim")) {
+                return;
+            }
+            Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
+            if (area.isPresent()) {
+                ProtectedRegion protectedRegion = area.get();
+                String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
+                assert settlementUUID != null;
+                settlementClaim.addToExistingClaim(p, protectedRegion);
+                settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
+                NationsPlugin.settlementManager.addSettlementToPl3xmap(settle);
+                settle.claims = settlementClaim.getClaimAnzahl(settle.id);
 
             }
         }
@@ -170,8 +191,7 @@ public class settle implements BasicCommand, TabCompleter {
                 return;
             }
             Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            settlementClaim.getClaimAnzahl(settlement.get().id);
-
+            p.sendMessage("" + settlementClaim.getClaimAnzahl(settlement.get().id));
 
         }
 

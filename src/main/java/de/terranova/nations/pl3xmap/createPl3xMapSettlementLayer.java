@@ -23,7 +23,7 @@ public class createPl3xMapSettlementLayer extends WorldLayer {
     Polygon polygonMarker;
 
     public createPl3xMapSettlementLayer(@NotNull World world, @NotNull Collection<@NotNull Vectore2> marker, @NotNull settlement settle) {
-        super(settle.name.toLowerCase()+"-smarker", world, () -> settle.name);
+        super(settle.name.toLowerCase()+"-smarker", world, () -> "Settlements");
 
         Collection<Point> markerPoints = new ArrayList<>();
         for (Vectore2 v: marker) markerPoints.add(v.asPoint());

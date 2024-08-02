@@ -178,9 +178,10 @@ public class settlementClaim {
             List<Vectore2> list3;
             list3 = claimCalc.aufplustern(claimCalc.normalisieren(list2));
 
-            //System.out.println((claimCalc.area(list3.toArray(new Vectore2[list3.size()]))/2304));
+
+            return (int) claimCalc.area(list3.toArray(new Vectore2[list3.size()]))/2304;
         }
-        return 2000000000;
+        return Integer.MAX_VALUE;
     }
 
     public static void remove(String name) {
