@@ -65,6 +65,10 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
                 return;
             }
+            if(!args[1].matches("[a-zA-Z0-9]*")) {
+                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
+                return;
+            }
             String name = args[1];
             if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
@@ -232,7 +236,11 @@ Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
              */
 
         }
+
+
     }
+
+
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
