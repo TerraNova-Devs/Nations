@@ -118,6 +118,15 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
                 return;
             }
+            if(!args[1].matches("[a-zA-Z0-9]*")) {
+                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
+                return;
+            }
+            String name = args[1];
+            if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
+                p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
+                return;
+            }
             Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settlement.isPresent()) {
                 AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,settlement.get().id);

@@ -39,7 +39,6 @@ public class SettlementTrait extends Trait {
         if(event.getNPC() != this.getNPC()) return;
         Player player = event.getClicker().getPlayer();
         assert player != null;
-        player.sendMessage("UUID:" +event.getNPC().getOrAddTrait(SettlementTrait.class).getUUID());
         new TownGUI(player).open();
     }
 

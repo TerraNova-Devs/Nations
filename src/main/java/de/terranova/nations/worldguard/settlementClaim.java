@@ -9,16 +9,17 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.bona.lib.chat.Chat;
-import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
-import net.pl3x.map.core.Pl3xMap;
+import net.goldtreeservers.worldguardextraflags.flags.Flags;
+import net.goldtreeservers.worldguardextraflags.flags.helpers.ForcedStateFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -49,13 +50,26 @@ public class settlementClaim {
         owners.addPlayer(lp);
         region.setOwners(owners);
         region.setFlag(settlementFlag.SETTLEMENT_UUID_FLAG, uuid.toString());
-
+        region.setFlag(Flags.GLIDE, ForcedStateFlag.ForcedState.ALLOW);
+        region.setPriority(100);
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionManager regions = container.get(lp.getWorld());
 
         assert regions != null;
         regions.addRegion(region);
+    }
+
+    public static void changeFlag(Player p, UUID settlementID, Flag flag) {
+        World world = Bukkit.getWorld("world");
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        assert world != null;
+        RegionManager regions = container.get(BukkitAdapter.adapt(world));
+        for (ProtectedRegion region : regions.getRegions().values()) {
+            if (!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settlementID)) continue;
+        }
+
+
     }
 
     public static void addToExistingClaim(Player p, ProtectedRegion oldRegion) {
@@ -109,7 +123,7 @@ public class settlementClaim {
     public static Vectore2 getSChunkMiddle(Location location) {
         int x = (int) (Math.floor(location.x() / 48) * 48);
         int z = (int) (Math.floor(location.z() / 48) * 48);
-        return new Vectore2(x+24,z+24);
+        return new Vectore2(x + 24, z + 24);
     }
 
     public static Optional<ProtectedRegion> checkSurrAreaForSettles(Player p) {
@@ -154,9 +168,9 @@ public class settlementClaim {
         RegionManager regions = container.get(BukkitAdapter.adapt(world));
 
         //System.out.println("starte adden");
-        for (ProtectedRegion region :regions.getRegions().values()){
+        for (ProtectedRegion region : regions.getRegions().values()) {
             //System.out.println("iteriere" + region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) + "fffffffff" +  settle.toString());
-            if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.toString()))continue;
+            if (!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.toString())) continue;
             //System.out.println("Volumen: " + region.getId());
             //System.out.println("Volumen: " + region.volume());
             List<Vectore2> list2 = new ArrayList();
@@ -168,7 +182,6 @@ public class settlementClaim {
         }
         return 2000000000;
     }
-
 
     public static void remove(String name) {
 

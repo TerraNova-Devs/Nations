@@ -11,6 +11,7 @@ import mc.obliviate.inventory.Icon;
 import mc.obliviate.inventory.pagination.PaginationManager;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -73,6 +74,11 @@ public class TownSkinGUI extends Gui {
                 break;
             }
         }
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
+
     }
 
     private void mutateSkullMetaSkinBy64(String b64, SkullMeta skullMeta) {

@@ -22,3 +22,6 @@ dependencies:
     Pl3xMap:
       load: BEFORE
       required: true
+    WorldGuardExtraFlags:
+      load: BEFORE
+      required: true

@@ -1,18 +1,25 @@
 package de.terranova.nations.gui;
 
 import de.mcterranova.bona.lib.chat.Chat;
+import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.TownSkins;
+import de.terranova.nations.settlements.settlement;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 public class TownGUI extends Gui {
     String i = "10";
@@ -82,17 +89,36 @@ public class TownGUI extends Gui {
 
         Icon iskins = new Icon(skins);
         Icon iupgrades = new Icon(upgrades);
+        Icon isettings = new Icon(settings);
 
         addItem(13, level);
         addItem(19, iskins);
         addItem(23, iupgrades);
         addItem(21, score);
         addItem(25, farm);
-        addItem(31, settings);
+        addItem(31, isettings);
+
+        Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
+        AccessLevelEnum access;
+        if(settlement.isPresent()) access = NationsPlugin.settlementManager.getAcessLevel(player, settlement.get().id);
+        else {
+            access = null;
+        }
+
 
         iupgrades.onClick(e -> {
-            new TownUpgradeGUI(player).open();
+            if(Objects.equals(access, AccessLevelEnum.MAJOR)|| Objects.equals(access, AccessLevelEnum.VICE)){
+                new TownUpgradeGUI(player).open();
+            } else {
+                player.sendMessage(Chat.errorFade("Wende dich an den Besitzer um die Einstellungen zu ändern."));
+            }
+
         });
+
+        isettings.onClick(e -> {
+            new TownSettingsGUI(player).open();
+        });
+
 
         iskins.onClick(e -> {
             int rowsSkins = 3;
@@ -105,6 +131,11 @@ public class TownGUI extends Gui {
             }
             new TownSkinGUI(player, rowsSkins).open();
         });
+
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
 
     }
 }

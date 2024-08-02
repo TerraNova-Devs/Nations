@@ -37,7 +37,7 @@ public class settlement {
 
         this.location = settlementClaim.getSChunkMiddle(location);
 
-        this.level = 100;
+        this.level = 0;
         this.members.put(owner, AccessLevelEnum.MAJOR);
 
         this.claims = 1;
