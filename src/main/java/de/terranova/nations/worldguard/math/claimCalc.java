@@ -273,9 +273,11 @@ public class claimCalc {
 
                 double abstand;
                 if (marker == 0) {
-                    abstand = (Math.sqrt((Math.pow((output.getLast().x - newRegion.getFirst().x), 2) + Math.pow((output.getLast().z - newRegion.getFirst().z), 2))));
+                    abstand = abstand(output.getLast(), newRegion.getFirst());
+                    //abstand = (Math.sqrt((Math.pow((output.getLast().x - newRegion.getFirst().x), 2) + Math.pow((output.getLast().z - newRegion.getFirst().z), 2))));
                 } else {
-                    abstand = (Math.sqrt((Math.pow((output.get(marker - 1).x - newRegion.getFirst().x), 2) + Math.pow((output.get(marker - 1).z - newRegion.getFirst().z), 2))));
+                    abstand = abstand(output.get(marker - 1), newRegion.getFirst());
+                    //abstand = (Math.sqrt((Math.pow((output.get(marker - 1).x - newRegion.getFirst().x), 2) + Math.pow((output.get(marker - 1).z - newRegion.getFirst().z), 2))));
                 }
                 if (!(abstand == 48)) {
                     Collections.rotate(newRegion, 1);
@@ -294,6 +296,9 @@ public class claimCalc {
 
     }
 
+    public static double abstand(Vectore2 a, Vectore2 b) {
+        return Math.sqrt((Math.pow(a.x - b.x, 2) + Math.pow(a.z - b.z, 2)));
+    }
 
     static List<Vectore2> projezieren(List<Vectore2> current) {
 

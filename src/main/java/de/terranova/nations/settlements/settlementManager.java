@@ -1,6 +1,7 @@
 package de.terranova.nations.settlements;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -27,11 +28,14 @@ import java.util.*;
 public class settlementManager {
 
     public HashMap<UUID, settlement> settlements;
+    public List<Vectore2> locations;
+
     HashMap<UUID, playerdata> playerdata;
     private Registry<@NotNull Layer> layerRegistry;
 
     public settlementManager() {
         this.settlements = new HashMap<>();
+        this.locations = new ArrayList<>();
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
     }
 

@@ -126,6 +126,12 @@ public class settlementClaim {
         return new Vectore2(x + 24, z + 24);
     }
 
+    public static Vectore2 getSChunkMiddle(Vectore2 location) {
+        int x = (int) (Math.floor(location.x / 48) * 48);
+        int z = (int) (Math.floor(location.z / 48) * 48);
+        return new Vectore2(x + 24, z + 24);
+    }
+
     public static Optional<ProtectedRegion> checkSurrAreaForSettles(Player p) {
         int nx = (int) Math.floor(p.getLocation().x() / 48);
         int nz = (int) Math.floor(p.getLocation().z() / 48);

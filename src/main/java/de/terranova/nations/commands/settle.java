@@ -78,6 +78,18 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
                 return;
             }
+            for( Vectore2 location:NationsPlugin.settlementManager.locations){
+
+                double abstand = claimCalc.abstand(location,new Vectore2(p.getLocation()));
+                p.sendMessage(location.toString());
+                p.sendMessage("x: " + p.getLocation().x() + " z: " + p.getLocation().z() + " ABSTAND: " + abstand);
+                p.sendMessage("x: " + location.x + " z: " + location.z + " ABSTAND: " + abstand);
+                if(abstand <= 2000){
+                    p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens 2000 Blöcke Abstand muss eingehalten werden."));
+                    p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist %s meter von dir entfernt.", abstand)));
+                    return;
+                }
+            }
             //plugin.settlementManager.canSettle(p)
             if (true) {
                 UUID settlementID = UUID.randomUUID();
@@ -153,8 +165,17 @@ public class settle implements BasicCommand, TabCompleter {
                 AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
                 if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
                     settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
+                    for( Vectore2 location:NationsPlugin.settlementManager.locations){
+                        double abstand = claimCalc.abstand(location,new Vectore2(p.getLocation()));
+                        if(abstand <= 750){
+                            if(settle.location == location) continue;
+                            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens 750 Blöcke Abstand muss eingehalten werden."));
+                            p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist %s meter von dir entfernt.", abstand)));
+                            return;
+                        }
+                    }
                     if(NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()){
-                        p.sendMessage(Chat.errorFade("Dieses Claim gehört deiner Stadt bereits an."));
+                        p.sendMessage(Chat.errorFade("Dieses Claim gehört bereits einer Stadt an."));
                         return;
                     }
                     if(settle.claims >= 9) {

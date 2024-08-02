@@ -24,8 +24,8 @@ public class Vectore2 {
 
     public Vectore2(String s) {
         String[] parts = s.split(",");
-        this.x = Double.parseDouble(parts[1]);
-        this.z = Double.parseDouble(parts[0]);
+        this.x = Double.parseDouble(parts[0]);
+        this.z = Double.parseDouble(parts[1]);
     }
 
     public Vectore2(Location loc) {

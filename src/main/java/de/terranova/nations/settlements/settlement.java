@@ -1,5 +1,6 @@
 package de.terranova.nations.settlements;
 
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementClaim;
 import net.citizensnpcs.api.CitizensAPI;
@@ -36,6 +37,7 @@ public class settlement {
         this.name = name;
 
         this.location = settlementClaim.getSChunkMiddle(location);
+        NationsPlugin.settlementManager.locations.add(new Vectore2(location));
 
         this.level = 0;
         this.members.put(owner, AccessLevelEnum.MAJOR);
@@ -50,6 +52,7 @@ public class settlement {
         this.id = settlementUUID;
         this.name = name;
         this.location = location;
+        NationsPlugin.settlementManager.locations.add(settlementClaim.getSChunkMiddle(location));
         this.level = level;
         this.members = members;
         this.claims = settlementClaim.getClaimAnzahl(settlementUUID);
