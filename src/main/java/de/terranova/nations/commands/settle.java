@@ -14,6 +14,7 @@ import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -28,10 +29,7 @@ import org.yaml.snakeyaml.representer.Representer;
 
 import java.io.*;
 import java.sql.SQLException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class settle implements BasicCommand, TabCompleter {
 
@@ -69,6 +67,15 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
                 return;
             }
+            List<String> biomeblacklist = new ArrayList<>(Arrays.asList("RIVER","DEEP_COLD_OCEAN","COLD_OCEAN","DEEP_LUKEWARM_OCEAN","LUKEWARM_OCEAN","OCEAN","DEEP_OCEAN","WARM_OCEAN","DEEP_WARM_OCEAN", "BEACH","GRAVEL_BEACH","SNOWY_BEACH"));
+            String currentbiome = p.getWorld().getBiome(p.getLocation()).toString();
+            for (String biome : biomeblacklist) {
+                if(biome.equalsIgnoreCase(currentbiome)) {
+                    p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
+                    return;
+                }
+            }
+
             String name = args[1];
             if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
@@ -78,17 +85,20 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
                 return;
             }
+            double abstand = Integer.MAX_VALUE;
             for( Vectore2 location:NationsPlugin.settlementManager.locations){
+                double abstandneu = claimCalc.abstand(location,new Vectore2(p.getLocation()));
+                if(abstand == Integer.MAX_VALUE || abstand > abstandneu){
+                    abstand = abstandneu;
 
-                double abstand = claimCalc.abstand(location,new Vectore2(p.getLocation()));
-                p.sendMessage(location.toString());
-                p.sendMessage("x: " + p.getLocation().x() + " z: " + p.getLocation().z() + " ABSTAND: " + abstand);
-                p.sendMessage("x: " + location.x + " z: " + location.z + " ABSTAND: " + abstand);
-                if(abstand <= 2000){
-                    p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
-                    p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
-                    return;
                 }
+            }
+
+            p.sendMessage("" + abstand);
+            if(abstand < 2000){
+                p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
+                p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
+                return;
             }
             //plugin.settlementManager.canSettle(p)
             if (true) {
@@ -191,7 +201,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("forceclaim")) {
-            if (!p.hasPermission("terranova.nations.admin.claim")) {
+            if (!p.hasPermission("terranova.nations.admin.forceclaim")) {
                 return;
             }
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
@@ -207,12 +217,46 @@ public class settle implements BasicCommand, TabCompleter {
             }
         }
 
+        if (args[0].equalsIgnoreCase("forcecreate")) {
+            if (!p.hasPermission("terranova.nations.admin.forcecreate")) {
+                return;
+            }
+            if (!(args.length == 2)) {
+                p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
+                return;
+            }
+            if(!args[1].matches("[a-zA-Z0-9]*")) {
+                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
+                return;
+            }
+            String name = args[1];
+            if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
+                p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
+                return;
+            }
+            if (settlementClaim.checkAreaForSettles(p)) {
+                p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
+                return;
+            }
+
+            UUID settlementID = UUID.randomUUID();
+            settlement newsettle = new settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
+            NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
+            try {
+                SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            settlementClaim.createClaim(name, p, settlementID);
+            NationsPlugin.settlementManager.addSettlementToPl3xmap(newsettle);
+
+        }
+
         if (args[0].equalsIgnoreCase("testt")) {
             if (!p.hasPermission("terranova.nations.admin")) {
                 return;
             }
-            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            p.sendMessage("" + settlementClaim.getClaimAnzahl(settlement.get().id));
+            p.sendMessage(p.getWorld().getBiome(p.getLocation()).toString());
 
         }
 
