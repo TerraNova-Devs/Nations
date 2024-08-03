@@ -70,7 +70,6 @@ dependencies {
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("net.luckperms:api:5.4")
 }
 
 
