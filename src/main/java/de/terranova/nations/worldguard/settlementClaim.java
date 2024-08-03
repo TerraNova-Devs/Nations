@@ -103,7 +103,7 @@ public class settlementClaim {
 
             for (Vectore2 v : claims.get()) {
                 finalNewRegion.add(BlockVector2.at(v.x, v.z));
-                p.sendMessage(String.valueOf(BlockVector2.at(v.x, v.z)));
+                //p.sendMessage(String.valueOf(BlockVector2.at(v.x, v.z)));
             }
 
 

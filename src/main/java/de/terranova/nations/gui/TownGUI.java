@@ -114,7 +114,7 @@ public class TownGUI extends Gui {
             if(Objects.equals(access, AccessLevelEnum.MAJOR)|| Objects.equals(access, AccessLevelEnum.VICE)){
                 new TownUpgradeGUI(player).open();
             } else {
-                player.sendMessage(Chat.errorFade("Wende dich an den Besitzer um die Einstellungen zu ändern."));
+                player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
             }
 
         });

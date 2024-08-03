@@ -14,7 +14,6 @@ import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Material;
-import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -64,14 +63,14 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
                 return;
             }
-            if(!args[1].matches("[a-zA-Z0-9]*")) {
+            if (!args[1].matches("[a-zA-Z0-9]*")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
                 return;
             }
-            List<String> biomeblacklist = new ArrayList<>(Arrays.asList("RIVER","DEEP_COLD_OCEAN","COLD_OCEAN","DEEP_LUKEWARM_OCEAN","LUKEWARM_OCEAN","OCEAN","DEEP_OCEAN","WARM_OCEAN","DEEP_WARM_OCEAN", "BEACH","GRAVEL_BEACH","SNOWY_BEACH"));
+            List<String> biomeblacklist = new ArrayList<>(Arrays.asList("RIVER", "DEEP_COLD_OCEAN", "COLD_OCEAN", "DEEP_LUKEWARM_OCEAN", "LUKEWARM_OCEAN", "OCEAN", "DEEP_OCEAN", "WARM_OCEAN", "DEEP_WARM_OCEAN", "BEACH", "GRAVEL_BEACH", "SNOWY_BEACH"));
             String currentbiome = p.getWorld().getBiome(p.getLocation()).toString();
             for (String biome : biomeblacklist) {
-                if(biome.equalsIgnoreCase(currentbiome)) {
+                if (biome.equalsIgnoreCase(currentbiome)) {
                     p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
                     return;
                 }
@@ -87,16 +86,14 @@ public class settle implements BasicCommand, TabCompleter {
                 return;
             }
             double abstand = Integer.MAX_VALUE;
-            for( Vectore2 location:NationsPlugin.settlementManager.locations){
-                double abstandneu = claimCalc.abstand(location,new Vectore2(p.getLocation()));
-                if(abstand == Integer.MAX_VALUE || abstand > abstandneu){
+            for (Vectore2 location : NationsPlugin.settlementManager.locations) {
+                double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
+                if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
                     abstand = abstandneu;
 
                 }
             }
-
-            p.sendMessage("" + abstand);
-            if(abstand < 2000){
+            if (abstand < 2000) {
                 p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
                 p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
                 return;
@@ -125,8 +122,8 @@ public class settle implements BasicCommand, TabCompleter {
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
 
             if (settle.isPresent()) {
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,settle.get().id);
-                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)){
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, settle.get().id);
+                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
                     settle.get().tpNPC(p.getLocation());
                 }
             } else {
@@ -147,7 +144,7 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
                 return;
             }
-            if(!args[1].matches("[a-zA-Z0-9]*")) {
+            if (!args[1].matches("[a-zA-Z0-9]*")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
                 return;
             }
@@ -158,8 +155,8 @@ public class settle implements BasicCommand, TabCompleter {
             }
             Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settlement.isPresent()) {
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,settlement.get().id);
-                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)){
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, settlement.get().id);
+                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
                     settlement.get().rename(args[1]);
                 } else {
                     p.sendMessage(Chat.errorFade("Du hast nicht genuegend Berechtigung um diese Stadt umzubenennen."));
@@ -179,23 +176,29 @@ public class settle implements BasicCommand, TabCompleter {
                 ProtectedRegion protectedRegion = area.get();
                 String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p,UUID.fromString(settlementUUID));
-                if(access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
+                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, UUID.fromString(settlementUUID));
+                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
                     settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
-                    for( Vectore2 location:NationsPlugin.settlementManager.locations){
-                        double abstand = claimCalc.abstand(location,new Vectore2(p.getLocation()));
-                        if(abstand <= 750){
-                            if(settle.location == location) continue;
-                            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>750<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
-                            p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", Math.floor(abstand))));
-                            return;
+                    double abstand = Integer.MAX_VALUE;
+                    for (Vectore2 location : NationsPlugin.settlementManager.locations) {
+                        if (settle.location.equals(location)) continue;
+                        double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
+                        if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
+                            abstand = abstandneu;
+
                         }
                     }
-                    if(NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()){
+                    if (abstand < 750) {
+                        p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>750<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
+                        p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
+                        return;
+                    }
+
+                    if (NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()) {
                         p.sendMessage(Chat.errorFade("Dieses Claim gehört bereits einer Stadt an."));
                         return;
                     }
-                    if(settle.claims >= 9) {
+                    if (settle.claims >= 9) {
                         p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
                         return;
                     }
@@ -232,7 +235,7 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
                 return;
             }
-            if(!args[1].matches("[a-zA-Z0-9]*")) {
+            if (!args[1].matches("[a-zA-Z0-9]*")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
                 return;
             }
@@ -263,7 +266,6 @@ public class settle implements BasicCommand, TabCompleter {
             if (!p.hasPermission("nations.admin.test")) {
                 return;
             }
-            p.sendMessage(p.getWorld().getBiome(p.getLocation()).toString());
 
         }
 
@@ -341,7 +343,6 @@ Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
 
 
     }
-
 
 
     @Override

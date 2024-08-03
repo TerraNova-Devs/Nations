@@ -14,10 +14,13 @@ import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import mc.obliviate.inventory.InventoryAPI;
+import net.luckperms.api.LuckPerms;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
+import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -30,11 +33,10 @@ import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
 
-    //NAMEINJECTION BEHEBEN!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
     public static settlementManager settlementManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
+    public static LuckPerms luckPermsAPI;
     public YMLHandler skinsYML;
     public Logger logger;
     private Registry<@NotNull Layer> layerRegistry;
@@ -73,6 +75,7 @@ public final class NationsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
     }
+
 
     private void pl3xmapMarkerRegistry() {
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();

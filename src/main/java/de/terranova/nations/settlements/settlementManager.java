@@ -12,7 +12,6 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
-import de.terranova.nations.pl3xmap.testLayer;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementFlag;
 import net.pl3x.map.core.Pl3xMap;
@@ -30,7 +29,6 @@ public class settlementManager {
     public HashMap<UUID, settlement> settlements;
     public List<Vectore2> locations;
 
-    HashMap<UUID, playerdata> playerdata;
     private Registry<@NotNull Layer> layerRegistry;
 
     public settlementManager() {
@@ -39,27 +37,6 @@ public class settlementManager {
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
     }
 
-
-
-    public boolean canSettle(UUID uuid) {
-
-
-
-        if (!playerdata.containsKey(uuid)) {
-            return false;
-        }
-
-        for (playerdata playerdata : playerdata.values()) {
-            if (playerdata != null) {
-                if (playerdata.canSettle()) {
-                    break;
-                } else {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
 
     public void setSettlements(HashMap<UUID, settlement> settlements) {
         this.settlements = settlements;
@@ -114,9 +91,8 @@ public class settlementManager {
         assert world != null;
         RegionManager regions = container.get(BukkitAdapter.adapt(world));
 
-        System.out.println("starte adden");
+
         for (ProtectedRegion region :regions.getRegions().values()){
-            System.out.println("iteriere" + region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) + "fffffffff" +  settle.id.toString());
             if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.id.toString()))continue;
             layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
         }

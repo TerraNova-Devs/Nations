@@ -51,7 +51,7 @@ public class settlement {
     public settlement(UUID settlementUUID, HashMap<UUID, AccessLevelEnum> members, Vectore2 location, String name, int level) {
         this.id = settlementUUID;
         this.name = name;
-        this.location = location;
+        this.location = settlementClaim.getSChunkMiddle(location);
         NationsPlugin.settlementManager.locations.add(settlementClaim.getSChunkMiddle(location));
         this.level = level;
         this.members = members;
