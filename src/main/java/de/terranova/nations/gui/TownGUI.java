@@ -110,6 +110,7 @@ public class TownGUI extends Gui {
 
 
         iupgrades.onClick(e -> {
+            if(!player.hasPermission("nations.menu.upgrades")) return;
             if(Objects.equals(access, AccessLevelEnum.MAJOR)|| Objects.equals(access, AccessLevelEnum.VICE)){
                 new TownUpgradeGUI(player).open();
             } else {
@@ -119,13 +120,16 @@ public class TownGUI extends Gui {
         });
 
         isettings.onClick(e -> {
+            if(!player.hasPermission("nations.menu.settings")) return;
             new TownSettingsGUI(player).open();
         });
 
 
         iskins.onClick(e -> {
+            if(!player.hasPermission("nations.menu.skin")) return;
             int rowsSkins = 3;
             if (TownSkins.values().length >= 8) {
+
                 rowsSkins = 4;
             } else if (TownSkins.values().length >= 15) {
                 rowsSkins = 5;

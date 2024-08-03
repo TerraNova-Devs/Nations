@@ -51,10 +51,11 @@ public class settle implements BasicCommand, TabCompleter {
             p.sendMessage(Chat.cottonCandy("Nations Plugin est. 13.07.2024 | written by gerryxn  | Version 1.0.0 | Copyright TerraNova."));
             return;
         }
-        if (!p.hasPermission("terranova.nations.admin")) {
-            return;
-        }
+
         if (args[0].equalsIgnoreCase("create")) {
+            if (!p.hasPermission("nations.create")) {
+                return;
+            }
             if (!(args.length == 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
                 return;
@@ -118,6 +119,9 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
+            if (!p.hasPermission("nations.tphere")) {
+                return;
+            }
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
 
             if (settle.isPresent()) {
@@ -132,6 +136,9 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("rename")) {
+            if (!p.hasPermission("nations.rename")) {
+                return;
+            }
             if (!(args.length == 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
@@ -164,7 +171,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("claim")) {
-            if (!p.hasPermission("terranova.nations.claim")) {
+            if (!p.hasPermission("nations.claim")) {
                 return;
             }
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
@@ -201,7 +208,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("forceclaim")) {
-            if (!p.hasPermission("terranova.nations.admin.forceclaim")) {
+            if (!p.hasPermission("nations.admin.forceclaim")) {
                 return;
             }
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
@@ -218,7 +225,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("forcecreate")) {
-            if (!p.hasPermission("terranova.nations.admin.forcecreate")) {
+            if (!p.hasPermission("nations.admin.forcecreate")) {
                 return;
             }
             if (!(args.length == 2)) {
@@ -253,7 +260,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("testt")) {
-            if (!p.hasPermission("terranova.nations.admin")) {
+            if (!p.hasPermission("nations.admin.test")) {
                 return;
             }
             p.sendMessage(p.getWorld().getBiome(p.getLocation()).toString());
@@ -261,7 +268,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("test")) {
-            if (!p.hasPermission("terranova.nations.admin")) {
+            if (!p.hasPermission("nations.admin.test")) {
                 return;
             }
 

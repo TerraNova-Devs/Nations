@@ -39,6 +39,7 @@ public class SettlementTrait extends Trait {
         if(event.getNPC() != this.getNPC()) return;
         Player player = event.getClicker().getPlayer();
         assert player != null;
+        if(!player.hasPermission("nations.menu")) return;
         new TownGUI(player).open();
     }
 
