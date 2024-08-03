@@ -13,6 +13,7 @@ import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -53,6 +54,7 @@ public class settle implements BasicCommand, TabCompleter {
 
         if (args[0].equalsIgnoreCase("create")) {
             if (!p.hasPermission("nations.create")) {
+                p.sendMessage(Chat.errorFade("Du hast keine Permission zu claimen."));
                 return;
             }
             if (!(args.length == 2)) {
@@ -100,6 +102,7 @@ public class settle implements BasicCommand, TabCompleter {
             }
             //plugin.settlementManager.canSettle(p)
             if (true) {
+                p.sendMessage("ANGEKOMMEN");
                 UUID settlementID = UUID.randomUUID();
                 settlement newsettle = new settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
                 NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
@@ -262,8 +265,23 @@ public class settle implements BasicCommand, TabCompleter {
 
         }
 
+        if (args[0].equalsIgnoreCase("unshow")) {
+            if (!p.hasPermission("worldedit.analysis.sel")) {
+                return;
+            }
+            Bukkit.getServer().dispatchCommand(p,"/sel");
+        }
+
+        if (args[0].equalsIgnoreCase("show")) {
+            if (!p.hasPermission("worldguard.region.select.*")) {
+                return;
+            }
+            Bukkit.getServer().dispatchCommand(p,"rg sel");
+        }
+
         if (args[0].equalsIgnoreCase("testt")) {
             if (!p.hasPermission("nations.admin.test")) {
+                Bukkit.getServer().dispatchCommand(p,"/sel");
                 return;
             }
 

@@ -37,7 +37,7 @@ public class settlement {
         this.name = name;
 
         this.location = settlementClaim.getSChunkMiddle(location);
-        NationsPlugin.settlementManager.locations.add(new Vectore2(location));
+        NationsPlugin.settlementManager.locations.add(this.location);
 
         this.level = 0;
         this.members.put(owner, AccessLevelEnum.MAJOR);

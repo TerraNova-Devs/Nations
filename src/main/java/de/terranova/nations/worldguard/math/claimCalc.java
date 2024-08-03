@@ -110,17 +110,17 @@ public class claimCalc {
         {
             if (i == 0)
             {
-                System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[vertices.length - 1].z));
+                //System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[vertices.length - 1].z));
                 sum += vertices[i].x * (vertices[i + 1].z - vertices[vertices.length - 1].z);
             }
             else if (i == vertices.length - 1)
             {
-                System.out.println(vertices[i].x + "x" + (vertices[0].z + "-" + vertices[i - 1].z));
+                //System.out.println(vertices[i].x + "x" + (vertices[0].z + "-" + vertices[i - 1].z));
                 sum += vertices[i].x * (vertices[0].z - vertices[i - 1].z);
             }
             else
             {
-                System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[i - 1].z));
+                //System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[i - 1].z));
                 sum += vertices[i].x * (vertices[i + 1].z - vertices[i - 1].z);
             }
         }
@@ -149,8 +149,6 @@ public class claimCalc {
         for (Vectore2 v : current) {
             output.add(new Vectore2(v.x - 0.5, v.z - 0.5));
         }
-
-
         return output;
     }
 

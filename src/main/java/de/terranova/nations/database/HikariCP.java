@@ -28,10 +28,10 @@ public class HikariCP {
         //secret = Dotenv.configure().directory().filename(".env").load();
 
         //user = secret.get("USERNAME");
-        user = "root";
+        user = "minecraft";
         //System.out.println(user);
         //password = secret.get("PASSWORD");
-        password = "";
+        password = "minecraft";
         //System.out.println(password);
 
         HikariConfig config = getHikariConfig();
