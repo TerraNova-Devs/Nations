@@ -32,12 +32,11 @@ public class TownGUI extends Gui {
     @Override
     public void onOpen(InventoryOpenEvent event) {
 
-        Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
-        AccessLevelEnum access;
-        if(settlement.isPresent()) access = NationsPlugin.settlementManager.getAcessLevel(player, settlement.get().id);
-        else {
-            return;
-        }
+        JavaPlugin.getPlugin(NationsPlugin.class);
+        Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(player);
+        if(settlement.isEmpty()) return;
+        Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(player, settlement.get().id);
+        if(access.isEmpty()) return;
 
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
         ItemMeta mfiller = filler.getItemMeta();

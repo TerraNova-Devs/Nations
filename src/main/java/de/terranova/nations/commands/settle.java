@@ -53,10 +53,8 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("create")) {
-            if (!p.hasPermission("nations.create")) {
-                p.sendMessage(Chat.errorFade("Du hast keine Permission zu claimen."));
-                return;
-            }
+            if (!hasPermission(p, "nations.create")) return;
+
             if (!(args.length == 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
                 return;
@@ -119,14 +117,13 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
-            if (!p.hasPermission("nations.tphere")) {
-                return;
-            }
+            if (!hasPermission(p, "nations.tphere")) return;
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
 
             if (settle.isPresent()) {
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, settle.get().id);
-                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
+                Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
+                if(access.isEmpty()) return;
+                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
                     settle.get().tpNPC(p.getLocation());
                 }
             } else {
@@ -136,9 +133,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("rename")) {
-            if (!p.hasPermission("nations.rename")) {
-                return;
-            }
+            if (!hasPermission(p, "nations.rename")) return;
             if (!(args.length == 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
@@ -156,11 +151,12 @@ public class settle implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
                 return;
             }
-            Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            if (settlement.isPresent()) {
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, settlement.get().id);
-                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
-                    settlement.get().rename(args[1]);
+            Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            if (settle.isPresent()) {
+                Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
+                if(access.isEmpty()) return;
+                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
+                    settle.get().rename(args[1]);
                 } else {
                     p.sendMessage(Chat.errorFade("Du hast nicht genuegend Berechtigung um diese Stadt umzubenennen."));
                 }
@@ -171,16 +167,15 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("claim")) {
-            if (!p.hasPermission("nations.claim")) {
-                return;
-            }
+            if (!hasPermission(p, "nations.claim")) return;
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
             if (area.isPresent()) {
                 ProtectedRegion protectedRegion = area.get();
                 String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
-                AccessLevelEnum access = NationsPlugin.settlementManager.getAcessLevel(p, UUID.fromString(settlementUUID));
-                if (access.equals(AccessLevelEnum.MAJOR) || access.equals(AccessLevelEnum.VICE)) {
+                Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, UUID.fromString(settlementUUID));
+                if(access.isEmpty()) return;
+                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
                     settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
                     double abstand = Integer.MAX_VALUE;
                     for (Vectore2 location : NationsPlugin.settlementManager.locations) {
@@ -214,9 +209,7 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("forceclaim")) {
-            if (!p.hasPermission("nations.admin.forceclaim")) {
-                return;
-            }
+            if (!hasPermission(p, "nations.admin.forceclaim")) return;
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
             if (area.isPresent()) {
                 ProtectedRegion protectedRegion = area.get();
@@ -230,10 +223,25 @@ public class settle implements BasicCommand, TabCompleter {
             }
         }
 
-        if (args[0].equalsIgnoreCase("forcecreate")) {
-            if (!p.hasPermission("nations.admin.forcecreate")) {
+        if (args[0].equalsIgnoreCase("addmember")) {
+            if (!hasPermission(p, "nations.addmember")) return;
+            Optional<Player> target = isPlayer(args[1],p);
+            if(target.isEmpty()) return;
+            Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            if(settle.isEmpty()) return;
+            Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
+            if(access.isEmpty()) return;
+            if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
+            Optional<AccessLevelEnum> newAccess = settle.get().promoteOrAdd(target.get());
+            if(newAccess.isEmpty()) {
+                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den höchstmöglichen Rang erreicht.", target.get().displayName())));
                 return;
             }
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.",target.get().displayName(),newAccess.get())));
+        }
+
+        if (args[0].equalsIgnoreCase("forcecreate")) {
+            if (!hasPermission(p, "nations.admin.forcecreate")) return;
             if (!(args.length == 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
                 return;
@@ -266,31 +274,23 @@ public class settle implements BasicCommand, TabCompleter {
         }
 
         if (args[0].equalsIgnoreCase("unshow")) {
-            if (!p.hasPermission("worldedit.analysis.sel")) {
-                return;
-            }
-            Bukkit.getServer().dispatchCommand(p,"/sel");
+            if (!hasPermission(p, "worldedit.analysis.sel")) return;
+            Bukkit.getServer().dispatchCommand(p, "/sel");
         }
 
         if (args[0].equalsIgnoreCase("show")) {
-            if (!p.hasPermission("worldguard.region.select.*")) {
-                return;
-            }
-            Bukkit.getServer().dispatchCommand(p,"rg sel");
+            if (!hasPermission(p, "worldguard.region.select.*")) return;
+            Bukkit.getServer().dispatchCommand(p, "rg sel");
         }
 
         if (args[0].equalsIgnoreCase("testt")) {
-            if (!p.hasPermission("nations.admin.test")) {
-                Bukkit.getServer().dispatchCommand(p,"/sel");
-                return;
-            }
+            if (!hasPermission(p, "nations.admin.testt")) return;
 
         }
 
         if (args[0].equalsIgnoreCase("test")) {
-            if (!p.hasPermission("nations.admin.test")) {
-                return;
-            }
+  
+            if (!hasPermission(p, "nations.admin.test")) return;
 
             File file = new File(plugin.getDataFolder(), "level.yml");
 
@@ -357,9 +357,32 @@ loaderoptions.setTagInspector(taginspector);
 Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
              */
 
+
         }
 
 
+    }
+
+    private boolean hasAccess(AccessLevelEnum access, List<AccessLevelEnum> neededAcess) {
+        for (AccessLevelEnum accessLevel : neededAcess) {
+            if (accessLevel.equals(access)) return true;
+        }
+        return false;
+    }
+
+    private Optional<Player> isPlayer(String arg,Player p) {
+        Player target = Bukkit.getPlayer(arg);
+        if(target == null || !target.isOnline()) {
+            p.sendMessage(Chat.errorFade(String.format("Der angegebene Spieler '%s' konnte nicht gefunden werden.",arg)));
+            return Optional.empty();
+        }
+        return Optional.of(target);
+    }
+
+    private boolean hasPermission(Player p, String permission) {
+        if (p.hasPermission(permission)) return true;
+        p.sendMessage(Chat.errorFade(String.format("Dir fehlt zum Ausführen des Befehles die Permission '%s'.", permission)));
+        return false;
     }
 
 

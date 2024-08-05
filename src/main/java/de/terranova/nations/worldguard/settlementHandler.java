@@ -37,7 +37,7 @@ public class settlementHandler extends FlagValueChangeHandler<String> {
         if (entered.isEmpty()) {
             for (ProtectedRegion region : exited) {
                 String flag = region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
-                assert flag != null;
+                if(flag == null || flag.isEmpty()) return true;
                 settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(flag));
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.name)));
             }
@@ -45,7 +45,7 @@ public class settlementHandler extends FlagValueChangeHandler<String> {
         } else {
             for (ProtectedRegion region : entered) {
                 String flag = region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
-                assert flag != null;
+                if(flag == null || flag.isEmpty()) return true;
                 settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(flag));
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.name)));
             }

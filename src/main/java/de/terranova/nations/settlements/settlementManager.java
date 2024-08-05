@@ -1,7 +1,6 @@
 package de.terranova.nations.settlements;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -10,7 +9,6 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.pl3xmap.createPl3xMapSettlementLayer;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementFlag;
@@ -57,27 +55,32 @@ public class settlementManager {
         return true;
     }
 
-    public AccessLevelEnum getAcessLevel(Player p, UUID settlementUUID) {
-        return settlements.get(settlementUUID).members.get(p.getUniqueId());
+    public Optional<AccessLevelEnum> getAccessLevel(Player p, UUID settlementUUID) {
+        if(p.hasPermission("nations.admin.bypass")) return Optional.of(AccessLevelEnum.MAJOR);
+        AccessLevelEnum access = settlements.get(settlementUUID).membersAccess.get(p.getUniqueId());
+        if(access == null) return Optional.empty();
+        return Optional.of(access);
     }
 
     public void addSettlementsToPl3xmap() {
-
+        layerRegistry.register("settlement-layer",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+        /*
         World world = Bukkit.getWorld("world");
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         assert world != null;
         RegionManager regions = container.get(BukkitAdapter.adapt(world));
-
         assert regions != null;
         for (ProtectedRegion region :regions.getRegions().values()){
             for (settlement settle : settlements.values()) {
-                if(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)== null)continue;
+                if(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) == null) continue;
                 UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
                 if(settle.id.equals(settlementUUID)) {
                     layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
                 }
             }
         }
+
+         */
     }
 
     public settlement getSettlement(UUID settlementUUID){
@@ -85,7 +88,8 @@ public class settlementManager {
     }
 
     public void addSettlementToPl3xmap(settlement settle) {
-
+        addSettlementsToPl3xmap();
+        /*
         World world = Bukkit.getWorld("world");
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         assert world != null;
@@ -94,8 +98,10 @@ public class settlementManager {
 
         for (ProtectedRegion region :regions.getRegions().values()){
             if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.id.toString()))continue;
-            layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
+            layerRegistry.register("settlement-layer",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
         }
+
+         */
     }
 
     public Optional<settlement> checkIfPlayerIsWithinClaim(Player player) {
@@ -118,7 +124,7 @@ public class settlementManager {
 
     public boolean canSettle(Player p) {
         for (settlement settlement : settlements.values()) {
-            for (AccessLevelEnum acess : settlement.members.values()) {
+            for (AccessLevelEnum acess : settlement.membersAccess.values()) {
                 if(acess.equals(AccessLevelEnum.MAJOR)) {
                     return false;
                 }
