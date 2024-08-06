@@ -44,8 +44,8 @@ public class HikariCP {
         config.setJdbcUrl("jdbc:mysql://localhost/nations");
         config.setUsername(user);
         config.setPassword(password);
-        config.setMaximumPoolSize(15);
-        config.setMinimumIdle(10);
+        config.setMaximumPoolSize(20);
+        config.setMinimumIdle(20);
         config.setMaxLifetime(1800000);
         config.setKeepaliveTime(0);
         config.setConnectionTimeout(5000);

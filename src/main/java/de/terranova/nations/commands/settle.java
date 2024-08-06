@@ -232,7 +232,34 @@ public class settle implements BasicCommand, TabCompleter {
             Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
             if(access.isEmpty()) return;
             if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
-            Optional<AccessLevelEnum> newAccess = settle.get().promoteOrAdd(target.get());
+            Optional<AccessLevelEnum> newAccess = null;
+            try {
+                newAccess = settle.get().promoteOrAdd(target.get());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            if(newAccess.isEmpty()) {
+                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den höchstmöglichen Rang erreicht.", target.get().displayName())));
+                return;
+            }
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.",target.get().displayName(),newAccess.get())));
+        }
+
+        if (args[0].equalsIgnoreCase("removemember")) {
+            if (!hasPermission(p, "nations.removemember")) return;
+            Optional<Player> target = isPlayer(args[1],p);
+            if(target.isEmpty()) return;
+            Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            if(settle.isEmpty()) return;
+            Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
+            if(access.isEmpty()) return;
+            if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
+            Optional<AccessLevelEnum> newAccess = null;
+            try {
+                newAccess = settle.get().demoteOrRemove(target.get());
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             if(newAccess.isEmpty()) {
                 p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den höchstmöglichen Rang erreicht.", target.get().displayName())));
                 return;

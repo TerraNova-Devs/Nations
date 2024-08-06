@@ -16,6 +16,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.bona.lib.chat.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import net.goldtreeservers.worldguardextraflags.flags.Flags;
@@ -24,6 +25,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import de.terranova.nations.settlements.settlement;
 
 import java.util.*;
 
@@ -166,6 +168,16 @@ public class settlementClaim {
         ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
         return !(set.size() == 0);
     }
+
+    public static void addOrRemoveFromSettlement(Player p, settlement settle, boolean addRemove) {
+        if(addRemove) {
+            settle.getWorldguardRegion().getMembers().addPlayer(p.getUniqueId());
+        } else {
+            settle.getWorldguardRegion().getMembers().removePlayer(p.getUniqueId());
+        }
+    }
+
+
 
     public static int getClaimAnzahl(UUID settle) {
         World world = Bukkit.getWorld("world");

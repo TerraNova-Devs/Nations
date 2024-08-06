@@ -6,6 +6,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
@@ -21,6 +22,7 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.sql.SQLException;
 import java.util.*;
 
 public class settlement {
@@ -129,30 +131,46 @@ public class settlement {
         return output;
     }
 
-    public Optional<AccessLevelEnum> promoteOrAdd(Player p) {
-        if(!this.membersAccess.containsKey(p.getUniqueId())) {
-            this.membersAccess.put(p.getUniqueId(),AccessLevelEnum.CITIZEN);
+    public Optional<AccessLevelEnum> promoteOrAdd(Player target) throws SQLException {
+        if(!this.membersAccess.containsKey(target.getUniqueId())) {
+            this.membersAccess.put(target.getUniqueId(),AccessLevelEnum.CITIZEN);
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.CITIZEN);
+            settlementClaim.addOrRemoveFromSettlement(target,this,true);
             return Optional.of(AccessLevelEnum.CITIZEN);
         }
-        AccessLevelEnum accessLevelEnum = this.membersAccess.get(p.getUniqueId());
+        AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         if(accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
-            this.membersAccess.replace(p.getUniqueId(),AccessLevelEnum.COUNCIL);
+            this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.COUNCIL);
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.COUNCIL);
             return Optional.of(AccessLevelEnum.COUNCIL);
+        }
+        if(accessLevelEnum.equals(AccessLevelEnum.COUNCIL)) {
+            this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.VICE);
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.VICE);
+            return Optional.of(AccessLevelEnum.VICE);
         }
         if(accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR)) return Optional.empty();
         return Optional.empty();
     }
 
-    public Optional<AccessLevelEnum> demoteOrRemove(Player p) {
-        if(!this.membersAccess.containsKey(p.getUniqueId()) || this.membersAccess.get(p.getUniqueId()).equals(AccessLevelEnum.MAJOR)) return Optional.empty();
-
-        AccessLevelEnum accessLevelEnum = this.membersAccess.get(p.getUniqueId());
+    public Optional<AccessLevelEnum> demoteOrRemove(Player target) throws SQLException {
+        if(!this.membersAccess.containsKey(target.getUniqueId()) || this.membersAccess.get(target.getUniqueId()).equals(AccessLevelEnum.MAJOR)) return Optional.empty();
+        AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         if(accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
-            this.membersAccess.remove(p.getUniqueId());
+            this.membersAccess.remove(target.getUniqueId());
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.REMOVE);
+            settlementClaim.addOrRemoveFromSettlement(target,this,false);
             return Optional.empty();
         }
+        if(accessLevelEnum.equals(AccessLevelEnum.COUNCIL) ) {
+            this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.CITIZEN);
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.CITIZEN);
+            return Optional.of(AccessLevelEnum.COUNCIL);
+        }
         if(accessLevelEnum.equals(AccessLevelEnum.VICE) ) {
-            return Optional.empty();
+            this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.COUNCIL);
+            SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.COUNCIL);
+            return Optional.of(AccessLevelEnum.COUNCIL);
         }
         return Optional.empty();
     }
@@ -161,8 +179,7 @@ public class settlement {
         this.level++;
     }
 
-    public Collection<Vectore2> getRegionPoints() {
-        Collection<Vectore2> regionPoints = new ArrayList<>();
+    public ProtectedRegion getWorldguardRegion() {
 
         World world = Bukkit.getWorld("world");
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -173,14 +190,12 @@ public class settlement {
             if (region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) == null) continue;
             UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
             if (this.id.equals(settlementUUID)) {
-                regionPoints = Vectore2.fromBlockVectorList(region.getPoints());
+                return region;
             }
 
         }
-        return regionPoints;
+        return null;
     }
-
-
 
 
 }

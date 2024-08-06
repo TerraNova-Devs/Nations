@@ -74,6 +74,17 @@ public final class NationsPlugin extends JavaPlugin {
         }
     }
 
+    @Override
+    public void onDisable() {
+        //unloaden wenn ausgelesen nicht erst am Ende
+        skinsYML.unloadYAML();
+        //levelYML.unloadYAML();
+        try {
+            hikari.closeConnection();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     private void pl3xmapMarkerRegistry() {
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
@@ -100,18 +111,6 @@ public final class NationsPlugin extends JavaPlugin {
     private void worldguardHandlerRegistry() {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(settlementHandler.FACTORY, null);
-    }
-
-    @Override
-    public void onDisable() {
-        //unloaden wenn ausgelesen nicht erst am Ende
-        skinsYML.unloadYAML();
-        //levelYML.unloadYAML();
-        try {
-            hikari.closeConnection();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
     }
 
 
