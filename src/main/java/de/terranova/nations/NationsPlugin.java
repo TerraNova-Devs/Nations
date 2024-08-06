@@ -17,9 +17,7 @@ import mc.obliviate.inventory.InventoryAPI;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
-import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -38,6 +36,9 @@ public final class NationsPlugin extends JavaPlugin {
     public YMLHandler skinsYML;
     public Logger logger;
     private Registry<@NotNull Layer> layerRegistry;
+
+    //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
+    //EIGENE KLASSE FÜR ACCESS
 
     @Override
     public void onLoad() {
@@ -88,7 +89,6 @@ public final class NationsPlugin extends JavaPlugin {
 
     private void pl3xmapMarkerRegistry() {
         this.layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
-        //layerRegistry.register("test",new testLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
     }
 
 
