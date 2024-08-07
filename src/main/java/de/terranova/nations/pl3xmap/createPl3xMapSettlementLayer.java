@@ -15,7 +15,9 @@ import net.pl3x.map.core.markers.option.Options;
 import net.pl3x.map.core.markers.option.Tooltip;
 import net.pl3x.map.core.util.FileUtil;
 import net.pl3x.map.core.world.World;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;
@@ -23,6 +25,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.UUID;
 
 public class createPl3xMapSettlementLayer extends WorldLayer {
 
@@ -53,13 +56,16 @@ public class createPl3xMapSettlementLayer extends WorldLayer {
             setPriority(100);
             setZIndex(999);
 
-            String owner = Bukkit.getOfflinePlayer(settle.getEveryMemberWithCertainAccessLevel(AccessLevelEnum.MAJOR).stream().findFirst().get()).getName();
+            Collection<String> vices = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.VICE);
+            Collection<String> councils = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.COUNCIL);
+
+            String owner = Bukkit.getOfflinePlayer(settle.getEveryUUIDWithCertainAccessLevel(AccessLevelEnum.MAJOR).stream().findFirst().get()).getName();
             String tooltip = String.format(
-                    "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; } p.major { color:#8640E6 } </style>" +
-                            "<center><p class='minecraft'>%s</p></center>" +
-                            "<br><center><img src='images/banner/Mitglieder.png' height='50' width='200' ></center> <br><p class='color'>Owner: %s<br>Vize: coming soon...<br>Council: coming soon...</p>" +
-                            "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='color'>Level: %s<br>Claims: %s/9</p>"
-                    , settle.name, owner, settle.level, settle.claims);
+                    "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9 } p.mid { text-align: left; } p.color{ color: #68D9B0;} </style>" +
+                            "<center><p class='color'>%s</p></center>" +
+                            "<br><center><img src='images/banner/Mitglieder.png' height='50' width='200' ></center> <br><p class='mid'>Owner: %s<br>Vize%s<br>Council%s</p>" +
+                            "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='mi'>Level: %s<br>Claims: %s/9</p>"
+                    , settle.name, owner,": " + StringUtils.join(vices,", "), ": " + StringUtils.join(councils,", "), settle.level, settle.claims);
 
             Options optionsicon;
             optionsicon = Options.builder()

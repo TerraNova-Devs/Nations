@@ -13,6 +13,8 @@ import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.TextComponent;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -232,17 +234,14 @@ public class settle implements BasicCommand, TabCompleter {
             Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
             if(access.isEmpty()) return;
             if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
-            Optional<AccessLevelEnum> newAccess = null;
+            Optional<AccessLevelEnum> newAccess;
             try {
-                newAccess = settle.get().promoteOrAdd(target.get());
+                newAccess = settle.get().promoteOrAdd(target.get(), p);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if(newAccess.isEmpty()) {
-                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den höchstmöglichen Rang erreicht.", target.get().displayName())));
-                return;
-            }
-            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.",target.get().displayName(),newAccess.get())));
+            if(newAccess.isEmpty()) return;
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.", PlainTextComponentSerializer.plainText().serialize(target.get().displayName()),newAccess.get())));
         }
 
         if (args[0].equalsIgnoreCase("removemember")) {
@@ -256,15 +255,12 @@ public class settle implements BasicCommand, TabCompleter {
             if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
             Optional<AccessLevelEnum> newAccess = null;
             try {
-                newAccess = settle.get().demoteOrRemove(target.get());
+                newAccess = settle.get().demoteOrRemove(target.get(),p);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if(newAccess.isEmpty()) {
-                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den höchstmöglichen Rang erreicht.", target.get().displayName())));
-                return;
-            }
-            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.",target.get().displayName(),newAccess.get())));
+            if(newAccess.isEmpty() || newAccess.get().equals(AccessLevelEnum.REMOVE)) return;
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s degradiert.",PlainTextComponentSerializer.plainText().serialize(target.get().displayName()),newAccess.get())));
         }
 
         if (args[0].equalsIgnoreCase("forcecreate")) {

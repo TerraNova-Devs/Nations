@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -15,8 +16,10 @@ import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
+import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -121,7 +124,7 @@ public class settlement {
 
     }
 
-    public Collection<UUID> getEveryMemberWithCertainAccessLevel(AccessLevelEnum access){
+    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevelEnum access){
         Collection<UUID> output = new ArrayList<>();
         for(UUID uuid : membersAccess.keySet()){
             if(membersAccess.get(uuid).equals(access)){
@@ -131,7 +134,19 @@ public class settlement {
         return output;
     }
 
-    public Optional<AccessLevelEnum> promoteOrAdd(Player target) throws SQLException {
+    public Collection<String> getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum access){
+        Collection<String> output = new ArrayList<>();
+        for(UUID uuid : membersAccess.keySet()){
+            if(membersAccess.get(uuid).equals(access)){
+                OfflinePlayer p = Bukkit.getOfflinePlayer(uuid);
+                if(p.getName() == null) continue;
+                output.add(p.getName());
+            }
+        }
+        return output;
+    }
+
+    public Optional<AccessLevelEnum> promoteOrAdd(Player target, Player p) throws SQLException {
         if(!this.membersAccess.containsKey(target.getUniqueId())) {
             this.membersAccess.put(target.getUniqueId(),AccessLevelEnum.CITIZEN);
             SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.CITIZEN);
@@ -149,29 +164,31 @@ public class settlement {
             SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.VICE);
             return Optional.of(AccessLevelEnum.VICE);
         }
-        if(accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR)) return Optional.empty();
+        if(accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR)) p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));;
         return Optional.empty();
     }
 
-    public Optional<AccessLevelEnum> demoteOrRemove(Player target) throws SQLException {
+    public Optional<AccessLevelEnum> demoteOrRemove(Player target, Player p) throws SQLException {
         if(!this.membersAccess.containsKey(target.getUniqueId()) || this.membersAccess.get(target.getUniqueId()).equals(AccessLevelEnum.MAJOR)) return Optional.empty();
         AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         if(accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
             this.membersAccess.remove(target.getUniqueId());
             SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.REMOVE);
             settlementClaim.addOrRemoveFromSettlement(target,this,false);
-            return Optional.empty();
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde von deiner Stadt entfernt.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
+            return Optional.of(AccessLevelEnum.REMOVE);
         }
         if(accessLevelEnum.equals(AccessLevelEnum.COUNCIL) ) {
             this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.CITIZEN);
             SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.CITIZEN);
-            return Optional.of(AccessLevelEnum.COUNCIL);
+            return Optional.of(AccessLevelEnum.CITIZEN);
         }
         if(accessLevelEnum.equals(AccessLevelEnum.VICE) ) {
             this.membersAccess.replace(target.getUniqueId(),AccessLevelEnum.COUNCIL);
             SettleDBstuff.changeMemberAccess(this.id,target.getUniqueId(),AccessLevelEnum.COUNCIL);
             return Optional.of(AccessLevelEnum.COUNCIL);
         }
+        p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
         return Optional.empty();
     }
 

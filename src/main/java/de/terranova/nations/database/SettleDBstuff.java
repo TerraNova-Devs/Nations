@@ -77,7 +77,7 @@ public class SettleDBstuff {
         if(access.equals(AccessLevelEnum.REMOVE)){
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  Statement statement = con.createStatement()) {
-                    statement.execute(String.format("DELETE FROM access_table WHERE access_table.SUUID = '%s' AND access_table.PUUID = '%s'",SUUID.toString(),PUUID.toString()));
+                    statement.execute(String.format("DELETE FROM access_table WHERE access_table.SUUID = '%s' AND access_table.PUUID = '%s'",SUUID,PUUID));
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
             }
@@ -85,7 +85,7 @@ public class SettleDBstuff {
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  Statement statement = con.createStatement()) {
                     statement.execute("INSERT INTO access_table (SUUID, PUUID, access)" +
-                            String.format("VALUES ('00265a8e-9731-4eb6-a02d-402e54906ff7', 'dbc80a73-4ec5-484a-b1cd-252786d6e47a', 'CITIZEN')",SUUID.toString(),PUUID.toString(),access) +
+                            String.format("VALUES ('%s', '%s', '%s')",SUUID,PUUID,access) +
                             "ON DUPLICATE KEY UPDATE access = VALUES(access);");
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
