@@ -61,7 +61,7 @@ public class createPl3xMapSettlementLayer extends WorldLayer {
 
             String owner = Bukkit.getOfflinePlayer(settle.getEveryUUIDWithCertainAccessLevel(AccessLevelEnum.MAJOR).stream().findFirst().get()).getName();
             String tooltip = String.format(
-                    "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9 } p.mid { text-align: left; } p.color{ color: #68D9B0;} </style>" +
+                    "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9; } p.mid { text-align: left; } p.color{ color: #68D9B0; font-size: 30px;} </style>" +
                             "<center><p class='color'>%s</p></center>" +
                             "<br><center><img src='images/banner/Mitglieder.png' height='50' width='200' ></center> <br><p class='mid'>Owner: %s<br>Vize%s<br>Council%s</p>" +
                             "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='mi'>Level: %s<br>Claims: %s/9</p>"
