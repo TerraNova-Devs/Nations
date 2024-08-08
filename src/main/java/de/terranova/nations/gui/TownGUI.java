@@ -120,7 +120,7 @@ public class TownGUI extends Gui {
 
         isettings.onClick(e -> {
             if(!player.hasPermission("nations.menu.settings")) return;
-            new TownSettingsGUI(player).open();
+            new TownSettingsGUI(player, settlement.get()).open();
         });
 
 

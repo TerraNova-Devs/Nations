@@ -31,14 +31,14 @@ import java.util.*;
 public class settlement {
 
     public final UUID id;
-
     public String name;
     public final Vectore2 location;
-
     public int level;
-    public HashMap<UUID, AccessLevelEnum> membersAccess = new HashMap<>();
 
+    public HashMap<UUID, AccessLevelEnum> membersAccess = new HashMap<>();
     public int claims;
+
+    ProtectedRegion region;
 
     //Beim neu erstellen
     public settlement(UUID settlementUUID, UUID owner, Location location, String name) {
@@ -65,6 +65,7 @@ public class settlement {
         NationsPlugin.settlementManager.locations.add(settlementClaim.getSChunkMiddle(location));
         this.level = level;
         this.membersAccess = membersAccess;
+        this.region = getWorldguardRegion();
         this.claims = settlementClaim.getClaimAnzahl(settlementUUID);
     }
 

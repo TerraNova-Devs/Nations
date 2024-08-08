@@ -3,7 +3,7 @@ package de.terranova.nations;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.bona.lib.YMLHandler;
-import de.terranova.nations.commands.settle;
+import de.terranova.nations.commands.settleCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.SettlementTrait;
@@ -118,7 +118,7 @@ public final class NationsPlugin extends JavaPlugin {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new settle(this));
+            commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new settleCommand(this));
         });
     }
     //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));

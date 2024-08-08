@@ -13,7 +13,6 @@ import de.terranova.nations.worldguard.settlementClaim;
 import de.terranova.nations.worldguard.settlementFlag;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -33,11 +32,11 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.*;
 
-public class settle implements BasicCommand, TabCompleter {
+public class settleCommand implements BasicCommand, TabCompleter {
 
     NationsPlugin plugin;
 
-    public settle(NationsPlugin plugin) {
+    public settleCommand(NationsPlugin plugin) {
         this.plugin = plugin;
     }
 
