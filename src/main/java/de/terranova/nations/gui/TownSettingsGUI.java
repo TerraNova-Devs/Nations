@@ -44,7 +44,48 @@ public class TownSettingsGUI extends Gui {
         addStateFlag(Flags.ENDERPEARL, 15, Material.ENDER_PEARL, "Toggelt Enderperlen.");
         addStateFlag(Flags.CHORUS_TELEPORT, 16, Material.CHORUS_FRUIT, "Verhindert das TPen von Chorusfr\u00FCchten.");
 
-        addSetFlag(Flags.DENY_SPAWN, 19, Material.ZOMBIE_HEAD, "Aktiviert das Spawnen von Gegnern");
+        Set<EntityType> mobs =  region.getFlag(Flags.DENY_SPAWN);
+        boolean isenbaled;
+        player.sendMessage("" + Arrays.toString(mobs.toArray()));
+        if (mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"))) isenbaled = false;
+        else {
+            isenbaled = true;
+        }
+        ItemStack item = new ItemStack(Material.ZOMBIE_HEAD);
+        ItemMeta mitem = item.getItemMeta();
+        List<Component> litem = new ArrayList<>();
+        litem.add(Chat.cottonCandy("<i>" + "Sollen Monster spawnen?"));
+
+        if(isenbaled){
+            litem.add(Chat.greenFade(String.format("<i>Currently: %s", "enabled")));
+        } else {
+            litem.add(Chat.redFade(String.format("<i>Currently: %s", "disabled")));
+        }
+        mitem.lore(litem);
+        mitem.displayName(Chat.blueFade("Flag: " + Flags.DENY_SPAWN.getName()));
+        item.setItemMeta(mitem);
+        Icon icon = new Icon(item);
+        addItem(19, icon);
+        icon.onClick(e -> {
+            if(isenbaled){
+                Set<EntityType> set = new HashSet<>();
+                set.add(EntityType.REGISTRY.get("minecraft:zombie_villager"));
+                set.add(EntityType.REGISTRY.get("minecraft:zombie"));
+                set.add(EntityType.REGISTRY.get("minecraft:spider"));
+                set.add(EntityType.REGISTRY.get("minecraft:skeleton"));
+                set.add(EntityType.REGISTRY.get("minecraft:enderman"));
+                set.add(EntityType.REGISTRY.get("minecraft:phantom"));
+                set.add(EntityType.REGISTRY.get("minecraft:drowned"));
+                region.setFlag(Flags.DENY_SPAWN,set);
+                open();
+            } else {
+                Set<EntityType> set = new HashSet<>();
+                set.add(EntityType.REGISTRY.get("minecraft:zombie_villager"));
+                region.setFlag(Flags.DENY_SPAWN,set);
+                open();
+            }
+        });
+
     }
 
     private void addStateFlag(StateFlag flag, int slot, Material material, String description) {
@@ -75,32 +116,6 @@ public class TownSettingsGUI extends Gui {
                 addStateFlag(flag, slot, material,description);
             }
         });
-    }
-
-    private void addSetFlag(SetFlag flag, int slot, Material material, String description) {
-        boolean flagValue;
-
-        player.sendMessage(region.getFlag(flag).toString(),region.getFlag(flag).getClass().getSimpleName());
-
-        Set<EntityType> set2 = region.getFlag(flag);
-
-
-        //Flag<Set<EntityType>> setFlag = region.getFlag(flag);
-        //SetFlag<> setFlag1 = region.getFlag(flag);
-        //SetFlag<Set<EntityType>> setFlag2 = region.getFlag(flag);
-        //Set<?> setFlag3 = region.getFlag(flag);
-        //SetFlag<Set<RegistryFlag>> setFlag4 = region.getFlag(flag);
-
-        Set<EntityType> set = new HashSet<>();
-        set.add(EntityType.REGISTRY.get("minecraft:zombie_villager"));
-        set.add(EntityType.REGISTRY.get("minecraft:zombie"));
-        set.add(EntityType.REGISTRY.get("minecraft:spider"));
-        set.add(EntityType.REGISTRY.get("minecraft:skeleton"));
-        set.add(EntityType.REGISTRY.get("minecraft:enderman"));
-        set.add(EntityType.REGISTRY.get("minecraft:phantom"));
-        set.add(EntityType.REGISTRY.get("minecraft:drowned"));
-
-        region.setFlag(Flags.DENY_SPAWN,set);
     }
 
     @Override
