@@ -1,5 +1,6 @@
 package de.terranova.nations;
 
+import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.bona.lib.YMLHandler;
@@ -51,7 +52,6 @@ public final class NationsPlugin extends JavaPlugin {
     public void onEnable() {
         //Stillbugs is used to send Action Bar to player later
         worldguardHandlerRegistry();
-
         pl3xmapMarkerRegistry();
 
         logger = getLogger();
@@ -73,6 +73,7 @@ public final class NationsPlugin extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+
     }
 
     @Override

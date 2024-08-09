@@ -47,7 +47,6 @@ public class settleCommand implements BasicCommand, TabCompleter {
             stack.getSender().sendMessage("Du musst für diesen Command ein Spieler sein!");
             return;
         }
-
         if (args.length == 0) {
             p.sendMessage(Chat.cottonCandy("Nations Plugin est. 13.07.2024 | written by gerryxn  | Version 1.0.0 | Copyright TerraNova."));
             return;
@@ -56,16 +55,13 @@ public class settleCommand implements BasicCommand, TabCompleter {
         if (args[0].equalsIgnoreCase("create")) {
             if (!hasPermission(p, "nations.create")) return;
 
-            if (!(args.length == 2)) {
-                p.sendMessage(Chat.errorFade("Syntax: /settle create <name>"));
+            if (!(args.length >= 2)) {
+                p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            if (args[1].length() > 20) {
-                p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
-                return;
-            }
-            if (!args[1].matches("[a-zA-Z0-9]*")) {
-                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
+            String name = String.join("_",Arrays.copyOfRange(args, 1, args.length));
+            if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
+                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
             }
             List<String> biomeblacklist = new ArrayList<>(Arrays.asList("RIVER", "DEEP_COLD_OCEAN", "COLD_OCEAN", "DEEP_LUKEWARM_OCEAN", "LUKEWARM_OCEAN", "OCEAN", "DEEP_OCEAN", "WARM_OCEAN", "DEEP_WARM_OCEAN", "BEACH", "GRAVEL_BEACH", "SNOWY_BEACH"));
@@ -76,8 +72,6 @@ public class settleCommand implements BasicCommand, TabCompleter {
                     return;
                 }
             }
-
-            String name = args[1];
             if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
                 return;
@@ -135,19 +129,15 @@ public class settleCommand implements BasicCommand, TabCompleter {
 
         if (args[0].equalsIgnoreCase("rename")) {
             if (!hasPermission(p, "nations.rename")) return;
-            if (!(args.length == 2)) {
+            if (!(args.length >= 2)) {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            if (args[1].length() > 20) {
-                p.sendMessage(Chat.errorFade("Der Name darf nicht l\u00E4nger als 20 zeichen sein."));
+            String name = String.join("_",Arrays.copyOfRange(args, 1, args.length));
+            if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
+                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
             }
-            if (!args[1].matches("[a-zA-Z0-9]*")) {
-                p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen."));
-                return;
-            }
-            String name = args[1];
             if (!NationsPlugin.settlementManager.isNameAvaible(name)) {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
                 return;
@@ -157,7 +147,8 @@ public class settleCommand implements BasicCommand, TabCompleter {
                 Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
                 if(access.isEmpty()) return;
                 if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
-                    settle.get().rename(args[1]);
+                    settle.get().rename(name);
+                    p.sendMessage(name);
                 } else {
                     p.sendMessage(Chat.errorFade("Du hast nicht genuegend Berechtigung um diese Stadt umzubenennen."));
                 }

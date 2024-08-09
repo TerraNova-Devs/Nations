@@ -110,7 +110,7 @@ public class TownGUI extends Gui {
 
         iupgrades.onClick(e -> {
             if(!player.hasPermission("nations.menu.upgrades")) return;
-            if(Objects.equals(access, AccessLevelEnum.MAJOR)|| Objects.equals(access, AccessLevelEnum.VICE)){
+            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR)|| Objects.equals(access.get(), AccessLevelEnum.VICE)){
                 new TownUpgradeGUI(player).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
@@ -120,7 +120,13 @@ public class TownGUI extends Gui {
 
         isettings.onClick(e -> {
             if(!player.hasPermission("nations.menu.settings")) return;
-            new TownSettingsGUI(player, settlement.get()).open();
+            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR)|| Objects.equals(access.get(), AccessLevelEnum.VICE)){
+                new TownSettingsGUI(player, settlement.get()).open();
+            } else {
+                player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
+            }
+
+
         });
 
 

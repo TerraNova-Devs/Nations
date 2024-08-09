@@ -24,7 +24,7 @@ public class TownSettingsGUI extends Gui {
     ProtectedRegion region;
 
     public TownSettingsGUI(Player player, settlement settle) {
-        super(player, "town-settings-gui", Chat.blueFade("Settings Menu"), 5);
+        super(player, "town-settings-gui", Chat.blueFade("Settings Menu"), 6);
         this.region = settle.getWorldguardRegion();
     }
 
@@ -36,6 +36,16 @@ public class TownSettingsGUI extends Gui {
         filler.setItemMeta(mfiller);
         fillGui(filler);
 
+        ItemStack back = new ItemStack(Material.SPECTRAL_ARROW);
+        ItemMeta mback = back.getItemMeta();
+        mback.displayName(Chat.redFade("<b>Go Back</b>"));
+        back.setItemMeta(mback);
+        Icon iback = new Icon(back);
+        addItem(45, iback);
+        iback.onClick(e -> {
+            new TownGUI(player).open();
+        });
+
         addStateFlag(Flags.SNOW_FALL, 10, Material.SNOW, "Soll sich Schnee in deinem Gebiet bilden?");
         addStateFlag(Flags.PVP, 11, Material.NETHERITE_SWORD, "Aktiviert PvP in deinem Gebiet!");
         addStateFlag(Flags.LEAF_DECAY, 12, Material.OAK_LEAVES, "Whether leaves will decay!");
@@ -46,8 +56,7 @@ public class TownSettingsGUI extends Gui {
 
         Set<EntityType> mobs =  region.getFlag(Flags.DENY_SPAWN);
         boolean isenbaled;
-        player.sendMessage("" + Arrays.toString(mobs.toArray()));
-        if (mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"))) isenbaled = false;
+        if (mobs == null || mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"))) isenbaled = false;
         else {
             isenbaled = true;
         }

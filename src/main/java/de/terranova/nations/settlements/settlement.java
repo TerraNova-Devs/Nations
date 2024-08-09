@@ -3,6 +3,7 @@ package de.terranova.nations.settlements;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.mcterranova.bona.lib.chat.Chat;
@@ -38,6 +39,7 @@ public class settlement {
     public HashMap<UUID, AccessLevelEnum> membersAccess = new HashMap<>();
     public int claims;
 
+    NPC npc;
     ProtectedRegion region;
 
     //Beim neu erstellen
@@ -54,7 +56,7 @@ public class settlement {
 
         this.claims = 1;
 
-        createNPC(name, location,settlementUUID);
+        this.npc = createNPC(name, location,settlementUUID);
     }
 
     //Von der Datenbank
@@ -67,9 +69,10 @@ public class settlement {
         this.membersAccess = membersAccess;
         this.region = getWorldguardRegion();
         this.claims = settlementClaim.getClaimAnzahl(settlementUUID);
+        this.npc = getInternalNPC();
     }
 
-    private void createNPC(String name, Location location, UUID settlementUUID) {
+    private NPC createNPC(String name, Location location, UUID settlementUUID) {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
@@ -81,12 +84,28 @@ public class settlement {
         SettlementTrait settlementTrait = npc.getOrAddTrait(SettlementTrait.class);
         settlementTrait.setUUID(settlementUUID);
 
-        HologramTrait hologram = npc.getOrAddTrait(HologramTrait.class);
-        hologram.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
+        HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
+        hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
 
         npc.setAlwaysUseNameHologram(true);
         npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
         npc.spawn(location);
+        return npc;
+    }
+
+    private NPC getInternalNPC(){
+        for (NPC npc : CitizensAPI.getNPCRegistry()){
+
+            if(!npc.hasTrait(SettlementTrait.class)) {
+
+                continue;
+            }
+
+            if(npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
+                return npc;
+            }
+        }
+        return null;
     }
 
     public void tpNPC(Location location) {
@@ -114,15 +133,25 @@ public class settlement {
     }
 
     public void rename(String name) {
-        for (NPC npc : CitizensAPI.getNPCRegistry()){
-            if(!npc.hasTrait(SettlementTrait.class)) {
-                continue;
-            }
-            if(npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
-                npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
-            }
+
+        if(npc == null){
+            this.npc = getInternalNPC();
         }
 
+        this.name = name;
+
+        assert npc != null;
+        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name.replaceAll("_"," ")));
+
+        ProtectedPolygonalRegion newregion = new ProtectedPolygonalRegion(name, region.getPoints(), region.getMinimumPoint().y(), region.getMaximumPoint().y());
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
+        newregion.copyFrom(region);
+        assert regions != null;
+        regions.removeRegion(region.getId());
+        regions.addRegion(newregion);
+        this.region = newregion;
+        SettleDBstuff.rename(this.id, name);
     }
 
     public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevelEnum access){

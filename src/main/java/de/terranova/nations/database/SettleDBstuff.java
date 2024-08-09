@@ -72,24 +72,36 @@ public class SettleDBstuff {
         }
     }
 
-    public static void changeMemberAccess(UUID SUUID, UUID PUUID, AccessLevelEnum access) throws SQLException {
-        System.out.println(String.format("INSERT INTO access_table VALUES ('%s', '%s','%s') ON DUPLICATE KEY ",SUUID,PUUID,access.name())+String.format("UPDATE access_table SET access = '%s' WHERE access_table.SUUID = '%s' AND access_table.PUUID = '%s'",access.name(),SUUID.toString(),PUUID.toString()));
-        if(access.equals(AccessLevelEnum.REMOVE)){
+    public static void changeMemberAccess(UUID SUUID, UUID PUUID, AccessLevelEnum access) {
+        if (access.equals(AccessLevelEnum.REMOVE)) {
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  Statement statement = con.createStatement()) {
-                    statement.execute(String.format("DELETE FROM access_table WHERE access_table.SUUID = '%s' AND access_table.PUUID = '%s'",SUUID,PUUID));
+                statement.execute(String.format("DELETE FROM access_table WHERE access_table.SUUID = '%s' AND access_table.PUUID = '%s'", SUUID, PUUID));
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
             }
         } else {
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  Statement statement = con.createStatement()) {
-                    statement.execute("INSERT INTO access_table (SUUID, PUUID, access)" +
-                            String.format("VALUES ('%s', '%s', '%s')",SUUID,PUUID,access) +
-                            "ON DUPLICATE KEY UPDATE access = VALUES(access);");
+                statement.execute("INSERT INTO access_table (SUUID, PUUID, access)" +
+                        String.format("VALUES ('%s', '%s', '%s')", SUUID, PUUID, access) +
+                        "ON DUPLICATE KEY UPDATE access = VALUES(access);");
             } catch (SQLException e) {
                 throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
             }
         }
     }
+
+    public static void rename(UUID SUUID, String name) {
+
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             Statement statement = con.createStatement()) {
+            statement.execute(String.format("UPDATE settlements_table SET name = '%s' WHERE SUUID = '%s'", name, SUUID));
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
+        }
+
+    }
+
+
 }
