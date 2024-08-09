@@ -65,7 +65,7 @@ public class createPl3xMapSettlementLayer extends WorldLayer {
                             "<center><p class='color'>%s</p></center>" +
                             "<br><center><img src='images/banner/Mitglieder.png' height='50' width='200' ></center> <br><p class='mid'>Owner: %s<br>Vize%s<br>Council%s</p>" +
                             "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='mi'>Level: %s<br>Claims: %s/9</p>"
-                    , settle.name, owner,": " + StringUtils.join(vices,", "), ": " + StringUtils.join(councils,", "), settle.level, settle.claims);
+                    , settle.name.replaceAll("_"," "), owner,": " + StringUtils.join(vices,", "), ": " + StringUtils.join(councils,", "), settle.level, settle.claims);
 
             Options optionsicon;
             optionsicon = Options.builder()

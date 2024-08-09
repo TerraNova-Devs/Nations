@@ -146,7 +146,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
             if (settle.isPresent()) {
                 Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
                 if(access.isEmpty()) return;
-                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
+                if (access.get().equals(AccessLevelEnum.MAJOR)) {
                     settle.get().rename(name);
                     p.sendMessage(name);
                 } else {
