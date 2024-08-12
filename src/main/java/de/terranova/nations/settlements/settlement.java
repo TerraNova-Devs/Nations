@@ -2,6 +2,8 @@ package de.terranova.nations.settlements;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
@@ -40,7 +42,7 @@ public class settlement {
     public int claims;
 
     NPC npc;
-    ProtectedRegion region;
+    public ProtectedRegion region;
 
     //Beim neu erstellen
     public settlement(UUID settlementUUID, UUID owner, Location location, String name) {
@@ -57,6 +59,16 @@ public class settlement {
         this.claims = 1;
 
         this.npc = createNPC(name, location,settlementUUID);
+
+        this.region = getWorldguardRegion();
+
+        Set<com.sk89q.worldedit.world.entity.EntityType> set = new HashSet<>(Arrays.asList(com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie_villager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:spider"),
+                com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:skeleton"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:enderman"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:phantom"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:drowned"),
+                com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:witch"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:pillager")
+        ));
+        region.setFlag(Flags.DENY_SPAWN,set);
+        region.setFlag(Flags.PVP, StateFlag.State.DENY);
+
     }
 
     //Von der Datenbank
@@ -68,6 +80,7 @@ public class settlement {
         this.level = level;
         this.membersAccess = membersAccess;
         this.region = getWorldguardRegion();
+
         this.claims = settlementClaim.getClaimAnzahl(settlementUUID);
         this.npc = getInternalNPC();
     }
@@ -86,9 +99,8 @@ public class settlement {
 
         HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
         hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
-
         npc.setAlwaysUseNameHologram(true);
-        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name));
+        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name.replaceAll("_"," ")));
         npc.spawn(location);
         return npc;
     }

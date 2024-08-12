@@ -8,6 +8,7 @@ import de.terranova.nations.commands.settleCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.SettlementTrait;
+import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.settlements.settlementManager;
 import de.terranova.nations.worldguard.settlementFlag;
 import de.terranova.nations.worldguard.settlementHandler;
@@ -21,15 +22,21 @@ import net.pl3x.map.core.registry.Registry;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
+import org.yaml.snakeyaml.Yaml;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
+
+    //CACHE wird beim claimen nicht geupdated
 
     public static settlementManager settlementManager;
     //public YMLHandler levelYML;
@@ -137,7 +144,7 @@ public final class NationsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
 
-
+        //Yaml yaml = new Yaml();
         //LinkedList<Objective> d = yaml.load(new FileInputStream(new File(this.getDataFolder(),"level.yml")));
 
 

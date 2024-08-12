@@ -43,13 +43,95 @@ public class settleCommand implements BasicCommand, TabCompleter {
     @Override
     public void execute(@NotNull CommandSourceStack stack, @NotNull String[] args) {
 
+        if (args[0].equalsIgnoreCase("testt")) {
+            if (stack.getSender().hasPermission("nations.admin.testt")) return;
+
+
+        }
+
+
         if (!(stack.getSender() instanceof Player p)) {
             stack.getSender().sendMessage("Du musst für diesen Command ein Spieler sein!");
             return;
         }
+
         if (args.length == 0) {
             p.sendMessage(Chat.cottonCandy("Nations Plugin est. 13.07.2024 | written by gerryxn  | Version 1.0.0 | Copyright TerraNova."));
             return;
+        }
+
+        if (args[0].equalsIgnoreCase("test")) {
+
+            if (!hasPermission(p, "nations.admin.test")) return;
+
+            File file = new File(plugin.getDataFolder(), "level.yml");
+
+            LoaderOptions loaderOptions = new LoaderOptions();
+            loaderOptions.setTagInspector(tag -> true);
+
+            DumperOptions options = new DumperOptions();
+            options.setIndent(2);
+            options.setSplitLines(false);
+            options.setPrettyFlow(true);
+            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+
+            Representer representer = new Representer(options);
+            representer.addClassTag(Objective.class, Tag.MAP);
+
+            Yaml yamlDumper = new Yaml(representer);
+            Yaml yamlLoader = new Yaml(loaderOptions);
+
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            try {
+                List<Objective> objectives = yamlLoader.load(new FileInputStream(file));
+                String s = yamlLoader.load(new FileInputStream(file));
+                p.sendMessage(objectives.toString());
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            }
+
+            List<Objective> objectives = new LinkedList<>();
+            Objective o = new Objective();
+            o.setMaterial_a(Material.SADDLE);
+            o.setMaterial_b(Material.SADDLE);
+            o.setMaterial_c(Material.SADDLE);
+            o.setMaterial_d(Material.SADDLE);
+            o.setObjective_a(1);
+            o.setObjective_b(1);
+            o.setObjective_c(1);
+            o.setObjective_d(1);
+            objectives.add(o);
+            Objective l = new Objective();
+            l.setMaterial_a(Material.SADDLE);
+            l.setMaterial_b(Material.SADDLE);
+            l.setMaterial_c(Material.SADDLE);
+            l.setMaterial_d(Material.SADDLE);
+            l.setObjective_a(1);
+            l.setObjective_b(1);
+            l.setObjective_c(1);
+            l.setObjective_d(1);
+            objectives.add(l);
+
+            try {
+                FileWriter writer = new FileWriter(file);
+                yamlDumper.dump(objectives, writer);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            /* load specific class
+            var loaderoptions = new LoaderOptions();
+TagInspector taginspector =
+    tag -> tag.getClassName().equals(User.class.getName());
+loaderoptions.setTagInspector(taginspector);
+Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
+             */
+
+
         }
 
         if (args[0].equalsIgnoreCase("create")) {
@@ -59,7 +141,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            String name = String.join("_",Arrays.copyOfRange(args, 1, args.length));
+            String name = String.join("_", Arrays.copyOfRange(args, 1, args.length));
             if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
@@ -97,6 +179,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
             if (true) {
                 p.sendMessage("ANGEKOMMEN");
                 UUID settlementID = UUID.randomUUID();
+                settlementClaim.createClaim(name, p, settlementID);
                 settlement newsettle = new settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
                 NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
                 try {
@@ -104,7 +187,6 @@ public class settleCommand implements BasicCommand, TabCompleter {
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
-                settlementClaim.createClaim(name, p, settlementID);
                 NationsPlugin.settlementManager.addSettlementToPl3xmap(newsettle);
             } else {
                 p.sendMessage(Chat.errorFade("Du hast leider keine Berechtigung eine Stadt zu gr\u00FCnden."));
@@ -117,7 +199,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
 
             if (settle.isPresent()) {
                 Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
-                if(access.isEmpty()) return;
+                if (access.isEmpty()) return;
                 if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
                     settle.get().tpNPC(p.getLocation());
                 }
@@ -133,7 +215,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            String name = String.join("_",Arrays.copyOfRange(args, 1, args.length));
+            String name = String.join("_", Arrays.copyOfRange(args, 1, args.length));
             if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
@@ -145,7 +227,7 @@ public class settleCommand implements BasicCommand, TabCompleter {
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
             if (settle.isPresent()) {
                 Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
-                if(access.isEmpty()) return;
+                if (access.isEmpty()) return;
                 if (access.get().equals(AccessLevelEnum.MAJOR)) {
                     settle.get().rename(name);
                     p.sendMessage(name);
@@ -161,43 +243,50 @@ public class settleCommand implements BasicCommand, TabCompleter {
         if (args[0].equalsIgnoreCase("claim")) {
             if (!hasPermission(p, "nations.claim")) return;
             Optional<ProtectedRegion> area = settlementClaim.checkSurrAreaForSettles(p);
-            if (area.isPresent()) {
-                ProtectedRegion protectedRegion = area.get();
-                String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
-                assert settlementUUID != null;
-                Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, UUID.fromString(settlementUUID));
-                if(access.isEmpty()) return;
-                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
-                    settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
-                    double abstand = Integer.MAX_VALUE;
-                    for (Vectore2 location : NationsPlugin.settlementManager.locations) {
-                        if (settle.location.equals(location)) continue;
-                        double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
-                        if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
-                            abstand = abstandneu;
+            if (area.isEmpty()) {
 
-                        }
-                    }
-                    if (abstand < 750) {
-                        p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>750<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
-                        p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
-                        return;
-                    }
-
-                    if (NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()) {
-                        p.sendMessage(Chat.errorFade("Dieses Claim gehört bereits einer Stadt an."));
-                        return;
-                    }
-                    if (settle.claims >= 9) {
-                        p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
-                        return;
-                    }
-                    settlementClaim.addToExistingClaim(p, protectedRegion);
-
-                    NationsPlugin.settlementManager.addSettlementToPl3xmap(settle);
-                    settle.claims = settlementClaim.getClaimAnzahl(settle.id);
+                return;
+            }
+            ProtectedRegion protectedRegion = area.get();
+            String settlementUUID = protectedRegion.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG);
+            assert settlementUUID != null;
+            Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, UUID.fromString(settlementUUID));
+            if (access.isEmpty()) {
+                p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
+                return;
+            }
+            if (!(access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE))) {
+                p.sendMessage(Chat.errorFade("Du benötigst einen höheren Rang um diese Stadt zu erweitern."));
+                return;
+            }
+            settlement settle = NationsPlugin.settlementManager.getSettlement(UUID.fromString(settlementUUID));
+            double abstand = Integer.MAX_VALUE;
+            for (Vectore2 location : NationsPlugin.settlementManager.locations) {
+                if (settle.location.equals(location)) continue;
+                double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
+                if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
+                    abstand = abstandneu;
                 }
             }
+            if (abstand < 750) {
+                p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>750<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
+                p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
+                return;
+            }
+            if (NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p).isPresent()) {
+                p.sendMessage(Chat.errorFade("Dieses Claim gehört bereits einer Stadt an."));
+                return;
+            }
+            if (settle.claims >= 9) {
+                p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
+                return;
+            }
+
+            settlementClaim.addToExistingClaim(p, protectedRegion);
+            NationsPlugin.settlementManager.addSettlementToPl3xmap(settle);
+            settle.claims = settlementClaim.getClaimAnzahl(settle.id);
+            settle.region = settle.getWorldguardRegion();
+
         }
 
         if (args[0].equalsIgnoreCase("forceclaim")) {
@@ -217,40 +306,40 @@ public class settleCommand implements BasicCommand, TabCompleter {
 
         if (args[0].equalsIgnoreCase("addmember")) {
             if (!hasPermission(p, "nations.addmember")) return;
-            Optional<Player> target = isPlayer(args[1],p);
-            if(target.isEmpty()) return;
+            Optional<Player> target = isPlayer(args[1], p);
+            if (target.isEmpty()) return;
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            if(settle.isEmpty()) return;
+            if (settle.isEmpty()) return;
             Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
-            if(access.isEmpty()) return;
-            if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
+            if (access.isEmpty()) return;
+            if (!hasAccess(access.get(), List.of(AccessLevelEnum.MAJOR, AccessLevelEnum.VICE))) return;
             Optional<AccessLevelEnum> newAccess;
             try {
                 newAccess = settle.get().promoteOrAdd(target.get(), p);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if(newAccess.isEmpty()) return;
-            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.", PlainTextComponentSerializer.plainText().serialize(target.get().displayName()),newAccess.get())));
+            if (newAccess.isEmpty()) return;
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s befördert.", PlainTextComponentSerializer.plainText().serialize(target.get().displayName()), newAccess.get())));
         }
 
         if (args[0].equalsIgnoreCase("removemember")) {
             if (!hasPermission(p, "nations.removemember")) return;
-            Optional<Player> target = isPlayer(args[1],p);
-            if(target.isEmpty()) return;
+            Optional<Player> target = isPlayer(args[1], p);
+            if (target.isEmpty()) return;
             Optional<settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
-            if(settle.isEmpty()) return;
+            if (settle.isEmpty()) return;
             Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
-            if(access.isEmpty()) return;
-            if (!hasAccess(access.get(),List.of(AccessLevelEnum.MAJOR,AccessLevelEnum.VICE))) return;
+            if (access.isEmpty()) return;
+            if (!hasAccess(access.get(), List.of(AccessLevelEnum.MAJOR, AccessLevelEnum.VICE))) return;
             Optional<AccessLevelEnum> newAccess = null;
             try {
-                newAccess = settle.get().demoteOrRemove(target.get(),p);
+                newAccess = settle.get().demoteOrRemove(target.get(), p);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if(newAccess.isEmpty() || newAccess.get().equals(AccessLevelEnum.REMOVE)) return;
-            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s degradiert.",PlainTextComponentSerializer.plainText().serialize(target.get().displayName()),newAccess.get())));
+            if (newAccess.isEmpty() || newAccess.get().equals(AccessLevelEnum.REMOVE)) return;
+            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s degradiert.", PlainTextComponentSerializer.plainText().serialize(target.get().displayName()), newAccess.get())));
         }
 
         if (args[0].equalsIgnoreCase("forcecreate")) {
@@ -296,83 +385,6 @@ public class settleCommand implements BasicCommand, TabCompleter {
             Bukkit.getServer().dispatchCommand(p, "rg sel");
         }
 
-        if (args[0].equalsIgnoreCase("testt")) {
-            if (!hasPermission(p, "nations.admin.testt")) return;
-
-        }
-
-        if (args[0].equalsIgnoreCase("test")) {
-  
-            if (!hasPermission(p, "nations.admin.test")) return;
-
-            File file = new File(plugin.getDataFolder(), "level.yml");
-
-            LoaderOptions loaderOptions = new LoaderOptions();
-            loaderOptions.setTagInspector(tag -> true);
-
-
-            DumperOptions options = new DumperOptions();
-            options.setIndent(2);
-            options.setSplitLines(false);
-            options.setPrettyFlow(true);
-            options.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
-
-            Representer representer = new Representer(options);
-            representer.addClassTag(Objective.class, Tag.MAP);
-
-            Yaml yamlDumper = new Yaml(representer);
-            Yaml yamlLoader = new Yaml(loaderOptions);
-
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            try {
-                List<Objective> objectives = yamlLoader.load(new FileInputStream(file));
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            }
-            List<Objective> objectives = new LinkedList<>();
-            Objective o = new Objective();
-            o.setMaterial_a(Material.SADDLE);
-            o.setMaterial_b(Material.SADDLE);
-            o.setMaterial_c(Material.SADDLE);
-            o.setMaterial_d(Material.SADDLE);
-            o.setObjective_a(1);
-            o.setObjective_b(1);
-            o.setObjective_c(1);
-            o.setObjective_d(1);
-            objectives.add(o);
-            Objective l = new Objective();
-            l.setMaterial_a(Material.SADDLE);
-            l.setMaterial_b(Material.SADDLE);
-            l.setMaterial_c(Material.SADDLE);
-            l.setMaterial_d(Material.SADDLE);
-            l.setObjective_a(1);
-            l.setObjective_b(1);
-            l.setObjective_c(1);
-            l.setObjective_d(1);
-            objectives.add(l);
-
-            try {
-                FileWriter writer = new FileWriter(file);
-                yamlDumper.dump(objectives, writer);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            /* load specific class
-            var loaderoptions = new LoaderOptions();
-TagInspector taginspector =
-    tag -> tag.getClassName().equals(User.class.getName());
-loaderoptions.setTagInspector(taginspector);
-Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
-             */
-
-
-        }
-
 
     }
 
@@ -383,10 +395,10 @@ Yaml yaml = new Yaml(new Constructor(User.class, loaderoptions));
         return false;
     }
 
-    private Optional<Player> isPlayer(String arg,Player p) {
+    private Optional<Player> isPlayer(String arg, Player p) {
         Player target = Bukkit.getPlayer(arg);
-        if(target == null || !target.isOnline()) {
-            p.sendMessage(Chat.errorFade(String.format("Der angegebene Spieler '%s' konnte nicht gefunden werden.",arg)));
+        if (target == null || !target.isOnline()) {
+            p.sendMessage(Chat.errorFade(String.format("Der angegebene Spieler '%s' konnte nicht gefunden werden.", arg)));
             return Optional.empty();
         }
         return Optional.of(target);

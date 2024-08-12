@@ -77,19 +77,14 @@ public class TownSettingsGUI extends Gui {
         addItem(19, icon);
         icon.onClick(e -> {
             if(isenbaled){
-                Set<EntityType> set = new HashSet<>();
-                set.add(EntityType.REGISTRY.get("minecraft:zombie_villager"));
-                set.add(EntityType.REGISTRY.get("minecraft:zombie"));
-                set.add(EntityType.REGISTRY.get("minecraft:spider"));
-                set.add(EntityType.REGISTRY.get("minecraft:skeleton"));
-                set.add(EntityType.REGISTRY.get("minecraft:enderman"));
-                set.add(EntityType.REGISTRY.get("minecraft:phantom"));
-                set.add(EntityType.REGISTRY.get("minecraft:drowned"));
+                Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"),EntityType.REGISTRY.get("minecraft:spider"),
+                        EntityType.REGISTRY.get("minecraft:skeleton"),EntityType.REGISTRY.get("minecraft:enderman"),EntityType.REGISTRY.get("minecraft:phantom"),EntityType.REGISTRY.get("minecraft:drowned"),
+                        EntityType.REGISTRY.get("minecraft:witch"),EntityType.REGISTRY.get("minecraft:pillager")
+                ));
                 region.setFlag(Flags.DENY_SPAWN,set);
                 open();
             } else {
-                Set<EntityType> set = new HashSet<>();
-                set.add(EntityType.REGISTRY.get("minecraft:zombie_villager"));
+                Set<EntityType> set = new HashSet<>(Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager")));
                 region.setFlag(Flags.DENY_SPAWN,set);
                 open();
             }
@@ -97,7 +92,7 @@ public class TownSettingsGUI extends Gui {
 
     }
 
-    private void addStateFlag(StateFlag flag, int slot, Material material, String description) {
+    public void addStateFlag(StateFlag flag, int slot, Material material, String description) {
         boolean flagValue;
         StateFlag.State stateFlag = region.getFlag(flag);
 

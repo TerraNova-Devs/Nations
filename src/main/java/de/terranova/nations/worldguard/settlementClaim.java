@@ -134,6 +134,7 @@ public class settlementClaim {
         return new Vectore2(x + 24, z + 24);
     }
 
+    //Später mehr als nur die erste zurückgeben
     public static Optional<ProtectedRegion> checkSurrAreaForSettles(Player p) {
         int nx = (int) Math.floor(p.getLocation().x() / 48);
         int nz = (int) Math.floor(p.getLocation().z() / 48);
