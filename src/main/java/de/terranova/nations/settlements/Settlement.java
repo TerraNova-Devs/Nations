@@ -81,7 +81,8 @@ public class Settlement {
         this.region = getWorldguardRegion();
         this.objective = objective;
         this.claims = SettlementClaim.getClaimAnzahl(settlementUUID);
-        this.npc = getCitizensNPCbySUUID();
+        //funktioniert nicht im Constructor
+        getCitizensNPCbySUUID();
     }
 
     private NPC createNPC(String name, Location location, UUID settlementUUID) {
@@ -104,19 +105,20 @@ public class Settlement {
         return npc;
     }
 
-    private NPC getCitizensNPCbySUUID() {
-        for (NPC npc : CitizensAPI.getNPCRegistry()) {
+    private void getCitizensNPCbySUUID() {
+        if(npc == null) {
+            for (NPC npc : CitizensAPI.getNPCRegistry()) {
 
-            if (!npc.hasTrait(SettlementTrait.class)) {
+                if (!npc.hasTrait(SettlementTrait.class)) {
 
-                continue;
-            }
+                    continue;
+                }
 
-            if (npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
-                return npc;
+                if (npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
+                    this.npc = npc;
+                }
             }
         }
-        return null;
     }
 
     public void tpNPC(Location location) {
@@ -145,13 +147,9 @@ public class Settlement {
 
     public void rename(String name) {
 
-        if (npc == null) {
-            this.npc = getCitizensNPCbySUUID();
-        }
+        getCitizensNPCbySUUID();
 
         this.name = name;
-
-        assert npc != null;
         npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name.replaceAll("_", " ")));
 
         ProtectedPolygonalRegion newregion = new ProtectedPolygonalRegion(name, region.getPoints(), region.getMinimumPoint().y(), region.getMaximumPoint().y());
@@ -237,7 +235,9 @@ public class Settlement {
 
     public void levelUP() {
         this.level++;
+        this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null, null);
         SettleDBstuff.setLevel(this.id, level);
+        getCitizensNPCbySUUID();
         HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
         hologramTrait.clear();
         hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));

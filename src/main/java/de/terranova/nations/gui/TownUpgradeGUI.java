@@ -33,20 +33,20 @@ public class TownUpgradeGUI extends Gui {
 
         Objective progressObjective = settle.objective;
         Objective goalObjective;
+
         if (!(NationsPlugin.levelObjectives.size() + 1 == settle.level)) {
             goalObjective = NationsPlugin.levelObjectives.get(settle.level);
         } else {
             goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
-
         boolean canLevelup = progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
                 progressObjective.getObjective_c() == goalObjective.getObjective_c() && progressObjective.getObjective_d() == goalObjective.getObjective_d();
 
-        ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta mfiller = filler.getItemMeta();
-        mfiller.displayName(Chat.stringToComponent(""));
-        filler.setItemMeta(mfiller);
+        ItemStack filler = new roseItem.Builder()
+                .material(Material.BLACK_STAINED_GLASS_PANE)
+                .displayName("")
+                .build().stack;
         fillGui(filler);
 
         Icon back = new Icon(new roseItem.Builder()
@@ -57,24 +57,17 @@ public class TownUpgradeGUI extends Gui {
             new TownGUI(player).open();
         });
 
-        ItemStack score = new ItemStack(Material.GOLD_BLOCK);
+        Icon score = new Icon(new roseItem.Builder()
+                .material(Material.GOLD_BLOCK)
+                .displayName(Chat.yellowFade("Coming Soon..."))
+                .build().stack);
 
-        ItemStack submit;
+        Icon submit = new Icon(new roseItem.Builder()
+                .material(canLevelup ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK)
+                .displayName(canLevelup ? Chat.greenFade("Level Up!") : Chat.redFade("More Resources Needed!") )
+                .build().stack);
         if (canLevelup) {
-            submit = new ItemStack(Material.EMERALD_BLOCK);
-        } else {
-            submit = new ItemStack(Material.REDSTONE_BLOCK);
-        }
-        ItemMeta msubmit = submit.getItemMeta();
-        if (canLevelup) {
-            msubmit.displayName(Chat.greenFade("Level Up!"));
-        } else {
-            msubmit.displayName(Chat.redFade("More Resources Needed!"));
-        }
-        submit.setItemMeta(msubmit);
-        Icon isubmit = new Icon(submit);
-        if (canLevelup) {
-            isubmit.onClick(e -> {
+            submit.onClick(e -> {
                 settle.levelUP();
                 new TownUpgradeGUI(player, settle).open();
             });
@@ -95,7 +88,6 @@ public class TownUpgradeGUI extends Gui {
                 new TownUpgradeGUI(player, settle).open();
             });
         }
-
 
         Icon objective_b = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_b())
@@ -147,7 +139,7 @@ public class TownUpgradeGUI extends Gui {
 
 
         addItem(13, score);
-        addItem(40, isubmit);
+        addItem(40, submit);
         addItem(19, objective_a);
         addItem(21, objective_b);
         addItem(23, objective_c);
