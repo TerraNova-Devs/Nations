@@ -25,3 +25,6 @@ dependencies:
     WorldGuardExtraFlags:
       load: BEFORE
       required: true
+    Oraxen:
+      load: BEFORE
+      required: true

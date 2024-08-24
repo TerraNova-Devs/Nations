@@ -33,29 +33,29 @@ public class Vectore2 {
         this.z = loc.z();
     }
 
-    public boolean equals(Vectore2 other) {
-        return (this.z == other.z && this.x == other.x);
-    }
-
-    public String asString(){
-        return this.x + "," +  this.z;
-    }
-
-    public Point asPoint(){
-        return new Point((int) this.x, (int)this.z);
-    }
-
-    public static Collection<Vectore2> fromBlockVectorList(Collection<BlockVector2> vectors){
+    public static Collection<Vectore2> fromBlockVectorList(Collection<BlockVector2> vectors) {
         Collection<Vectore2> output = new ArrayList<Vectore2>();
-        for(BlockVector2 vector : vectors) {
+        for (BlockVector2 vector : vectors) {
             output.add(new Vectore2(vector.x(), vector.z()));
         }
         return output;
     }
 
-    public Vectore2 fromString(String s){
+    public boolean equals(Vectore2 other) {
+        return (this.z == other.z && this.x == other.x);
+    }
+
+    public String asString() {
+        return this.x + "," + this.z;
+    }
+
+    public Point asPoint() {
+        return new Point((int) this.x, (int) this.z);
+    }
+
+    public Vectore2 fromString(String s) {
         String[] parts = s.split(",");
-        return new Vectore2(Double.parseDouble(parts[1]),Double.parseDouble(parts[0]) );
+        return new Vectore2(Double.parseDouble(parts[1]), Double.parseDouble(parts[0]));
     }
 
 }

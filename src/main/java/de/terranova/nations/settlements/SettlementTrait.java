@@ -36,10 +36,10 @@ public class SettlementTrait extends Trait {
 
     @EventHandler
     public void onRightClickNPC(NPCRightClickEvent event) {
-        if(event.getNPC() != this.getNPC()) return;
+        if (event.getNPC() != this.getNPC()) return;
         Player player = event.getClicker().getPlayer();
-        assert player != null;
-        if(!player.hasPermission("nations.menu")) return;
+        if (player == null) return;
+        if (!player.hasPermission("nations.menu")) return;
         new TownGUI(player).open();
     }
 

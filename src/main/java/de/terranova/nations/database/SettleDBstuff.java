@@ -2,7 +2,8 @@ package de.terranova.nations.database;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.settlement;
+import de.terranova.nations.settlements.Settlement;
+import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.sql.Connection;
@@ -19,7 +20,7 @@ public class SettleDBstuff {
              Statement statement = con.createStatement()) {
             statement.execute("SELECT * FROM `settlements_table`");
             ResultSet rs = statement.getResultSet();
-            HashMap<UUID, settlement> settlements = new HashMap<>();
+            HashMap<UUID, Settlement> settlements = new HashMap<>();
             while (rs.next()) {
                 UUID SUUID = UUID.fromString(rs.getString("SUUID"));
                 String name = rs.getString("name");
@@ -29,9 +30,8 @@ public class SettleDBstuff {
                 int obj_b = rs.getInt("obj_b");
                 int obj_c = rs.getInt("obj_c");
                 int obj_d = rs.getInt("obj_d");
-                //System.out.println(SUUID);
-                //System.out.println(name);
-                settlements.put(SUUID, new settlement(SUUID, getMembersAccess(SUUID.toString()), new Vectore2(location), name, level));
+                Objective objective = new Objective(0, obj_a, obj_b, obj_c, obj_d, null, null, null, null);
+                settlements.put(SUUID, new Settlement(SUUID, getMembersAccess(SUUID.toString()), new Vectore2(location), name, level, objective));
             }
             NationsPlugin.settlementManager.setSettlements(settlements);
         } catch (SQLException e) {
@@ -97,6 +97,35 @@ public class SettleDBstuff {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              Statement statement = con.createStatement()) {
             statement.execute(String.format("UPDATE settlements_table SET name = '%s' WHERE SUUID = '%s'", name, SUUID));
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
+        }
+
+    }
+
+    public static void setLevel(UUID SUUID, int level) {
+
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             Statement statement = con.createStatement()) {
+            statement.execute(String.format("UPDATE settlements_table SET level = '%s' WHERE SUUID = '%s'", level, SUUID));
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
+        }
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             Statement statement = con.createStatement()) {
+            statement.execute(String.format("UPDATE settlements_table SET obj_a = '0',obj_b = '0',obj_c = '0',obj_d = '0' WHERE SUUID = '%s'", SUUID));
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
+        }
+
+    }
+
+    //NOT STARTED WORKING AT YET
+    public static void syncObjectives(UUID SUUID, int obj_a, int obj_b, int obj_c, int obj_d) {
+
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             Statement statement = con.createStatement()) {
+            statement.execute(String.format("UPDATE settlements_table SET obj_a = '%s',obj_b = '%s',obj_c = '%s',obj_d = '%s' WHERE SUUID = '%s'", obj_a, obj_b, obj_c, obj_d, SUUID));
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
         }

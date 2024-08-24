@@ -4,7 +4,8 @@ import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.TownSkins;
-import de.terranova.nations.settlements.settlement;
+import de.terranova.nations.settlements.Settlement;
+import de.terranova.nations.worldguard.SettlementClaim;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
@@ -33,9 +34,9 @@ public class TownGUI extends Gui {
     public void onOpen(InventoryOpenEvent event) {
 
         JavaPlugin.getPlugin(NationsPlugin.class);
-        Optional<settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(player);
-        if(settlement.isEmpty()) return;
-        Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(player, settlement.get().id);
+        Optional<Settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(player);
+        if(settle.isEmpty()) return;
+        Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(player, settle.get().id);
         if(access.isEmpty()) return;
 
         ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
@@ -45,7 +46,6 @@ public class TownGUI extends Gui {
         fillGui(filler);
 
         ItemStack level = new ItemStack(Material.NETHER_STAR);
-        level.setAmount(settlement.get().level+1);
         ItemStack skins = new ItemStack(Material.PLAYER_HEAD);
         ItemStack score = new ItemStack(Material.GOLD_INGOT);
         ItemStack upgrades = new ItemStack(Material.IRON_INGOT);
@@ -60,8 +60,8 @@ public class TownGUI extends Gui {
         ItemMeta msettings = settings.getItemMeta();
 
         List<Component> llevel = new ArrayList<>();
-        llevel.add(Chat.cottonCandy(String.format("<i>Vorteile Level %s:",settlement.get().level)));
-        llevel.add(Chat.cottonCandy(String.format("<i>%s/9 Claims",settlement.get().claims)));
+        llevel.add(Chat.cottonCandy(String.format("<i>Vorteile Level %s:",settle.get().level)));
+        llevel.add(Chat.cottonCandy(String.format("<i>%s/9 Claims",settle.get().claims)));
         mlevel.lore(llevel);
         List<Component> lskins = new ArrayList<>();
         lskins.add(Chat.cottonCandy("<i>Hier klicken um den Skin zu ändern."));
@@ -110,8 +110,8 @@ public class TownGUI extends Gui {
 
         iupgrades.onClick(e -> {
             if(!player.hasPermission("nations.menu.upgrades")) return;
-            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR)|| Objects.equals(access.get(), AccessLevelEnum.VICE)){
-                new TownUpgradeGUI(player).open();
+            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR) || Objects.equals(access.get(), AccessLevelEnum.VICE) || Objects.equals(access.get(), AccessLevelEnum.COUNCIL) || player.isOp()){
+                new TownUpgradeGUI(player, settle.get()).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
             }
@@ -120,8 +120,8 @@ public class TownGUI extends Gui {
 
         isettings.onClick(e -> {
             if(!player.hasPermission("nations.menu.settings")) return;
-            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR)|| Objects.equals(access.get(), AccessLevelEnum.VICE)){
-                new TownSettingsGUI(player, settlement.get()).open();
+            if(Objects.equals(access.get(), AccessLevelEnum.MAJOR)|| Objects.equals(access.get(), AccessLevelEnum.VICE)  || player.isOp()){
+                new TownSettingsGUI(player, settle.get()).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
             }

@@ -4,8 +4,8 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.settlements.TownSkins;
-import de.terranova.nations.settlements.settlement;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import mc.obliviate.inventory.pagination.PaginationManager;
@@ -56,7 +56,8 @@ public class TownSkinGUI extends Gui {
 
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
-            Optional<settlement> settlement = JavaPlugin.getPlugin(NationsPlugin.class).settlementManager.checkIfPlayerIsWithinClaim(player);
+            JavaPlugin.getPlugin(NationsPlugin.class);
+            Optional<Settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(player);
             if (settlement.isPresent()) {
                 ItemStack skull = new ItemStack(Material.PLAYER_HEAD, 1);
                 SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();

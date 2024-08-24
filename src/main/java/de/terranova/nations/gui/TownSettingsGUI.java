@@ -1,29 +1,28 @@
 package de.terranova.nations.gui;
 
 import com.sk89q.worldedit.world.entity.EntityType;
-import com.sk89q.worldguard.protection.flags.*;
+import com.sk89q.worldguard.protection.flags.Flags;
+import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.util.Entities;
 import de.mcterranova.bona.lib.chat.Chat;
+import de.terranova.nations.settlements.Settlement;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
-import de.terranova.nations.settlements.settlement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.lang.reflect.AccessFlag;
 import java.util.*;
 
 public class TownSettingsGUI extends Gui {
 
     ProtectedRegion region;
 
-    public TownSettingsGUI(Player player, settlement settle) {
+    public TownSettingsGUI(Player player, Settlement settle) {
         super(player, "town-settings-gui", Chat.blueFade("Settings Menu"), 6);
         this.region = settle.getWorldguardRegion();
     }
@@ -54,18 +53,15 @@ public class TownSettingsGUI extends Gui {
         addStateFlag(Flags.ENDERPEARL, 15, Material.ENDER_PEARL, "Toggelt Enderperlen.");
         addStateFlag(Flags.CHORUS_TELEPORT, 16, Material.CHORUS_FRUIT, "Verhindert das TPen von Chorusfr\u00FCchten.");
 
-        Set<EntityType> mobs =  region.getFlag(Flags.DENY_SPAWN);
+        Set<EntityType> mobs = region.getFlag(Flags.DENY_SPAWN);
         boolean isenbaled;
-        if (mobs == null || mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"))) isenbaled = false;
-        else {
-            isenbaled = true;
-        }
+        isenbaled = mobs != null && !mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"));
         ItemStack item = new ItemStack(Material.ZOMBIE_HEAD);
         ItemMeta mitem = item.getItemMeta();
         List<Component> litem = new ArrayList<>();
         litem.add(Chat.cottonCandy("<i>" + "Sollen Monster spawnen?"));
 
-        if(isenbaled){
+        if (isenbaled) {
             litem.add(Chat.greenFade(String.format("<i>Currently: %s", "enabled")));
         } else {
             litem.add(Chat.redFade(String.format("<i>Currently: %s", "disabled")));
@@ -76,16 +72,16 @@ public class TownSettingsGUI extends Gui {
         Icon icon = new Icon(item);
         addItem(19, icon);
         icon.onClick(e -> {
-            if(isenbaled){
-                Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"),EntityType.REGISTRY.get("minecraft:spider"),
-                        EntityType.REGISTRY.get("minecraft:skeleton"),EntityType.REGISTRY.get("minecraft:enderman"),EntityType.REGISTRY.get("minecraft:phantom"),EntityType.REGISTRY.get("minecraft:drowned"),
-                        EntityType.REGISTRY.get("minecraft:witch"),EntityType.REGISTRY.get("minecraft:pillager")
+            if (isenbaled) {
+                Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"), EntityType.REGISTRY.get("minecraft:spider"),
+                        EntityType.REGISTRY.get("minecraft:skeleton"), EntityType.REGISTRY.get("minecraft:enderman"), EntityType.REGISTRY.get("minecraft:phantom"), EntityType.REGISTRY.get("minecraft:drowned"),
+                        EntityType.REGISTRY.get("minecraft:witch"), EntityType.REGISTRY.get("minecraft:pillager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk")
                 ));
-                region.setFlag(Flags.DENY_SPAWN,set);
+                region.setFlag(Flags.DENY_SPAWN, set);
                 open();
             } else {
                 Set<EntityType> set = new HashSet<>(Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager")));
-                region.setFlag(Flags.DENY_SPAWN,set);
+                region.setFlag(Flags.DENY_SPAWN, set);
                 open();
             }
         });
@@ -96,12 +92,12 @@ public class TownSettingsGUI extends Gui {
         boolean flagValue;
         StateFlag.State stateFlag = region.getFlag(flag);
 
-        if(stateFlag == null || stateFlag.equals(StateFlag.State.DENY)) { flagValue = false; } else flagValue = true;
+        flagValue = stateFlag != null && !stateFlag.equals(StateFlag.State.DENY);
         ItemStack item = new ItemStack(material);
         ItemMeta mitem = item.getItemMeta();
         List<Component> litem = new ArrayList<>();
         litem.add(Chat.cottonCandy("<i>" + description));
-        if(flagValue){
+        if (flagValue) {
             litem.add(Chat.greenFade(String.format("<i>Currently: %s", "enabled")));
         } else {
             litem.add(Chat.redFade(String.format("<i>Currently: %s", "disabled")));
@@ -112,12 +108,12 @@ public class TownSettingsGUI extends Gui {
         Icon icon = new Icon(item);
         addItem(slot, icon);
         icon.onClick(e -> {
-            if(flagValue){
+            if (flagValue) {
                 region.setFlag(flag, StateFlag.State.DENY);
-                addStateFlag(flag, slot,material ,description);
+                addStateFlag(flag, slot, material, description);
             } else {
                 region.setFlag(flag, StateFlag.State.ALLOW);
-                addStateFlag(flag, slot, material,description);
+                addStateFlag(flag, slot, material, description);
             }
         });
     }

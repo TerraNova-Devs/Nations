@@ -33,6 +33,10 @@ repositories {
     name = "WorldGuard"
     url = uri("https://maven.enginehub.org/repo/")
   }
+  maven {
+    name = "Oraxen"
+    url = uri("https://repo.oraxen.com/releases")
+  }
   exclusiveContent {
     forRepository {
       maven("https://api.modrinth.com/maven")
@@ -70,6 +74,7 @@ dependencies {
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
+  compileOnly("io.th0rgal:oraxen:1.180.0")
 }
 
 

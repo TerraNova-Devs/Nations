@@ -103,23 +103,16 @@ public class claimCalc {
 
     }
 
-    public static double area(Vectore2[] vertices)
-    {
+    public static double area(Vectore2[] vertices) {
         double sum = 0;
-        for (int i = 0; i < vertices.length ; i++)
-        {
-            if (i == 0)
-            {
+        for (int i = 0; i < vertices.length; i++) {
+            if (i == 0) {
                 //System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[vertices.length - 1].z));
                 sum += vertices[i].x * (vertices[i + 1].z - vertices[vertices.length - 1].z);
-            }
-            else if (i == vertices.length - 1)
-            {
+            } else if (i == vertices.length - 1) {
                 //System.out.println(vertices[i].x + "x" + (vertices[0].z + "-" + vertices[i - 1].z));
                 sum += vertices[i].x * (vertices[0].z - vertices[i - 1].z);
-            }
-            else
-            {
+            } else {
                 //System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[i - 1].z));
                 sum += vertices[i].x * (vertices[i + 1].z - vertices[i - 1].z);
             }
