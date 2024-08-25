@@ -23,6 +23,7 @@ public class SettlementManager {
 
     public HashMap<UUID, Settlement> settlements;
     public List<Vectore2> locations;
+    static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(2,2,2,2,3,2,2,2,2,4));
 
     private Registry<@NotNull Layer> layerRegistry;
 
@@ -61,23 +62,6 @@ public class SettlementManager {
 
     public void addSettlementsToPl3xmap() {
         layerRegistry.register("settlement-layer",new Pl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
-        /*
-        World world = Bukkit.getWorld("world");
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        assert world != null;
-        RegionManager regions = container.get(BukkitAdapter.adapt(world));
-        assert regions != null;
-        for (ProtectedRegion region :regions.getRegions().values()){
-            for (settlement settle : settlements.values()) {
-                if(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) == null) continue;
-                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG)));
-                if(settle.id.equals(settlementUUID)) {
-                    layerRegistry.register(settle.name.toLowerCase()+"-smarker",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
-                }
-            }
-        }
-
-         */
     }
 
     public Settlement getSettlement(UUID settlementUUID){

@@ -171,7 +171,6 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             if (!hasPermission(p, "nations.claim")) return;
             Optional<ProtectedRegion> area = SettlementClaim.checkSurrAreaForSettles(p);
             if (area.isEmpty()) {
-
                 return;
             }
             ProtectedRegion protectedRegion = area.get();
@@ -204,7 +203,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Dieses Claim gehört bereits einer Stadt an."));
                 return;
             }
-            if (settle.claims >= 9) {
+            if (settle.claims >= settle.getMaxClaims()) {
                 p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
                 return;
             }
