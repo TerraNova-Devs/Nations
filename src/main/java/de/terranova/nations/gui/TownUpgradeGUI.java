@@ -9,6 +9,7 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
 import net.kyori.adventure.text.Component;
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -75,64 +76,52 @@ public class TownUpgradeGUI extends Gui {
 
         Icon objective_a = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_a())
-                .displayName(Chat.blueFade(goalObjective.getMaterial_a()))
+                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())))
                 .isEnchanted(progressObjective.getObjective_a() == goalObjective.getObjective_a())
                 .build().stack);
         if (progressObjective.getObjective_a() != goalObjective.getObjective_a()) {
             objective_a.onClick(e -> {
-                int charged = chargeStrict(player, goalObjective.getMaterial_a(), goalObjective.getObjective_a() - progressObjective.getObjective_a(), false);
-                if (charged <= 0) return;
-                progressObjective.setObjective_a(progressObjective.getObjective_a() + charged);
-                settle.setObjectives(progressObjective);
+                settle.contributeObjective(player, "a");
                 new TownUpgradeGUI(player, settle).open();
             });
         }
 
         Icon objective_b = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_b())
-                .displayName(Chat.blueFade(goalObjective.getMaterial_b()))
+                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())))
                 .isEnchanted(progressObjective.getObjective_b() == goalObjective.getObjective_b())
                 .build().stack);
         if (progressObjective.getObjective_b() != goalObjective.getObjective_b()) {
             objective_b.onClick(e -> {
-                int charged = chargeStrict(player, goalObjective.getMaterial_b(), goalObjective.getObjective_b() - progressObjective.getObjective_b(), false);
-                if (charged <= 0) return;
-                progressObjective.setObjective_b(progressObjective.getObjective_b() + charged);
-                settle.setObjectives(progressObjective);
+                settle.contributeObjective(player, "b");
                 new TownUpgradeGUI(player, settle).open();
             });
         }
 
         Icon objective_c = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_c())
-                .displayName(Chat.blueFade(goalObjective.getMaterial_c()))
+                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())))
                 .isEnchanted(progressObjective.getObjective_c() == goalObjective.getObjective_c())
                 .build().stack);
         if (progressObjective.getObjective_c() != goalObjective.getObjective_c()) {
             objective_c.onClick(e -> {
-                int charged = chargeStrict(player, goalObjective.getMaterial_c(), goalObjective.getObjective_c() - progressObjective.getObjective_c(), false);
-                if (charged <= 0) return;
-                progressObjective.setObjective_c(progressObjective.getObjective_c() + charged);
-                settle.setObjectives(progressObjective);
+                settle.contributeObjective(player, "c");
                 new TownUpgradeGUI(player, settle).open();
             });
         }
 
         Icon objective_d = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_d())
-                .displayName(Chat.blueFade(goalObjective.getMaterial_d()))
+                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_d().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())))
                 .isEnchanted(progressObjective.getObjective_d() == goalObjective.getObjective_d())
                 .build().stack);
         if (progressObjective.getObjective_d() != goalObjective.getObjective_d()) {
             objective_d.onClick(e -> {
-                int charged = chargeStrict(player, goalObjective.getMaterial_d(), goalObjective.getObjective_d() - progressObjective.getObjective_d(), false);
-                if (charged <= 0) return;
-                progressObjective.setObjective_d(progressObjective.getObjective_d() + charged);
-                settle.setObjectives(progressObjective);
+                settle.contributeObjective(player, "d");
                 new TownUpgradeGUI(player, settle).open();
             });
         }

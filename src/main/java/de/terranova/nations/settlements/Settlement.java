@@ -15,19 +15,18 @@ import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.SettlementClaim;
 import de.terranova.nations.worldguard.SettlementFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
+import io.th0rgal.oraxen.api.OraxenItems;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
 import net.citizensnpcs.trait.LookClose;
 import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.OfflinePlayer;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -106,7 +105,7 @@ public class Settlement {
     }
 
     private void getCitizensNPCbySUUID() {
-        if(npc == null) {
+        if (npc == null) {
             for (NPC npc : CitizensAPI.getNPCRegistry()) {
 
                 if (!npc.hasTrait(SettlementTrait.class)) {
@@ -234,6 +233,20 @@ public class Settlement {
     }
 
     public void levelUP() {
+        Objective progressObjective = this.objective;
+        Objective goalObjective;
+
+        if (!(NationsPlugin.levelObjectives.size() + 1 == this.level)) {
+            goalObjective = NationsPlugin.levelObjectives.get(this.level);
+        } else {
+            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
+        }
+
+        boolean canLevelup = progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
+                progressObjective.getObjective_c() == goalObjective.getObjective_c() && progressObjective.getObjective_d() == goalObjective.getObjective_d();
+
+        if (!canLevelup) return;
+
         this.level++;
         this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null, null);
         SettleDBstuff.setLevel(this.id, level);
@@ -241,6 +254,87 @@ public class Settlement {
         HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
         hologramTrait.clear();
         hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
+    }
+
+    public void contributeObjective(Player p, String objective) {
+        Objective progressObjective = this.objective;
+        Objective goalObjective;
+
+        if (!(NationsPlugin.levelObjectives.size() + 1 == this.level)) {
+            goalObjective = NationsPlugin.levelObjectives.get(this.level);
+        } else {
+            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
+        }
+
+        switch (objective) {
+            case "a":
+                int chargeda = chargeStrict(p, goalObjective.getMaterial_a(), goalObjective.getObjective_a() - progressObjective.getObjective_a(), false);
+                if (chargeda <= 0) return;
+                progressObjective.setObjective_a(progressObjective.getObjective_a() + chargeda);
+                this.setObjectives(progressObjective);
+            case "b":
+                int chargedb = chargeStrict(p, goalObjective.getMaterial_b(), goalObjective.getObjective_b() - progressObjective.getObjective_b(), false);
+                if (chargedb <= 0) return;
+                progressObjective.setObjective_b(progressObjective.getObjective_b() + chargedb);
+                this.setObjectives(progressObjective);
+            case "c":
+                int chargedc = chargeStrict(p, goalObjective.getMaterial_c(), goalObjective.getObjective_c() - progressObjective.getObjective_c(), false);
+                if (chargedc <= 0) return;
+                progressObjective.setObjective_c(progressObjective.getObjective_c() + chargedc);
+                this.setObjectives(progressObjective);
+            case "d":
+                int chargedd = chargeStrict(p, goalObjective.getMaterial_d(), goalObjective.getObjective_d() - progressObjective.getObjective_d(), false);
+                if (chargedd <= 0) return;
+                progressObjective.setObjective_d(progressObjective.getObjective_d() + chargedd);
+                this.setObjectives(progressObjective);
+        }
+
+
+    }
+
+    private Integer chargeStrict(Player p, String itemString, int amount, boolean onlyFullCharge) {
+
+        ItemStack item;
+
+        if (OraxenItems.exists(itemString)) {
+            item = OraxenItems.getItemById(itemString).build();
+        } else {
+            item = new ItemStack(Material.valueOf(itemString));
+        }
+
+        ItemStack[] stacks = p.getInventory().getContents();
+        int total = 0;
+
+        if (onlyFullCharge) {
+            for (ItemStack stack : stacks) {
+                if (stack == null || !stack.isSimilar(item)) continue;
+                total += stack.getAmount();
+            }
+            if (total < amount) return -1;
+        }
+
+        total = amount;
+
+
+        for (int i = 0; i < stacks.length; i++) {
+            if (stacks[i] == null || !stacks[i].isSimilar(item)) continue;
+
+
+            int stackAmount = stacks[i].getAmount();
+            int n = total;
+            if (stackAmount < total) {
+                stacks[i] = null;
+                total -= stackAmount;
+            } else {
+                stacks[i].setAmount(stackAmount - total);
+                total -= total;
+                break;
+            }
+        }
+        p.getInventory().setContents(stacks);
+        p.updateInventory();
+        return amount - total;
+
     }
 
     public ProtectedRegion getWorldguardRegion() {
@@ -266,5 +360,11 @@ public class Settlement {
         SettleDBstuff.syncObjectives(this.id, this.objective.getObjective_a(), this.objective.getObjective_b(), this.objective.getObjective_c(), this.objective.getObjective_d());
     }
 
+    public int getMaxClaims() {
+        int claims = 9;
+        if (this.level <= 1) return claims;
+        for (int i = 0; i <= this.level - 2; i++) claims += SettlementManager.claimsPerLevel.get(i);
+        return claims;
+    }
 }
 

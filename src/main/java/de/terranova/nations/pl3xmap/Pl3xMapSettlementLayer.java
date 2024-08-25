@@ -62,8 +62,8 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
                     "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9; } p.mid { text-align: left; } p.color{ color: #68D9B0; font-size: 30px;} </style>" +
                             "<center><p class='color'>%s</p></center>" +
                             "<br><center><img src='images/banner/Mitglieder.png' height='50' width='200' ></center> <br><p class='mid'>Owner: %s<br>Vize%s<br>Council%s</p>" +
-                            "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='mi'>Level: %s<br>Claims: %s/9</p>"
-                    , settle.name.replaceAll("_", " "), owner, ": " + StringUtils.join(vices, ", "), ": " + StringUtils.join(councils, ", "), settle.level, settle.claims);
+                            "<br><center><img src='images/banner/Statistiken.png' height='50' width='200' ></center> <br><p class='mi'>Level: %s<br>Claims: %s/%s</p>"
+                    , settle.name.replaceAll("_", " "), owner, ": " + StringUtils.join(vices, ", "), ": " + StringUtils.join(councils, ", "), settle.level, settle.claims,settle.getMaxClaims());
 
             Options optionsicon;
             optionsicon = Options.builder()
