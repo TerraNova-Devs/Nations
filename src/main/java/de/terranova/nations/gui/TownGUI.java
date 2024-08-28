@@ -21,7 +21,7 @@ import java.util.Optional;
 public class TownGUI extends Gui {
 
     public TownGUI(Player player) {
-        super(player, "town-gui", Chat.blueFade("Town Menu"), 5);
+        super(player, "town-gui", Chat.blueFade("<b>Town Menu"), 5);
     }
 
     @Override
@@ -43,38 +43,37 @@ public class TownGUI extends Gui {
 
         Icon level = new Icon(new roseItem.Builder()
                 .material(Material.NETHER_STAR)
-                .displayName(Chat.redFade("Stadtlevel"))
-                .addLore(Chat.cottonCandy(String.format("<i>Vorteile Level %s:", settle.level)))
+                .displayName(Chat.redFade("<b>Stadtlevel: " + settle.level))
                 .addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.claims,settle.getMaxClaims())))
                 .build().stack);
 
         Icon skins = new Icon(new roseItem.Builder()
                 .material(Material.PLAYER_HEAD)
-                .displayName(Chat.yellowFade("Skins"))
+                .displayName(Chat.yellowFade("<b>Skins"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um den Skin zu ändern."))
                 .build().stack);
 
         Icon score = new Icon(new roseItem.Builder()
                 .material(Material.GOLD_INGOT)
-                .displayName(Chat.yellowFade("Score"))
+                .displayName(Chat.yellowFade("<b>Score"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken fuer mehr infos."))
                 .build().stack);
 
         Icon upgrades = new Icon(new roseItem.Builder()
                 .material(Material.IRON_INGOT)
-                .displayName(Chat.yellowFade("Upgrades"))
+                .displayName(Chat.yellowFade("<b>Upgrades"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um die Stadt zu verbessern."))
                 .build().stack);
 
         Icon farm = new Icon(new roseItem.Builder()
                 .material(Material.GRASS_BLOCK)
-                .displayName(Chat.yellowFade("Farm"))
+                .displayName(Chat.yellowFade("<b>Farm"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um die Farmwelt zu betreten."))
                 .build().stack);
 
         Icon settings = new Icon(new roseItem.Builder()
                 .material(Material.COMPARATOR)
-                .displayName(Chat.yellowFade("Settings"))
+                .displayName(Chat.yellowFade("<b>Settings"))
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
                 .build().stack);
 

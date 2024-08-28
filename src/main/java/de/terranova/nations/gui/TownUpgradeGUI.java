@@ -25,7 +25,7 @@ public class TownUpgradeGUI extends Gui {
     Settlement settle;
 
     public TownUpgradeGUI(Player player, Settlement settle) {
-        super(player, "town-upgrade-gui", Chat.blueFade("Town Upgrade"), 6);
+        super(player, "town-upgrade-gui", Chat.blueFade("<b>Town Upgrades"), 6);
         this.settle = settle;
     }
 
@@ -76,7 +76,7 @@ public class TownUpgradeGUI extends Gui {
 
         Icon objective_a = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_a())
-                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())))
                 .isEnchanted(progressObjective.getObjective_a() == goalObjective.getObjective_a())
                 .build().stack);
@@ -89,7 +89,7 @@ public class TownUpgradeGUI extends Gui {
 
         Icon objective_b = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_b())
-                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())))
                 .isEnchanted(progressObjective.getObjective_b() == goalObjective.getObjective_b())
                 .build().stack);
@@ -102,7 +102,7 @@ public class TownUpgradeGUI extends Gui {
 
         Icon objective_c = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_c())
-                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())))
                 .isEnchanted(progressObjective.getObjective_c() == goalObjective.getObjective_c())
                 .build().stack);
@@ -115,7 +115,7 @@ public class TownUpgradeGUI extends Gui {
 
         Icon objective_d = new Icon(new roseItem.Builder()
                 .material(goalObjective.getMaterial_d())
-                .displayName(Chat.blueFade(WordUtils.capitalize(goalObjective.getMaterial_d().replaceAll("_", " ").toLowerCase())))
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_d().replaceAll("_", " ").toLowerCase())))
                 .addLore(Chat.redFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())))
                 .isEnchanted(progressObjective.getObjective_d() == goalObjective.getObjective_d())
                 .build().stack);
