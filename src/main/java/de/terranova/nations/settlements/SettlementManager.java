@@ -1,5 +1,6 @@
 package de.terranova.nations.settlements;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -14,6 +15,8 @@ import de.terranova.nations.worldguard.SettlementFlag;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -92,6 +95,23 @@ public class SettlementManager {
         assert regions != null;
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
+        for (ProtectedRegion region : set) {
+            for (Settlement settle : settlements.values()) {
+                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(SettlementFlag.SETTLEMENT_UUID_FLAG)));
+                if(settle.id.equals(settlementUUID)) {
+                    return Optional.of(settlements.get(settlementUUID));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    public Optional<Settlement> checkIfLocationIsWithinClaim(Location location) {
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
+        assert regions != null;
+        RegionQuery query = container.createQuery();
+        ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
         for (ProtectedRegion region : set) {
             for (Settlement settle : settlements.values()) {
                 UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(SettlementFlag.SETTLEMENT_UUID_FLAG)));

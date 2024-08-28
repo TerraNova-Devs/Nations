@@ -12,6 +12,7 @@ import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -68,7 +69,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            String name = String.join("_", Arrays.copyOfRange(args, 1, args.length));
+            String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
             if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
@@ -142,7 +143,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
                 return;
             }
-            String name = String.join("_", Arrays.copyOfRange(args, 1, args.length));
+            String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
             if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
                 p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
                 return;
