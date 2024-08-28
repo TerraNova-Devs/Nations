@@ -3,6 +3,7 @@ package de.terranova.nations.gui.guiutil;
 import de.mcterranova.bona.lib.chat.Chat;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -46,22 +47,22 @@ public class roseItem {
         }
 
         public Builder displayName(String displayname) {
-            this.displayname = Component.text(displayname);
+            this.displayname = Component.text(displayname).decoration(TextDecoration.ITALIC, false);
             return this;
         }
 
         public Builder displayName(Component displayname) {
-            this.displayname = displayname;
+            this.displayname = displayname.decoration(TextDecoration.ITALIC, false);
             return this;
         }
 
         public Builder addLore(String lore) {
-            this.lore.add(Component.text(lore));
+            this.lore.add(Component.text(lore).decoration(TextDecoration.ITALIC, false));
             return this;
         }
 
         public Builder addLore(Component lore) {
-            this.lore.add(lore);
+            this.lore.add(lore.decoration(TextDecoration.ITALIC, false));
             return this;
         }
 
