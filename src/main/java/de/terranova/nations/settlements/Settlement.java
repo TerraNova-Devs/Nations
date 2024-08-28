@@ -127,7 +127,7 @@ public class Settlement {
                 continue;
             }
             if (npc.getOrAddTrait(SettlementTrait.class).getUUID().equals(this.id)) {
-                npc.teleport(location, PlayerTeleportEvent.TeleportCause.CHORUS_FRUIT);
+                npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
             }
         }
 

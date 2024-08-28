@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.bona.lib.chat.Chat;
+import de.terranova.nations.gui.guiutil.roseItem;
 import de.terranova.nations.settlements.Settlement;
 import mc.obliviate.inventory.Gui;
 import mc.obliviate.inventory.Icon;
@@ -23,25 +24,24 @@ public class TownSettingsGUI extends Gui {
     ProtectedRegion region;
 
     public TownSettingsGUI(Player player, Settlement settle) {
-        super(player, "town-settings-gui", Chat.blueFade("Settings Menu"), 6);
+        super(player, "town-settings-gui", Chat.blueFade("<b>Town Settings"), 6);
         this.region = settle.getWorldguardRegion();
     }
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        ItemStack filler = new ItemStack(Material.BLACK_STAINED_GLASS_PANE);
-        ItemMeta mfiller = filler.getItemMeta();
-        mfiller.displayName(Chat.stringToComponent(""));
-        filler.setItemMeta(mfiller);
+
+        ItemStack filler = new roseItem.Builder()
+                .material(Material.BLACK_STAINED_GLASS_PANE)
+                .displayName("")
+                .build().stack;
         fillGui(filler);
 
-        ItemStack back = new ItemStack(Material.SPECTRAL_ARROW);
-        ItemMeta mback = back.getItemMeta();
-        mback.displayName(Chat.redFade("<b>Go Back</b>"));
-        back.setItemMeta(mback);
-        Icon iback = new Icon(back);
-        addItem(45, iback);
-        iback.onClick(e -> {
+        Icon back = new Icon(new roseItem.Builder()
+                .material(Material.SPECTRAL_ARROW)
+                .displayName(Chat.redFade("<b>Go Back</b>"))
+                .build().stack);
+        back.onClick(e -> {
             new TownGUI(player).open();
         });
 
@@ -56,21 +56,12 @@ public class TownSettingsGUI extends Gui {
         Set<EntityType> mobs = region.getFlag(Flags.DENY_SPAWN);
         boolean isenbaled;
         isenbaled = mobs != null && !mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"));
-        ItemStack item = new ItemStack(Material.ZOMBIE_HEAD);
-        ItemMeta mitem = item.getItemMeta();
-        List<Component> litem = new ArrayList<>();
-        litem.add(Chat.cottonCandy("<i>" + "Sollen Monster spawnen?"));
-
-        if (isenbaled) {
-            litem.add(Chat.greenFade(String.format("<i>Currently: %s", "enabled")));
-        } else {
-            litem.add(Chat.redFade(String.format("<i>Currently: %s", "disabled")));
-        }
-        mitem.lore(litem);
-        mitem.displayName(Chat.blueFade("Flag: " + Flags.DENY_SPAWN.getName()));
-        item.setItemMeta(mitem);
-        Icon icon = new Icon(item);
-        addItem(19, icon);
+        Icon icon = new Icon( new roseItem.Builder()
+                .material(Material.ZOMBIE_HEAD)
+                .displayName(Chat.blueFade("Flag: " + Flags.DENY_SPAWN.getName()))
+                .addLore(Chat.cottonCandy("<i>Sollen Monster spawnen?"))
+                .addLore(isenbaled ? Chat.greenFade(String.format("<i>Currently: %s", "enabled")) : Chat.redFade(String.format("<i>Currently: %s", "disabled")))
+                .build().stack);
         icon.onClick(e -> {
             if (isenbaled) {
                 Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"), EntityType.REGISTRY.get("minecraft:spider"),
@@ -86,6 +77,8 @@ public class TownSettingsGUI extends Gui {
                 open();
             }
         });
+        addItem(19, icon);
+        addItem(45, back);
 
     }
 
@@ -94,19 +87,12 @@ public class TownSettingsGUI extends Gui {
         StateFlag.State stateFlag = region.getFlag(flag);
 
         flagValue = stateFlag != null && !stateFlag.equals(StateFlag.State.DENY);
-        ItemStack item = new ItemStack(material);
-        ItemMeta mitem = item.getItemMeta();
-        List<Component> litem = new ArrayList<>();
-        litem.add(Chat.cottonCandy("<i>" + description));
-        if (flagValue) {
-            litem.add(Chat.greenFade(String.format("<i>Currently: %s", "enabled")));
-        } else {
-            litem.add(Chat.redFade(String.format("<i>Currently: %s", "disabled")));
-        }
-        mitem.lore(litem);
-        mitem.displayName(Chat.blueFade("Flag: " + flag.getName()));
-        item.setItemMeta(mitem);
-        Icon icon = new Icon(item);
+        Icon icon = new Icon( new roseItem.Builder()
+                .material(material)
+                .displayName(Chat.blueFade("Flag: " + flag.getName()))
+                .addLore(Chat.cottonCandy("<i>" + description))
+                .addLore(flagValue ? Chat.greenFade(String.format("<i>Currently: %s", "enabled")) : Chat.redFade(String.format("<i>Currently: %s", "disabled")))
+                .build().stack);
         addItem(slot, icon);
         icon.onClick(e -> {
             if (flagValue) {
