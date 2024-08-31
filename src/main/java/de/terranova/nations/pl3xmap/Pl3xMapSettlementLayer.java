@@ -30,7 +30,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
     Collection<Marker<?>> markers = new ArrayList<>();
 
     public Pl3xMapSettlementLayer(@NotNull World world) {
-        super("settlement-layer", world, () -> "Städte");
+        super("settlement-layer", world, () -> "St\u00E4dte");
 
         Path icon = FileUtil.getWebDir().resolve("images/icon/Castle.png");
         try {
@@ -40,6 +40,13 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
             throw new RuntimeException(e);
         }
 
+        setUpdateInterval(0);
+        setLiveUpdate(true);
+        setShowControls(true);
+        setDefaultHidden(false);
+        setPriority(100);
+        setZIndex(999);
+
         for (Settlement settle : NationsPlugin.settlementManager.settlements.values()) {
 
             Collection<Point> markerPoints = new ArrayList<>();
@@ -47,12 +54,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
                 markerPoints.add(v.asPoint());
             Polygon polygonMarker = new Polygon("polygon" + settle.id, new Polyline("line" + settle.id, markerPoints));
 
-            setUpdateInterval(0);
-            setLiveUpdate(true);
-            setShowControls(true);
-            setDefaultHidden(false);
-            setPriority(100);
-            setZIndex(999);
+
 
             Collection<String> vices = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.VICE);
             Collection<String> councils = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.COUNCIL);

@@ -6,29 +6,62 @@ import io.th0rgal.oraxen.api.OraxenItems;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Material;
+import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryDragEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.function.Consumer;
 
-public class roseItem {
+public class RoseItem {
 
     public ItemStack stack;
+    private Consumer<InventoryClickEvent> clickAction;
+    private Consumer<InventoryDragEvent> dragAction;
 
-    private roseItem(Builder builder) {
+    private RoseItem(Builder builder) {
         ItemStack stack = new ItemStack(builder.material);
         ItemMeta meta = stack.getItemMeta();
         meta.displayName(builder.displayname);
-        if(builder.lore != null) meta.lore(builder.lore);
-        if(builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
+        if (builder.lore != null) meta.lore(builder.lore);
+        if (builder.isEnchanted) meta.setEnchantmentGlintOverride(true);
         if(builder.skullTexture != null) mutateSkullMetaSkinBy64(builder.skullTexture,(SkullMeta) meta);
         stack.setItemMeta(meta);
         this.stack = stack;
+        this.dragAction = event -> {
+        };
+        this.clickAction = event -> {
+        };
+    }
+
+    @Nonnull
+    public Consumer<InventoryClickEvent> getClickAction() {
+        return clickAction;
+    }
+
+    @Nonnull
+    public RoseItem onClick(Consumer<InventoryClickEvent> clickAction) {
+        this.clickAction = clickAction;
+        return this;
+    }
+
+    @Nonnull
+    public Consumer<InventoryDragEvent> getDragAction() {
+        return dragAction;
+
+    }
+
+    @Nonnull
+    public RoseItem onDrag(Consumer<InventoryDragEvent> dragAction) {
+        this.dragAction = dragAction;
+        return this;
     }
 
     public static class Builder {
@@ -73,6 +106,16 @@ public class roseItem {
             return this;
         }
 
+        public Builder addLore(Component... lore) {
+            for (Component text : lore) this.lore.add(text.decoration(TextDecoration.ITALIC, false));
+            return this;
+        }
+
+        public Builder addLore(String... lore) {
+            for (String text : lore) this.lore.add(Component.text(text).decoration(TextDecoration.ITALIC, false));
+            return this;
+        }
+
         public Builder isEnchanted(boolean isenchanted) {
             this.isEnchanted = isenchanted;
             return this;
@@ -84,8 +127,8 @@ public class roseItem {
             return this;
         }
 
-        public roseItem build(){
-            return new roseItem(this);
+        public RoseItem build() {
+            return new RoseItem(this);
         }
 
     }
@@ -104,9 +147,7 @@ public class roseItem {
         profile.getProperties().put("textures", new Property("textures", b64));
         try {
             metaSetProfileMethod.invoke(skullMeta, profile);
-        } catch (IllegalAccessException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
+        } catch (IllegalAccessException | InvocationTargetException e) {
             throw new RuntimeException(e);
         }
     }

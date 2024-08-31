@@ -68,9 +68,6 @@ dependencies {
   }
   //compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.9")
   compileOnly("maven.modrinth:pl3xmap:1.21-500")
-  implementation("com.github.hamza-cskn.obliviate-invs:core:4.3.0")
-  implementation("com.github.hamza-cskn.obliviate-invs:pagination:4.3.0")
-  implementation("com.github.hamza-cskn.obliviate-invs:configurablegui:4.3.0")
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")

@@ -2,25 +2,19 @@ package de.terranova.nations.gui;
 
 import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.gui.guiutil.roseItem;
+import de.terranova.nations.gui.guiutil.RoseGUI;
+import de.terranova.nations.gui.guiutil.RoseItem;
 import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.settlements.level.Objective;
 import io.th0rgal.oraxen.api.OraxenItems;
-import mc.obliviate.inventory.Gui;
-import mc.obliviate.inventory.Icon;
-import net.kyori.adventure.text.Component;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
-import java.util.List;
-
-public class TownUpgradeGUI extends Gui {
+public class TownUpgradeGUI extends RoseGUI {
 
     Settlement settle;
 
@@ -44,29 +38,29 @@ public class TownUpgradeGUI extends Gui {
         boolean canLevelup = progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
                 progressObjective.getObjective_c() == goalObjective.getObjective_c() && progressObjective.getObjective_d() == goalObjective.getObjective_d();
 
-        ItemStack filler = new roseItem.Builder()
+        RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
-                .build().stack;
+                .build();
         fillGui(filler);
 
-        Icon back = new Icon(new roseItem.Builder()
+        RoseItem back = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
                 .displayName(Chat.redFade("<b>Go Back</b>"))
-                .build().stack);
+                .build();
         back.onClick(e -> {
             new TownGUI(player).open();
         });
 
-        Icon score = new Icon(new roseItem.Builder()
+        RoseItem score = new RoseItem.Builder()
                 .material(Material.GOLD_BLOCK)
                 .displayName(Chat.yellowFade("Coming Soon..."))
-                .build().stack);
+                .build();
 
-        Icon submit = new Icon(new roseItem.Builder()
+        RoseItem submit = new RoseItem.Builder()
                 .material(canLevelup ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK)
                 .displayName(canLevelup ? Chat.greenFade("Level Up!") : Chat.redFade("More Resources Needed!") )
-                .build().stack);
+                .build();
         if (canLevelup) {
             submit.onClick(e -> {
                 settle.levelUP();
@@ -74,12 +68,12 @@ public class TownUpgradeGUI extends Gui {
             });
         }
 
-        Icon objective_a = new Icon(new roseItem.Builder()
+        RoseItem objective_a = new RoseItem.Builder()
                 .material(goalObjective.getMaterial_a())
                 .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
-                .addLore(Chat.redFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())))
+                .addLore(progressObjective.getObjective_a() == goalObjective.getObjective_a() ? Chat.greenFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())) : Chat.redFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())))
                 .isEnchanted(progressObjective.getObjective_a() == goalObjective.getObjective_a())
-                .build().stack);
+                .build();
         if (progressObjective.getObjective_a() != goalObjective.getObjective_a()) {
             objective_a.onClick(e -> {
                 settle.contributeObjective(player, "a");
@@ -87,12 +81,12 @@ public class TownUpgradeGUI extends Gui {
             });
         }
 
-        Icon objective_b = new Icon(new roseItem.Builder()
+        RoseItem objective_b = new RoseItem.Builder()
                 .material(goalObjective.getMaterial_b())
                 .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
-                .addLore(Chat.redFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())))
+                .addLore(progressObjective.getObjective_b() == goalObjective.getObjective_b() ? Chat.greenFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())) : Chat.redFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())))
                 .isEnchanted(progressObjective.getObjective_b() == goalObjective.getObjective_b())
-                .build().stack);
+                .build();
         if (progressObjective.getObjective_b() != goalObjective.getObjective_b()) {
             objective_b.onClick(e -> {
                 settle.contributeObjective(player, "b");
@@ -100,12 +94,12 @@ public class TownUpgradeGUI extends Gui {
             });
         }
 
-        Icon objective_c = new Icon(new roseItem.Builder()
+        RoseItem objective_c = new RoseItem.Builder()
                 .material(goalObjective.getMaterial_c())
                 .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
-                .addLore(Chat.redFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())))
+                .addLore(progressObjective.getObjective_c() == goalObjective.getObjective_c() ? Chat.greenFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())) : Chat.redFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())))
                 .isEnchanted(progressObjective.getObjective_c() == goalObjective.getObjective_c())
-                .build().stack);
+                .build();
         if (progressObjective.getObjective_c() != goalObjective.getObjective_c()) {
             objective_c.onClick(e -> {
                 settle.contributeObjective(player, "c");
@@ -113,12 +107,12 @@ public class TownUpgradeGUI extends Gui {
             });
         }
 
-        Icon objective_d = new Icon(new roseItem.Builder()
+        RoseItem objective_d = new RoseItem.Builder()
                 .material(goalObjective.getMaterial_d())
                 .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_d().replaceAll("_", " ").toLowerCase())))
-                .addLore(Chat.redFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())))
+                .addLore(progressObjective.getObjective_d() == goalObjective.getObjective_d() ? Chat.greenFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())) : Chat.redFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())))
                 .isEnchanted(progressObjective.getObjective_d() == goalObjective.getObjective_d())
-                .build().stack);
+                .build();
         if (progressObjective.getObjective_d() != goalObjective.getObjective_d()) {
             objective_d.onClick(e -> {
                 settle.contributeObjective(player, "d");
@@ -138,52 +132,6 @@ public class TownUpgradeGUI extends Gui {
 
     @Override
     public void onClose(InventoryCloseEvent event) {
-
-    }
-
-
-    private Integer chargeStrict(Player p, String itemString, int amount, boolean onlyFullCharge) {
-
-        ItemStack item;
-
-        if (OraxenItems.exists(itemString)) {
-            item = OraxenItems.getItemById(itemString).build();
-        } else {
-            item = new ItemStack(Material.valueOf(itemString));
-        }
-
-        ItemStack[] stacks = p.getInventory().getContents();
-        int total = 0;
-
-        if (onlyFullCharge) {
-            for (ItemStack stack : stacks) {
-                if (stack == null || !stack.isSimilar(item)) continue;
-                total += stack.getAmount();
-            }
-            if (total < amount) return -1;
-        }
-
-        total = amount;
-
-
-        for (int i = 0; i < stacks.length; i++) {
-            if (stacks[i] == null || !stacks[i].isSimilar(item)) continue;
-
-
-            int stackAmount = stacks[i].getAmount();
-            int n = total;
-            if (stackAmount < total) {
-                stacks[i] = null;
-                total -= stackAmount;
-            } else {
-                stacks[i].setAmount(stackAmount - total);
-                total -= total;
-                break;
-            }
-        }
-        p.getInventory().setContents(stacks);
-        p.updateInventory();
-        return amount - total;
 
     }
 }
