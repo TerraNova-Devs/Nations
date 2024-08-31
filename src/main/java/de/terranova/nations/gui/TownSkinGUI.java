@@ -1,35 +1,27 @@
 package de.terranova.nations.gui;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
 import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.gui.guiutil.roseItem;
+import de.terranova.nations.gui.guiutil.RoseGUI;
+import de.terranova.nations.gui.guiutil.RoseItem;
+import de.terranova.nations.gui.guiutil.RosePagination;
 import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.settlements.TownSkins;
-import mc.obliviate.inventory.Gui;
-import mc.obliviate.inventory.Icon;
-import mc.obliviate.inventory.pagination.PaginationManager;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.inventory.meta.SkullMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Optional;
-import java.util.UUID;
 
-public class TownSkinGUI extends Gui {
+public class TownSkinGUI extends RoseGUI {
 
     private static Method metaSetProfileMethod;
-    private final PaginationManager pagination = new PaginationManager(this);
+    private final RosePagination pagination = new RosePagination(this);
 
     public TownSkinGUI(Player player, int townskins) {
         super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
@@ -41,16 +33,16 @@ public class TownSkinGUI extends Gui {
 
 
 
-        ItemStack filler = new roseItem.Builder()
+        RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
-                .build().stack;
+                .build();
         fillGui(filler);
 
-        Icon back = new Icon(new roseItem.Builder()
+        RoseItem back = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
                 .displayName(Chat.redFade("<b>Go Back</b>"))
-                .build().stack);
+                .build();
         back.onClick(e -> {
             new TownGUI(player).open();
         });
@@ -66,11 +58,11 @@ public class TownSkinGUI extends Gui {
             JavaPlugin.getPlugin(NationsPlugin.class);
             Optional<Settlement> settlement = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(player);
             if (settlement.isPresent()) {
-                Icon skull = new Icon(new roseItem.Builder()
+                RoseItem skull = new RoseItem.Builder()
                         .setSkull(skin.getSkinTexture())
                         .displayName(Chat.yellowFade("<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
                         .addLore(settlement.get().level >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
-                        .build().stack);
+                        .build();
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
                     if (settlement.get().level >= skin.getLEVEL()) settlement.get().reskinNpc(skin);

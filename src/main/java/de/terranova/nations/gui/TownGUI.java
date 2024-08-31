@@ -2,23 +2,21 @@ package de.terranova.nations.gui;
 
 import de.mcterranova.bona.lib.chat.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.gui.guiutil.roseItem;
+import de.terranova.nations.gui.guiutil.RoseGUI;
+import de.terranova.nations.gui.guiutil.RoseItem;
 import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.settlements.TownSkins;
-import mc.obliviate.inventory.Gui;
-import mc.obliviate.inventory.Icon;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 import java.util.Optional;
 
-public class TownGUI extends Gui {
+public class TownGUI extends RoseGUI {
 
     public TownGUI(Player player) {
         super(player, "town-gui", Chat.blueFade("<b>Town Menu"), 5);
@@ -35,47 +33,47 @@ public class TownGUI extends Gui {
         if (OAccess.isEmpty()) return;
         AccessLevelEnum access = OAccess.get();
 
-        ItemStack filler = new roseItem.Builder()
+        RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
-                .build().stack;
+                .build();
         fillGui(filler);
 
-        Icon level = new Icon(new roseItem.Builder()
+        RoseItem level = new RoseItem.Builder()
                 .material(Material.NETHER_STAR)
                 .displayName(Chat.redFade("<b>Stadtlevel: " + settle.level))
                 .addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.claims,settle.getMaxClaims())))
-                .build().stack);
+                .build();
 
-        Icon skins = new Icon(new roseItem.Builder()
+        RoseItem skins = new RoseItem.Builder()
                 .material(Material.PLAYER_HEAD)
                 .displayName(Chat.yellowFade("<b>Skins"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um den Skin zu ändern."))
-                .build().stack);
+                .build();
 
-        Icon score = new Icon(new roseItem.Builder()
+        RoseItem score = new RoseItem.Builder()
                 .material(Material.GOLD_INGOT)
                 .displayName(Chat.yellowFade("<b>Score"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken fuer mehr infos."))
-                .build().stack);
+                .build();
 
-        Icon upgrades = new Icon(new roseItem.Builder()
+        RoseItem upgrades = new RoseItem.Builder()
                 .material(Material.IRON_INGOT)
                 .displayName(Chat.yellowFade("<b>Upgrades"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um die Stadt zu verbessern."))
-                .build().stack);
+                .build();
 
-        Icon farm = new Icon(new roseItem.Builder()
+        RoseItem farm = new RoseItem.Builder()
                 .material(Material.GRASS_BLOCK)
                 .displayName(Chat.yellowFade("<b>Farm"))
                 .addLore(Chat.cottonCandy("<i>Hier klicken um die Farmwelt zu betreten."))
-                .build().stack);
+                .build();
 
-        Icon settings = new Icon(new roseItem.Builder()
+        RoseItem settings = new RoseItem.Builder()
                 .material(Material.COMPARATOR)
                 .displayName(Chat.yellowFade("<b>Settings"))
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
-                .build().stack);
+                .build();
 
         addItem(13, level);
         addItem(19, skins);

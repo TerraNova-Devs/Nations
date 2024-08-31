@@ -5,21 +5,18 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.bona.lib.chat.Chat;
-import de.terranova.nations.gui.guiutil.roseItem;
+import de.terranova.nations.gui.guiutil.RoseGUI;
+import de.terranova.nations.gui.guiutil.RoseItem;
 import de.terranova.nations.settlements.Settlement;
-import mc.obliviate.inventory.Gui;
-import mc.obliviate.inventory.Icon;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public class TownSettingsGUI extends Gui {
+public class TownSettingsGUI extends RoseGUI {
 
     ProtectedRegion region;
 
@@ -31,16 +28,16 @@ public class TownSettingsGUI extends Gui {
     @Override
     public void onOpen(InventoryOpenEvent event) {
 
-        ItemStack filler = new roseItem.Builder()
+        RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
-                .build().stack;
+                .build();
         fillGui(filler);
 
-        Icon back = new Icon(new roseItem.Builder()
+        RoseItem back = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
                 .displayName(Chat.redFade("<b>Go Back</b>"))
-                .build().stack);
+                .build();
         back.onClick(e -> {
             new TownGUI(player).open();
         });
@@ -56,13 +53,13 @@ public class TownSettingsGUI extends Gui {
         Set<EntityType> mobs = region.getFlag(Flags.DENY_SPAWN);
         boolean isenbaled;
         isenbaled = mobs != null && !mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"));
-        Icon icon = new Icon( new roseItem.Builder()
+        RoseItem flag = new RoseItem.Builder()
                 .material(Material.ZOMBIE_HEAD)
                 .displayName(Chat.blueFade("Flag: " + Flags.DENY_SPAWN.getName()))
                 .addLore(Chat.cottonCandy("<i>Sollen Monster spawnen?"))
                 .addLore(isenbaled ? Chat.greenFade(String.format("<i>Currently: %s", "enabled")) : Chat.redFade(String.format("<i>Currently: %s", "disabled")))
-                .build().stack);
-        icon.onClick(e -> {
+                .build();
+        flag.onClick(e -> {
             if (isenbaled) {
                 Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"), EntityType.REGISTRY.get("minecraft:spider"),
                         EntityType.REGISTRY.get("minecraft:skeleton"), EntityType.REGISTRY.get("minecraft:enderman"), EntityType.REGISTRY.get("minecraft:phantom"), EntityType.REGISTRY.get("minecraft:drowned"),
@@ -77,7 +74,7 @@ public class TownSettingsGUI extends Gui {
                 open();
             }
         });
-        addItem(19, icon);
+        addItem(19, flag);
         addItem(45, back);
 
     }
@@ -87,14 +84,14 @@ public class TownSettingsGUI extends Gui {
         StateFlag.State stateFlag = region.getFlag(flag);
 
         flagValue = stateFlag != null && !stateFlag.equals(StateFlag.State.DENY);
-        Icon icon = new Icon( new roseItem.Builder()
+        RoseItem item = new RoseItem.Builder()
                 .material(material)
                 .displayName(Chat.blueFade("Flag: " + flag.getName()))
                 .addLore(Chat.cottonCandy("<i>" + description))
                 .addLore(flagValue ? Chat.greenFade(String.format("<i>Currently: %s", "enabled")) : Chat.redFade(String.format("<i>Currently: %s", "disabled")))
-                .build().stack);
-        addItem(slot, icon);
-        icon.onClick(e -> {
+                .build();
+        addItem(slot, item);
+        item.onClick(e -> {
             if (flagValue) {
                 region.setFlag(flag, StateFlag.State.DENY);
                 addStateFlag(flag, slot, material, description);
