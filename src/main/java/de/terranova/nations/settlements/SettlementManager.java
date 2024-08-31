@@ -114,7 +114,9 @@ public class SettlementManager {
         ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
         for (ProtectedRegion region : set) {
             for (Settlement settle : settlements.values()) {
-                UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(SettlementFlag.SETTLEMENT_UUID_FLAG)));
+                String UUIDstring = region.getFlag(SettlementFlag.SETTLEMENT_UUID_FLAG);
+                if(UUIDstring == null) continue;
+                UUID settlementUUID = UUID.fromString(UUIDstring);
                 if(settle.id.equals(settlementUUID)) {
                     return Optional.of(settlements.get(settlementUUID));
                 }
