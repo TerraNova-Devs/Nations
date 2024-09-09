@@ -10,7 +10,7 @@ plugins {
 
 group = "de.terranova.nations"
 version = "1.0.0-SNAPSHOT"
-description = "Test plugin for paperweight-userdev"
+description = "Nations Plugin tailored & written by & for TerraNova."
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
