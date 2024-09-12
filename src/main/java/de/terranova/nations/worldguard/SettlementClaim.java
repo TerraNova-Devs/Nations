@@ -15,7 +15,8 @@ import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import de.mcterranova.bona.lib.chat.Chat;
+
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;

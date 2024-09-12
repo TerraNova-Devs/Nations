@@ -9,7 +9,8 @@ import com.sk89q.worldguard.session.MoveType;
 import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import com.sk89q.worldguard.session.handler.Handler;
-import de.mcterranova.bona.lib.chat.Chat;
+
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.Settlement;
 import org.bukkit.craftbukkit.entity.CraftPlayer;

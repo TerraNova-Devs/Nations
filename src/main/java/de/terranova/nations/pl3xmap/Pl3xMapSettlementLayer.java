@@ -86,7 +86,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
     }
 
     @Override
-    public @NotNull Collection<@NotNull Marker<?>> getMarkers() {
+    public @NotNull Collection<Marker<?>> getMarkers() {
         return markers;
     }
 

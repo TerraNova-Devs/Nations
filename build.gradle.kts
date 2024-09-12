@@ -51,15 +51,6 @@ repositories {
 // For >=1.20.5 when you don't care about supporting spigot
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
-// 2)
-// For 1.20.4 or below, or when you care about supporting Spigot on >=1.20.5
-// Configure reobfJar to run when invoking the build task
-/*
-tasks.assemble {
-  dependsOn(tasks.reobfJar)
-}
- */
-
 dependencies {
   paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
   implementation("com.zaxxer:HikariCP:5.1.0")

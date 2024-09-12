@@ -28,7 +28,7 @@ public class SettlementManager {
     public List<Vectore2> locations;
     static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(2,2,2,2,3,2,2,2,2,4));
 
-    private Registry<@NotNull Layer> layerRegistry;
+    private Registry<Layer> layerRegistry;
 
     public SettlementManager() {
         this.settlements = new HashMap<>();

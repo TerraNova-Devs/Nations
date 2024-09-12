@@ -4,15 +4,14 @@ import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.mcterranova.bona.lib.chat.Chat;
-import de.terranova.nations.gui.guiutil.RoseGUI;
-import de.terranova.nations.gui.guiutil.RoseItem;
+import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
+import de.mcterranova.terranovaLib.roseGUI.RoseItem;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.settlements.Settlement;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
