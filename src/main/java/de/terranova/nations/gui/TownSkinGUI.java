@@ -1,10 +1,11 @@
 package de.terranova.nations.gui;
 
-import de.mcterranova.bona.lib.chat.Chat;
+
+import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
+import de.mcterranova.terranovaLib.roseGUI.RoseItem;
+import de.mcterranova.terranovaLib.roseGUI.RosePagination;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.gui.guiutil.RoseGUI;
-import de.terranova.nations.gui.guiutil.RoseItem;
-import de.terranova.nations.gui.guiutil.RosePagination;
 import de.terranova.nations.settlements.Settlement;
 import de.terranova.nations.settlements.TownSkins;
 import org.apache.commons.lang.WordUtils;

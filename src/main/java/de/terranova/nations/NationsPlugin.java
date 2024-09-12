@@ -2,11 +2,11 @@ package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
-import de.mcterranova.bona.lib.YMLHandler;
+import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
+import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.commands.SettleCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.gui.guiutil.RoseGUIListener;
 import de.terranova.nations.settlements.SettlementManager;
 import de.terranova.nations.settlements.SettlementTrait;
 import de.terranova.nations.settlements.level.Objective;
@@ -19,6 +19,7 @@ import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -51,7 +52,7 @@ public final class NationsPlugin extends JavaPlugin {
     public static Map<Integer, Objective> levelObjectives;
     public YMLHandler skinsYML;
     public Logger logger;
-    private Registry<@NotNull Layer> layerRegistry;
+    private Registry<Layer> layerRegistry;
 
     //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
     //EIGENE KLASSE FÜR ACCESS

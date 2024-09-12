@@ -1,7 +1,7 @@
 package de.terranova.nations.commands;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import de.mcterranova.bona.lib.chat.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevelEnum;
