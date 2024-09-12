@@ -16,7 +16,7 @@ dependencies:
     Citizens:
       load: BEFORE
       required: true
-    Bona:
+    TerranovaLib:
       load: BEFORE
       required: true
     Pl3xMap:
