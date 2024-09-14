@@ -6,6 +6,7 @@ import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevelEnum;
 import de.terranova.nations.settlements.Settlement;
+import de.terranova.nations.settlements.SettlementManager;
 import de.terranova.nations.worldguard.SettlementClaim;
 import de.terranova.nations.worldguard.SettlementFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -111,7 +112,8 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 Settlement newsettle = new Settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
                 NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
                 try {
-                    SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
+                    SettleDBstuff settleDB = new SettleDBstuff(settlementID);
+                    settleDB.addSettlement(name, new Vectore2(p.getLocation()), p.getUniqueId());
                 } catch (SQLException e) {
                     throw new RuntimeException(e);
                 }
@@ -119,6 +121,18 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             } else {
                 p.sendMessage(Chat.errorFade("Du hast leider keine Berechtigung eine Stadt zu gr\u00FCnden."));
             }
+        }
+
+        if (args[0].equalsIgnoreCase("delete")) {
+            if (!hasPermission(p, "nations.delete")) return;
+            Optional<Settlement> settle = NationsPlugin.settlementManager.checkIfPlayerIsWithinClaim(p);
+            if (settle.isEmpty()) return;
+            Optional<AccessLevelEnum> access = NationsPlugin.settlementManager.getAccessLevel(p, settle.get().id);
+            if (access.isEmpty()) return;
+            if (!access.get().equals(AccessLevelEnum.MAJOR)) return;
+
+            NationsPlugin.settlementManager.removeSettlement(settle.get().id);
+
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
@@ -293,7 +307,8 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             Settlement newsettle = new Settlement(settlementID, p.getUniqueId(), p.getLocation(), name);
             NationsPlugin.settlementManager.addSettlement(settlementID, newsettle);
             try {
-                SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
+                SettleDBstuff settleDB = new SettleDBstuff(settlementID);
+                settleDB.addSettlement(name, new Vectore2(p.getLocation()), p.getUniqueId());
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

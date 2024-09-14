@@ -160,7 +160,8 @@ public class Settlement {
         regions.removeRegion(region.getId());
         regions.addRegion(newregion);
         this.region = newregion;
-        SettleDBstuff.rename(this.id, name);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        settleDB.rename(name);
     }
 
     public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevelEnum access) {
@@ -186,21 +187,22 @@ public class Settlement {
     }
 
     public Optional<AccessLevelEnum> promoteOrAdd(Player target, Player p) throws SQLException {
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
         if (!this.membersAccess.containsKey(target.getUniqueId())) {
             this.membersAccess.put(target.getUniqueId(), AccessLevelEnum.CITIZEN);
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.CITIZEN);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.CITIZEN);
             SettlementClaim.addOrRemoveFromSettlement(target, this, true);
             return Optional.of(AccessLevelEnum.CITIZEN);
         }
         AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
             this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.COUNCIL);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.COUNCIL);
             return Optional.of(AccessLevelEnum.COUNCIL);
         }
         if (accessLevelEnum.equals(AccessLevelEnum.COUNCIL)) {
             this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.VICE);
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.VICE);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.VICE);
             return Optional.of(AccessLevelEnum.VICE);
         }
         if (accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR))
@@ -212,21 +214,22 @@ public class Settlement {
         if (!this.membersAccess.containsKey(target.getUniqueId()) || this.membersAccess.get(target.getUniqueId()).equals(AccessLevelEnum.MAJOR))
             return Optional.empty();
         AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
         if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
             this.membersAccess.remove(target.getUniqueId());
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.REMOVE);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.REMOVE);
             SettlementClaim.addOrRemoveFromSettlement(target, this, false);
             p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde von deiner Stadt entfernt.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
             return Optional.of(AccessLevelEnum.REMOVE);
         }
         if (accessLevelEnum.equals(AccessLevelEnum.COUNCIL)) {
             this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.CITIZEN);
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.CITIZEN);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.CITIZEN);
             return Optional.of(AccessLevelEnum.CITIZEN);
         }
         if (accessLevelEnum.equals(AccessLevelEnum.VICE)) {
             this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            SettleDBstuff.changeMemberAccess(this.id, target.getUniqueId(), AccessLevelEnum.COUNCIL);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.COUNCIL);
             return Optional.of(AccessLevelEnum.COUNCIL);
         }
         p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
@@ -250,7 +253,8 @@ public class Settlement {
 
         this.level++;
         this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null, null);
-        SettleDBstuff.setLevel(this.id, level);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        settleDB.setLevel(level);
         getCitizensNPCbySUUID();
         HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
         hologramTrait.clear();
@@ -358,7 +362,8 @@ public class Settlement {
 
     public void setObjectives(Objective objective) {
         this.objective = objective;
-        SettleDBstuff.syncObjectives(this.id, this.objective.getObjective_a(), this.objective.getObjective_b(), this.objective.getObjective_c(), this.objective.getObjective_d());
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        settleDB.syncObjectives(this.objective.getObjective_a(), this.objective.getObjective_b(), this.objective.getObjective_c(), this.objective.getObjective_d());
     }
 
     public int getMaxClaims() {
@@ -366,6 +371,19 @@ public class Settlement {
         if (this.level <= 1) return claims;
         for (int i = 0; i <= this.level - 2; i++) claims += SettlementManager.claimsPerLevel.get(i);
         return claims;
+    }
+
+    public void removeNPC() {
+        getCitizensNPCbySUUID();
+        this.npc.despawn();
+    }
+
+    public void removeWGRegion() {
+        ProtectedRegion region = getWorldguardRegion();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
+        assert regions != null;
+        regions.removeRegion(region.getId());
     }
 }
 

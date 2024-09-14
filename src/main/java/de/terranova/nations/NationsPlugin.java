@@ -51,7 +51,7 @@ public final class NationsPlugin extends JavaPlugin {
     public static HikariCP hikari;
     public static Map<Integer, Objective> levelObjectives;
     public YMLHandler skinsYML;
-    public Logger logger;
+    public static Logger logger;
     private Registry<Layer> layerRegistry;
 
     //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
@@ -81,13 +81,9 @@ public final class NationsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
         settlementManager = new SettlementManager();
-        try {
-            SettleDBstuff.getInitialSettlementData();
-            settlementManager.addSettlementsToPl3xmap();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
 
+        SettleDBstuff.getInitialSettlementData();
+        settlementManager.addSettlementsToPl3xmap();
     }
 
     @Override

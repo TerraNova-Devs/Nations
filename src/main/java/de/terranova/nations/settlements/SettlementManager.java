@@ -9,6 +9,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.pl3xmap.Pl3xMapSettlementLayer;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.SettlementFlag;
@@ -54,6 +55,19 @@ public class SettlementManager {
                 }
         }
         return true;
+    }
+
+    public void removeSettlement(UUID uuid) {
+        Settlement settle = settlements.get(uuid);
+        //Citizen NPC töten
+        settle.removeNPC();
+        //World Guard Region löschen
+        settle.removeWGRegion();
+        //Settle aus der Datenbank nehmen
+        SettleDBstuff settleDB = new SettleDBstuff(settle.id);
+        settleDB.dropSettlement();
+        // Settle aus dem Arbeitsspeicher nehmen
+        settlements.remove(uuid);
     }
 
     public Optional<AccessLevelEnum> getAccessLevel(Player p, UUID settlementUUID) {
