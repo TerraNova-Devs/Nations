@@ -22,8 +22,9 @@ public class SettleDBstuff {
         try {
             if(!verifySettlement()){
                 this.SUUID = null;
+                NationsPlugin.logger.warning("[DEBUG] Nations/SettleDBstuff failed to verify Settlement: " + SUUID.toString());
             } else {
-                NationsPlugin.logger.warning("Nations/SettleDBstuff failed to verify Settlement: " + SUUID.toString());
+                if(NationsPlugin.debug) NationsPlugin.logger.warning("[DEBUG] Nations/SettleDBstuff verified Settlement: " + SUUID.toString());
             }
         } catch (SQLException e) {
             throw new IllegalStateException("DB Failed to verify Settlement", e);
@@ -46,9 +47,8 @@ public class SettleDBstuff {
                 int obj_c = rs.getInt("obj_c");
                 int obj_d = rs.getInt("obj_d");
                 Objective objective = new Objective(0, obj_a, obj_b, obj_c, obj_d, null, null, null, null);
-                if(NationsPlugin.debug) {
-                    NationsPlugin.logger.info("Getting settlement: " + name + " | UUID: " + SUUID);
-                }
+                if(NationsPlugin.debug) NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
+
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
                 settlements.put(SUUID, new Settle(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
             }
@@ -65,7 +65,6 @@ public class SettleDBstuff {
              PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, SUUID.toString());
             ResultSet rs = statement.executeQuery();
-            NationsPlugin.logger.info(String.valueOf(rs.next()));
             result = rs.next();
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
@@ -89,7 +88,7 @@ public class SettleDBstuff {
         return access;
     }
 
-    public void addSettlement(String name, Vectore2 location, UUID owner) throws SQLException {
+    public static void addSettlement(UUID SUUID, String name, Vectore2 location, UUID owner) {
         String settlementSql = "INSERT INTO `settlements_table` (`SUUID`, `Name`, `Location`) VALUES (?, ?, ?)";
         String accessSql = "INSERT INTO `access_table` (`SUUID`, `PUUID`, `ACCESS`) VALUES (?, ?, 'MAJOR')";
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();

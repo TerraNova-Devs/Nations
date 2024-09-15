@@ -1,5 +1,7 @@
 package de.terranova.nations.worldguard.math;
 
+import de.terranova.nations.NationsPlugin;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.Optional;
 
 public class claimCalc {
 
-    static boolean debug = false;
+    static boolean debug = NationsPlugin.debug;
 
     public static Optional<List<Vectore2>> dothatshitforme(List<Vectore2> oldlist, List<Vectore2> newlist) {
 
