@@ -2,7 +2,7 @@ package de.terranova.nations.pl3xmap;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settlement;
+import de.terranova.nations.settlements.Settle;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.image.IconImage;
@@ -47,7 +47,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
         setPriority(100);
         setZIndex(999);
 
-        for (Settlement settle : NationsPlugin.settlementManager.settlements.values()) {
+        for (Settle settle : NationsPlugin.settleManager.settlements.values()) {
 
             Collection<Point> markerPoints = new ArrayList<>();
             for (Vectore2 v : Vectore2.fromBlockVectorList(settle.getWorldguardRegion().getPoints()))

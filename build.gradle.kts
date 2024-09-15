@@ -61,8 +61,7 @@ repositories {
 
 }
 
-// 1)
-// For >=1.20.5 when you don't care about supporting spigot
+// using Mojang Mappins for NMS
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
@@ -77,10 +76,8 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.180.0")
-  compileOnly("de.mcterranova:terranova-lib:0.5.0")
+  implementation("de.mcterranova:terranova-lib:0.5.0")
 }
-
-
 
 tasks {
   compileJava {

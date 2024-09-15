@@ -2,7 +2,7 @@ package de.terranova.nations.database;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settlement;
+import de.terranova.nations.settlements.Settle;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.math.Vectore2;
 
@@ -35,7 +35,7 @@ public class SettleDBstuff {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
-            HashMap<UUID, Settlement> settlements = new HashMap<>();
+            HashMap<UUID, Settle> settlements = new HashMap<>();
             while (rs.next()) {
                 UUID SUUID = UUID.fromString(rs.getString("SUUID"));
                 String name = rs.getString("name");
@@ -50,9 +50,9 @@ public class SettleDBstuff {
                     NationsPlugin.logger.info("Getting settlement: " + name + " | UUID: " + SUUID);
                 }
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
-                settlements.put(SUUID, new Settlement(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
+                settlements.put(SUUID, new Settle(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
             }
-            NationsPlugin.settlementManager.setSettlements(settlements);
+            NationsPlugin.settleManager.setSettlements(settlements);
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
         }
