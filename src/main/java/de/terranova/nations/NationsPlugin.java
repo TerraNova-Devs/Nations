@@ -44,8 +44,8 @@ import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
 
+    public static boolean debug = true;
     //CACHE wird beim claimen nicht geupdated
-
     public static SettlementManager settlementManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
