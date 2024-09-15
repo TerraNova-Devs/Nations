@@ -373,6 +373,12 @@ public class Settle {
         return claims;
     }
 
+    public void remove() {
+        removeNPC();
+        removeWGRegion();
+        NationsPlugin.settleManager.locations.remove(this.location);
+    }
+
     public void removeNPC() {
         getCitizensNPCbySUUID();
         this.npc.despawn();

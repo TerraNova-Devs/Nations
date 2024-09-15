@@ -54,10 +54,8 @@ public class SettleManager {
 
     public void removeSettlement(UUID uuid) {
         Settle settle = settlements.get(uuid);
-        //Citizen NPC töten
-        settle.removeNPC();
-        //World Guard Region löschen
-        settle.removeWGRegion();
+        //Citizen NPC töten & World Guard Region löschen
+        settle.remove();
         //Settle aus der Datenbank nehmen
         SettleDBstuff settleDB = new SettleDBstuff(settle.id);
         settleDB.dropSettlement();

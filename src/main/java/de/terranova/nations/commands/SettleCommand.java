@@ -103,23 +103,17 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
                 return;
             }
-            //plugin.settlementManager.canSettle(p)
-            if (true) {
-                p.sendMessage("ANGEKOMMEN");
-                UUID settlementID = UUID.randomUUID();
-                SettleClaim.createClaim(name, p, settlementID);
-                Settle newsettle = new Settle(settlementID, p.getUniqueId(), p.getLocation(), name);
-                NationsPlugin.settleManager.addSettlement(settlementID, newsettle);
-                try {
-                    SettleDBstuff settleDB = new SettleDBstuff(settlementID);
-                    settleDB.addSettlement(name, new Vectore2(p.getLocation()), p.getUniqueId());
-                } catch (SQLException e) {
-                    throw new RuntimeException(e);
-                }
-                NationsPlugin.settleManager.addSettlementToPl3xmap(newsettle);
-            } else {
-                p.sendMessage(Chat.errorFade("Du hast leider keine Berechtigung eine Stadt zu gr\u00FCnden."));
-            }
+
+            p.sendMessage("ANGEKOMMEN");
+            UUID settlementID = UUID.randomUUID();
+            SettleClaim.createClaim(name, p, settlementID);
+            Settle newsettle = new Settle(settlementID, p.getUniqueId(), p.getLocation(), name);
+            NationsPlugin.settleManager.addSettlement(settlementID, newsettle);
+
+            SettleDBstuff.addSettlement(settlementID,name, new Vectore2(p.getLocation()), p.getUniqueId());
+
+            NationsPlugin.settleManager.addSettlementToPl3xmap(newsettle);
+
         }
 
         if (args[0].equalsIgnoreCase("delete")) {
@@ -129,9 +123,14 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
             if (access.isEmpty()) return;
             if (!access.get().equals(AccessLevelEnum.MAJOR)) return;
-
             NationsPlugin.settleManager.removeSettlement(settle.get().id);
+        }
 
+        if (args[0].equalsIgnoreCase("forcedelete")) {
+            if (!hasPermission(p, "nations.admin.delete")) return;
+            Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
+            if (settle.isEmpty()) return;
+            NationsPlugin.settleManager.removeSettlement(settle.get().id);
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
@@ -305,12 +304,9 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             UUID settlementID = UUID.randomUUID();
             Settle newsettle = new Settle(settlementID, p.getUniqueId(), p.getLocation(), name);
             NationsPlugin.settleManager.addSettlement(settlementID, newsettle);
-            try {
-                SettleDBstuff settleDB = new SettleDBstuff(settlementID);
-                settleDB.addSettlement(name, new Vectore2(p.getLocation()), p.getUniqueId());
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+
+            SettleDBstuff.addSettlement(settlementID, name, new Vectore2(p.getLocation()), p.getUniqueId());
+
             SettleClaim.createClaim(name, p, settlementID);
             NationsPlugin.settleManager.addSettlementToPl3xmap(newsettle);
 
