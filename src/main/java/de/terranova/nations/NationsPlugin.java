@@ -7,11 +7,11 @@ import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.commands.SettleCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.SettlementManager;
-import de.terranova.nations.settlements.SettlementTrait;
+import de.terranova.nations.settlements.SettleManager;
+import de.terranova.nations.settlements.SettleTrait;
 import de.terranova.nations.settlements.level.Objective;
-import de.terranova.nations.worldguard.SettlementFlag;
-import de.terranova.nations.worldguard.SettlementHandler;
+import de.terranova.nations.worldguard.SettleFlag;
+import de.terranova.nations.worldguard.SettleHandler;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -19,10 +19,8 @@ import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.TypeDescription;
@@ -46,7 +44,7 @@ public final class NationsPlugin extends JavaPlugin {
 
     public static boolean debug = true;
     //CACHE wird beim claimen nicht geupdated
-    public static SettlementManager settlementManager;
+    public static SettleManager settleManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
     public static Map<Integer, Objective> levelObjectives;
@@ -80,10 +78,10 @@ public final class NationsPlugin extends JavaPlugin {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        settlementManager = new SettlementManager();
+        settleManager = new SettleManager();
 
         SettleDBstuff.getInitialSettlementData();
-        settlementManager.addSettlementsToPl3xmap();
+        settleManager.addSettlementsToPl3xmap();
     }
 
     @Override
@@ -112,16 +110,16 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void citizensTraitRegistry() {
-        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettlementTrait.class));
+        net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettleTrait.class));
     }
 
     private void worldguardFlagRegistry() {
-        SettlementFlag.registerSettlementFlag();
+        SettleFlag.registerSettlementFlag();
     }
 
     private void worldguardHandlerRegistry() {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
-        sessionManager.registerHandler(SettlementHandler.FACTORY, null);
+        sessionManager.registerHandler(SettleHandler.FACTORY, null);
     }
 
 
