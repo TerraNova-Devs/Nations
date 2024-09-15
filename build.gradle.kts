@@ -1,4 +1,5 @@
 import xyz.jpenilla.resourcefactory.bukkit.BukkitPluginYaml
+import java.util.*
 
 plugins {
   `java-library`
@@ -15,6 +16,12 @@ description = "Nations Plugin tailored & written by & for TerraNova."
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
   toolchain.languageVersion = JavaLanguageVersion.of(21)
+}
+
+val envProperties = Properties()
+val envPropertiesFile = file("private.env")
+envPropertiesFile.bufferedReader(Charsets.UTF_8).use { reader ->
+  envProperties.load(reader)
 }
 
 repositories {
@@ -43,7 +50,14 @@ repositories {
     }
     filter { includeGroup("maven.modrinth") }
   }
-
+  maven {
+    name = "github"
+    url = uri("https://maven.pkg.github.com/TerraNova-Devs/TerranovaLib")
+    credentials {
+      username = project.findProperty(envProperties.getProperty("githubUser")) as String?
+      password = project.findProperty(envProperties.getProperty("githubToken")) as String?
+    }
+  }
 
 }
 
@@ -63,6 +77,7 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.180.0")
+  compileOnly("de.mcterranova:terranova-lib:0.5.0")
 }
 
 

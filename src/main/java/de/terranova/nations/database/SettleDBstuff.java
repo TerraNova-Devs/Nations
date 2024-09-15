@@ -18,13 +18,16 @@ public class SettleDBstuff {
     private UUID SUUID;
 
     public SettleDBstuff(UUID SUUID) {
+        this.SUUID = SUUID;
         try {
-            if(verifySettlement()){
-                this.SUUID = SUUID;
+            if(!verifySettlement()){
+                this.SUUID = null;
             } else {
                 NationsPlugin.logger.warning("Nations/SettleDBstuff failed to verify Settlement: " + SUUID.toString());
             }
-        } catch (SQLException ignored) {}
+        } catch (SQLException e) {
+            throw new IllegalStateException("DB Failed to verify Settlement", e);
+        }
     }
 
     public static void getInitialSettlementData() {
@@ -43,6 +46,9 @@ public class SettleDBstuff {
                 int obj_c = rs.getInt("obj_c");
                 int obj_d = rs.getInt("obj_d");
                 Objective objective = new Objective(0, obj_a, obj_b, obj_c, obj_d, null, null, null, null);
+                if(NationsPlugin.debug) {
+                    NationsPlugin.logger.info("Getting settlement: " + name + " | UUID: " + SUUID);
+                }
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
                 settlements.put(SUUID, new Settlement(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
             }
@@ -53,13 +59,14 @@ public class SettleDBstuff {
     }
 
     private boolean verifySettlement() throws SQLException {
-        String sql = "SELECT * FROM `settlements_table` WHERE SUUID = ?";
-        boolean result = false;
+        boolean result;
+        String sql = "SELECT 1 FROM `settlements_table` WHERE SUUID = ?";
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, String.valueOf(SUUID));
+            statement.setString(1, SUUID.toString());
             ResultSet rs = statement.executeQuery();
-            if(rs.next()) result = true;
+            NationsPlugin.logger.info(String.valueOf(rs.next()));
+            result = rs.next();
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
         }
@@ -71,7 +78,7 @@ public class SettleDBstuff {
         HashMap<UUID, AccessLevelEnum> access = new HashMap<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, String.valueOf(SUUID));
+            statement.setString(1, SUUID.toString());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 access.put(UUID.fromString(rs.getString("PUUID")), AccessLevelEnum.valueOf(rs.getString("access")));
