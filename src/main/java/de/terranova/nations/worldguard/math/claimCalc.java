@@ -393,28 +393,28 @@ public class claimCalc {
         Vectore2 next;
         int i = 0;
 
-        for (Vectore2 list : current) {
+        for (Vectore2 curr : current) {
 
             if (i == current.size() - 1) {
-                i = 0;
+                i = -1;
             }
 
             next = current.get(i + 1);
 
-            if (list.z == last.z) {
-                if (list.z == next.z) {
+            if (curr.z == last.z) {
+                if (curr.z == next.z) {
                     i++;
                     continue;
                 }
             }
-            if (list.x == last.x) {
-                if (list.x == next.x) {
+            if (curr.x == last.x) {
+                if (curr.x == next.x) {
                     i++;
                     continue;
                 }
             }
-            output.add(list);
-            last = list;
+            output.add(curr);
+            last = curr;
             i++;
         }
 
