@@ -15,6 +15,7 @@ import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -59,7 +60,12 @@ public class SettleCommand implements BasicCommand, TabCompleter {
 
 
         if (args[0].equalsIgnoreCase("test")) {
-
+            if (!hasPermission(p, "nations.admin.test")) return;
+            Settle settle = NationsPlugin.settleManager.getSettle(p.getLocation()).get();
+            p.sendMessage("" + settle.location.asString() + ": " + settle.name);
+            for (Vectore2 loc : NationsPlugin.settleManager.locations) {
+                p.sendMessage(loc.asString());
+            }
         }
 
         if (args[0].equalsIgnoreCase("create")) {
@@ -104,14 +110,14 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 return;
             }
 
-            p.sendMessage("ANGEKOMMEN");
+
             UUID settlementID = UUID.randomUUID();
             SettleClaim.createClaim(name, p, settlementID);
             Settle newsettle = new Settle(settlementID, p.getUniqueId(), p.getLocation(), name);
+
             NationsPlugin.settleManager.addSettlement(settlementID, newsettle);
-
             SettleDBstuff.addSettlement(settlementID,name, new Vectore2(p.getLocation()), p.getUniqueId());
-
+            p.sendMessage(Chat.greenFade("Deine Stadt " + newsettle.name + " wurde erfolgreich gegründet."));
             NationsPlugin.settleManager.addSettlementToPl3xmap(newsettle);
 
         }
@@ -124,6 +130,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             if (access.isEmpty()) return;
             if (!access.get().equals(AccessLevelEnum.MAJOR)) return;
             NationsPlugin.settleManager.removeSettlement(settle.get().id);
+            p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().name + " wurde erfolgreich entfernt."));
         }
 
         if (args[0].equalsIgnoreCase("forceremove")) {
@@ -131,6 +138,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
             NationsPlugin.settleManager.removeSettlement(settle.get().id);
+            p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().name + " wurde erfolgreich entfernt."));
         }
 
         if (args[0].equalsIgnoreCase("tphere")) {
@@ -225,7 +233,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
             settle.claims = SettleClaim.getClaimAnzahl(settle.id);
             settle.region = settle.getWorldguardRegion();
-
+            p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + settle.claims + "/" + settle.getMaxClaims() + ")"));
         }
 
         if (args[0].equalsIgnoreCase("forceclaim")) {
