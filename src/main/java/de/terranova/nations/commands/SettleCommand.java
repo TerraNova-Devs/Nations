@@ -116,8 +116,8 @@ public class SettleCommand implements BasicCommand, TabCompleter {
 
         }
 
-        if (args[0].equalsIgnoreCase("delete")) {
-            if (!hasPermission(p, "nations.delete")) return;
+        if (args[0].equalsIgnoreCase("remove")) {
+            if (!hasPermission(p, "nations.remove")) return;
             Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
             Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
@@ -126,8 +126,8 @@ public class SettleCommand implements BasicCommand, TabCompleter {
             NationsPlugin.settleManager.removeSettlement(settle.get().id);
         }
 
-        if (args[0].equalsIgnoreCase("forcedelete")) {
-            if (!hasPermission(p, "nations.admin.delete")) return;
+        if (args[0].equalsIgnoreCase("forceremove")) {
+            if (!hasPermission(p, "nations.admin.remove")) return;
             Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
             NationsPlugin.settleManager.removeSettlement(settle.get().id);
@@ -198,7 +198,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 p.sendMessage(Chat.errorFade("Du benötigst einen höheren Rang um diese Stadt zu erweitern."));
                 return;
             }
-            Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID));
+            Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
             double abstand = Integer.MAX_VALUE;
             for (Vectore2 location : NationsPlugin.settleManager.locations) {
                 if (settle.location.equals(location)) continue;
@@ -236,7 +236,7 @@ public class SettleCommand implements BasicCommand, TabCompleter {
                 String settlementUUID = protectedRegion.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
                 SettleClaim.addToExistingClaim(p, protectedRegion);
-                Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID));
+                Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
                 NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
                 settle.claims = SettleClaim.getClaimAnzahl(settle.id);
 

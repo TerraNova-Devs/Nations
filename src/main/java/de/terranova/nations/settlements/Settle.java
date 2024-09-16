@@ -300,7 +300,6 @@ public class Settle {
     private Integer chargeStrict(Player p, String itemString, int amount, boolean onlyFullCharge) {
 
         ItemStack item;
-
         if (OraxenItems.exists(itemString)) {
             item = OraxenItems.getItemById(itemString).build();
         } else {
@@ -309,7 +308,6 @@ public class Settle {
 
         ItemStack[] stacks = p.getInventory().getContents();
         int total = 0;
-
         if (onlyFullCharge) {
             for (ItemStack stack : stacks) {
                 if (stack == null || !stack.isSimilar(item)) continue;
@@ -319,14 +317,9 @@ public class Settle {
         }
 
         total = amount;
-
-
         for (int i = 0; i < stacks.length; i++) {
             if (stacks[i] == null || !stacks[i].isSimilar(item)) continue;
-
-
             int stackAmount = stacks[i].getAmount();
-            int n = total;
             if (stackAmount < total) {
                 stacks[i] = null;
                 total -= stackAmount;
@@ -336,10 +329,10 @@ public class Settle {
                 break;
             }
         }
+
         p.getInventory().setContents(stacks);
         p.updateInventory();
         return amount - total;
-
     }
 
     public ProtectedRegion getWorldguardRegion() {
@@ -381,7 +374,7 @@ public class Settle {
 
     public void removeNPC() {
         getCitizensNPCbySUUID();
-        this.npc.despawn();
+        this.npc.destroy();
     }
 
     public void removeWGRegion() {

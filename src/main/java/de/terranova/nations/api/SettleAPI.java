@@ -9,7 +9,7 @@ import java.util.UUID;
 
 public class SettleAPI {
 
-    public static Settle getSettle(UUID SettlementUUID) {
+    public static Optional<Settle> getSettle(UUID SettlementUUID) {
         return NationsPlugin.settleManager.getSettle(SettlementUUID);
     }
 
