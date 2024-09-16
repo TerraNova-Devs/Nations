@@ -91,8 +91,8 @@ public class SettleManager {
          */
     }
 
-    public Settle getSettle(UUID settlementUUID){
-        return settlements.get(settlementUUID);
+    public Optional<Settle> getSettle(UUID settlementUUID){
+        return Optional.ofNullable(settlements.get(settlementUUID));
     }
 
     public Optional<Settle> getSettle(Location location) {

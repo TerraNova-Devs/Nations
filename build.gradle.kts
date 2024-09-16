@@ -70,9 +70,8 @@ dependencies {
   compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  //compileOnly("com.github.decentsoftware-eu:decentholograms:2.8.9")
   compileOnly("maven.modrinth:pl3xmap:1.21-500")
-  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.11-SNAPSHOT")
+  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.180.0")
