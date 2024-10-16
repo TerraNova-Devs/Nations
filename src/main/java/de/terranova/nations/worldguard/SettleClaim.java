@@ -31,7 +31,7 @@ import java.util.*;
 
 public class SettleClaim {
 
-    public static void createClaim(String name, Player p, UUID uuid) {
+    public static ProtectedRegion createClaim(String name, Player p, UUID uuid) {
 
         int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
         int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
@@ -60,6 +60,7 @@ public class SettleClaim {
 
         assert regions != null;
         regions.addRegion(region);
+        return regions.getRegion(region.getId());
     }
 
     public static void changeFlag(Player p, UUID settlementID, Flag flag) {

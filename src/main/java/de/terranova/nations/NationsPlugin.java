@@ -43,7 +43,6 @@ import java.util.logging.Logger;
 public final class NationsPlugin extends JavaPlugin {
 
     public static boolean debug = true;
-    //CACHE wird beim claimen nicht geupdated
     public static SettleManager settleManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
@@ -123,12 +122,14 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
 
+    @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
         });
+        Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }
     //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));
 
