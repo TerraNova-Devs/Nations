@@ -31,34 +31,29 @@ import org.bukkit.inventory.ItemStack;
 import java.sql.SQLException;
 import java.util.*;
 
-public class Settle {
+public class Settle extends OwnedRegion{
 
-    public final UUID id;
     public final Vectore2 location;
-    public String name;
     public int level;
 
     public Objective objective;
     public HashMap<UUID, AccessLevelEnum> membersAccess = new HashMap<>();
     public int claims;
-    public ProtectedRegion region;
     NPC npc;
 
 
     //Beim neu erstellen
-    public Settle(UUID settlementUUID, UUID owner, Location location, String name) {
-
+    public Settle(String name, Player p) {
+        super(name, UUID.randomUUID());
         //INIT
-        this.id = settlementUUID;
-        this.name = name;
-        this.location = SettleClaim.getSChunkMiddle(location);
+        this.location = SettleClaim.getSChunkMiddle(p.getLocation());
         NationsPlugin.settleManager.locations.add(this.location);
         this.level = 1;
-        this.membersAccess.put(owner, AccessLevelEnum.MAJOR);
-        this.region = getWorldguardRegion();
+        this.membersAccess.put(p.getUniqueId(), AccessLevelEnum.MAJOR);
+        this.region = SettleClaim.createClaim(name, p, this.id);
         this.objective = new Objective(0, 0, 0, 0, 0, null, null, null, null);
         //POST INIT
-        this.npc = createNPC(name, location, settlementUUID);
+        this.npc = createNPC(name, p.getLocation(), this.id);
         this.claims = SettleClaim.getClaimAnzahl(this.id);
         Set<com.sk89q.worldedit.world.entity.EntityType> set = new HashSet<>(Arrays.asList(com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie_villager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:spider"),
                 com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:skeleton"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:enderman"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:phantom"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:drowned"),
@@ -67,13 +62,11 @@ public class Settle {
         ));
         region.setFlag(Flags.DENY_SPAWN, set);
         region.setFlag(Flags.PVP, StateFlag.State.DENY);
-
     }
 
     //Von der Datenbank
     public Settle(UUID settlementUUID, HashMap<UUID, AccessLevelEnum> membersAccess, Vectore2 location, String name, int level, Objective objective) {
-        this.id = settlementUUID;
-        this.name = name;
+        super(name, settlementUUID);
         this.location = SettleClaim.getSChunkMiddle(location);
         NationsPlugin.settleManager.locations.add(SettleClaim.getSChunkMiddle(location));
         this.level = level;
@@ -384,5 +377,6 @@ public class Settle {
         assert regions != null;
         regions.removeRegion(region.getId());
     }
+
 }
 
