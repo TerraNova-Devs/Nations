@@ -3,9 +3,8 @@
 /.idea/
 /build/
 
-
-
-
+#testserver
+/testserver/*
 
 # Project exlude data types
 *.env
