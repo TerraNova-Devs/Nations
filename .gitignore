@@ -5,8 +5,7 @@
 
 
 
-!/testserver/plugins/
-/testserver/plugins/**/
+
 
 # Project exlude data types
 *.env
