@@ -22,9 +22,26 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 
-public class NewSettleHandler extends FlagValueChangeHandler<> {
+public class NewSettleHandler extends FlagValueChangeHandler<String> {
 
     public static final Factory FACTORY = new Factory();
+
+
+    @Override
+    protected void onInitialValue(LocalPlayer player, ApplicableRegionSet set, String value) {
+
+    }
+
+    @Override
+    protected boolean onSetValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, String currentValue, String lastValue, MoveType moveType) {
+        return false;
+    }
+
+    @Override
+    protected boolean onAbsentValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, String lastValue, MoveType moveType) {
+        return false;
+    }
+
     public static class Factory extends Handler.Factory<NewSettleHandler> {
         @Override
         public NewSettleHandler create(Session session) {
@@ -39,18 +56,4 @@ public class NewSettleHandler extends FlagValueChangeHandler<> {
         super(session, SettleFlag.SETTLEMENT_UUID_FLAG);
     }
 
-    @Override
-    protected void onInitialValue(LocalPlayer player, ApplicableRegionSet set, SettleFlag value) {
-
-    }
-
-    @Override
-    protected boolean onSetValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, SettleFlag currentValue, SettleFlag lastValue, MoveType moveType) {
-        return false;
-    }
-
-    @Override
-    protected boolean onAbsentValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, SettleFlag lastValue, MoveType moveType) {
-        return false;
-    }
 }
