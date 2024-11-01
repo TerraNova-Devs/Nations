@@ -30,10 +30,17 @@ public class NationCreateSubCommand implements BasicCommand {
             return;
         }
 
+        // Check if player is already in a nation
+        for (Nation nation : nationManager.getNations().values()) {
+            if (nation.getMembers().contains(player.getUniqueId())) {
+                player.sendMessage("You are already a member of a nation.");
+                return;
+            }
+        }
+
         // Create the nation
         Nation nation = new Nation(nationName, player.getUniqueId());
         nationManager.addNation(nation);
-        nationManager.saveNation(nation);
 
         player.sendMessage("Nation " + nationName + " created successfully!");
     }

@@ -1,6 +1,7 @@
 package de.terranova.nations.commands;
 
 import de.terranova.nations.nations.NationManager;
+import de.terranova.nations.settlements.SettleManager;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -10,13 +11,15 @@ import java.util.Map;
 public class NationCommand implements BasicCommand {
     private final Map<String, BasicCommand> subCommands = new HashMap<>();
     private final NationManager nationManager;
+    private final SettleManager settleManager;
 
-    public NationCommand(NationManager nationManager) {
+    public NationCommand(NationManager nationManager, SettleManager settleManager) {
         this.nationManager = nationManager;
+        this.settleManager = settleManager;
         subCommands.put("create", new NationCreateSubCommand(nationManager));
-        subCommands.put("invite", new NationInviteSubCommand(nationManager));
-        subCommands.put("accept", new NationAcceptSubCommand(nationManager));
-        subCommands.put("setrelation", new NationSetRelationSubCommand(nationManager));
+        subCommands.put("invite", new NationInviteSubCommand(nationManager, settleManager));
+        subCommands.put("accept", new NationAcceptSubCommand(nationManager, settleManager));
+        //subCommands.put("setrelation", new NationSetRelationSubCommand(nationManager));
     }
 
     @Override

@@ -4,9 +4,11 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
+import de.terranova.nations.commands.NationCommand;
 import de.terranova.nations.commands.SettleCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.settlements.SettleManager;
 import de.terranova.nations.settlements.SettleTrait;
 import de.terranova.nations.settlements.level.Objective;
@@ -44,6 +46,7 @@ public final class NationsPlugin extends JavaPlugin {
 
     public static boolean debug = true;
     public static SettleManager settleManager;
+    public static NationManager nationManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
     public static Map<Integer, Objective> levelObjectives;
@@ -78,6 +81,9 @@ public final class NationsPlugin extends JavaPlugin {
             throw new RuntimeException(e);
         }
         settleManager = new SettleManager();
+
+        // Initialize NationManager
+        nationManager = new NationManager();
 
         SettleDBstuff.getInitialSettlementData();
         settleManager.addSettlementsToPl3xmap();
@@ -128,6 +134,7 @@ public final class NationsPlugin extends JavaPlugin {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
+            commands.register("nation", "Commands to manage nations.", List.of("n"), new NationCommand(nationManager, settleManager));
         });
         //Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }

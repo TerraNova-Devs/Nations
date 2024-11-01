@@ -114,6 +114,15 @@ public class SettleManager {
         return Optional.empty();
     }
 
+    public Settle getSettlementByName(String name) {
+        for (Settle settle : settlements.values()) {
+            if (settle.name.equalsIgnoreCase(name)) {
+                return settle;
+            }
+        }
+        return null;
+    }
+
     public boolean canSettle(Player p) {
         for (Settle settle : settlements.values()) {
             for (AccessLevelEnum acess : settle.membersAccess.values()) {

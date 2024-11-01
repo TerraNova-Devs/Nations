@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS `access_table` (
     `access` varchar(20) NOT NULL,
         PRIMARY KEY (`SUUID`, `PUUID`)
 ) DEFAULT CHARSET=utf8
-COLLATE=utf8_unicode_ci
+COLLATE=utf8_unicode_ci;
 
 -- Table to store nations
 CREATE TABLE IF NOT EXISTS `nations_table` (
@@ -35,11 +35,14 @@ CREATE TABLE IF NOT EXISTS `nations_table` (
     PRIMARY KEY (`NUUID`)
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- Table to store the settlements belonging to nations
-CREATE TABLE IF NOT EXISTS `nation_settlements` (
-    `NUUID` VARCHAR(36) NOT NULL,
+-- Create the settlement_nation_relations table
+CREATE TABLE IF NOT EXISTS `settlement_nation_relations` (
     `SUUID` VARCHAR(36) NOT NULL,
-    PRIMARY KEY (`NUUID`, `SUUID`)
+    `NUUID` VARCHAR(36) NOT NULL,
+    `rank` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`SUUID`),
+    FOREIGN KEY (`SUUID`) REFERENCES `settlements_table`(`SUUID`) ON DELETE CASCADE,
+    FOREIGN KEY (`NUUID`) REFERENCES `nations_table`(`NUUID`) ON DELETE CASCADE
 ) DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Table to store relations between nations

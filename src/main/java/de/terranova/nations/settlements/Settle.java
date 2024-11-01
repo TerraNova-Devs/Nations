@@ -378,5 +378,19 @@ public class Settle extends OwnedRegion{
         regions.removeRegion(region.getId());
     }
 
+    public void notifyHighRankMembers(String message) {
+        for (Map.Entry<UUID, AccessLevelEnum> entry : membersAccess.entrySet()) {
+            UUID memberId = entry.getKey();
+            AccessLevelEnum accessLevel = entry.getValue();
+
+            if (accessLevel == AccessLevelEnum.MAJOR || accessLevel == AccessLevelEnum.VICE || accessLevel == AccessLevelEnum.COUNCIL) {
+                Player member = Bukkit.getPlayer(memberId);
+                if (member != null && member.isOnline()) {
+                    member.sendMessage(message);
+                }
+            }
+        }
+    }
+
 }
 
