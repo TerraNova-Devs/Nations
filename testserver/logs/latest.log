@@ -218,3 +218,65 @@ Update at https://www.spigotmc.org/resources/13932/
 [15:35:48] [Craft Scheduler Thread - 3 - Oraxen/INFO]: Oraxen | Automatic upload of the resource pack is enabled, uploading...
 [15:35:49] [Server thread/INFO]: [ProtocolLib] The updater found an update: 5.3.0 (Running 5.3.0-SNAPSHOT-726). Download at https://www.spigotmc.org/resources/protocollib.1997/
 [15:35:49] [Craft Scheduler Thread - 3 - Oraxen/INFO]: Oraxen | Resourcepack uploaded to http://atlas.oraxen.com:8080/pack.zip?id=5f765736935a2a9bd02059459136dacabb55ebbe in 1259 ms
+[15:47:21] [Server thread/INFO]: Stopping server
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling ChestShop v1.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [ConvertSilver] Disabling ConvertSilver v1.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [DeathPot] Disabling DeathPot v1.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [LuckPerms] Disabling LuckPerms v5.4.137
+[15:47:21] [Server thread/INFO]: [LuckPerms] Starting shutdown process...
+[15:47:21] [Server thread/INFO]: [LuckPerms] Closing storage...
+[15:47:21] [Server thread/INFO]: [LuckPerms] Goodbye!
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling Opibus v1.0.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling Proficisci v1.0.0
+[15:47:21] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown initiated...
+[15:47:21] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Shutdown completed.
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling statera v1.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [TerraNova] Statera plugin disabled!
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling Nations v1.0.0-SNAPSHOT
+[15:47:21] [Server thread/ERROR]: Error occurred while disabling Nations v1.0.0-SNAPSHOT
+java.lang.NullPointerException: Cannot invoke "de.mcterranova.terranovaLib.utils.YMLHandler.unloadYAML()" because "this.skinsYML" is null
+	at Nations-1.0.0-SNAPSHOT-all.jar/de.terranova.nations.NationsPlugin.onDisable(NationsPlugin.java:89) ~[Nations-1.0.0-SNAPSHOT-all.jar:?]
+	at org.bukkit.plugin.java.JavaPlugin.setEnabled(JavaPlugin.java:291) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:?]
+	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.disablePlugin(PaperPluginInstanceManager.java:237) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at io.papermc.paper.plugin.manager.PaperPluginInstanceManager.disablePlugins(PaperPluginInstanceManager.java:161) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at io.papermc.paper.plugin.manager.PaperPluginManagerImpl.disablePlugins(PaperPluginManagerImpl.java:97) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at org.bukkit.plugin.SimplePluginManager.disablePlugins(SimplePluginManager.java:541) ~[paper-api-1.21-R0.1-SNAPSHOT.jar:?]
+	at org.bukkit.craftbukkit.CraftServer.disablePlugins(CraftServer.java:609) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at net.minecraft.server.MinecraftServer.stopServer(MinecraftServer.java:1046) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at net.minecraft.server.dedicated.DedicatedServer.stopServer(DedicatedServer.java:847) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at net.minecraft.server.MinecraftServer.runServer(MinecraftServer.java:1353) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at net.minecraft.server.MinecraftServer.lambda$spin$0(MinecraftServer.java:330) ~[paper-1.21.jar:1.21-127-4e6a2a1]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[?:?]
+[15:47:21] [Server thread/INFO]: [Oraxen] Disabling Oraxen v1.180.0
+[15:47:21] [Server thread/INFO]: Oraxen | Successfully unloaded
+[15:47:21] [Server thread/INFO]: [TerraNova] Disabling TerranovaLib v1.0-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [WorldGuardExtraFlags] Disabling WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[15:47:21] [Server thread/INFO]: [Citizens] Disabling Citizens v2.0.35-SNAPSHOT (build 3563)
+[15:47:21] [Server thread/INFO]: [Pl3xMap] Disabling Pl3xMap v1.21-501
+[15:47:21] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver stopped
+[15:47:21] [Server thread/INFO]: [WorldGuard] Disabling WorldGuard v7.0.12+829a4a4
+[15:47:21] [Server thread/INFO]: [WorldGuard] Shutting down executor and cancelling any pending tasks...
+[15:47:21] [Server thread/INFO]: [ProtocolLib] Disabling ProtocolLib v5.3.0-SNAPSHOT-726
+[15:47:21] [Server thread/INFO]: [FastAsyncWorldEdit] Disabling FastAsyncWorldEdit v2.11.3-SNAPSHOT-911;789907e
+[15:47:21] [Server thread/INFO]: Unregistering com.sk89q.worldedit.bukkit.BukkitServerInterface from WorldEdit
+[15:47:21] [Server thread/INFO]: Saving players
+[15:47:21] [Server thread/INFO]: Saving worlds
+[15:47:21] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 8 entity chunks, 0 poi chunks in world 'world' in 0,01s
+[15:47:21] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_nether]'/minecraft:the_nether
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_nether'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_nether'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_nether'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 1 entity chunks, 0 poi chunks in world 'world_nether' in 0,01s
+[15:47:21] [Server thread/INFO]: Saving chunks for level 'ServerLevel[world_the_end]'/minecraft:the_end
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'world_the_end'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Halted chunk system for world 'world_the_end'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saving all chunkholders for world 'world_the_end'
+[15:47:21] [Server thread/INFO]: [ChunkHolderManager] Saved 0 block chunks, 10 entity chunks, 0 poi chunks in world 'world_the_end' in 0,02s
+[15:47:21] [Server thread/INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[15:47:21] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[15:47:21] [Server thread/INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[15:47:21] [Server thread/INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
