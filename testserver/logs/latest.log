@@ -1,0 +1,220 @@
+[15:35:23] [ServerMain/INFO]: [bootstrap] Running Java 21 (Java HotSpot(TM) 64-Bit Server VM 21.0.3+7-LTS-152; Oracle Corporation null) on Windows 11 10.0 (amd64)
+[15:35:23] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21-127-master@4e6a2a1 (2024-08-07T12:50:10Z) for Minecraft 1.21
+[15:35:23] [ServerMain/WARN]: [oshi.driver.windows.perfmon.PerfmonDisabled] Invalid registry value type detected for PerfOS counters. Should be REG_DWORD. Ignoring: HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\PerfOS\Performance\Disable Performance Counters.
+[15:35:23] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[15:35:24] [ServerMain/INFO]: [PluginInitializerManager] Initialized 16 plugins
+[15:35:24] [ServerMain/INFO]: [PluginInitializerManager] Paper plugins (1):
+ - Nations (1.0.0-SNAPSHOT)
+[15:35:24] [ServerMain/INFO]: [PluginInitializerManager] Bukkit plugins (15):
+ - ChestShop (1.0-SNAPSHOT), Citizens (2.0.35-SNAPSHOT (build 3563)), ConvertSilver (1.0-SNAPSHOT), DeathPot (1.0-SNAPSHOT), FastAsyncWorldEdit (2.11.3-SNAPSHOT-911;789907e), LuckPerms (5.4.137), Opibus (1.0.0-SNAPSHOT), Oraxen (1.180.0), Pl3xMap (1.21-501), Proficisci (1.0.0), ProtocolLib (5.3.0-SNAPSHOT-726), TerranovaLib (1.0-SNAPSHOT), WorldGuard (7.0.12+829a4a4), WorldGuardExtraFlags (4.2.4-SNAPSHOT), statera (1.0-SNAPSHOT)
+[15:35:28] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[15:35:30] [ServerMain/INFO]: Loaded 1290 recipes
+[15:35:30] [ServerMain/INFO]: Loaded 1399 advancements
+[15:35:30] [Server thread/INFO]: Starting minecraft server version 1.21
+[15:35:30] [Server thread/INFO]: Loading properties
+[15:35:30] [Server thread/INFO]: This server is running Paper version 1.21-127-master@4e6a2a1 (2024-08-07T12:50:10Z) (Implementing API version 1.21-R0.1-SNAPSHOT)
+[15:35:31] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[15:35:31] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[15:35:31] [Server thread/INFO]: Using 4 threads for Netty based IO
+[15:35:31] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using 1 I/O threads, 6 worker threads, and population gen parallelism of 6 threads
+[15:35:32] [Server thread/INFO]: Default game type: SURVIVAL
+[15:35:32] [Server thread/INFO]: Generating keypair
+[15:35:32] [Server thread/INFO]: Starting Minecraft server on *:57975
+[15:35:32] [Server thread/INFO]: Using default channel type
+[15:35:32] [Server thread/INFO]: Paper: Using Java compression from Velocity.
+[15:35:32] [Server thread/INFO]: Paper: Using Java cipher from Velocity.
+[15:35:32] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loading 10 libraries... please wait
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\springframework\spring-expression\6.0.6\spring-expression-6.0.6.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\springframework\spring-core\6.0.6\spring-core-6.0.6.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\springframework\spring-jcl\6.0.6\spring-jcl-6.0.6.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\apache\httpcomponents\httpmime\4.5.13\httpmime-4.5.13.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\apache\httpcomponents\httpclient\4.5.13\httpclient-4.5.13.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\apache\httpcomponents\httpcore\4.4.13\httpcore-4.4.13.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\commons-logging\commons-logging\1.2\commons-logging-1.2.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\commons-codec\commons-codec\1.11\commons-codec-1.11.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\joml\joml\1.10.5\joml-1.10.5.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-minimessage\4.17.0\adventure-text-minimessage-4.17.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-api\4.17.0\adventure-api-4.17.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-key\4.17.0\adventure-key-4.17.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\examination-api\1.3.0\examination-api-1.3.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\examination-string\1.3.0\examination-string-1.3.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\jetbrains\annotations\24.1.0\annotations-24.1.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-plain\4.17.0\adventure-text-serializer-plain-4.17.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-ansi\4.17.0\adventure-text-serializer-ansi-4.17.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\ansi\1.0.3\ansi-1.0.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-platform-bukkit\4.3.3\adventure-platform-bukkit-4.3.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-platform-api\4.3.3\adventure-platform-api-4.3.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-bungeecord\4.3.3\adventure-text-serializer-bungeecord-4.3.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-legacy\4.13.1\adventure-text-serializer-legacy-4.13.1.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-nbt\4.13.1\adventure-nbt-4.13.1.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-gson\4.13.1\adventure-text-serializer-gson-4.13.1.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-text-serializer-gson-legacy-impl\4.13.1\adventure-text-serializer-gson-legacy-impl-4.13.1.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-platform-facet\4.3.3\adventure-platform-facet-4.3.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\net\kyori\adventure-platform-viaversion\4.3.3\adventure-platform-viaversion-4.3.3.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\com\google\code\gson\gson\2.10.1\gson-2.10.1.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\org\apache\commons\commons-lang3\3.14.0\commons-lang3-3.14.0.jar
+[15:35:33] [Server thread/INFO]: [SpigotLibraryLoader] [Oraxen] Loaded library C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\libraries\gs\mclo\java\2.2.1\java-2.2.1.jar
+[15:35:33] [Server thread/INFO]: [FastAsyncWorldEdit] Loading server plugin FastAsyncWorldEdit v2.11.3-SNAPSHOT-911;789907e
+[15:35:35] [Server thread/INFO]: Got request to register class com.sk89q.worldedit.bukkit.BukkitServerInterface with WorldEdit [com.sk89q.worldedit.extension.platform.PlatformManager@411f1e07]
+[15:35:35] [Server thread/INFO]: [ProtocolLib] Loading server plugin ProtocolLib v5.3.0-SNAPSHOT-726
+[15:35:35] [Server thread/WARN]: [ProtocolLib] Version (MC: 1.21.0) has not yet been tested! Proceed with caution.
+[15:35:35] [Server thread/INFO]: [WorldGuard] Loading server plugin WorldGuard v7.0.12+829a4a4
+[15:35:35] [Server thread/INFO]: [Pl3xMap] Loading server plugin Pl3xMap v1.21-501
+[15:35:35] [Server thread/INFO]: [Citizens] Loading server plugin Citizens v2.0.35-SNAPSHOT (build 3563)
+[15:35:35] [Server thread/INFO]: [WorldGuardExtraFlags] Loading server plugin WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[15:35:35] [Server thread/INFO]: [TerraNova] Loading server plugin TerranovaLib v1.0-SNAPSHOT
+[15:35:35] [Server thread/INFO]: [Oraxen] Loading server plugin Oraxen v1.180.0
+[15:35:35] [Server thread/INFO]: [TerraNova] Loading server plugin Nations v1.0.0-SNAPSHOT
+[15:35:35] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] NationsHikariPool - Starting...
+[15:35:35] [Server thread/INFO]: [com.zaxxer.hikari.pool.HikariPool] NationsHikariPool - Added connection com.mysql.cj.jdbc.ConnectionImpl@444a41ae
+[15:35:35] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] NationsHikariPool - Start completed.
+[15:35:35] [Server thread/INFO]: [TerraNova] Loading server plugin statera v1.0-SNAPSHOT
+[15:35:35] [Server thread/INFO]: [TerraNova] Loading server plugin Proficisci v1.0.0
+[15:35:35] [Server thread/INFO]: [TerraNova] Loading server plugin Opibus v1.0.0-SNAPSHOT
+[15:35:35] [Server thread/INFO]: [LuckPerms] Loading server plugin LuckPerms v5.4.137
+[15:35:36] [Server thread/INFO]: [DeathPot] Loading server plugin DeathPot v1.0-SNAPSHOT
+[15:35:36] [Server thread/INFO]: [ConvertSilver] Loading server plugin ConvertSilver v1.0-SNAPSHOT
+[15:35:36] [Server thread/INFO]: [TerraNova] Loading server plugin ChestShop v1.0-SNAPSHOT
+[15:35:36] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[15:35:36] [Server thread/INFO]: [FastAsyncWorldEdit] Enabling FastAsyncWorldEdit v2.11.3-SNAPSHOT-911;789907e
+[15:35:36] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] LZ4 Compression Binding loaded successfully
+[15:35:36] [Server thread/INFO]: [com.fastasyncworldedit.core.Fawe] ZSTD Compression Binding loaded successfully
+[15:35:36] [Server thread/INFO]: Registering commands with com.sk89q.worldedit.bukkit.BukkitServerInterface
+[15:35:36] [Server thread/INFO]: WEPIF: Using the Bukkit Permissions API.
+[15:35:36] [Server thread/INFO]: Using com.sk89q.worldedit.bukkit.adapter.impl.fawe.v1_21_R1.PaperweightFaweAdapter as the Bukkit adapter
+[15:35:37] [Server thread/INFO]: [ProtocolLib] Enabling ProtocolLib v5.3.0-SNAPSHOT-726
+[15:35:37] [Server thread/INFO]: [LuckPerms] Enabling LuckPerms v5.4.137
+[15:35:38] [ForkJoinPool.commonPool-worker-1/WARN]: [com.fastasyncworldedit.core.util.UpdateNotification] An update for FastAsyncWorldEdit is available. You are 41 build(s) out of date.
+You are running build 911, the latest version is build 952.
+Update at https://www.spigotmc.org/resources/13932/
+[15:35:38] [Server thread/INFO]:         __    
+[15:35:38] [Server thread/INFO]:   |    |__)   LuckPerms v5.4.137
+[15:35:38] [Server thread/INFO]:   |___ |      Running on Bukkit - Paper
+[15:35:38] [Server thread/INFO]: 
+[15:35:38] [Server thread/INFO]: [LuckPerms] Loading configuration...
+[15:35:38] [Server thread/INFO]: [LuckPerms] Loading storage provider... [H2]
+[15:35:38] [Server thread/INFO]: [LuckPerms] Loading internal permission managers...
+[15:35:38] [Server thread/INFO]: [LuckPerms] Performing initial data load...
+[15:35:38] [Server thread/INFO]: [LuckPerms] Successfully enabled. (took 999ms)
+[15:35:38] [Server thread/INFO]: Preparing level "world"
+[15:35:39] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[15:35:40] [Server thread/INFO]: Time elapsed: 982 ms
+[15:35:40] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[15:35:40] [Server thread/INFO]: Time elapsed: 60 ms
+[15:35:40] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[15:35:40] [Server thread/INFO]: Time elapsed: 73 ms
+[15:35:40] [Server thread/INFO]: [WorldGuard] Enabling WorldGuard v7.0.12+829a4a4
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world) TNT ignition is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world) Lighters are PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world) Lava fire is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world) Fire spread is UNRESTRICTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world'
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_nether) TNT ignition is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_nether) Lighters are PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_nether) Lava fire is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_nether) Fire spread is UNRESTRICTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_nether'
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_the_end) TNT ignition is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_the_end) Lighters are PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_the_end) Lava fire is PERMITTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] (world_the_end) Fire spread is UNRESTRICTED.
+[15:35:40] [Server thread/INFO]: [WorldGuard] Loaded configuration for world 'world_the_end'
+[15:35:40] [Server thread/INFO]: [WorldGuard] Loading region data...
+[15:35:41] [Server thread/INFO]: [Pl3xMap] Enabling Pl3xMap v1.21-501
+[15:35:42] [Server thread/INFO]: [Pl3xMap] [INFO] Internal webserver running on 0.0.0.0:13931
+[15:35:42] [Server thread/INFO]: [Pl3xMap] [INFO] Platform: paper
+[15:35:42] [Server thread/INFO]: [Pl3xMap] [INFO] Version: 1.21-501
+[15:35:43] [Server thread/INFO]: [Citizens] Enabling Citizens v2.0.35-SNAPSHOT (build 3563)
+[15:35:43] [Server thread/INFO]: [Citizens] Loading external libraries
+[15:35:43] [Server thread/INFO]: [Citizens] Detected system language [[de]]. If youd like you can contribute to Citizens translations via our Discord! https://discord.gg/Q6pZGSR
+[15:35:43] [Server thread/INFO]: [Citizens] Using mojmapped server, avoiding server package checks
+[15:35:43] [Server thread/INFO]: [Citizens] Loaded 0 templates.
+[15:35:44] [Server thread/INFO]: [WorldGuardExtraFlags] Enabling WorldGuardExtraFlags v4.2.4-SNAPSHOT
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.TeleportOnEntryFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.TeleportOnExitFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.WalkSpeedFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.FlySpeedFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.FlyFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GlideFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GodmodeFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.PlaySoundsFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.BlockedEffectsFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.GiveEffectsFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.CommandOnEntryFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.CommandOnExitFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.ConsoleCommandOnEntryFlagHandler
+[15:35:44] [Server thread/INFO]: [WorldGuard] Registering session handler net.goldtreeservers.worldguardextraflags.wg.handlers.ConsoleCommandOnExitFlagHandler
+[15:35:44] [Server thread/INFO]: [TerraNova] Enabling TerranovaLib v1.0-SNAPSHOT
+[15:35:45] [Server thread/INFO]: [Oraxen] Enabling Oraxen v1.180.0
+[15:35:45] [Server thread/INFO]: Oraxen | Version v1_21_R1 has been detected.
+[15:35:45] [Server thread/INFO]: Oraxen | Oraxen will use the NMSHandler for this version.
+[15:35:45] [Server thread/INFO]: Oraxen | Papers block-updates.disable-noteblock-updates is not enabled.
+[15:35:45] [Server thread/INFO]: Oraxen | It is recommended to enable this setting for improved performance and prevent bugs with noteblocks
+[15:35:45] [Server thread/INFO]: Oraxen | Otherwise Oraxen needs to listen to very taxing events, which also introduces some bugs
+[15:35:45] [Server thread/INFO]: Oraxen | You can enable this setting in ServerFolder/config/paper-global.yml
+
+[15:35:46] [Server thread/INFO]: Oraxen | Papers block-updates.disable-tripwire-updates is not enabled.
+[15:35:46] [Server thread/INFO]: Oraxen | It is recommended to enable this setting for improved performance and prevent bugs with tripwires
+[15:35:46] [Server thread/INFO]: Oraxen | Otherwise Oraxen needs to listen to very taxing events, which also introduces some bugs
+[15:35:46] [Server thread/INFO]: Oraxen | You can enable this setting in ServerFolder/config/paper-global.yml
+
+[15:35:46] [Server thread/INFO]: Oraxen | Slicing gui-textures to 1.20.2-format...
+[15:35:46] [Server thread/INFO]: Oraxen | Successfully sliced gui-textures for 1.20.2
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching emerald_helmet found. Unable to use emerald_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching emerald_chestplate found. Unable to use emerald_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching emerald_leggings found. Unable to use emerald_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching emerald_boots found. Unable to use emerald_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching obsidian_helmet found. Unable to use obsidian_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching obsidian_chestplate found. Unable to use obsidian_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching obsidian_leggings found. Unable to use obsidian_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching obsidian_boots found. Unable to use obsidian_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching ruby_helmet found. Unable to use ruby_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching ruby_chestplate found. Unable to use ruby_armor_layer_1.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching ruby_leggings found. Unable to use ruby_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | No item matching ruby_boots found. Unable to use ruby_armor_layer_2.png
+[15:35:46] [Server thread/INFO]: Oraxen | Converting global lang file to individual language files...
+[15:35:46] [Server thread/INFO]: Oraxen | Verifying formatting for textures and models...
+[15:35:47] [Server thread/INFO]: Oraxen | No broken models or textures were found in the resourcepack
+
+[15:35:47] [Server thread/INFO]: Oraxen | Generating atlas-file for 1.19.3+ Resource Pack format
+[15:35:47] [Server thread/INFO]: 
+[15:35:47] [Server thread/INFO]: Oraxen | No duplicate font files found!
+[15:35:47] [Server thread/INFO]: 
+[15:35:47] [Server thread/INFO]: Oraxen | Successfully loaded on Windows 11
+[15:35:47] [Server thread/INFO]: [TerraNova] Enabling Nations v1.0.0-SNAPSHOT
+[15:35:47] [Server thread/INFO]: [WorldGuard] Registering session handler de.terranova.nations.worldguard.SettleHandler
+[15:35:47] [Server thread/INFO]: [TerraNova] [DEBUG] Getting settlement: nudelsuppe | UUID: 929877c2-8e3d-47da-8321-2b6531b3d7c8
+[15:35:47] [Server thread/WARN]: [TerraNova] [DEBUG] Nations/SettleDBstuff verified Settlement: 929877c2-8e3d-47da-8321-2b6531b3d7c8
+[15:35:47] [Server thread/INFO]: [TerraNova] [DEBUG] Getting settlement: deinemutter | UUID: 943503e1-7f44-4052-b103-6a6cc7f69032
+[15:35:47] [Server thread/WARN]: [TerraNova] [DEBUG] Nations/SettleDBstuff verified Settlement: 943503e1-7f44-4052-b103-6a6cc7f69032
+[15:35:47] [Server thread/INFO]: [TerraNova] [DEBUG] Getting settlement: monkey | UUID: 9df6d602-bbd5-4b83-b7e5-6b1ea7e74bbd
+[15:35:47] [Server thread/WARN]: [TerraNova] [DEBUG] Nations/SettleDBstuff verified Settlement: 9df6d602-bbd5-4b83-b7e5-6b1ea7e74bbd
+[15:35:47] [Server thread/INFO]: [TerraNova] [DEBUG] Getting settlement: nudelsaft | UUID: d743bf4f-25b7-4c2e-8a6f-61d7448ba49a
+[15:35:47] [Server thread/WARN]: [TerraNova] [DEBUG] Nations/SettleDBstuff verified Settlement: d743bf4f-25b7-4c2e-8a6f-61d7448ba49a
+[15:35:47] [Server thread/INFO]: [TerraNova] [DEBUG] Getting settlement: Kevin_Town | UUID: f494cf9c-7e4a-4452-a179-2c1a40ee40bf
+[15:35:47] [Server thread/WARN]: [TerraNova] [DEBUG] Nations/SettleDBstuff verified Settlement: f494cf9c-7e4a-4452-a179-2c1a40ee40bf
+[15:35:47] [Server thread/INFO]: [TerraNova] Enabling statera v1.0-SNAPSHOT
+[15:35:47] [Server thread/INFO]: [TerraNova] Statera is enabled
+[15:35:47] [Server thread/INFO]: [TerraNova] Enabling Proficisci v1.0.0
+[15:35:47] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Starting...
+[15:35:47] [Server thread/INFO]: [com.zaxxer.hikari.pool.HikariPool] HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@1c336b14
+[15:35:47] [Server thread/INFO]: [com.zaxxer.hikari.HikariDataSource] HikariPool-1 - Start completed.
+[15:35:47] [Server thread/INFO]: [TerraNova] Enabling Opibus v1.0.0-SNAPSHOT
+[15:35:47] [Server thread/INFO]: [DeathPot] Enabling DeathPot v1.0-SNAPSHOT
+[15:35:47] [Server thread/ERROR]: [DeathPot] DeathPot v1.0-SNAPSHOT attempted to register an invalid EventHandler method signature "public void de.mcterranova.deathpot.listener.DeathPotListener.onBreak(org.bukkit.event.block.BlockBreakEvent,org.bukkit.entity.Player)" in class de.mcterranova.deathpot.listener.DeathPotListener
+[15:35:47] [Server thread/INFO]: [ConvertSilver] Enabling ConvertSilver v1.0-SNAPSHOT
+[15:35:47] [Server thread/INFO]: [TerraNova] Enabling ChestShop v1.0-SNAPSHOT
+[15:35:47] [Server thread/INFO]: [spark] Starting background profiler...
+[15:35:47] [Server thread/INFO]: [spark] The async-profiler engine is not supported for your os/arch (windows11/amd64), so the built-in Java engine will be used instead.
+[15:35:48] [Server thread/INFO]: Done preparing level "world" (9.068s)
+[15:35:48] [Server thread/INFO]: Running delayed init tasks
+[15:35:48] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.regions.WorldGuardFeature] Plugin 'WorldGuard' found. Using it now.
+[15:35:48] [Server thread/INFO]: [com.fastasyncworldedit.bukkit.FaweBukkit] Attempting to use plugin 'WorldGuard'
+[15:35:48] [Server thread/INFO]: Loaded 1290 recipes
+[15:35:48] [Server thread/INFO]: Loaded 1399 advancements
+[15:35:48] [Server thread/INFO]: [Citizens] 1 NPCs geladen.
+[15:35:48] [Server thread/INFO]: Done (26.594s)! For help, type "help"
+[15:35:48] [Server thread/INFO]: Timings Reset
+[15:35:48] [Craft Scheduler Thread - 3 - Oraxen/INFO]: Oraxen | Automatic upload of the resource pack is enabled, uploading...
+[15:35:49] [Server thread/INFO]: [ProtocolLib] The updater found an update: 5.3.0 (Running 5.3.0-SNAPSHOT-726). Download at https://www.spigotmc.org/resources/protocollib.1997/
+[15:35:49] [Craft Scheduler Thread - 3 - Oraxen/INFO]: Oraxen | Resourcepack uploaded to http://atlas.oraxen.com:8080/pack.zip?id=5f765736935a2a9bd02059459136dacabb55ebbe in 1259 ms
