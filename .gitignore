@@ -5,6 +5,13 @@
 
 #testserver
 /testserver/*
+!/testserver/paper-1.21-123.jar
+!/testserver/eula.txt
+!/testserver/start.bat
+/testserver/Pl3xMap
+
+!/testserver/plugins/
+/testserver/plugins/**/
 
 # Project exlude data types
 *.env
