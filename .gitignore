@@ -3,11 +3,7 @@
 /.idea/
 /build/
 
-#testserver
-/testserver/*
-!/testserver/paper-1.21-123.jar
-!/testserver/eula.txt
-!/testserver/start.bat
+
 
 !/testserver/plugins/
 /testserver/plugins/**/
