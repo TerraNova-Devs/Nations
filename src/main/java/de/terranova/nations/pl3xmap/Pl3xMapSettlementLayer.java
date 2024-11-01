@@ -58,8 +58,8 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
 
             Collection<String> vices = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.VICE);
             Collection<String> councils = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.COUNCIL);
-
             String owner = Bukkit.getOfflinePlayer(settle.getEveryUUIDWithCertainAccessLevel(AccessLevelEnum.MAJOR).stream().findFirst().get()).getName();
+
             String tooltip = String.format(
                     "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9; } p.mid { text-align: left; } p.color{ color: #68D9B0; font-size: 30px;} </style>" +
                             "<center><p class='color'>%s</p></center>" +
@@ -72,8 +72,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
                     .tooltipContent(tooltip)
                     .tooltipDirection(Tooltip.Direction.TOP)
                     .build();
-
-
+            
             Options optionspoly;
             optionspoly = Options.builder()
                     .fillColor(0x5540E53F)

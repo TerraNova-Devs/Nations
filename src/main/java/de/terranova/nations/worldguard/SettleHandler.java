@@ -20,7 +20,9 @@ import java.util.Set;
 import java.util.UUID;
 
 public class SettleHandler extends FlagValueChangeHandler<String> {
+
     public static final Factory FACTORY = new Factory();
+
 
     public SettleHandler(Session session) {
         super(session, SettleFlag.SETTLEMENT_UUID_FLAG);
