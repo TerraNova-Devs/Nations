@@ -8,10 +8,17 @@
 !/testserver/paper-1.21-123.jar
 !/testserver/eula.txt
 !/testserver/start.bat
-/testserver/Pl3xMap
 
 !/testserver/plugins/
 /testserver/plugins/**/
+
+!/testserver/plugins/Pl3xMap/
+!/testserver/plugins/Pl3xMap/web
+!/testserver/plugins/Pl3xMap/web/images
+!/testserver/plugins/Pl3xMap/web/images/banner
+!/testserver/plugins/Pl3xMap/web/images/font
+!/testserver/plugins/Pl3xMap/web/images/icon
+
 
 # Project exlude data types
 *.env
