@@ -129,7 +129,7 @@ public final class NationsPlugin extends JavaPlugin {
             final Commands commands = event.registrar();
             commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
         });
-        Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
+        //Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }
     //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));
 
