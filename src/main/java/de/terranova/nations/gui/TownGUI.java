@@ -76,12 +76,19 @@ public class TownGUI extends RoseGUI {
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
                 .build();
 
+        RoseItem nations = new RoseItem.Builder()
+                .material(Material.NETHER_STAR)
+                .displayName(Chat.yellowFade("<b>Nations"))
+                .addLore(Chat.cottonCandy("<i>Hier kannst du die Nation verwalten."))
+                .build();
+
         addItem(13, level);
         addItem(19, skins);
         addItem(21, score);
         addItem(23, upgrades);
         addItem(25, farm);
         addItem(31, settings);
+        addItem(35, nations);
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
@@ -112,6 +119,10 @@ public class TownGUI extends RoseGUI {
                 rowsSkins = 6;
             }
             new TownSkinGUI(player, rowsSkins).open();
+        });
+
+        nations.onClick(e -> {
+            new NationGUI(player, NationsPlugin.nationManager.getNationBySettlement(settle.id)).open();
         });
     }
 

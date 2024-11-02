@@ -10,6 +10,8 @@ import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class HikariCP {
@@ -65,22 +67,107 @@ public class HikariCP {
         return config;
     }
 
-    private void prepareTables() throws SQLException {
+    private void prepareTables() {
         try (Connection connection = dataSource.getConnection()) {
 
-            final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split(";");
-            try (Statement statement = connection.createStatement()) {
-                for (String tableCreationStatement : databaseSchema) {
-                    statement.execute(tableCreationStatement);
-                }
-            } catch (SQLException e) {
-                throw new IllegalStateException("Failed to create database tables. Please ensure you are running MySQL v8.0+ " + "and that your connecting user account has privileges to create tables.", e);
+            // Read the SQL script from the resource file
+            String sqlScript;
+            try {
+                sqlScript = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8);
+            } catch (IOException e) {
+                throw new IllegalStateException("Failed to read SQL schema file.", e);
             }
 
-        } catch (SQLException | IOException e) {
-            throw new IllegalStateException("Failed to establish a connection to the MySQL database. " + "Please check the supplied database credentials in the config file", e);
+            // Remove comments and split into individual statements
+            List<String> sqlStatements = parseSqlStatements(sqlScript);
+
+            try (Statement statement = connection.createStatement()) {
+                for (String sql : sqlStatements) {
+                    sql = sql.trim();
+                    if (sql.isEmpty()) {
+                        continue; // Skip empty statements
+                    }
+                    statement.execute(sql);
+                }
+            } catch (SQLException e) {
+                throw new IllegalStateException("Failed to create database tables. Please ensure you are running MySQL v8.0+ and that your connecting user account has privileges to create tables.", e);
+            }
+
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials.", e);
+        }
+    }
+
+    private List<String> parseSqlStatements(String sqlScript) {
+        List<String> statements = new ArrayList<>();
+
+        StringBuilder sb = new StringBuilder();
+        boolean inComment = false;
+        boolean inLineComment = false;
+        boolean inString = false;
+        char stringChar = ' ';
+
+        for (int i = 0; i < sqlScript.length(); i++) {
+            char c = sqlScript.charAt(i);
+
+            // Handle multi-line comments /* */
+            if (inComment) {
+                if (c == '*' && i + 1 < sqlScript.length() && sqlScript.charAt(i + 1) == '/') {
+                    inComment = false;
+                    i++; // Skip '/'
+                }
+                continue;
+            }
+
+            // Handle single-line comments --
+            if (inLineComment) {
+                if (c == '\n') {
+                    inLineComment = false;
+                }
+                continue;
+            }
+
+            // Start of multi-line comment
+            if (c == '/' && i + 1 < sqlScript.length() && sqlScript.charAt(i + 1) == '*') {
+                inComment = true;
+                i++; // Skip '*'
+                continue;
+            }
+
+            // Start of single-line comment
+            if (c == '-' && i + 1 < sqlScript.length() && sqlScript.charAt(i + 1) == '-') {
+                inLineComment = true;
+                i++; // Skip second '-'
+                continue;
+            }
+
+            // Start or end of string literal
+            if (c == '\'' || c == '"') {
+                if (inString && c == stringChar) {
+                    inString = false;
+                } else if (!inString) {
+                    inString = true;
+                    stringChar = c;
+                }
+            }
+
+            // Check for statement delimiter ';' if not inside a string
+            if (c == ';' && !inString) {
+                statements.add(sb.toString());
+                sb.setLength(0); // Reset StringBuilder
+                continue;
+            }
+
+            // Append character to current statement
+            sb.append(c);
         }
 
+        // Add any remaining statement
+        if (sb.length() > 0) {
+            statements.add(sb.toString());
+        }
+
+        return statements;
     }
 
     public void closeConnection() throws SQLException {

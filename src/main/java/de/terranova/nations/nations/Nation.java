@@ -1,5 +1,8 @@
 package de.terranova.nations.nations;
 
+import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.Settle;
+
 import java.util.*;
 
 public class Nation {
@@ -7,7 +10,6 @@ public class Nation {
     private String name;
     private UUID leader; // UUID of the nation's leader
     private Set<UUID> settlements; // UUIDs of settlements in the nation
-    private Set<UUID> members; // UUIDs of players in the nation
     private Map<UUID, NationRelationType> relations; // Relations with other nations
 
     // Constructor for creating a new nation
@@ -16,20 +18,15 @@ public class Nation {
         this.name = name;
         this.leader = leaderId;
         this.settlements = new HashSet<>();
-        this.members = new HashSet<>();
         this.relations = new HashMap<>();
-        // Add the leader to the members list
-        this.members.add(leaderId);
     }
 
     // Constructor for loading a nation from the database with existing data
-    public Nation(UUID id, String name, UUID leaderId, Set<UUID> settlements,
-                  Set<UUID> members, Map<UUID, NationRelationType> relations) {
+    public Nation(UUID id, String name, UUID leaderId, Set<UUID> settlements, Map<UUID, NationRelationType> relations) {
         this.id = id;
         this.name = name;
         this.leader = leaderId;
         this.settlements = settlements != null ? settlements : new HashSet<>();
-        this.members = members != null ? members : new HashSet<>();
         this.relations = relations != null ? relations : new HashMap<>();
     }
 
@@ -80,23 +77,6 @@ public class Nation {
         settlements.remove(settlementId);
     }
 
-    // Members
-    public Set<UUID> getMembers() {
-        return members;
-    }
-
-    public void setMembers(Set<UUID> members) {
-        this.members = members;
-    }
-
-    public void addMember(UUID playerId) {
-        members.add(playerId);
-    }
-
-    public void removeMember(UUID playerId) {
-        members.remove(playerId);
-    }
-
     // Relations
     public Map<UUID, NationRelationType> getRelations() {
         return relations;
@@ -116,20 +96,17 @@ public class Nation {
 
     // Additional methods
 
-    // Check if a player is a member of the nation
-    public boolean isMember(UUID playerId) {
-        return members.contains(playerId);
-    }
-
     // Check if a settlement is part of the nation
     public boolean hasSettlement(UUID settlementId) {
         return settlements.contains(settlementId);
     }
 
-    // Promote a member to leader (if needed)
-    public void promoteToLeader(UUID playerId) {
-        if (members.contains(playerId)) {
-            this.leader = playerId;
+    public boolean isMember(UUID playerId) {
+        Optional<Settle> settleOpt = NationsPlugin.settleManager.getPlayersSettlement(playerId);
+        if(settleOpt.isPresent()){
+            Settle settle = settleOpt.get();
+            return settlements.contains(settle.id);
         }
+        return false;
     }
 }

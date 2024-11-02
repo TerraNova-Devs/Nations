@@ -5,5 +5,6 @@ public enum AccessLevelEnum {
     VICE,
     COUNCIL,
     CITIZEN,
+    TRUSTED,
     REMOVE
 }

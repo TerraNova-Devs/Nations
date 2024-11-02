@@ -182,7 +182,11 @@ public class Settle extends OwnedRegion{
     public Optional<AccessLevelEnum> promoteOrAdd(Player target, Player p) throws SQLException {
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
         if (!this.membersAccess.containsKey(target.getUniqueId())) {
-            this.membersAccess.put(target.getUniqueId(), AccessLevelEnum.CITIZEN);
+            if(NationsPlugin.settleManager.getPlayersSettlement(target.getUniqueId()).isEmpty()) {
+                this.membersAccess.put(target.getUniqueId(), AccessLevelEnum.CITIZEN);
+            } else {
+                this.membersAccess.put(target.getUniqueId(), AccessLevelEnum.TRUSTED);
+            }
             settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.CITIZEN);
             SettleClaim.addOrRemoveFromSettlement(target, this, true);
             return Optional.of(AccessLevelEnum.CITIZEN);
@@ -200,6 +204,9 @@ public class Settle extends OwnedRegion{
         }
         if (accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR))
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
+
+        if (accessLevelEnum.equals(AccessLevelEnum.TRUSTED))
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits getrusted und Mitglied einer anderen Stadt.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
         return Optional.empty();
     }
 
@@ -208,7 +215,7 @@ public class Settle extends OwnedRegion{
             return Optional.empty();
         AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
+        if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN) || accessLevelEnum.equals(AccessLevelEnum.TRUSTED)) {
             this.membersAccess.remove(target.getUniqueId());
             settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.REMOVE);
             SettleClaim.addOrRemoveFromSettlement(target, this, false);

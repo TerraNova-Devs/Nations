@@ -24,11 +24,9 @@ public class NationDBStuff {
                 String name = rs.getString("name");
                 UUID leaderId = UUID.fromString(rs.getString("leader"));
 
-                Nation nation = new Nation(name, leaderId);
-                nation.setId(nationId);
+                Nation nation = new Nation(nationId, name, leaderId, null, null);
 
                 loadNationSettlements(nation);
-                loadNationMembers(nation);
                 loadNationRelations(nation);
 
                 nations.add(nation);
@@ -55,7 +53,7 @@ public class NationDBStuff {
             ps.executeUpdate();
 
             // Save other nation data
-            saveNationMembers(nation);
+            // Settlements are saved when added/removed, so no need to save here
             saveNationRelations(nation);
 
         } catch (SQLException e) {
@@ -67,13 +65,11 @@ public class NationDBStuff {
     public static void deleteNation(UUID nationId) {
         String sqlDeleteNation = "DELETE FROM nations_table WHERE NUUID = ?";
         String sqlDeleteRelations = "DELETE FROM nation_relations WHERE NUUID1 = ? OR NUUID2 = ?";
-        String sqlDeleteMembers = "DELETE FROM nation_members WHERE NUUID = ?";
         String sqlDeleteSettlementRelations = "DELETE FROM settlement_nation_relations WHERE NUUID = ?";
 
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement psDeleteNation = con.prepareStatement(sqlDeleteNation);
              PreparedStatement psDeleteRelations = con.prepareStatement(sqlDeleteRelations);
-             PreparedStatement psDeleteMembers = con.prepareStatement(sqlDeleteMembers);
              PreparedStatement psDeleteSettlementRelations = con.prepareStatement(sqlDeleteSettlementRelations)) {
 
             psDeleteNation.setString(1, nationId.toString());
@@ -82,9 +78,6 @@ public class NationDBStuff {
             psDeleteRelations.setString(1, nationId.toString());
             psDeleteRelations.setString(2, nationId.toString());
             psDeleteRelations.executeUpdate();
-
-            psDeleteMembers.setString(1, nationId.toString());
-            psDeleteMembers.executeUpdate();
 
             psDeleteSettlementRelations.setString(1, nationId.toString());
             psDeleteSettlementRelations.executeUpdate();
@@ -109,7 +102,7 @@ public class NationDBStuff {
 
                 nation.addSettlement(settlementId);
 
-                // Optionally, you can store the rank information in a map if needed
+                // Optionally, store the rank information if needed
                 // nation.setSettlementRank(settlementId, rank);
             }
 
@@ -164,50 +157,6 @@ public class NationDBStuff {
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    // Existing methods for members and relations...
-
-    // Load members of a nation
-    private static void loadNationMembers(Nation nation) {
-        String sql = "SELECT PUUID FROM nation_members WHERE NUUID = ?";
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-
-            ps.setString(1, nation.getId().toString());
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                UUID playerId = UUID.fromString(rs.getString("PUUID"));
-                nation.addMember(playerId);
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    // Save members of a nation
-    private static void saveNationMembers(Nation nation) {
-        String sqlDelete = "DELETE FROM nation_members WHERE NUUID = ?";
-        String sqlInsert = "INSERT INTO nation_members (NUUID, PUUID) VALUES (?, ?)";
-
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement psDelete = con.prepareStatement(sqlDelete);
-             PreparedStatement psInsert = con.prepareStatement(sqlInsert)) {
-
-            psDelete.setString(1, nation.getId().toString());
-            psDelete.executeUpdate();
-
-            for (UUID playerId : nation.getMembers()) {
-                psInsert.setString(1, nation.getId().toString());
-                psInsert.setString(2, playerId.toString());
-                psInsert.addBatch();
-            }
-            psInsert.executeBatch();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
     }
 

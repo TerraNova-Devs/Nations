@@ -52,6 +52,19 @@ public class SettleManager {
         return true;
     }
 
+    public Optional<Settle> getPlayersSettlement(UUID uuid) {
+        for(Settle settle : settlements.values()) {
+
+            AccessLevelEnum access = settle.membersAccess.get(uuid);
+            if(access != null) {
+                if(access == AccessLevelEnum.COUNCIL || access == AccessLevelEnum.VICE || access == AccessLevelEnum.MAJOR || access == AccessLevelEnum.CITIZEN){
+                    return Optional.of(settle);
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
     public void removeSettlement(UUID uuid) {
         Settle settle = settlements.get(uuid);
         //Citizen NPC töten & World Guard Region löschen
