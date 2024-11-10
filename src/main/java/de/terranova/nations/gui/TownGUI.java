@@ -5,8 +5,8 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.settlements.TownSkins;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,12 +27,12 @@ public class TownGUI extends RoseGUI {
     public void onOpen(InventoryOpenEvent event) {
 
         JavaPlugin.getPlugin(NationsPlugin.class);
-        Optional<Settle> OSettle = NationsPlugin.settleManager.getSettle(player.getLocation());
+        Optional<SettlementPropertyType> OSettle = NationsPlugin.settleManager.getSettle(player.getLocation());
         if (OSettle.isEmpty()) return;
-        Settle settle = OSettle.get();
-        Optional<AccessLevelEnum> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.id);
+        SettlementPropertyType settle = OSettle.get();
+        Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.id);
         if (OAccess.isEmpty()) return;
-        AccessLevelEnum access = OAccess.get();
+        AccessLevel access = OAccess.get();
 
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
@@ -85,7 +85,7 @@ public class TownGUI extends RoseGUI {
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
-            if (Objects.equals(access, AccessLevelEnum.MAJOR) || Objects.equals(access, AccessLevelEnum.VICE) || Objects.equals(access, AccessLevelEnum.COUNCIL) || player.isOp()) {
+            if (Objects.equals(access, AccessLevel.MAJOR) || Objects.equals(access, AccessLevel.VICE) || Objects.equals(access, AccessLevel.COUNCIL) || player.isOp()) {
                 new TownUpgradeGUI(player, settle).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
@@ -94,7 +94,7 @@ public class TownGUI extends RoseGUI {
 
         settings.onClick(e -> {
             if (!player.hasPermission("nations.menu.settings")) return;
-            if (Objects.equals(access, AccessLevelEnum.MAJOR) || Objects.equals(access, AccessLevelEnum.VICE) || player.isOp()) {
+            if (Objects.equals(access, AccessLevel.MAJOR) || Objects.equals(access, AccessLevel.VICE) || player.isOp()) {
                 new TownSettingsGUI(player, settle).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));

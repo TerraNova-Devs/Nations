@@ -1,6 +1,6 @@
 package de.terranova.nations.settlements;
 
-public enum AccessLevelEnum {
+public enum AccessLevel {
     MAJOR,
     VICE,
     COUNCIL,

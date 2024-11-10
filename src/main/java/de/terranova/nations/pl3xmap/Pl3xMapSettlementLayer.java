@@ -1,8 +1,8 @@
 package de.terranova.nations.pl3xmap;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.image.IconImage;
@@ -47,7 +47,7 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
         setPriority(100);
         setZIndex(999);
 
-        for (Settle settle : NationsPlugin.settleManager.settlements.values()) {
+        for (SettlementPropertyType settle : NationsPlugin.settleManager.settlements.values()) {
 
             Collection<Point> markerPoints = new ArrayList<>();
             for (Vectore2 v : Vectore2.fromBlockVectorList(settle.getWorldguardRegion().getPoints()))
@@ -56,9 +56,9 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
 
 
 
-            Collection<String> vices = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.VICE);
-            Collection<String> councils = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum.COUNCIL);
-            String owner = Bukkit.getOfflinePlayer(settle.getEveryUUIDWithCertainAccessLevel(AccessLevelEnum.MAJOR).stream().findFirst().get()).getName();
+            Collection<String> vices = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevel.VICE);
+            Collection<String> councils = settle.getEveryMemberNameWithCertainAccessLevel(AccessLevel.COUNCIL);
+            String owner = Bukkit.getOfflinePlayer(settle.getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().get()).getName();
 
             String tooltip = String.format(
                     "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9; } p.mid { text-align: left; } p.color{ color: #68D9B0; font-size: 30px;} </style>" +

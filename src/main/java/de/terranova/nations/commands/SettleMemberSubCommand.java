@@ -2,8 +2,8 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
@@ -29,12 +29,12 @@ public class SettleMemberSubCommand extends SubCommand implements BasicCommand {
             if (!hasPermission(p, "nations.member.add")) return;
             Optional<Player> target = isPlayer(args[2], p);
             if (target.isEmpty()) return;
-            Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
+            Optional<SettlementPropertyType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
-            Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
+            Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
             if (access.isEmpty()) return;
-            if (!hasAccess(access.get(), List.of(AccessLevelEnum.MAJOR, AccessLevelEnum.VICE))) return;
-            Optional<AccessLevelEnum> newAccess;
+            if (!hasAccess(access.get(), List.of(AccessLevel.MAJOR, AccessLevel.VICE))) return;
+            Optional<AccessLevel> newAccess;
             try {
                 newAccess = settle.get().promoteOrAdd(target.get(), p);
             } catch (SQLException e) {
@@ -48,18 +48,18 @@ public class SettleMemberSubCommand extends SubCommand implements BasicCommand {
             if (!hasPermission(p, "nations.member.remove")) return;
             Optional<Player> target = isPlayer(args[2], p);
             if (target.isEmpty()) return;
-            Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
+            Optional<SettlementPropertyType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
-            Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
+            Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
             if (access.isEmpty()) return;
-            if (!hasAccess(access.get(), List.of(AccessLevelEnum.MAJOR, AccessLevelEnum.VICE))) return;
-            Optional<AccessLevelEnum> newAccess;
+            if (!hasAccess(access.get(), List.of(AccessLevel.MAJOR, AccessLevel.VICE))) return;
+            Optional<AccessLevel> newAccess;
             try {
                 newAccess = settle.get().demoteOrRemove(target.get(), p);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            if (newAccess.isEmpty() || newAccess.get().equals(AccessLevelEnum.REMOVE)) return;
+            if (newAccess.isEmpty() || newAccess.get().equals(AccessLevel.REMOVE)) return;
             p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde zum Rang %s degradiert.", PlainTextComponentSerializer.plainText().serialize(target.get().displayName()), newAccess.get())));
         }
     }

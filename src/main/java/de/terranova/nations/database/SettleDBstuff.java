@@ -1,8 +1,8 @@
 package de.terranova.nations.database;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.math.Vectore2;
 
@@ -36,7 +36,7 @@ public class SettleDBstuff {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
-            HashMap<UUID, Settle> settlements = new HashMap<>();
+            HashMap<UUID, SettlementPropertyType> settlements = new HashMap<>();
             while (rs.next()) {
                 UUID SUUID = UUID.fromString(rs.getString("SUUID"));
                 String name = rs.getString("name");
@@ -50,7 +50,7 @@ public class SettleDBstuff {
                 if(NationsPlugin.debug) NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
-                settlements.put(SUUID, new Settle(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
+                settlements.put(SUUID, new SettlementPropertyType(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
             }
             NationsPlugin.settleManager.setSettlements(settlements);
         } catch (SQLException e) {
@@ -72,15 +72,15 @@ public class SettleDBstuff {
         return result;
     }
 
-    private HashMap<UUID, AccessLevelEnum> getMembersAccess() throws SQLException {
+    private HashMap<UUID, AccessLevel> getMembersAccess() throws SQLException {
         String sql = "SELECT * FROM `access_table` WHERE SUUID = ?";
-        HashMap<UUID, AccessLevelEnum> access = new HashMap<>();
+        HashMap<UUID, AccessLevel> access = new HashMap<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, SUUID.toString());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                access.put(UUID.fromString(rs.getString("PUUID")), AccessLevelEnum.valueOf(rs.getString("access")));
+                access.put(UUID.fromString(rs.getString("PUUID")), AccessLevel.valueOf(rs.getString("access")));
             }
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
@@ -108,8 +108,8 @@ public class SettleDBstuff {
         }
     }
 
-    public void changeMemberAccess(UUID PUUID, AccessLevelEnum access) {
-        if (access.equals(AccessLevelEnum.REMOVE)) {
+    public void changeMemberAccess(UUID PUUID, AccessLevel access) {
+        if (access.equals(AccessLevel.REMOVE)) {
             String sql = "DELETE FROM access_table WHERE SUUID = ? AND PUUID = ?";
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  PreparedStatement statement = con.prepareStatement(sql)) {

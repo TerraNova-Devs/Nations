@@ -19,6 +19,5 @@
 !/testserver/plugins/Pl3xMap/web/images/font
 !/testserver/plugins/Pl3xMap/web/images/icon
 
-
 # Project exlude data types
 *.env

@@ -12,7 +12,7 @@ import com.sk89q.worldguard.session.handler.Handler;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
@@ -41,9 +41,9 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : exited) {
                 String flag = region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 if (flag == null || flag.isEmpty()) return true;
-                Optional<Settle> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
+                Optional<SettlementPropertyType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if(Osettle.isEmpty()) return true;
-                Settle settle = Osettle.get();
+                SettlementPropertyType settle = Osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.name.replaceAll("_", " "))));
             }
 
@@ -51,9 +51,9 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : entered) {
                 String flag = region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 if (flag == null || flag.isEmpty()) return true;
-                Optional<Settle> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
+                Optional<SettlementPropertyType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if(Osettle.isEmpty()) return true;
-                Settle settle = Osettle.get();
+                SettlementPropertyType settle = Osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.name.replaceAll("_", " "))));
             }
         }

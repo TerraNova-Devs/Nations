@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.pl3xmap.Pl3xMapSettlementLayer;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.SettleFlag;
 import net.pl3x.map.core.Pl3xMap;
@@ -20,9 +21,9 @@ import java.util.*;
 
 public class SettleManager {
 
-    public HashMap<UUID, Settle> settlements;
+    public HashMap<UUID, SettlementPropertyType> settlements;
     public List<Vectore2> locations;
-    static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(2,2,2,2,3,2,2,2,2,4));
+    public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(2,2,2,2,3,2,2,2,2,4));
 
     private Registry<Layer> layerRegistry;
 
@@ -33,17 +34,17 @@ public class SettleManager {
     }
 
 
-    public void setSettlements(HashMap<UUID, Settle> settlements) {
+    public void setSettlements(HashMap<UUID, SettlementPropertyType> settlements) {
         this.settlements = settlements;
     }
 
-    public void addSettlement(UUID uuid, Settle settle) {
+    public void addSettlement(UUID uuid, SettlementPropertyType settle) {
         settlements.put(uuid, settle);
     }
 
     public boolean isNameAvaible(String name) {
 
-        for (Settle settlements : settlements.values()) {
+        for (SettlementPropertyType settlements : settlements.values()) {
 
                 if (Objects.equals(settlements.name.toLowerCase(), name.toLowerCase())) {
                     return false;
@@ -53,7 +54,7 @@ public class SettleManager {
     }
 
     public void removeSettlement(UUID uuid) {
-        Settle settle = settlements.get(uuid);
+        SettlementPropertyType settle = settlements.get(uuid);
         //Citizen NPC töten & World Guard Region löschen
         settle.remove();
         //Settle aus der Datenbank nehmen
@@ -63,9 +64,9 @@ public class SettleManager {
         settlements.remove(uuid);
     }
 
-    public Optional<AccessLevelEnum> getAccessLevel(Player p, UUID settlementUUID) {
-        if(p.hasPermission("nations.admin.bypass")) return Optional.of(AccessLevelEnum.MAJOR);
-        AccessLevelEnum access = settlements.get(settlementUUID).membersAccess.get(p.getUniqueId());
+    public Optional<AccessLevel> getAccessLevel(Player p, UUID settlementUUID) {
+        if(p.hasPermission("nations.admin.bypass")) return Optional.of(AccessLevel.MAJOR);
+        AccessLevel access = settlements.get(settlementUUID).membersAccess.get(p.getUniqueId());
         if(access == null) return Optional.empty();
         return Optional.of(access);
     }
@@ -74,7 +75,7 @@ public class SettleManager {
         layerRegistry.register("settlement-layer",new Pl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
     }
 
-    public void addSettlementToPl3xmap(Settle settle) {
+    public void addSettlementToPl3xmap(SettlementPropertyType settle) {
         addSettlementsToPl3xmap();
         /*
         World world = Bukkit.getWorld("world");
@@ -91,18 +92,18 @@ public class SettleManager {
          */
     }
 
-    public Optional<Settle> getSettle(UUID settlementUUID){
+    public Optional<SettlementPropertyType> getSettle(UUID settlementUUID){
         return Optional.ofNullable(settlements.get(settlementUUID));
     }
 
-    public Optional<Settle> getSettle(Location location) {
+    public Optional<SettlementPropertyType> getSettle(Location location) {
 
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
 
         for (ProtectedRegion region : set) {
-            for (Settle settle : settlements.values()) {
+            for (SettlementPropertyType settle : settlements.values()) {
                 String UUIDstring = region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 if(UUIDstring == null) continue;
                 UUID settlementUUID = UUID.fromString(UUIDstring);
@@ -115,9 +116,9 @@ public class SettleManager {
     }
 
     public boolean canSettle(Player p) {
-        for (Settle settle : settlements.values()) {
-            for (AccessLevelEnum acess : settle.membersAccess.values()) {
-                if(acess.equals(AccessLevelEnum.MAJOR)) {
+        for (SettlementPropertyType settle : settlements.values()) {
+            for (AccessLevel acess : settle.membersAccess.values()) {
+                if(acess.equals(AccessLevel.MAJOR)) {
                     return false;
                 }
             }
@@ -125,7 +126,7 @@ public class SettleManager {
         return true;
     }
 
-    public void changeSkin(Player p, Settle settle) {
+    public void changeSkin(Player p, SettlementPropertyType settle) {
         //new TownAdmSkinGUI(p,settlement.level);
     }
 
