@@ -3,15 +3,14 @@ package de.terranova.nations.commands;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.SettleClaim;
 import de.terranova.nations.worldguard.SettleFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,16 +38,16 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
             ProtectedRegion protectedRegion = area.get();
             String settlementUUID = protectedRegion.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
             assert settlementUUID != null;
-            Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, UUID.fromString(settlementUUID));
+            Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, UUID.fromString(settlementUUID));
             if (access.isEmpty()) {
                 p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
                 return;
             }
-            if (!(access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE))) {
+            if (!(access.get().equals(AccessLevel.MAJOR) || access.get().equals(AccessLevel.VICE))) {
                 p.sendMessage(Chat.errorFade("Du benötigst einen höheren Rang um diese Stadt zu erweitern."));
                 return;
             }
-            Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
+            SettlementPropertyType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
             double abstand = Integer.MAX_VALUE;
             for (Vectore2 location : NationsPlugin.settleManager.locations) {
                 if (settle.location.equals(location)) continue;
@@ -90,7 +89,7 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
                 String settlementUUID = protectedRegion.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
                 SettleClaim.addToExistingClaim(p, protectedRegion);
-                Settle settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
+                SettlementPropertyType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
                 NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
                 settle.claims = SettleClaim.getClaimAnzahl(settle.id);
 

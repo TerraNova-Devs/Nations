@@ -15,7 +15,6 @@ import com.sk89q.worldguard.session.handler.Handler;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.Settle;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
