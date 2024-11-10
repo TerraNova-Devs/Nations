@@ -5,7 +5,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.settlements.level.Objective;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -15,9 +15,9 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class TownUpgradeGUI extends RoseGUI {
 
-    Settle settle;
+    SettlementPropertyType settle;
 
-    public TownUpgradeGUI(Player player, Settle settle) {
+    public TownUpgradeGUI(Player player, SettlementPropertyType settle) {
         super(player, "town-upgrade-gui", Chat.blueFade("<b>Town Upgrades"), 6);
         this.settle = settle;
     }

@@ -3,8 +3,8 @@ package de.terranova.nations.commands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.SettleClaim;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -73,7 +73,7 @@ public class SettleCreateSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-            Settle newsettle = new Settle(name, p);
+            SettlementPropertyType newsettle = new SettlementPropertyType(name, p);
 
             NationsPlugin.settleManager.addSettlement(newsettle.id, newsettle);
             SettleDBstuff.addSettlement(newsettle.id, name, new Vectore2(p.getLocation()), p.getUniqueId());
@@ -97,11 +97,11 @@ public class SettleCreateSubCommand extends SubCommand implements BasicCommand {
                 p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
                 return;
             }
-            Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
+            Optional<SettlementPropertyType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isPresent()) {
-                Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
+                Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
                 if (access.isEmpty()) return;
-                if (access.get().equals(AccessLevelEnum.MAJOR)) {
+                if (access.get().equals(AccessLevel.MAJOR)) {
                     settle.get().rename(name);
                     p.sendMessage(name);
                 } else {
@@ -113,12 +113,12 @@ public class SettleCreateSubCommand extends SubCommand implements BasicCommand {
         }
         if (args[0].equalsIgnoreCase("tphere")) {
             if (!hasPermission(p, "nations.tphere")) return;
-            Optional<Settle> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
+            Optional<SettlementPropertyType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
 
             if (settle.isPresent()) {
-                Optional<AccessLevelEnum> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
+                Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
                 if (access.isEmpty()) return;
-                if (access.get().equals(AccessLevelEnum.MAJOR) || access.get().equals(AccessLevelEnum.VICE)) {
+                if (access.get().equals(AccessLevel.MAJOR) || access.get().equals(AccessLevel.VICE)) {
                     settle.get().tpNPC(p.getLocation());
                 }
             } else {

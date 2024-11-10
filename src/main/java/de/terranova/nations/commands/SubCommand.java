@@ -1,7 +1,7 @@
 package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.settlements.AccessLevelEnum;
+import de.terranova.nations.settlements.AccessLevel;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -32,8 +32,8 @@ public abstract class SubCommand {
         return p;
     }
 
-    boolean hasAccess(AccessLevelEnum access, List<AccessLevelEnum> neededAcess) {
-        for (AccessLevelEnum accessLevel : neededAcess) {
+    boolean hasAccess(AccessLevel access, List<AccessLevel> neededAcess) {
+        for (AccessLevel accessLevel : neededAcess) {
             if (accessLevel.equals(access)) return true;
         }
         return false;
