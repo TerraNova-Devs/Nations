@@ -28,5 +28,8 @@
 !/testserver/plugins/Oraxen/gestures/
 !/testserver/plugins/Oraxen/schematics/
 
+#Opibus
+!/testserver/plugins/Opibus/
+
 # Project exlude data types
 *.env
