@@ -17,7 +17,7 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import net.goldtreeservers.worldguardextraflags.flags.Flags;
@@ -171,7 +171,7 @@ public class SettleClaim {
         return !(set.size() == 0);
     }
 
-    public static void addOrRemoveFromSettlement(Player p, Settle settle, boolean addRemove) {
+    public static void addOrRemoveFromSettlement(Player p, SettlementPropertyType settle, boolean addRemove) {
         if (addRemove) {
             settle.getWorldguardRegion().getMembers().addPlayer(p.getUniqueId());
         } else {

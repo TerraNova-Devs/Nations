@@ -2,7 +2,7 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.Settle;
+import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -33,7 +33,7 @@ public class SettleTestSubCommand extends SubCommand implements BasicCommand {
 
         if (args[0].equalsIgnoreCase("test")) {
             if (!hasPermission(p, "nations.admin.test")) return;
-            Settle settle = NationsPlugin.settleManager.getSettle(p.getLocation()).get();
+            SettlementPropertyType settle = NationsPlugin.settleManager.getSettle(p.getLocation()).get();
             p.sendMessage("" + settle.location.asString() + ": " + settle.name);
             for (Vectore2 loc : NationsPlugin.settleManager.locations) {
                 p.sendMessage(loc.asString());

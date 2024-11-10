@@ -1,20 +1,9 @@
 package de.terranova.nations.commands;
 
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.AccessLevelEnum;
-import de.terranova.nations.settlements.Settle;
-import de.terranova.nations.worldguard.SettleClaim;
-import de.terranova.nations.worldguard.SettleFlag;
-import de.terranova.nations.worldguard.math.Vectore2;
-import de.terranova.nations.worldguard.math.claimCalc;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -22,7 +11,6 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.sql.SQLException;
 import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")

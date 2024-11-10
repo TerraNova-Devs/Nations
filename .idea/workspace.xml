@@ -9,9 +9,33 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="comitted ful,l testserver gitignore following">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="cleaned up gitignore">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/PropertyType.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/PropertyTypeClasses/SettlementPropertyType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/api/SettleAPI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/api/SettleAPI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleClaimSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleClaimSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCreateSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCreateSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleMemberSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleMemberSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleRemoveSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleRemoveSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleTestSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleTestSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSettingsGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSettingsGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSkinGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownSkinGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/Pl3xMapSettlementLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/Pl3xMapSettlementLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevelEnum.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/OwnedRegion.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/Property.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/Settle.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NewSettleHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NewSettleHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/SettleClaim.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/SettleClaim.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/SettleHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/SettleHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +83,7 @@
       <list>
         <option value="CSS File" />
         <option value="Enum" />
+        <option value="Interface" />
         <option value="Class" />
       </list>
     </option>
@@ -98,7 +123,7 @@
     &quot;Gradle.Nations [wrapper].executor&quot;: &quot;Run&quot;,
     &quot;JAR Application.testserver.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;property&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/TerraNova Repositories/Nations/src/main/resources/settlement&quot;,
@@ -143,7 +168,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.testserver">
+  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -291,7 +316,11 @@
       <workItem from="1724497908903" duration="436000" />
       <workItem from="1730473024673" duration="255000" />
       <workItem from="1730473291143" duration="559000" />
-      <workItem from="1730473866001" duration="143000" />
+      <workItem from="1730473866001" duration="452000" />
+      <workItem from="1730924858213" duration="221000" />
+      <workItem from="1730925157868" duration="494000" />
+      <workItem from="1731164261657" duration="2218000" />
+      <workItem from="1731265315692" duration="3791000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -317,7 +346,15 @@
       <option name="project" value="LOCAL" />
       <updated>1730473696560</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="cleaned up gitignore">
+      <option name="closed" value="true" />
+      <created>1730474035040</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1730474035040</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,7 +366,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="comitted ful,l testserver gitignore following" />
-    <option name="LAST_COMMIT_MESSAGE" value="comitted ful,l testserver gitignore following" />
+    <MESSAGE value="cleaned up gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="cleaned up gitignore" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

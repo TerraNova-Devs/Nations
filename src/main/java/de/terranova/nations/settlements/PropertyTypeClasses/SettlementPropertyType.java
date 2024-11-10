@@ -1,61 +1,53 @@
-package de.terranova.nations.settlements;
+package de.terranova.nations.settlements.PropertyTypeClasses;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.PropertyType;
+import de.terranova.nations.settlements.SettleManager;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.SettleClaim;
-import de.terranova.nations.worldguard.SettleFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import io.th0rgal.oraxen.api.OraxenItems;
-import net.citizensnpcs.api.CitizensAPI;
-import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
-import net.citizensnpcs.trait.LookClose;
-import net.citizensnpcs.trait.SkinTrait;
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
-import org.bukkit.*;
-import org.bukkit.entity.EntityType;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.sql.SQLException;
 import java.util.*;
 
-public class Settle extends OwnedRegion{
+public class SettlementPropertyType extends PropertyType {
 
     public final Vectore2 location;
     public int level;
 
     public Objective objective;
-    public HashMap<UUID, AccessLevelEnum> membersAccess = new HashMap<>();
+    public HashMap<UUID, AccessLevel> membersAccess = new HashMap<>();
     public int claims;
-    NPC npc;
-
 
     //Beim neu erstellen
-    public Settle(String name, Player p) {
+    public SettlementPropertyType(String name, Player p) {
         super(name, UUID.randomUUID());
         //INIT
         this.location = SettleClaim.getSChunkMiddle(p.getLocation());
         NationsPlugin.settleManager.locations.add(this.location);
         this.level = 1;
-        this.membersAccess.put(p.getUniqueId(), AccessLevelEnum.MAJOR);
+        this.membersAccess.put(p.getUniqueId(), AccessLevel.MAJOR);
         this.region = SettleClaim.createClaim(name, p, this.id);
         this.objective = new Objective(0, 0, 0, 0, 0, null, null, null, null);
         //POST INIT
         this.npc = createNPC(name, p.getLocation(), this.id);
+        setLevel();
         this.claims = SettleClaim.getClaimAnzahl(this.id);
-        Set<com.sk89q.worldedit.world.entity.EntityType> set = new HashSet<>(Arrays.asList(com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie_villager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:spider"),
+        Set<EntityType> set = new HashSet<>(Arrays.asList(com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie_villager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:zombie"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:spider"),
                 com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:skeleton"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:enderman"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:phantom"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:drowned"),
                 com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:witch"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:pillager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
                 com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:creeper")
@@ -65,7 +57,7 @@ public class Settle extends OwnedRegion{
     }
 
     //Von der Datenbank
-    public Settle(UUID settlementUUID, HashMap<UUID, AccessLevelEnum> membersAccess, Vectore2 location, String name, int level, Objective objective) {
+    public SettlementPropertyType(UUID settlementUUID, HashMap<UUID, AccessLevel> membersAccess, Vectore2 location, String name, int level, Objective objective) {
         super(name, settlementUUID);
         this.location = SettleClaim.getSChunkMiddle(location);
         NationsPlugin.settleManager.locations.add(SettleClaim.getSChunkMiddle(location));
@@ -78,86 +70,7 @@ public class Settle extends OwnedRegion{
         getCitizensNPCbySUUID();
     }
 
-    private NPC createNPC(String name, Location location, UUID settlementUUID) {
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
-
-        SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-        skinTrait.setSkinPersistent(name, TownSkins.BEGGAR.getSkinSign(), TownSkins.BEGGAR.getSkinTexture());
-
-        LookClose lookTrait = npc.getOrAddTrait(LookClose.class);
-        lookTrait.toggle();
-
-        SettleTrait settleTrait = npc.getOrAddTrait(SettleTrait.class);
-        settleTrait.setUUID(settlementUUID);
-
-        HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
-        hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
-        npc.setAlwaysUseNameHologram(true);
-        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name.replaceAll("_", " ")));
-        npc.spawn(location);
-        return npc;
-    }
-
-    private void getCitizensNPCbySUUID() {
-        if (npc == null) {
-            for (NPC npc : CitizensAPI.getNPCRegistry()) {
-
-                if (!npc.hasTrait(SettleTrait.class)) {
-
-                    continue;
-                }
-
-                if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(this.id)) {
-                    this.npc = npc;
-                }
-            }
-        }
-    }
-
-    public void tpNPC(Location location) {
-        for (NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (!npc.hasTrait(SettleTrait.class)) {
-                continue;
-            }
-            if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(this.id)) {
-                npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
-            }
-        }
-
-    }
-
-    public void reskinNpc(TownSkins skin) {
-        for (NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (!npc.hasTrait(SettleTrait.class)) {
-                continue;
-            }
-            if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(this.id)) {
-                SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-                skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
-            }
-        }
-    }
-
-    public void rename(String name) {
-
-        getCitizensNPCbySUUID();
-
-        this.name = name;
-        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", this.name.replaceAll("_", " ")));
-
-        ProtectedPolygonalRegion newregion = new ProtectedPolygonalRegion(name, region.getPoints(), region.getMinimumPoint().y(), region.getMaximumPoint().y());
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
-        newregion.copyFrom(region);
-        assert regions != null;
-        regions.removeRegion(region.getId());
-        regions.addRegion(newregion);
-        this.region = newregion;
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        settleDB.rename(name);
-    }
-
-    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevelEnum access) {
+    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevel access) {
         Collection<UUID> output = new ArrayList<>();
         for (UUID uuid : membersAccess.keySet()) {
             if (membersAccess.get(uuid).equals(access)) {
@@ -167,7 +80,7 @@ public class Settle extends OwnedRegion{
         return output;
     }
 
-    public Collection<String> getEveryMemberNameWithCertainAccessLevel(AccessLevelEnum access) {
+    public Collection<String> getEveryMemberNameWithCertainAccessLevel(AccessLevel access) {
         Collection<String> output = new ArrayList<>();
         for (UUID uuid : membersAccess.keySet()) {
             if (membersAccess.get(uuid).equals(access)) {
@@ -179,54 +92,61 @@ public class Settle extends OwnedRegion{
         return output;
     }
 
-    public Optional<AccessLevelEnum> promoteOrAdd(Player target, Player p) throws SQLException {
+    public Optional<AccessLevel> promoteOrAdd(Player target, Player p) throws SQLException {
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
         if (!this.membersAccess.containsKey(target.getUniqueId())) {
-            this.membersAccess.put(target.getUniqueId(), AccessLevelEnum.CITIZEN);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.CITIZEN);
+            this.membersAccess.put(target.getUniqueId(), AccessLevel.CITIZEN);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.CITIZEN);
             SettleClaim.addOrRemoveFromSettlement(target, this, true);
-            return Optional.of(AccessLevelEnum.CITIZEN);
+            return Optional.of(AccessLevel.CITIZEN);
         }
-        AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
-        if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
-            this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            return Optional.of(AccessLevelEnum.COUNCIL);
+        AccessLevel accessLevelEnum = this.membersAccess.get(target.getUniqueId());
+        if (accessLevelEnum.equals(AccessLevel.CITIZEN)) {
+            this.membersAccess.replace(target.getUniqueId(), AccessLevel.COUNCIL);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.COUNCIL);
+            return Optional.of(AccessLevel.COUNCIL);
         }
-        if (accessLevelEnum.equals(AccessLevelEnum.COUNCIL)) {
-            this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.VICE);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.VICE);
-            return Optional.of(AccessLevelEnum.VICE);
+        if (accessLevelEnum.equals(AccessLevel.COUNCIL)) {
+            this.membersAccess.replace(target.getUniqueId(), AccessLevel.VICE);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.VICE);
+            return Optional.of(AccessLevel.VICE);
         }
-        if (accessLevelEnum.equals(AccessLevelEnum.VICE) || accessLevelEnum.equals(AccessLevelEnum.MAJOR))
+        if (accessLevelEnum.equals(AccessLevel.VICE) || accessLevelEnum.equals(AccessLevel.MAJOR))
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
         return Optional.empty();
     }
 
-    public Optional<AccessLevelEnum> demoteOrRemove(Player target, Player p) throws SQLException {
-        if (!this.membersAccess.containsKey(target.getUniqueId()) || this.membersAccess.get(target.getUniqueId()).equals(AccessLevelEnum.MAJOR))
+    public Optional<AccessLevel> demoteOrRemove(Player target, Player p) throws SQLException {
+        if (!this.membersAccess.containsKey(target.getUniqueId()) || this.membersAccess.get(target.getUniqueId()).equals(AccessLevel.MAJOR))
             return Optional.empty();
-        AccessLevelEnum accessLevelEnum = this.membersAccess.get(target.getUniqueId());
+        AccessLevel accessLevelEnum = this.membersAccess.get(target.getUniqueId());
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        if (accessLevelEnum.equals(AccessLevelEnum.CITIZEN)) {
+        if (accessLevelEnum.equals(AccessLevel.CITIZEN)) {
             this.membersAccess.remove(target.getUniqueId());
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.REMOVE);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.REMOVE);
             SettleClaim.addOrRemoveFromSettlement(target, this, false);
             p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde von deiner Stadt entfernt.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
-            return Optional.of(AccessLevelEnum.REMOVE);
+            return Optional.of(AccessLevel.REMOVE);
         }
-        if (accessLevelEnum.equals(AccessLevelEnum.COUNCIL)) {
-            this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.CITIZEN);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.CITIZEN);
-            return Optional.of(AccessLevelEnum.CITIZEN);
+        if (accessLevelEnum.equals(AccessLevel.COUNCIL)) {
+            this.membersAccess.replace(target.getUniqueId(), AccessLevel.CITIZEN);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.CITIZEN);
+            return Optional.of(AccessLevel.CITIZEN);
         }
-        if (accessLevelEnum.equals(AccessLevelEnum.VICE)) {
-            this.membersAccess.replace(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevelEnum.COUNCIL);
-            return Optional.of(AccessLevelEnum.COUNCIL);
+        if (accessLevelEnum.equals(AccessLevel.VICE)) {
+            this.membersAccess.replace(target.getUniqueId(), AccessLevel.COUNCIL);
+            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.COUNCIL);
+            return Optional.of(AccessLevel.COUNCIL);
         }
         p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
         return Optional.empty();
+    }
+
+    public void setLevel(){
+        getCitizensNPCbySUUID();
+        HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
+        hologramTrait.clear();
+        hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
     }
 
     public void levelUP() {
@@ -248,10 +168,7 @@ public class Settle extends OwnedRegion{
         this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null, null);
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
         settleDB.setLevel(level);
-        getCitizensNPCbySUUID();
-        HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
-        hologramTrait.clear();
-        hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", this.level));
+        setLevel();
     }
 
     public void contributeObjective(Player p, String objective) {
@@ -328,24 +245,6 @@ public class Settle extends OwnedRegion{
         return amount - total;
     }
 
-    public ProtectedRegion getWorldguardRegion() {
-
-        World world = Bukkit.getWorld("world");
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        assert world != null;
-        RegionManager regions = container.get(BukkitAdapter.adapt(world));
-        assert regions != null;
-        for (ProtectedRegion region : regions.getRegions().values()) {
-            if (region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG) == null) continue;
-            UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG)));
-            if (this.id.equals(settlementUUID)) {
-                return region;
-            }
-
-        }
-        return null;
-    }
-
     public void setObjectives(Objective objective) {
         this.objective = objective;
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
@@ -365,18 +264,4 @@ public class Settle extends OwnedRegion{
         NationsPlugin.settleManager.locations.remove(this.location);
     }
 
-    public void removeNPC() {
-        getCitizensNPCbySUUID();
-        this.npc.destroy();
-    }
-
-    public void removeWGRegion() {
-        ProtectedRegion region = getWorldguardRegion();
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
-        assert regions != null;
-        regions.removeRegion(region.getId());
-    }
-
 }
-
