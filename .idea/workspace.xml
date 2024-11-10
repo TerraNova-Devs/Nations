@@ -9,10 +9,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="abstracted settlement into a propertyType, introduced property types">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added Oraxen to gitignore">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -297,7 +295,7 @@
       <workItem from="1730924858213" duration="221000" />
       <workItem from="1730925157868" duration="494000" />
       <workItem from="1731164261657" duration="2218000" />
-      <workItem from="1731265315692" duration="4138000" />
+      <workItem from="1731265315692" duration="4194000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -339,7 +337,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731269294093</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="added Oraxen to gitignore">
+      <option name="closed" value="true" />
+      <created>1731269499411</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1731269499411</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -353,7 +359,8 @@
     <MESSAGE value="comitted ful,l testserver gitignore following" />
     <MESSAGE value="cleaned up gitignore" />
     <MESSAGE value="abstracted settlement into a propertyType, introduced property types" />
-    <option name="LAST_COMMIT_MESSAGE" value="abstracted settlement into a propertyType, introduced property types" />
+    <MESSAGE value="added Oraxen to gitignore" />
+    <option name="LAST_COMMIT_MESSAGE" value="added Oraxen to gitignore" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
