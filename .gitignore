@@ -12,12 +12,21 @@
 !/testserver/plugins/
 /testserver/plugins/**/
 
-!/testserver/plugins/Pl3xMap/
+#Pl3xMap
 !/testserver/plugins/Pl3xMap/web
 !/testserver/plugins/Pl3xMap/web/images
 !/testserver/plugins/Pl3xMap/web/images/banner
 !/testserver/plugins/Pl3xMap/web/images/font
 !/testserver/plugins/Pl3xMap/web/images/icon
+
+#Oraxen
+!/testserver/plugins/Oraxen/
+!/testserver/plugins/Oraxen/items/
+!/testserver/plugins/Oraxen/glyphs/
+!/testserver/plugins/Oraxen/languages/
+!/testserver/plugins/Oraxen/recipes/
+!/testserver/plugins/Oraxen/gestures/
+!/testserver/plugins/Oraxen/schematics/
 
 # Project exlude data types
 *.env
