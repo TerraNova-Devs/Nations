@@ -4,9 +4,9 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
-import de.terranova.nations.worldguard.SettleClaim;
-import de.terranova.nations.worldguard.SettleFlag;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.worldguard.RegionClaimFunctions;
+import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -31,7 +31,7 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
 
         if (args[0].equalsIgnoreCase("claim")) {
             if (!hasPermission(p, "nations.claim")) return;
-            Optional<ProtectedRegion> area = SettleClaim.checkSurrAreaForSettles(p);
+            Optional<ProtectedRegion> area = RegionClaimFunctions.checkSurrAreaForSettles(p);
             if (area.isEmpty()) {
                 return;
             }
@@ -47,9 +47,9 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
                 p.sendMessage(Chat.errorFade("Du benötigst einen höheren Rang um diese Stadt zu erweitern."));
                 return;
             }
-            SettlementPropertyType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
+            SettleRegionType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
             double abstand = Integer.MAX_VALUE;
-            for (Vectore2 location : NationsPlugin.settleManager.locations) {
+            for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
                 if (settle.location.equals(location)) continue;
                 double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
                 if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
@@ -70,9 +70,9 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-            SettleClaim.addToExistingClaim(p, protectedRegion);
+            RegionClaimFunctions.addToExistingClaim(p, protectedRegion);
             NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
-            settle.claims = SettleClaim.getClaimAnzahl(settle.id);
+            settle.claims = RegionClaimFunctions.getClaimAnzahl(settle.id);
             settle.region = settle.getWorldguardRegion();
             p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + settle.claims + "/" + settle.getMaxClaims() + ")"));
         }
@@ -83,15 +83,15 @@ public class SettleClaimSubCommand extends SubCommand implements BasicCommand {
             }
 
             if (!hasPermission(p, "nations.admin.forceclaim")) return;
-            Optional<ProtectedRegion> area = SettleClaim.checkSurrAreaForSettles(p);
+            Optional<ProtectedRegion> area = RegionClaimFunctions.checkSurrAreaForSettles(p);
             if (area.isPresent()) {
                 ProtectedRegion protectedRegion = area.get();
                 String settlementUUID = protectedRegion.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 assert settlementUUID != null;
-                SettleClaim.addToExistingClaim(p, protectedRegion);
-                SettlementPropertyType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
+                RegionClaimFunctions.addToExistingClaim(p, protectedRegion);
+                SettleRegionType settle = NationsPlugin.settleManager.getSettle(UUID.fromString(settlementUUID)).get();
                 NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
-                settle.claims = SettleClaim.getClaimAnzahl(settle.id);
+                settle.claims = RegionClaimFunctions.getClaimAnzahl(settle.id);
 
             }
         }

@@ -6,7 +6,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.settlements.TownSkins;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -56,7 +56,7 @@ public class TownSkinGUI extends RoseGUI {
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
             JavaPlugin.getPlugin(NationsPlugin.class);
-            Optional<SettlementPropertyType> settlement = NationsPlugin.settleManager.getSettle(player.getLocation());
+            Optional<SettleRegionType> settlement = NationsPlugin.settleManager.getSettle(player.getLocation());
             if (settlement.isPresent()) {
                 RoseItem skull = new RoseItem.Builder()
                         .setSkull(skin.getSkinTexture())

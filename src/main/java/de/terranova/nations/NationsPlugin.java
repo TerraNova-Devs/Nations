@@ -1,17 +1,21 @@
 package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.UUIDFlag;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.commands.SettleCommand;
+import de.terranova.nations.commands.TerraRegionCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.SettleManager;
-import de.terranova.nations.settlements.SettleTrait;
+import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.settlements.level.Objective;
-import de.terranova.nations.worldguard.SettleFlag;
-import de.terranova.nations.worldguard.SettleHandler;
+import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
+import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.SettleHandler;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -85,9 +89,6 @@ public final class NationsPlugin extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        //unloaden wenn ausgelesen nicht erst am Ende
-        skinsYML.unloadYAML();
-        //levelYML.unloadYAML();
         try {
             hikari.closeConnection();
         } catch (SQLException e) {
@@ -113,12 +114,15 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void worldguardFlagRegistry() {
-        SettleFlag.registerSettlementFlag();
+        //SettleFlag.registerSettlementFlag();
+        RegionFlag.registerRegionFlag(this);
     }
 
     private void worldguardHandlerRegistry() {
+        //SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
+        //sessionManager.registerHandler(SettleHandler.FACTORY, null);
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
-        sessionManager.registerHandler(SettleHandler.FACTORY, null);
+        sessionManager.registerHandler(RegionHandler.FACTORY, null);
     }
 
 
@@ -128,6 +132,7 @@ public final class NationsPlugin extends JavaPlugin {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
+            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraRegionCommand(this));
         });
         //Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }
