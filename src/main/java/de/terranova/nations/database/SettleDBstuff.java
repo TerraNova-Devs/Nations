@@ -2,7 +2,7 @@ package de.terranova.nations.database;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.settlements.level.Objective;
 import de.terranova.nations.worldguard.math.Vectore2;
 
@@ -36,7 +36,7 @@ public class SettleDBstuff {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             ResultSet rs = statement.executeQuery();
-            HashMap<UUID, SettlementPropertyType> settlements = new HashMap<>();
+            HashMap<UUID, SettleRegionType> settlements = new HashMap<>();
             while (rs.next()) {
                 UUID SUUID = UUID.fromString(rs.getString("SUUID"));
                 String name = rs.getString("name");
@@ -50,7 +50,7 @@ public class SettleDBstuff {
                 if(NationsPlugin.debug) NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
-                settlements.put(SUUID, new SettlementPropertyType(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
+                settlements.put(SUUID, new SettleRegionType(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective));
             }
             NationsPlugin.settleManager.setSettlements(settlements);
         } catch (SQLException e) {

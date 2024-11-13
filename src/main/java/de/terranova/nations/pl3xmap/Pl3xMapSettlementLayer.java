@@ -2,7 +2,7 @@ package de.terranova.nations.pl3xmap;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.image.IconImage;
@@ -47,9 +47,13 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
         setPriority(100);
         setZIndex(999);
 
-        for (SettlementPropertyType settle : NationsPlugin.settleManager.settlements.values()) {
+        for (SettleRegionType settle : NationsPlugin.settleManager.settlements.values()) {
 
             Collection<Point> markerPoints = new ArrayList<>();
+            if(settle.getWorldguardRegion() == null) {
+                Bukkit.getLogger().severe(String.format("Wordguard Region wurde für %s nicht gefunden!",settle.name));
+                continue;
+            }
             for (Vectore2 v : Vectore2.fromBlockVectorList(settle.getWorldguardRegion().getPoints()))
                 markerPoints.add(v.asPoint());
             Polygon polygonMarker = new Polygon("polygon" + settle.id, new Polyline("line" + settle.id, markerPoints));
