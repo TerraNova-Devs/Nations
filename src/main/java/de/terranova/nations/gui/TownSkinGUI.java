@@ -22,10 +22,12 @@ public class TownSkinGUI extends RoseGUI {
 
     private static Method metaSetProfileMethod;
     private final RosePagination pagination = new RosePagination(this);
+    SettleRegionType settle;
 
-    public TownSkinGUI(Player player, int townskins) {
+    public TownSkinGUI(Player player, int townskins, SettleRegionType settle) {
         super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
         this.pagination.registerPageSlotsBetween(10, 44);
+        this.settle = settle;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class TownSkinGUI extends RoseGUI {
                 .displayName(Chat.redFade("<b>Go Back</b>"))
                 .build();
         back.onClick(e -> {
-            new TownGUI(player).open();
+            new TownGUI(player, settle).open();
         });
 
         addItem(18, back);

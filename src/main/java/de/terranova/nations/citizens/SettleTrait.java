@@ -2,6 +2,7 @@ package de.terranova.nations.citizens;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.gui.TownGUI;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
@@ -11,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @TraitName("nations-settlement-uuid")
@@ -40,7 +42,9 @@ public class SettleTrait extends Trait {
         Player player = event.getClicker().getPlayer();
         if (player == null) return;
         if (!player.hasPermission("nations.menu")) return;
-        new TownGUI(player).open();
+        Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettle(settlement_uuid);
+        if(osettle.isEmpty()) return;
+        new TownGUI(player, osettle.get()).open();
     }
 
     public UUID getUUID() {
