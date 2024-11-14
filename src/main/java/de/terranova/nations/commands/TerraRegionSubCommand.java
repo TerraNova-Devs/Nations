@@ -21,13 +21,7 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
         if(args[0].equalsIgnoreCase("create")) {
             switch (args[1].toLowerCase()) {
                 case "settle":
-                    hasPermission(p, permission + ".settle");
-                    SettleRegionType settle = SettleRegionType.conditionCheck(p,args);
-                    if (settle == null) return;
-                    NationsPlugin.settleManager.addSettlement(settle.id, settle);
-                    SettleDBstuff.addSettlement(settle.id, settle.name, new Vectore2(p.getLocation()), p.getUniqueId());
-                    p.sendMessage(Chat.greenFade("Deine Stadt " + settle.name + " wurde erfolgreich gegründet."));
-                    NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
+                    SettleRegionType.conditionCheck(p,args, permission);
                 case "outpost":
                     hasPermission(p, permission + ".outpost");
                     TerraSelectCache cache = hasSelect(p);

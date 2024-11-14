@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevel;
 import de.terranova.nations.settlements.RegionType;
@@ -73,31 +74,32 @@ public class SettleRegionType extends RegionType {
     }
 
     //Bedingungen Überprüfen
-    public static SettleRegionType conditionCheck(Player p, String[] args) {
+    public static void conditionCheck(Player p, String[] args, String permission) {
+        SubCommand.hasPermission(p, permission + ".settle");
         if (!(args.length >= 2)) {
             p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
-            return null;
+            return;
         }
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
         if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
             p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
-            return null;
+            return;
         }
         List<String> biomeblacklist = new ArrayList<>(Arrays.asList("RIVER", "DEEP_COLD_OCEAN", "COLD_OCEAN", "DEEP_LUKEWARM_OCEAN", "LUKEWARM_OCEAN", "OCEAN", "DEEP_OCEAN", "WARM_OCEAN", "DEEP_WARM_OCEAN", "BEACH", "GRAVEL_BEACH", "SNOWY_BEACH"));
         String currentbiome = p.getWorld().getBiome(p.getLocation()).toString();
         for (String biome : biomeblacklist) {
             if (biome.equalsIgnoreCase(currentbiome)) {
                 p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
-                return null;
+                return;
             }
         }
         if (!NationsPlugin.settleManager.isNameAvaible(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
-            return null;
+            return;
         }
         if (RegionClaimFunctions.checkAreaForSettles(p)) {
             p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
-            return null;
+            return;
         }
         double abstand = Integer.MAX_VALUE;
         for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
@@ -110,10 +112,16 @@ public class SettleRegionType extends RegionType {
         if (abstand < 2000) {
             p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Bl\u00F6cke Abstand muss eingehalten werden."));
             p.sendMessage(Chat.errorFade(String.format("Die n\u00E4chste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(abstand))));
-            return null;
+            return;
         }
 
-        return new SettleRegionType(name, p);
+        SettleRegionType settle = new SettleRegionType(name, p);
+
+        NationsPlugin.settleManager.addSettlement(settle.id, settle);
+        SettleDBstuff.addSettlement(settle.id, settle.name, new Vectore2(p.getLocation()), p.getUniqueId());
+        NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
+
+        p.sendMessage(Chat.greenFade("Deine Stadt " + settle.name + " wurde erfolgreich gegründet."));
     }
 
     //remove the Region

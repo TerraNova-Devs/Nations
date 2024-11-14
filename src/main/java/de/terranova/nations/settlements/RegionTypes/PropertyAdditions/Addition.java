@@ -1,4 +1,4 @@
 package de.terranova.nations.settlements.RegionTypes.PropertyAdditions;
 
-public interface Addition {
+public abstract class Addition {
 }
