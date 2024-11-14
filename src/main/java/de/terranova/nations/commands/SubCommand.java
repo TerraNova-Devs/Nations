@@ -19,7 +19,7 @@ public abstract class SubCommand {
         this.permission = permission;
     }
 
-    boolean hasPermission(Player p, String permission) {
+    public static boolean hasPermission(Player p, String permission) {
         if (p.hasPermission(permission)) return true;
         p.sendMessage(Chat.errorFade(String.format("Dir fehlt zum Ausführen des Befehles die Permission '%s'.", permission)));
         return false;

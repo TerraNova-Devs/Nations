@@ -1,4 +1,4 @@
 package de.terranova.nations.settlements.RegionTypes.PropertyAdditions;
 
-public class CastleAddition {
+public class CastleAddition extends Addition {
 }
