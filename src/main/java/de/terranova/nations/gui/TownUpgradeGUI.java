@@ -48,7 +48,7 @@ public class TownUpgradeGUI extends RoseGUI {
                 .displayName(Chat.redFade("<b>Go Back</b>"))
                 .build();
         back.onClick(e -> {
-            new TownGUI(player).open();
+            new TownGUI(player, settle).open();
         });
 
         RoseItem score = new RoseItem.Builder()

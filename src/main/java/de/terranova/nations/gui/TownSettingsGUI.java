@@ -18,9 +18,11 @@ import java.util.*;
 public class TownSettingsGUI extends RoseGUI {
 
     ProtectedRegion region;
+    SettleRegionType settle;
 
     public TownSettingsGUI(Player player, SettleRegionType settle) {
         super(player, "town-settings-gui", Chat.blueFade("<b>Town Settings"), 6);
+        this.settle = settle;
         this.region = settle.getWorldguardRegion();
     }
 
@@ -38,7 +40,7 @@ public class TownSettingsGUI extends RoseGUI {
                 .displayName(Chat.redFade("<b>Go Back</b>"))
                 .build();
         back.onClick(e -> {
-            new TownGUI(player).open();
+            new TownGUI(player, settle).open();
         });
 
         addStateFlag(Flags.SNOW_FALL, 10, Material.SNOW, "Soll sich Schnee in deinem Gebiet bilden?");

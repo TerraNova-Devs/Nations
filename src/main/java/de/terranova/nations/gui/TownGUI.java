@@ -19,17 +19,15 @@ import java.util.Optional;
 
 public class TownGUI extends RoseGUI {
 
-    public TownGUI(Player player) {
+    private SettleRegionType settle;
+
+    public TownGUI(Player player, SettleRegionType settleRegionType) {
         super(player, "town-gui", Chat.blueFade("<b>Town Menu"), 5);
+        this.settle = settleRegionType;
     }
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-
-        JavaPlugin.getPlugin(NationsPlugin.class);
-        Optional<SettleRegionType> OSettle = NationsPlugin.settleManager.getSettle(player.getLocation());
-        if (OSettle.isEmpty()) return;
-        SettleRegionType settle = OSettle.get();
         Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.id);
         if (OAccess.isEmpty()) return;
         AccessLevel access = OAccess.get();
