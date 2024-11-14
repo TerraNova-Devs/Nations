@@ -30,10 +30,13 @@ public abstract class RegionType {
     public String name;
     public ProtectedRegion region;
     protected NPC npc;
+    String type;
 
-    public RegionType(String name, UUID id) {
+
+    public RegionType(String name, UUID id, String type) {
         this.id = id;
         this.name = name;
+        this.type = type;
     }
 
     public abstract void remove();

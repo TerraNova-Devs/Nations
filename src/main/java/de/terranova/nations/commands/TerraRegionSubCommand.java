@@ -30,6 +30,8 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
                     NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
                 case "outpost":
                     hasPermission(p, permission + ".outpost");
+                    TerraSelectCache cache = hasSelect(p);
+                    if(cache == null) return;
                     OutpostRegionType outpost = OutpostRegionType.conditionCheck(p,args);
                     if (outpost == null) return;
                     //NationsPlugin.settleManager.addSettlement(outpost.id, outpost);

@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class SubCommand {
@@ -37,6 +38,12 @@ public abstract class SubCommand {
             if (accessLevel.equals(access)) return true;
         }
         return false;
+    }
+
+    TerraSelectCache hasSelect(Player p) {
+        if(TerraSelectCache.selectCache.containsKey(p.getUniqueId())) return TerraSelectCache.selectCache.get(p.getUniqueId());
+        p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> umd die zu betreffende Stadt auszuwählen."));
+        return null;
     }
 
     Optional<Player> isPlayer(String arg, Player p) {

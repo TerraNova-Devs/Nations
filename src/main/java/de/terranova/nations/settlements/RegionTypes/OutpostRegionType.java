@@ -17,7 +17,8 @@ public class OutpostRegionType extends RegionType {
 
     //Beim neu erstellen
     public OutpostRegionType(Player p, String name) {
-        super(name, UUID.randomUUID());
+        super(name, UUID.randomUUID(), "outpost");
+
     }
 
     public static OutpostRegionType conditionCheck(Player p, String[] args) {

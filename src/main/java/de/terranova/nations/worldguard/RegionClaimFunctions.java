@@ -53,7 +53,7 @@ public class RegionClaimFunctions {
         DefaultDomain owners = region.getOwners();
         owners.addPlayer(lp);
         region.setOwners(owners);
-        region.setFlag(SettleFlag.SETTLEMENT_UUID_FLAG, uuid.toString());
+        region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid);
         region.setFlag(Flags.GLIDE, ForcedStateFlag.ForcedState.ALLOW);
         region.setPriority(100);
 
@@ -71,7 +71,7 @@ public class RegionClaimFunctions {
         assert world != null;
         RegionManager regions = container.get(BukkitAdapter.adapt(world));
         for (ProtectedRegion region : regions.getRegions().values()) {
-            if (!Objects.equals(region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG), settlementID)) continue;
+            if (!Objects.equals(region.getFlag(RegionFlag.REGION_UUID_FLAG), settlementID)) continue;
         }
 
 

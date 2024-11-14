@@ -1,4 +1,6 @@
 package de.terranova.nations.settlements.RegionTypes;
 
-public class PropertyRegionType {
+import de.terranova.nations.settlements.RegionTypes.PropertyAdditions.Addition;
+
+public class PropertyRegionType implements Addition {
 }
