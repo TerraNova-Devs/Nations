@@ -37,7 +37,7 @@ public class SettleRegionType extends RegionType {
 
     //Beim neu erstellen
     public SettleRegionType(String name, Player p) {
-        super(name, UUID.randomUUID());
+        super(name, UUID.randomUUID(), "settle");
         this.location = RegionClaimFunctions.getSChunkMiddle(p.getLocation());
         NationsPlugin.settleManager.locationCache.add(this.location);
         NationsPlugin.settleManager.nameCache.add(this.name);
@@ -59,7 +59,7 @@ public class SettleRegionType extends RegionType {
 
     //Von der Datenbank
     public SettleRegionType(UUID settlementUUID, HashMap<UUID, AccessLevel> accessLevel, Vectore2 location, String name, int level, Objective objective) {
-        super(name, settlementUUID);
+        super(name, settlementUUID, "settle");
         this.location = RegionClaimFunctions.getSChunkMiddle(location);
         NationsPlugin.settleManager.locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
         NationsPlugin.settleManager.nameCache.add(this.name);
