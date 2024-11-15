@@ -53,7 +53,7 @@ public class RegionClaimFunctions {
         DefaultDomain owners = region.getOwners();
         owners.addPlayer(lp);
         region.setOwners(owners);
-        region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid);
+        region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
         region.setFlag(Flags.GLIDE, ForcedStateFlag.ForcedState.ALLOW);
         region.setPriority(100);
 

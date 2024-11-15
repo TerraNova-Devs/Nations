@@ -4,6 +4,7 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.util.Location;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.session.MoveType;
 import com.sk89q.worldguard.session.Session;
@@ -16,9 +17,8 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
 import java.util.Set;
-import java.util.UUID;
 
-public class RegionHandler extends FlagValueChangeHandler<UUID> {
+public class RegionHandler extends FlagValueChangeHandler<String> {
     public static final Factory FACTORY = new Factory();
 
     public static class Factory extends Handler.Factory<RegionHandler> {
@@ -36,18 +36,17 @@ public class RegionHandler extends FlagValueChangeHandler<UUID> {
     }
 
     @Override
-    protected void onInitialValue(LocalPlayer player, ApplicableRegionSet set, UUID value) {
+    protected void onInitialValue(LocalPlayer player, ApplicableRegionSet set, String value) {
+
     }
 
-    // ... override handler methods here
-
     @Override
-    protected boolean onSetValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, UUID currentValue, UUID lastValue, MoveType moveType) {
+    protected boolean onSetValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, String currentValue, String lastValue, MoveType moveType) {
         return false;
     }
 
     @Override
-    protected boolean onAbsentValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, UUID lastValue, MoveType moveType) {
+    protected boolean onAbsentValue(LocalPlayer player, Location from, Location to, ApplicableRegionSet toSet, String lastValue, MoveType moveType) {
         return false;
     }
 
@@ -61,8 +60,8 @@ public class RegionHandler extends FlagValueChangeHandler<UUID> {
 
         if (entered.isEmpty()) {
             for (ProtectedRegion region : exited) {
-                UUID flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-                if (flag == null || flag.equals(UUID.fromString(RegionFlag.DefaultValue))) return true;
+                String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
+                if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
                 Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(flag);
                 if (Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
@@ -71,8 +70,8 @@ public class RegionHandler extends FlagValueChangeHandler<UUID> {
 
         } else {
             for (ProtectedRegion region : entered) {
-                UUID flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-                if (flag == null || flag.equals(UUID.fromString(RegionFlag.DefaultValue))) return true;
+                String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
+                if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
                 Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(flag);
                 if (Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
@@ -81,4 +80,5 @@ public class RegionHandler extends FlagValueChangeHandler<UUID> {
         }
         return true;
     }
+
 }

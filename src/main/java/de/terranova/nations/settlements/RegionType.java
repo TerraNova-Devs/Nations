@@ -21,6 +21,8 @@ import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -32,6 +34,7 @@ public abstract class RegionType {
     protected NPC npc;
     String type;
 
+    public static List<String> regionTypes = List.of("settle","outpost");
 
     public RegionType(String name, UUID id, String type) {
         this.id = id;

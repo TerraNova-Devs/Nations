@@ -74,13 +74,7 @@ public class SettleRegionType extends RegionType {
     }
 
     //Bedingungen Überprüfen
-    public static void conditionCheck(Player p, String[] args, String permission) {
-        SubCommand.hasPermission(p, permission + ".settle");
-        if (!(args.length >= 2)) {
-            p.sendMessage(Chat.errorFade("Syntax: /settle rename <name>"));
-            return;
-        }
-        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
+    public static void conditionCheck(Player p, String name) {;
         if (!name.matches("^[a-zA-Z0-9_]{1,20}$")) {
             p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
             return;

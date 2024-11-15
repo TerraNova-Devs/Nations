@@ -109,7 +109,7 @@ public class TownGUI extends RoseGUI {
             } else if (TownSkins.values().length >= 22) {
                 rowsSkins = 6;
             }
-            new TownSkinGUI(player, rowsSkins).open();
+            new TownSkinGUI(player, rowsSkins, settle).open();
         });
     }
 
