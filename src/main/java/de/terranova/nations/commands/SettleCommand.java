@@ -19,9 +19,6 @@ public class SettleCommand implements BasicCommand {
     public SettleCommand(NationsPlugin plugin) {
         this.plugin = plugin;
         subCommands.putAll(Map.of("test", new SettleTestSubCommand("nations.test"), "test2", new SettleTestSubCommand("nations.test2")));
-        subCommands.putAll(Map.of( "show", new SettleCreateSubCommand("nations.show"), "unshow", new SettleCreateSubCommand("nations.show") ,
-                "create", new SettleCreateSubCommand("nations.create"), "rename", new SettleCreateSubCommand("nations.rename"),
-                "tphere", new SettleCreateSubCommand("nations.tphere")));
         subCommands.put("member", new SettleMemberSubCommand("nations.member"));
         subCommands.putAll(Map.of("claim", new SettleClaimSubCommand("nations.claim"),"forceclaim", new SettleClaimSubCommand("nations.admin")));
         subCommands.putAll(Map.of("re", new SettleRemoveSubCommand("nations.remove"),"forceremove", new SettleRemoveSubCommand("nations.admin")));

@@ -2,6 +2,7 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.settlements.RegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -45,11 +46,10 @@ public class TerraRegionCommand implements BasicCommand {
 
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-        List<String> RegionTypes = List.of("settle","outpost","property");
 
         if(args.length == 0) return subCommands.keySet();
         if(args[0].equalsIgnoreCase("create")) {
-
+            return RegionType.regionTypes;
         }
         if(args[0].equalsIgnoreCase("select")) {
             return NationsPlugin.settleManager.nameCache;
