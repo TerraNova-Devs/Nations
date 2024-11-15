@@ -139,7 +139,7 @@ public abstract class RegionType {
         assert regions != null;
         for (ProtectedRegion region : regions.getRegions().values()) {
             if (region.getFlag(RegionFlag.REGION_UUID_FLAG) == null) continue;
-            UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG)));
+            UUID settlementUUID = UUID.fromString(Objects.requireNonNull(region.getFlag(RegionFlag.REGION_UUID_FLAG)));
             if (this.id.equals(settlementUUID)) {
                 return region;
             }

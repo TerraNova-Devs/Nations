@@ -49,7 +49,8 @@ public class TerraRegionCommand implements BasicCommand {
 
         if(args.length == 0) return subCommands.keySet();
         if(args[0].equalsIgnoreCase("create")) {
-            return RegionType.regionTypes;
+            if(args.length == 1) return RegionType.regionTypes;
+            if(args.length == 2) return List.of("<regions_name>");
         }
         if(args[0].equalsIgnoreCase("select")) {
             return NationsPlugin.settleManager.nameCache;
