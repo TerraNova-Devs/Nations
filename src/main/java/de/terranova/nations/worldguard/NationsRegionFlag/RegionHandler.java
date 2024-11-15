@@ -17,6 +17,7 @@ import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
 import java.util.Set;
+import java.util.UUID;
 
 public class RegionHandler extends FlagValueChangeHandler<String> {
     public static final Factory FACTORY = new Factory();
@@ -62,7 +63,7 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : exited) {
                 String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
                 if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
-                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(flag);
+                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if (Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.name.replaceAll("_", " "))));
@@ -72,7 +73,7 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : entered) {
                 String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
                 if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
-                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(flag);
+                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if (Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.name.replaceAll("_", " "))));

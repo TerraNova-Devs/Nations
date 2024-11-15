@@ -10,7 +10,6 @@ import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
-import de.terranova.nations.worldguard.NationsRegionFlag.UUIDFlag;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.LookClose;
