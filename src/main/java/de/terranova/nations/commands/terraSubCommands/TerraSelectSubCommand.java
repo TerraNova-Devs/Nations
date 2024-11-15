@@ -1,7 +1,9 @@
-package de.terranova.nations.commands;
+package de.terranova.nations.commands.terraSubCommands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.settlements.AccessLevel;
 import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -10,13 +12,10 @@ import net.kyori.adventure.text.Component;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
-    TerraSelectSubCommand(String permission) {super(permission);}
+    public TerraSelectSubCommand(String permission) {super(permission);}
 
     public static Component nonSelectError =  Chat.errorFade("Bitte wähle zuerst mit '/terra select <Stadt_Name>' eine Stadt aus.");
 

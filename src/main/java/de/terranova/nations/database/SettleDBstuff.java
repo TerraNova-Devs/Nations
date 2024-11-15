@@ -109,7 +109,7 @@ public class SettleDBstuff {
     }
 
     public void changeMemberAccess(UUID PUUID, AccessLevel access) {
-        if (access.equals(AccessLevel.REMOVE)) {
+        if (access == null) {
             String sql = "DELETE FROM access_table WHERE SUUID = ? AND PUUID = ?";
             try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
                  PreparedStatement statement = con.prepareStatement(sql)) {

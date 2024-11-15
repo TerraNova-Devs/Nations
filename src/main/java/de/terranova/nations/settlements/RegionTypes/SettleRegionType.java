@@ -33,7 +33,7 @@ public class SettleRegionType extends RegionType {
     public int level;
 
     public Objective objective;
-    private HashMap<UUID, AccessLevel> accessLevel = new HashMap<>();
+    public HashMap<UUID, AccessLevel> accessLevel = new HashMap<>();
     public int claims;
 
     //Beim neu erstellen
@@ -182,6 +182,8 @@ public class SettleRegionType extends RegionType {
     public HashMap<UUID, AccessLevel> getAccessLevel() {
         return this.accessLevel;
     }
+
+
 
     @Deprecated
     public Optional<AccessLevel> promoteOrAdd(Player target, Player p) throws SQLException {
