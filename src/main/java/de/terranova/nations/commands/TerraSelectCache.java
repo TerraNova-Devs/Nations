@@ -12,7 +12,7 @@ public class TerraSelectCache {
 
     private SettleRegionType settle;
     private AccessLevel access;
-    TerraSelectCache(SettleRegionType settle, AccessLevel access) {
+    public TerraSelectCache(SettleRegionType settle, AccessLevel access) {
         this.settle = settle;
         this.access = access;
     }

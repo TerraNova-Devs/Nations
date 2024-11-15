@@ -24,14 +24,7 @@ public class SettleRemoveSubCommand extends SubCommand implements BasicCommand {
         if(!hasPermission(p, permission)) return;
 
         if (args[0].equalsIgnoreCase("remove")) {
-            if (!hasPermission(p, "nations.remove")) return;
-            Optional<SettleRegionType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
-            if (settle.isEmpty()) return;
-            Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
-            if (access.isEmpty()) return;
-            if (!access.get().equals(AccessLevel.MAJOR)) return;
-            NationsPlugin.settleManager.removeSettlement(settle.get().id);
-            p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().name + " wurde erfolgreich entfernt."));
+
         }
 
         if (args[0].equalsIgnoreCase("forceremove")) {

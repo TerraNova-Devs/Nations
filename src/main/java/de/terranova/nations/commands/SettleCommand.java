@@ -2,6 +2,7 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.commands.terraSubCommands.TerraRegionSubCommand;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -18,7 +19,6 @@ public class SettleCommand implements BasicCommand {
 
     public SettleCommand(NationsPlugin plugin) {
         this.plugin = plugin;
-        subCommands.putAll(Map.of("test", new SettleTestSubCommand("nations.test"), "test2", new SettleTestSubCommand("nations.test2")));
         subCommands.put("member", new SettleMemberSubCommand("nations.member"));
         subCommands.putAll(Map.of("claim", new SettleClaimSubCommand("nations.claim"),"forceclaim", new SettleClaimSubCommand("nations.admin")));
         subCommands.putAll(Map.of("re", new SettleRemoveSubCommand("nations.remove"),"forceremove", new SettleRemoveSubCommand("nations.admin")));
