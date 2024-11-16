@@ -15,7 +15,8 @@ import org.jetbrains.annotations.NotNull;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
-//ask join and leave commands, update pl3xmap after changes
+
+//ask join and leave commands, update pl3xmap after changes, cache checken bei wichtigen commands, cache clearen nach x minuten
 public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
     public TerraAccessSubCommand(String permission) {
         super(permission);
@@ -30,7 +31,7 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
         if(cache == null) return;
         SettleDBstuff settleDB = new SettleDBstuff(cache.getSettle().id);
 
-        if((args.length <= 3)) {
+        if((args.length <= 2)) {
             p.sendMessage(Chat.errorFade("Bitte nutze /t user <add|remove|rank|resign> <username> (<rank>)"));
             return;
         }
@@ -43,7 +44,7 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
                 }
             }
             if(inputAccessLevel == null) {
-                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s konnte nicht gefunden werden", args[3])));
+                p.sendMessage(Chat.errorFade(String.format("Das AccessLevel %s konnte nicht gefunden werden", args[3])));
                 return;
             }
         }
@@ -94,7 +95,11 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
             if(targetAccessLevel == null) {
-                p.sendMessage(String.format("Der Spieler %s ist kein Mitglied deiner Stadt und kann demnach nicht befördert werden.",target.getName()));
+                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt und kann demnach nicht befördert werden.",target.getName())));
+                return;
+            }
+            if(inputAccessLevel.equals(AccessLevel.MAJOR)){
+                p.sendMessage(Chat.errorFade("Der Spieler %s ist kein Mitglied deiner Stadt und kann demnach nicht befördert werden."));
                 return;
             }
 
