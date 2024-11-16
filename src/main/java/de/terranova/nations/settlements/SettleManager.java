@@ -61,7 +61,7 @@ public class SettleManager {
     }
 
     public Optional<AccessLevel> getAccessLevel(Player p, UUID settlementUUID) {
-        if(p.hasPermission("nations.admin.bypass")) return Optional.of(AccessLevel.MAJOR);
+        if(p.hasPermission("nations.admin.bypass")) return Optional.of(AccessLevel.ADMIN);
         AccessLevel access = settlements.get(settlementUUID).getAccessLevel(p.getUniqueId());
         if(access == null) return Optional.empty();
         return Optional.of(access);

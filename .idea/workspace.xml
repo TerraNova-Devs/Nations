@@ -10,8 +10,18 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="working towards new rank mechanic (just internal)">
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraSelectSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraSelectSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/server-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/server-icon.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -306,7 +316,7 @@
       <workItem from="1731610507426" duration="3283000" />
       <workItem from="1731624716663" duration="4863000" />
       <workItem from="1731680731909" duration="8344000" />
-      <workItem from="1731763022368" duration="1632000" />
+      <workItem from="1731763022368" duration="3179000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -420,7 +430,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731700250315</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="working towards new rank mechanic (just internal)">
+      <option name="closed" value="true" />
+      <created>1731764700328</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1731764700328</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

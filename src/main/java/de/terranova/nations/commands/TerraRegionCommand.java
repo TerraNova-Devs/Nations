@@ -43,8 +43,10 @@ public class TerraRegionCommand implements BasicCommand {
             p.sendMessage(Chat.cottonCandy("Nations Plugin est. 13.07.2024 | written by gerryxn  | Version 1.0.0 | Copyright TerraNova."));
             return;
         }
+        if(subCommands.containsKey(args[0])) {
+            subCommands.get(args[0]).execute(stack, args);
+        }
 
-        subCommands.get(args[0]).execute(stack, args);
 
     }
 

@@ -42,7 +42,7 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
 
         Optional<AccessLevel> oaccess = NationsPlugin.settleManager.getAccessLevel(p,settle.id);
         AccessLevel access;
-        access = oaccess.orElse(AccessLevel.REMOVE);
+        access = oaccess.orElse(null);
 
         TerraSelectCache cache = new TerraSelectCache(settle, access);
 

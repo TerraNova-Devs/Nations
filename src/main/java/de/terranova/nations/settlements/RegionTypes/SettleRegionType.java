@@ -153,27 +153,6 @@ public class SettleRegionType extends RegionType {
         else accessLevel.put(uuid, access);
     }
 
-    public void setAccessLevelNotify(Player p,Player target, AccessLevel access) {
-        UUID uuid = target.getUniqueId();
-
-        if(!this.accessLevel.containsKey(uuid) && access.equals(AccessLevel.REMOVE)) {
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist gerade kein Mitglied der Stadt %s.", p.getName(), this.name)));
-            return;
-        } else if(this.accessLevel.containsKey(uuid) && accessLevel.get(uuid).equals(access)) {
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat den Rang %s bereits in der Stadt %s.", p.getName(), access, this.name)));
-            return;
-        }
-
-        if(access.equals(AccessLevel.REMOVE)) accessLevel.remove(uuid);
-        if(this.accessLevel.containsKey(uuid)) this.accessLevel.replace(uuid, access);
-        else this.accessLevel.put(uuid, access);
-
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        settleDB.changeMemberAccess(uuid, access);
-
-        p.sendMessage(Chat.greenFade(String.format("Der Rang von %s wurde innerhalb der Stadt %s zu %s geändert.", target.getName(),this.name, access)));
-        target.sendMessage(Chat.greenFade(String.format("Dein Rang wurde innerhalb der Stadt %s zu %s geändert.", this.name, access)));
-    }
 
     public AccessLevel getAccessLevel(UUID uuid) {
         return this.accessLevel.get(uuid);
@@ -181,60 +160,6 @@ public class SettleRegionType extends RegionType {
 
     public HashMap<UUID, AccessLevel> getAccessLevel() {
         return this.accessLevel;
-    }
-
-
-
-    @Deprecated
-    public Optional<AccessLevel> promoteOrAdd(Player target, Player p) throws SQLException {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        if (!this.accessLevel.containsKey(target.getUniqueId())) {
-            this.accessLevel.put(target.getUniqueId(), AccessLevel.CITIZEN);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.CITIZEN);
-            RegionClaimFunctions.addOrRemoveFromSettlement(target, this, true);
-            return Optional.of(AccessLevel.CITIZEN);
-        }
-        AccessLevel accessLevelEnum = this.accessLevel.get(target.getUniqueId());
-        if (accessLevelEnum.equals(AccessLevel.CITIZEN)) {
-            this.accessLevel.replace(target.getUniqueId(), AccessLevel.COUNCIL);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.COUNCIL);
-            return Optional.of(AccessLevel.COUNCIL);
-        }
-        if (accessLevelEnum.equals(AccessLevel.COUNCIL)) {
-            this.accessLevel.replace(target.getUniqueId(), AccessLevel.VICE);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.VICE);
-            return Optional.of(AccessLevel.VICE);
-        }
-        if (accessLevelEnum.equals(AccessLevel.VICE) || accessLevelEnum.equals(AccessLevel.MAJOR))
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
-        return Optional.empty();
-    }
-
-    @Deprecated
-    public Optional<AccessLevel> demoteOrRemove(Player target, Player p) throws SQLException {
-        if (!this.accessLevel.containsKey(target.getUniqueId()) || this.accessLevel.get(target.getUniqueId()).equals(AccessLevel.MAJOR))
-            return Optional.empty();
-        AccessLevel accessLevelEnum = this.accessLevel.get(target.getUniqueId());
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        if (accessLevelEnum.equals(AccessLevel.CITIZEN)) {
-            this.accessLevel.remove(target.getUniqueId());
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.REMOVE);
-            RegionClaimFunctions.addOrRemoveFromSettlement(target, this, false);
-            p.sendMessage(Chat.greenFade(String.format("Der Spieler %s wurde von deiner Stadt entfernt.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
-            return Optional.of(AccessLevel.REMOVE);
-        }
-        if (accessLevelEnum.equals(AccessLevel.COUNCIL)) {
-            this.accessLevel.replace(target.getUniqueId(), AccessLevel.CITIZEN);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.CITIZEN);
-            return Optional.of(AccessLevel.CITIZEN);
-        }
-        if (accessLevelEnum.equals(AccessLevel.VICE)) {
-            this.accessLevel.replace(target.getUniqueId(), AccessLevel.COUNCIL);
-            settleDB.changeMemberAccess(target.getUniqueId(), AccessLevel.COUNCIL);
-            return Optional.of(AccessLevel.COUNCIL);
-        }
-        p.sendMessage(Chat.errorFade(String.format("Der Spieler %s hat bereits den h\u00F6chstm\u00F6glichen Rang erreicht.", PlainTextComponentSerializer.plainText().serialize(target.displayName()))));
-        return Optional.empty();
     }
 
     public void setLevel(){
