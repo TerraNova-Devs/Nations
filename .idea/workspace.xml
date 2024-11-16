@@ -9,21 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="creating settlements works again">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="working towards new rank mechanic (just internal)">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleRemoveSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleRemoveSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleTestSubCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraAccessSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraClaimSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraClaimSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraRegionSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraSelectCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraSelectCache.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraSelectSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraSelectSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -317,7 +305,8 @@
       <workItem from="1731485767002" duration="3276000" />
       <workItem from="1731610507426" duration="3283000" />
       <workItem from="1731624716663" duration="4863000" />
-      <workItem from="1731680731909" duration="8299000" />
+      <workItem from="1731680731909" duration="8344000" />
+      <workItem from="1731763022368" duration="1632000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -423,7 +412,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731682142121</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="working towards new rank mechanic (just internal)">
+      <option name="closed" value="true" />
+      <created>1731700250315</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1731700250315</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -442,7 +439,8 @@
     <MESSAGE value="optimated Citizen/Town Menu open code" />
     <MESSAGE value="working towards that regions are creatable again" />
     <MESSAGE value="creating settlements works again" />
-    <option name="LAST_COMMIT_MESSAGE" value="creating settlements works again" />
+    <MESSAGE value="working towards new rank mechanic (just internal)" />
+    <option name="LAST_COMMIT_MESSAGE" value="working towards new rank mechanic (just internal)" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
