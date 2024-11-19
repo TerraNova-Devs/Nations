@@ -2,11 +2,15 @@ name: Nations
 version: 1.0.0-SNAPSHOT
 main: de.terranova.nations.NationsPlugin
 api-version: '1.21'
-authors: [gerryxn]
+authors: [gerryxn, bastizeit]
 prefix: TerraNova
 website: mcterranova.de
 description: Nations Plugin tailored & written by & for TerraNova.
 commands:
   settle:
     description: Command facilitates settlements creation.
+  terra:
+    description: Command facilitates settlements creation.
 depend: [WorldGuard, Citizens, Bona, Pl3xMap, WorldGuardExtraFlags, Oraxen]
+
+

@@ -6,7 +6,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.settlements.TownSkins;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -19,17 +19,15 @@ import java.util.Optional;
 
 public class TownGUI extends RoseGUI {
 
-    public TownGUI(Player player) {
+    private SettleRegionType settle;
+
+    public TownGUI(Player player, SettleRegionType settleRegionType) {
         super(player, "town-gui", Chat.blueFade("<b>Town Menu"), 5);
+        this.settle = settleRegionType;
     }
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-
-        JavaPlugin.getPlugin(NationsPlugin.class);
-        Optional<SettlementPropertyType> OSettle = NationsPlugin.settleManager.getSettle(player.getLocation());
-        if (OSettle.isEmpty()) return;
-        SettlementPropertyType settle = OSettle.get();
         Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.id);
         if (OAccess.isEmpty()) return;
         AccessLevel access = OAccess.get();
@@ -111,7 +109,7 @@ public class TownGUI extends RoseGUI {
             } else if (TownSkins.values().length >= 22) {
                 rowsSkins = 6;
             }
-            new TownSkinGUI(player, rowsSkins).open();
+            new TownSkinGUI(player, rowsSkins, settle).open();
         });
     }
 

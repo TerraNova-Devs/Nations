@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Objective implements Serializable {
 
     int score;
+    int silver;
 
     int objective_a;
     String material_a;
@@ -15,19 +16,16 @@ public class Objective implements Serializable {
     int objective_c;
     String material_c;
 
-    int objective_d;
-    String material_d;
 
-    public Objective(int score, int objective_a, int objective_b, int objective_c, int objective_d, String material_a, String material_b, String material_c, String material_d) {
+    public Objective(int score, int silver, int objective_a, int objective_b, int objective_c, String material_a, String material_b, String material_c) {
         this.score = score;
         this.objective_a = objective_a;
         this.objective_b = objective_b;
         this.objective_c = objective_c;
-        this.objective_d = objective_d;
         this.material_a = material_a;
         this.material_b = material_b;
         this.material_c = material_c;
-        this.material_d = material_d;
+        this.silver = silver;
     }
 
     public Objective() {
@@ -90,19 +88,11 @@ public class Objective implements Serializable {
         this.material_c = material_c;
     }
 
-    public int getObjective_d() {
-        return objective_d;
+    public int getSilver() {
+        return silver;
     }
 
-    public void setObjective_d(int objective_d) {
-        this.objective_d = objective_d;
-    }
-
-    public String getMaterial_d() {
-        return material_d;
-    }
-
-    public void setMaterial_d(String material_d) {
-        this.material_d = material_d;
+    public void setSilver(int silver) {
+        this.silver = silver;
     }
 }

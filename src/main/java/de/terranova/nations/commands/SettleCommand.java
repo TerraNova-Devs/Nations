@@ -2,19 +2,16 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.commands.terraSubCommands.TerraRegionSubCommand;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")
-public class SettleCommand implements BasicCommand, TabCompleter {
+public class SettleCommand implements BasicCommand {
 
     private final Map<String, BasicCommand> subCommands = new HashMap<>();
 
@@ -22,13 +19,8 @@ public class SettleCommand implements BasicCommand, TabCompleter {
 
     public SettleCommand(NationsPlugin plugin) {
         this.plugin = plugin;
-        subCommands.putAll(Map.of("test", new SettleTestSubCommand("nations.test"), "test2", new SettleTestSubCommand("nations.test2")));
-        subCommands.putAll(Map.of( "show", new SettleCreateSubCommand("nations.show"), "unshow", new SettleCreateSubCommand("nations.show") ,
-                "create", new SettleCreateSubCommand("nations.create"), "rename", new SettleCreateSubCommand("nations.rename"),
-                "tphere", new SettleCreateSubCommand("nations.tphere")));
-        subCommands.put("member", new SettleMemberSubCommand("nations.member"));
-        subCommands.putAll(Map.of("claim", new SettleClaimSubCommand("nations.claim"),"forceclaim", new SettleClaimSubCommand("nations.admin")));
         subCommands.putAll(Map.of("re", new SettleRemoveSubCommand("nations.remove"),"forceremove", new SettleRemoveSubCommand("nations.admin")));
+        subCommands.put("region", new TerraRegionSubCommand("nations.region"));
     }
 
     @Override
@@ -49,9 +41,9 @@ public class SettleCommand implements BasicCommand, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        List<String> literals = new ArrayList<>(subCommands.keySet());
-        Collections.sort(literals);
-        return literals;
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
+        return subCommands.keySet();
     }
+
+
 }

@@ -5,12 +5,17 @@
 
 #testserver
 /testserver/*
-!/testserver/paper-1.21-123.jar
+!/testserver/paper-1.21-130.jar
 !/testserver/eula.txt
 !/testserver/start.bat
+!/testserver/server-icon.png
+!/testserver/server.properties
 
 !/testserver/plugins/
 /testserver/plugins/**/
+
+#Nations
+!/testserver/plugins/Nations/
 
 #Pl3xMap
 !/testserver/plugins/Pl3xMap/web
@@ -33,3 +38,4 @@
 
 # Project exlude data types
 *.env
+*.properties
