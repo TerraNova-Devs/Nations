@@ -9,11 +9,11 @@ CREATE TABLE IF NOT EXISTS `settlements_table` (
     `SUUID` varchar(36) NOT NULL,
     `name` varchar(20) NOT NULL,
     `location` varchar(100) NOT NULL,
-    `Level` mediumint(11) NOT NULL DEFAULT 1,
+    `Level` smallint NOT NULL DEFAULT 1,
+    `bank` mediumint(11) NOT NULL DEFAULT 0,
     `obj_a` mediumint(11) NOT NULL DEFAULT 0,
     `obj_b` mediumint(11) NOT NULL DEFAULT 0,
     `obj_c` mediumint(11) NOT NULL DEFAULT 0,
-    `obj_d` mediumint(11) NOT NULL DEFAULT 0,
         PRIMARY KEY (`SUUID`)
 ) DEFAULT CHARSET=utf8
 COLLATE=utf8_unicode_ci;

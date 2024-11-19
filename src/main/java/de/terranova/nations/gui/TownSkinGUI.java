@@ -6,7 +6,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.settlements.TownSkins;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -22,10 +22,12 @@ public class TownSkinGUI extends RoseGUI {
 
     private static Method metaSetProfileMethod;
     private final RosePagination pagination = new RosePagination(this);
+    SettleRegionType settle;
 
-    public TownSkinGUI(Player player, int townskins) {
+    public TownSkinGUI(Player player, int townskins, SettleRegionType settle) {
         super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
         this.pagination.registerPageSlotsBetween(10, 44);
+        this.settle = settle;
     }
 
     @Override
@@ -44,7 +46,7 @@ public class TownSkinGUI extends RoseGUI {
                 .displayName(Chat.redFade("<b>Go Back</b>"))
                 .build();
         back.onClick(e -> {
-            new TownGUI(player).open();
+            new TownGUI(player, settle).open();
         });
 
         addItem(18, back);
@@ -56,7 +58,7 @@ public class TownSkinGUI extends RoseGUI {
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
             JavaPlugin.getPlugin(NationsPlugin.class);
-            Optional<SettlementPropertyType> settlement = NationsPlugin.settleManager.getSettle(player.getLocation());
+            Optional<SettleRegionType> settlement = NationsPlugin.settleManager.getSettle(player.getLocation());
             if (settlement.isPresent()) {
                 RoseItem skull = new RoseItem.Builder()
                         .setSkull(skin.getSkinTexture())

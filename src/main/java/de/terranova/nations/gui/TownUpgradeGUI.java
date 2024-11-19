@@ -5,8 +5,9 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.PropertyTypeClasses.SettlementPropertyType;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.settlements.level.Objective;
+import io.th0rgal.oraxen.api.OraxenItems;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,9 +16,9 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class TownUpgradeGUI extends RoseGUI {
 
-    SettlementPropertyType settle;
+    SettleRegionType settle;
 
-    public TownUpgradeGUI(Player player, SettlementPropertyType settle) {
+    public TownUpgradeGUI(Player player, SettleRegionType settle) {
         super(player, "town-upgrade-gui", Chat.blueFade("<b>Town Upgrades"), 6);
         this.settle = settle;
     }
@@ -31,11 +32,11 @@ public class TownUpgradeGUI extends RoseGUI {
         if (!(NationsPlugin.levelObjectives.size() + 1 == settle.level)) {
             goalObjective = NationsPlugin.levelObjectives.get(settle.level);
         } else {
-            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
+            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
-        boolean canLevelup = progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
-                progressObjective.getObjective_c() == goalObjective.getObjective_c() && progressObjective.getObjective_d() == goalObjective.getObjective_d();
+        boolean canLevelup = settle.bank >= goalObjective.getSilver()  && progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
+                progressObjective.getObjective_c() == goalObjective.getObjective_c();
 
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
@@ -48,7 +49,7 @@ public class TownUpgradeGUI extends RoseGUI {
                 .displayName(Chat.redFade("<b>Go Back</b>"))
                 .build();
         back.onClick(e -> {
-            new TownGUI(player).open();
+            new TownGUI(player, settle).open();
         });
 
         RoseItem score = new RoseItem.Builder()
@@ -66,6 +67,13 @@ public class TownUpgradeGUI extends RoseGUI {
                 new TownUpgradeGUI(player, settle).open();
             });
         }
+
+        RoseItem objective_bank = new RoseItem.Builder()
+                .material("terranova_silver")
+                .displayName("Bank")
+                .addLore(settle.bank >= goalObjective.getSilver() ? Chat.greenFade(String.format(settle.bank + " / " + goalObjective.getSilver())) : Chat.redFade(String.format(settle.bank + " / " + goalObjective.getSilver())))
+                .isEnchanted(settle.bank >= goalObjective.getSilver())
+                .build();
 
         RoseItem objective_a = new RoseItem.Builder()
                 .material(goalObjective.getMaterial_a())
@@ -106,26 +114,12 @@ public class TownUpgradeGUI extends RoseGUI {
             });
         }
 
-        RoseItem objective_d = new RoseItem.Builder()
-                .material(goalObjective.getMaterial_d())
-                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_d().replaceAll("_", " ").toLowerCase())))
-                .addLore(progressObjective.getObjective_d() == goalObjective.getObjective_d() ? Chat.greenFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())) : Chat.redFade(String.format(progressObjective.getObjective_d() + " / " + goalObjective.getObjective_d())))
-                .isEnchanted(progressObjective.getObjective_d() == goalObjective.getObjective_d())
-                .build();
-        if (progressObjective.getObjective_d() != goalObjective.getObjective_d()) {
-            objective_d.onClick(e -> {
-                settle.contributeObjective(player, "d");
-                new TownUpgradeGUI(player, settle).open();
-            });
-        }
-
-
         addItem(13, score);
         addItem(40, submit);
-        addItem(19, objective_a);
-        addItem(21, objective_b);
-        addItem(23, objective_c);
-        addItem(25, objective_d);
+        addItem(19, objective_bank);
+        addItem(21, objective_a);
+        addItem(23, objective_b);
+        addItem(25, objective_c);
         addItem(45, back);
     }
 
