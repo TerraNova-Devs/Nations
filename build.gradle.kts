@@ -54,8 +54,8 @@ repositories {
     name = "github"
     url = uri("https://maven.pkg.github.com/TerraNova-Devs/TerranovaLib")
     credentials {
-      username = project.findProperty(envProperties.getProperty("githubUser")) as String?
-      password = project.findProperty(envProperties.getProperty("githubToken")) as String?
+      username = project.findProperty("githubUser") as String?
+      password = project.findProperty("githubToken") as String?
     }
   }
 
@@ -75,7 +75,7 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.180.0")
-  implementation("de.mcterranova:terranova-lib:0.5.0")
+  implementation("de.mcterranova:terranova-lib:0.6.7")
 }
 
 tasks {

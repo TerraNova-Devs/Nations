@@ -167,8 +167,8 @@ public final class NationsPlugin extends JavaPlugin {
 
         if (file.createNewFile()) {
             HashMap<Integer, Objective> exampleObj = new HashMap<>();
-            exampleObj.put(1, new Objective(1, 1, 1, 1, 1, "Test", "Test", "Test", "Test"));
-            exampleObj.put(2, new Objective(2, 2, 1, 2, 2, "Test2", "Test2", "Test2", "Test2"));
+            exampleObj.put(1, new Objective(1, 1, 1, 1, 1,  "Test", "Test", "Test"));
+            exampleObj.put(2, new Objective(2, 2, 1, 2, 2,  "Test2", "Test2", "Test2"));
             FileWriter writer = new FileWriter(file);
             yaml.dump(exampleObj, writer);
         }

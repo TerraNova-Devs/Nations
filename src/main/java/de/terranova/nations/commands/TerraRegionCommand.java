@@ -2,9 +2,7 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.commands.terraSubCommands.TerraAccessSubCommand;
-import de.terranova.nations.commands.terraSubCommands.TerraRegionSubCommand;
-import de.terranova.nations.commands.terraSubCommands.TerraSelectSubCommand;
+import de.terranova.nations.commands.terraSubCommands.*;
 import de.terranova.nations.settlements.RegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -29,6 +27,8 @@ public class TerraRegionCommand implements BasicCommand {
         subCommands.put("remove", new TerraRegionSubCommand("nations.remove"));
         subCommands.put("select", new TerraSelectSubCommand("nations.select"));
         subCommands.put("user", new TerraAccessSubCommand("nations.access"));
+        subCommands.put("claim", new TerraClaimSubCommand("nations.claim"));
+        subCommands.put("manage", new TerraManageSubCommand("nations.manage"));
     }
 
     @Override

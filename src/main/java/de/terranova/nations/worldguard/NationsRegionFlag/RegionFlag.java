@@ -13,14 +13,14 @@ import java.util.UUID;
 public class RegionFlag {
     //Muss StringFlag sein, da UUIDs von WorldGuards SnakeYML nicht gespeichert werden können
     public static StringFlag REGION_UUID_FLAG;
-    public static String DefaultValue = "FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF";
+    public static String DefaultValue = "00000000-0000-0000-0000-000000000000";
 
     public static void registerRegionFlag(Plugin plugin) {
 
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
-            StringFlag flag = new StringFlag("nations-region-uuid", "00000000-0000-0000-0000-000000000000");
+            StringFlag flag = new StringFlag("nations-region-uuid", DefaultValue);
             registry.register(flag);
             REGION_UUID_FLAG = flag; // only set our field if there was no error
         } catch (FlagConflictException e) {

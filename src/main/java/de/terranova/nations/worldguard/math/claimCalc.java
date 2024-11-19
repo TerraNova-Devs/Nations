@@ -192,7 +192,6 @@ public class claimCalc {
             if (current2.bool) {
                 if ((next2.bool || last2.bool)) {
                     if (v.v2.equals(current2.v2)) {
-
                         for (int o = 0; o < newk.size(); o++) {
                             if (newk.get(o).equals(current2.v2)) {
                                 newk.remove(o);
@@ -200,7 +199,6 @@ public class claimCalc {
                         }
                     }
                 }
-
             }
             last2 = current2;
             k++;

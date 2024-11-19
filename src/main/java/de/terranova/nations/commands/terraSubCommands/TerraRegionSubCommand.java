@@ -27,10 +27,10 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
         Player p = isPlayer(commandSourceStack);
-        if(p == null) return;
+        if (p == null) return;
 
-        if(args[0].equalsIgnoreCase("create")) {
-            if(args.length <= 2) {
+        if (args[0].equalsIgnoreCase("create")) {
+            if (args.length <= 2) {
                 p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen:", RegionType.regionTypes)));
                 return;
             }
@@ -38,22 +38,22 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
             switch (args[1].toLowerCase()) {
                 case "settle":
                     hasPermission(p, permission + ".settle");
-                    SettleRegionType.conditionCheck(p,name);
+                    SettleRegionType.conditionCheck(p, name);
                 case "outpost":
                     hasPermission(p, permission + ".outpost");
                     TerraSelectCache cache = hasSelect(p);
-                    if(cache == null) return;
-                    OutpostRegionType outpost = OutpostRegionType.conditionCheck(p,args);
+                    if (cache == null) return;
+                    OutpostRegionType outpost = OutpostRegionType.conditionCheck(p, args);
                     if (outpost == null) return;
                     //NationsPlugin.settleManager.addSettlement(outpost.id, outpost);
                     SettleDBstuff.addSettlement(outpost.id, outpost.name, new Vectore2(p.getLocation()), p.getUniqueId());
                     p.sendMessage(Chat.greenFade("Deine Stadt " + outpost.name + " wurde erfolgreich gegründet."));
                     //NationsPlugin.settleManager.addSettlementToPl3xmap(outpost);
                 default:
-                    p.sendMessage(Chat.errorFade(String.format("Der Regionstyp %s existiert nicht. Folgende Regionstypen sind zulässig: %s.", args[1],RegionType.regionTypes)));
+                    p.sendMessage(Chat.errorFade(String.format("Der Regionstyp %s existiert nicht. Folgende Regionstypen sind zulässig: %s.", args[1], RegionType.regionTypes)));
             }
         }
-        if(args[0].equalsIgnoreCase("remove")) {
+        if (args[0].equalsIgnoreCase("remove")) {
             switch (args[1].toLowerCase()) {
                 case "settle":
                     if (!hasPermission(p, "nations.remove")) return;
