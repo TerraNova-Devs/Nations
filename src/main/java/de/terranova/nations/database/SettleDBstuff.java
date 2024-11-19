@@ -42,11 +42,11 @@ public class SettleDBstuff {
                 String name = rs.getString("name");
                 String location = rs.getString("location");
                 int level = rs.getInt("level");
-                int obj_a = rs.getInt("obj_a");
-                int obj_b = rs.getInt("obj_b");
-                int obj_c = rs.getInt("obj_c");
-                int obj_d = rs.getInt("obj_d");
-                Objective objective = new Objective(0, obj_a, obj_b, obj_c, obj_d, null, null, null, null);
+                int bank = rs.getInt("bank");
+                int obj_b = rs.getInt("obj_a");
+                int obj_c = rs.getInt("obj_b");
+                int obj_d = rs.getInt("obj_c");
+                Objective objective = new Objective(0, bank, obj_b, obj_c, obj_d, null, null, null);
                 if(NationsPlugin.debug) NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
@@ -146,6 +146,18 @@ public class SettleDBstuff {
         }
     }
 
+    public void cash(int value) {
+        String sql = "UPDATE settlements_table SET bank = ? WHERE SUUID = ?";
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setInt(1, value);
+            statement.setString(2, SUUID.toString());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
+        }
+    }
+
     public void setLevel(int level) {
         String updateLevelSql = "UPDATE settlements_table SET level = ? WHERE SUUID = ?";
         String resetObjectivesSql = "UPDATE settlements_table SET obj_a = 0, obj_b = 0, obj_c = 0, obj_d = 0 WHERE SUUID = ?";
@@ -164,14 +176,13 @@ public class SettleDBstuff {
         }
     }
 
-    public void syncObjectives(int obj_a, int obj_b, int obj_c, int obj_d) {
-        String sql = "UPDATE settlements_table SET obj_a = ?, obj_b = ?, obj_c = ?, obj_d = ? WHERE SUUID = ?";
+    public void syncObjectives(int obj_a, int obj_b, int obj_c) {
+        String sql = "UPDATE settlements_table SET obj_a = ?, obj_b = ?, obj_c = ? WHERE SUUID = ?";
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setInt(1, obj_a);
             statement.setInt(2, obj_b);
             statement.setInt(3, obj_c);
-            statement.setInt(4, obj_d);
             statement.setString(5, SUUID.toString());
             statement.executeUpdate();
         } catch (SQLException e) {

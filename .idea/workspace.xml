@@ -9,19 +9,30 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="working towards new rank mechanic (just internal)">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="ranking system working again">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraManageSubCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/Transaction.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gradle.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleClaimSubCommand.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/SettleCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraRegionCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraAccessSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraClaimSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraClaimSubCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraRegionSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraRegionSubCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraSelectSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraSelectSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/AccessLevel.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/RegionTypes/SettleRegionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/SettleManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/level/Objective.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/settlements/level/Objective.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/claimCalc.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/claimCalc.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/settlement/level.yml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/settlement/level.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/server-icon.png" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/server-icon.png" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,7 +123,7 @@
     &quot;git-widget-placeholder&quot;: &quot;property&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/Other Repos/HuskSync-3.7&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/TerraNova Repositories/Nations/testserver/plugins/Nations&quot;,
     &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -133,11 +144,11 @@
 }</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Nations" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\resources\settlement" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Opibus" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Pl3xMap\web\images\banner" />
-      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Pl3xMap\web\images\placeholder" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver" />
@@ -316,7 +327,16 @@
       <workItem from="1731610507426" duration="3283000" />
       <workItem from="1731624716663" duration="4863000" />
       <workItem from="1731680731909" duration="8344000" />
-      <workItem from="1731763022368" duration="3179000" />
+      <workItem from="1731763022368" duration="3688000" />
+      <workItem from="1731787402355" duration="579000" />
+      <workItem from="1731788473083" duration="1695000" />
+      <workItem from="1731866527520" duration="44000" />
+      <workItem from="1731882296856" duration="792000" />
+      <workItem from="1731942047675" duration="4165000" />
+      <workItem from="1732032636061" duration="10779000" />
+      <workItem from="1732046154736" duration="2636000" />
+      <workItem from="1732049688053" duration="2820000" />
+      <workItem from="1732057355634" duration="1672000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -438,7 +458,15 @@
       <option name="project" value="LOCAL" />
       <updated>1731764700328</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="ranking system working again">
+      <option name="closed" value="true" />
+      <created>1731766734627</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1731766734627</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -458,7 +486,8 @@
     <MESSAGE value="working towards that regions are creatable again" />
     <MESSAGE value="creating settlements works again" />
     <MESSAGE value="working towards new rank mechanic (just internal)" />
-    <option name="LAST_COMMIT_MESSAGE" value="working towards new rank mechanic (just internal)" />
+    <MESSAGE value="ranking system working again" />
+    <option name="LAST_COMMIT_MESSAGE" value="ranking system working again" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

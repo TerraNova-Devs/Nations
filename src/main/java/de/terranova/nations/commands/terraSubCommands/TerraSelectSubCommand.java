@@ -15,9 +15,11 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Optional;
 
 public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
-    public TerraSelectSubCommand(String permission) {super(permission);}
+    public static Component nonSelectError = Chat.errorFade("Bitte wähle zuerst mit '/terra select <Stadt_Name>' eine Stadt aus.");
 
-    public static Component nonSelectError =  Chat.errorFade("Bitte wähle zuerst mit '/terra select <Stadt_Name>' eine Stadt aus.");
+    public TerraSelectSubCommand(String permission) {
+        super(permission);
+    }
 
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
@@ -28,30 +30,30 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
         if (args.length == 1 && TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getSettle().name, TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
             return;
-        } else if(args.length == 1){
+        } else if (args.length == 1) {
             p.sendMessage(nonSelectError);
             return;
         }
 
         Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettleByName(args[1]);
-        if(osettle.isEmpty()) {
+        if (osettle.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die angegebene Stadt %s gibt es leider nicht."));
             return;
         }
         SettleRegionType settle = osettle.get();
 
-        Optional<AccessLevel> oaccess = NationsPlugin.settleManager.getAccessLevel(p,settle.id);
+        Optional<AccessLevel> oaccess = NationsPlugin.settleManager.getAccessLevel(p, settle.id);
         AccessLevel access;
         access = oaccess.orElse(null);
 
         TerraSelectCache cache = new TerraSelectCache(settle, access);
 
-        if(!TerraSelectCache.selectCache.containsKey(p.getUniqueId())) TerraSelectCache.selectCache.put(p.getUniqueId(), cache);
+        if (!TerraSelectCache.selectCache.containsKey(p.getUniqueId()))
+            TerraSelectCache.selectCache.put(p.getUniqueId(), cache);
         else TerraSelectCache.selectCache.replace(p.getUniqueId(), cache);
 
         p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", cache.getSettle().name, cache.getAccess().name())));
     }
-
 
 
 }

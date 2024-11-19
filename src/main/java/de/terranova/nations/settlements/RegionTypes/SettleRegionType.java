@@ -5,7 +5,6 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevel;
 import de.terranova.nations.settlements.RegionType;
@@ -16,24 +15,24 @@ import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import io.th0rgal.oraxen.api.OraxenItems;
 import net.citizensnpcs.trait.HologramTrait;
-import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import java.sql.SQLException;
+import java.time.Instant;
 import java.util.*;
 
 public class SettleRegionType extends RegionType {
 
     public final Vectore2 location;
     public int level;
+    public int bank;
 
     public Objective objective;
     public HashMap<UUID, AccessLevel> accessLevel = new HashMap<>();
+    public List<Transaction> transactionHistory = new ArrayList<>();
     public int claims;
 
     //Beim neu erstellen
@@ -45,7 +44,7 @@ public class SettleRegionType extends RegionType {
         this.level = 1;
         this.accessLevel.put(p.getUniqueId(), AccessLevel.MAJOR);
         this.region = RegionClaimFunctions.createClaim(name, p, this.id);
-        this.objective = new Objective(0, 0, 0, 0, 0, null, null, null, null);
+        this.objective = new Objective(0, 0, 0, 0, 0, null, null, null);
         this.npc = createNPC(name, p.getLocation(), this.id);
         setLevel();
         this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
@@ -68,6 +67,7 @@ public class SettleRegionType extends RegionType {
         this.accessLevel = accessLevel;
         this.region = getWorldguardRegion();
         this.objective = objective;
+        this.bank = objective.getSilver();
         this.claims = RegionClaimFunctions.getClaimAnzahl(settlementUUID);
         //funktioniert nicht im Constructor
         getCitizensNPCbySUUID();
@@ -176,16 +176,16 @@ public class SettleRegionType extends RegionType {
         if (!(NationsPlugin.levelObjectives.size() + 1 == this.level)) {
             goalObjective = NationsPlugin.levelObjectives.get(this.level);
         } else {
-            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
+            goalObjective = new Objective(0, 0, 0, 0, 0,"Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
         boolean canLevelup = progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
-                progressObjective.getObjective_c() == goalObjective.getObjective_c() && progressObjective.getObjective_d() == goalObjective.getObjective_d();
+                progressObjective.getObjective_c() == goalObjective.getObjective_c();
 
         if (!canLevelup) return;
 
         this.level++;
-        this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null, null);
+        this.objective = new Objective(this.objective.getScore(), 0, 0, 0, 0, null, null, null);
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
         settleDB.setLevel(level);
         setLevel();
@@ -198,36 +198,64 @@ public class SettleRegionType extends RegionType {
         if (!(NationsPlugin.levelObjectives.size() + 1 == this.level)) {
             goalObjective = NationsPlugin.levelObjectives.get(this.level);
         } else {
-            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...", "Coming Soon...");
+            goalObjective = new Objective(0, 0, 0, 0, 0,  "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
         switch (objective) {
             case "a":
-                int chargeda = chargeStrict(p, goalObjective.getMaterial_a(), goalObjective.getObjective_a() - progressObjective.getObjective_a(), false);
+                int chargeda = charge(p, goalObjective.getMaterial_a(), goalObjective.getObjective_a() - progressObjective.getObjective_a(), false);
                 if (chargeda <= 0) return;
                 progressObjective.setObjective_a(progressObjective.getObjective_a() + chargeda);
                 this.setObjectives(progressObjective);
             case "b":
-                int chargedb = chargeStrict(p, goalObjective.getMaterial_b(), goalObjective.getObjective_b() - progressObjective.getObjective_b(), false);
+                int chargedb = charge(p, goalObjective.getMaterial_b(), goalObjective.getObjective_b() - progressObjective.getObjective_b(), false);
                 if (chargedb <= 0) return;
                 progressObjective.setObjective_b(progressObjective.getObjective_b() + chargedb);
                 this.setObjectives(progressObjective);
             case "c":
-                int chargedc = chargeStrict(p, goalObjective.getMaterial_c(), goalObjective.getObjective_c() - progressObjective.getObjective_c(), false);
+                int chargedc = charge(p, goalObjective.getMaterial_c(), goalObjective.getObjective_c() - progressObjective.getObjective_c(), false);
                 if (chargedc <= 0) return;
                 progressObjective.setObjective_c(progressObjective.getObjective_c() + chargedc);
-                this.setObjectives(progressObjective);
-            case "d":
-                int chargedd = chargeStrict(p, goalObjective.getMaterial_d(), goalObjective.getObjective_d() - progressObjective.getObjective_d(), false);
-                if (chargedd <= 0) return;
-                progressObjective.setObjective_d(progressObjective.getObjective_d() + chargedd);
                 this.setObjectives(progressObjective);
         }
 
 
     }
 
-    private Integer chargeStrict(Player p, String itemString, int amount, boolean onlyFullCharge) {
+    public void cashIn(Player p,int amount) {
+
+        int charged = charge(p,"terranova_silver",amount,false);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+
+        if(transactionHistory.size() >= 50) transactionHistory.remove(50);
+        transactionHistory.add(new Transaction(p.getName(),charged, Instant.now()));
+        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s eingezahlt, Gesamtbetrag: %s",p.getName(),charged,this.name, this.bank));
+
+        settleDB.cash(bank + charged);
+        bank+=charged;
+        p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s in die Stadtkasse %s's eingezahlt, neuer Gesamtbetrag: %s.",charged,this.name,this.bank)));
+    }
+
+    public void cashOut(Player p,int amount) {
+
+        int credited;
+        if(amount <= bank) {
+            credited = credit(p, "terranova_silver", amount, false);
+        } else {
+            credited = credit(p, "terranova_silver", bank, false);
+        }
+        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+
+        if(transactionHistory.size() >= 50) transactionHistory.remove(50);
+        transactionHistory.add(new Transaction(p.getName(),-credited, Instant.now()));
+        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s abgehoben, Gesamtbetrag: %s",p.getName(),-credited,this.name, this.bank));
+
+        settleDB.cash( bank - credited);
+        bank-=credited;
+        p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s von der Stadtkasse %s's abgehoben, neuer Gesamtbetrag: %s.",credited,this.name,this.bank)));
+    }
+
+    private Integer charge(Player p, String itemString, int amount, boolean onlyFullCharge) {
 
         ItemStack item;
         if (OraxenItems.exists(itemString)) {
@@ -265,10 +293,63 @@ public class SettleRegionType extends RegionType {
         return amount - total;
     }
 
+    private Integer credit(Player p, String itemString, int amount, boolean onlyFullCredit) {
+
+        ItemStack item;
+        if (OraxenItems.exists(itemString)) {
+            item = OraxenItems.getItemById(itemString).build();
+        } else {
+            item = new ItemStack(Material.valueOf(itemString));
+        }
+
+        ItemStack[] stacks = p.getInventory().getContents();
+        int total = 0;
+        if (onlyFullCredit) {
+            for (ItemStack stack : stacks) {
+                if(stack == null) {
+                    total += 64;
+                    continue;
+                }
+                if (stack.isSimilar(item)) total += 64 - stack.getAmount();
+            }
+            if (total < amount) return -1;
+        }
+
+        total = amount;
+
+        int stackAmount;
+        for (int i = 0; i < stacks.length; i++) {
+
+            if(stacks[i] == null) {
+                stackAmount = 0;
+            } else if(stacks[i].isSimilar(item)) {
+                stackAmount = stacks[i].getAmount();
+            } else {
+                continue;
+            }
+
+            if (64 - stackAmount < total) {
+                stacks[i] = item.asQuantity(64);
+                total -= 64 - stackAmount;
+                p.sendMessage("" + total);
+            } else {
+                stacks[i] = item.asQuantity(total+stackAmount);
+                total -=  total;
+                p.sendMessage("" + total);
+                break;
+            }
+        }
+
+        p.getInventory().setContents(stacks);
+        p.updateInventory();
+        p.sendMessage("" + total);
+        return amount - total;
+    }
+
     public void setObjectives(Objective objective) {
         this.objective = objective;
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        settleDB.syncObjectives(this.objective.getObjective_a(), this.objective.getObjective_b(), this.objective.getObjective_c(), this.objective.getObjective_d());
+        settleDB.syncObjectives(this.objective.getObjective_a(), this.objective.getObjective_b(), this.objective.getObjective_c());
     }
 
     public int getMaxClaims() {
