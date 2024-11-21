@@ -4,6 +4,7 @@ import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.mcterranova.terranovaLib.violetData.violetSerialization;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.settlements.AccessLevel;
@@ -21,8 +22,11 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.*;
+
+import static de.mcterranova.terranovaLib.violetData.violetSerialization.*;
 
 public class SettleRegionType extends RegionType {
 
@@ -58,12 +62,13 @@ public class SettleRegionType extends RegionType {
     }
 
     //Von der Datenbank
-    public SettleRegionType(UUID settlementUUID, HashMap<UUID, AccessLevel> accessLevel, Vectore2 location, String name, int level, Objective objective) {
+    public SettleRegionType(UUID settlementUUID, HashMap<UUID, AccessLevel> accessLevel, Vectore2 location, String name, int level, Objective objective, List<Transaction> transactions) {
         super(name, settlementUUID, "settle");
         this.location = RegionClaimFunctions.getSChunkMiddle(location);
         NationsPlugin.settleManager.locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
         NationsPlugin.settleManager.nameCache.add(this.name);
         this.level = level;
+        this.transactionHistory = transactions;
         this.accessLevel = accessLevel;
         this.region = getWorldguardRegion();
         this.objective = objective;
@@ -226,12 +231,15 @@ public class SettleRegionType extends RegionType {
 
         int charged = charge(p,"terranova_silver",amount,false);
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        if(transactionHistory.size() >= 50) transactionHistory.remove(49);
+        Timestamp time = databaseTimestampSE(Instant.now());
+        transactionHistory.add(new Transaction(p.getName(),charged, time));
+        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s eingezahlt, Gesamtbetrag: %s",p.getName(),charged,this.name, this.bank+charged));
 
-        if(transactionHistory.size() >= 50) transactionHistory.remove(50);
-        transactionHistory.add(new Transaction(p.getName(),charged, Instant.now()));
-        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s eingezahlt, Gesamtbetrag: %s",p.getName(),charged,this.name, this.bank));
+        settleDB.cash( bank+charged, charged,p.getName(),time);
 
-        settleDB.cash(bank + charged);
+
+
         bank+=charged;
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s in die Stadtkasse %s's eingezahlt, neuer Gesamtbetrag: %s.",charged,this.name,this.bank)));
     }
@@ -246,11 +254,11 @@ public class SettleRegionType extends RegionType {
         }
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
 
-        if(transactionHistory.size() >= 50) transactionHistory.remove(50);
+        if(transactionHistory.size() >= 50) transactionHistory.remove(49);
         transactionHistory.add(new Transaction(p.getName(),-credited, Instant.now()));
-        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s abgehoben, Gesamtbetrag: %s",p.getName(),-credited,this.name, this.bank));
-
-        settleDB.cash( bank - credited);
+        Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s abgehoben, Gesamtbetrag: %s",p.getName(),-credited,this.name, this.bank-credited));
+        Timestamp time = databaseTimestampSE(Instant.now());
+        settleDB.cash(bank-credited,-credited,p.getName(),time);
         bank-=credited;
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s von der Stadtkasse %s's abgehoben, neuer Gesamtbetrag: %s.",credited,this.name,this.bank)));
     }
