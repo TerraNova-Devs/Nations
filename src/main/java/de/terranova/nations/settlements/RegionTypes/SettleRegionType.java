@@ -227,8 +227,14 @@ public class SettleRegionType extends RegionType {
 
     }
 
-    public void cashIn(Player p,int amount) {
+    private static boolean cashInProgress = false;
 
+    public void cashIn(Player p,int amount) {
+        if(cashInProgress){
+            p.sendMessage(Chat.errorFade("A error occured while using the bank please try again."));
+            return;
+        }
+        cashInProgress = true;
         int charged = charge(p,"terranova_silver",amount,false);
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
         if(transactionHistory.size() >= 50) transactionHistory.remove(49);
@@ -242,10 +248,15 @@ public class SettleRegionType extends RegionType {
 
         bank+=charged;
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s in die Stadtkasse %s's eingezahlt, neuer Gesamtbetrag: %s.",charged,this.name,this.bank)));
+        cashInProgress = false;
     }
 
     public void cashOut(Player p,int amount) {
-
+        if(cashInProgress){
+            p.sendMessage(Chat.errorFade("A error occured while using the bank please try again."));
+            return;
+        }
+        cashInProgress = true;
         int credited;
         if(amount <= bank) {
             credited = credit(p, "terranova_silver", amount, false);
@@ -261,6 +272,7 @@ public class SettleRegionType extends RegionType {
         settleDB.cash(bank-credited,-credited,p.getName(),time);
         bank-=credited;
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s von der Stadtkasse %s's abgehoben, neuer Gesamtbetrag: %s.",credited,this.name,this.bank)));
+        cashInProgress = false;
     }
 
     private Integer charge(Player p, String itemString, int amount, boolean onlyFullCharge) {
