@@ -54,6 +54,7 @@ public final class NationsPlugin extends JavaPlugin {
     public YMLHandler skinsYML;
     public static Logger logger;
     private Registry<Layer> layerRegistry;
+    static public Plugin plugin;
 
     //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
     //EIGENE KLASSE FÜR ACCESS
@@ -68,6 +69,7 @@ public final class NationsPlugin extends JavaPlugin {
     @Override
     public void onEnable() {
         //Stillbugs is used to send Action Bar to player later
+        plugin = this;
         worldguardHandlerRegistry();
         pl3xmapMarkerRegistry();
         logger = getLogger();

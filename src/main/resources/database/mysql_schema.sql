@@ -25,4 +25,15 @@ CREATE TABLE IF NOT EXISTS `access_table` (
     `access` varchar(20) NOT NULL,
         PRIMARY KEY (`SUUID`, `PUUID`)
 ) DEFAULT CHARSET=utf8
-COLLATE=utf8_unicode_ci
+COLLATE=utf8_unicode_ci;
+
+# Create transactions table to save settles banks history
+CREATE TABLE IF NOT EXISTS `transaction_table` (
+    `SUUID` varchar(36) NOT NULL,
+    `id` int NOT NULL,
+    `username` varchar(16) NOT NULL,
+    `amount` mediumint NOT NULL,
+    `timestamp` timestamp NOT NULL,
+        PRIMARY KEY (`SUUID`, `id`)
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
