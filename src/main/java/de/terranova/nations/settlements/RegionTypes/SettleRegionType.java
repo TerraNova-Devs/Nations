@@ -237,7 +237,7 @@ public class SettleRegionType extends RegionType {
         cashInProgress = true;
         int charged = charge(p,"terranova_silver",amount,false);
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
-        if(transactionHistory.size() >= 50) transactionHistory.remove(49);
+        if(transactionHistory.size() >= 50) transactionHistory.removeFirst();
         Timestamp time = databaseTimestampSE(Instant.now());
         transactionHistory.add(new Transaction(p.getName(),charged, time));
         Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s eingezahlt, Gesamtbetrag: %s",p.getName(),charged,this.name, this.bank+charged));
@@ -265,7 +265,7 @@ public class SettleRegionType extends RegionType {
         }
         SettleDBstuff settleDB = new SettleDBstuff(this.id);
 
-        if(transactionHistory.size() >= 50) transactionHistory.remove(49);
+        if(transactionHistory.size() >= 50) transactionHistory.removeFirst();
         transactionHistory.add(new Transaction(p.getName(),-credited, Instant.now()));
         Bukkit.getLogger().severe(String.format("Spieler %s -> Stadt %s -> %s abgehoben, Gesamtbetrag: %s",p.getName(),-credited,this.name, this.bank-credited));
         Timestamp time = databaseTimestampSE(Instant.now());
