@@ -184,10 +184,11 @@ public class SettleDBstuff {
             statement.executeUpdate();
 
             historyStatement.setString(1, SUUID.toString());
-            historyStatement.setString(2, username);
-            historyStatement.setInt(3, amount);
-            historyStatement.setTimestamp(4, timestamp);
-            historyStatement.setString(5, SUUID.toString());
+            historyStatement.setString(2, SUUID.toString());
+            historyStatement.setString(3, username);
+            historyStatement.setInt(4, amount);
+            historyStatement.setTimestamp(5, timestamp);
+            historyStatement.setString(6, SUUID.toString());
             historyStatement.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
