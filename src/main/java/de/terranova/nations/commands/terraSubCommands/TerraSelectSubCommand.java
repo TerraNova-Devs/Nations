@@ -4,7 +4,6 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
-import de.terranova.nations.settlements.AccessLevel;
 import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -28,7 +27,7 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
         hasPermission(p, permission + ".select");
 
         if (args.length == 1 && TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
-            p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getSettle().name, TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
+            p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getRegion().name, TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
             return;
         } else if (args.length == 1) {
             p.sendMessage(nonSelectError);
@@ -42,17 +41,13 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
         }
         SettleRegionType settle = osettle.get();
 
-        Optional<AccessLevel> oaccess = NationsPlugin.settleManager.getAccessLevel(p, settle.id);
-        AccessLevel access;
-        access = oaccess.orElse(null);
-
-        TerraSelectCache cache = new TerraSelectCache(settle, access);
+        TerraSelectCache cache = new TerraSelectCache(settle, p.getUniqueId());
 
         if (!TerraSelectCache.selectCache.containsKey(p.getUniqueId()))
             TerraSelectCache.selectCache.put(p.getUniqueId(), cache);
         else TerraSelectCache.selectCache.replace(p.getUniqueId(), cache);
 
-        p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", cache.getSettle().name, cache.getAccess().name())));
+        p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", cache.getRegion().name, cache.getAccess().name())));
     }
 
 

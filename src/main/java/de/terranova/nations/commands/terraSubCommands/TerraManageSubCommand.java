@@ -4,6 +4,7 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.RegionTypes.Bank;
 import de.terranova.nations.settlements.RegionTypes.Transaction;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -23,18 +24,23 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
         if (cache == null) return;
         if(cache.getAccess() == null) return;
 
+        if(!(cache.getRegion() instanceof Bank bank)) {
+            p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
+            return;
+        }
+
         if(args[1].equals("bank")&& args.length == 2){
-            p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt %s",cache.getSettle().bank)));
+            p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt %s",bank.getBank())));
             return;
         } else if(args[2].equals("history")&& args.length == 3) {
             if(!hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
                 p.sendMessage(Chat.errorFade("Du musst mindestens Member sein um die Historie sehen zu können"));
                 return;
             }
-            if(cache.getSettle().transactionHistory.isEmpty()) {
+            if(bank.getTransactionHistory().isEmpty()) {
                 p.sendMessage("No Transactions found");
             } else {
-                for (Transaction t : cache.getSettle().transactionHistory) {
+                for (Transaction t : bank.getTransactionHistory()) {
                     p.sendMessage(Chat.cottonCandy(String.format("Transaktion: %s -> %s am %s",t.user,t.amount,Chat.prettyInstant(t.date))));
                 }
             }
@@ -53,12 +59,13 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
 
 
         if(args[1].equals("bank")){
+
             if(args[2].equals("withdraw")){
                 if(!hasAccess(cache.getAccess(), AccessLevel.COUNCIL)) {
                     p.sendMessage(Chat.errorFade("Du musst mindestens Council sein um von der Stadtkasse abheben zu können"));
                     return;
                 }
-                cache.getSettle().cashOut(p, amount);
+                bank.cashOut(p, amount, cache.getRegion());
 
             }
             if(args[2].equals("deposit")){
@@ -66,11 +73,17 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
                     p.sendMessage(Chat.errorFade("Du musst mindestens Member sein um in die Stadtkasse einzahlen zu können"));
                     return;
                 }
-                cache.getSettle().cashIn(p, amount);
+                bank.cashIn(p, amount,cache.getRegion());
             }
-
 
         }
 
+        if(args[1].equals("npc")){
+            if(cache.getRegion().npc == null){
+                return;
+            }
+        }
+
     }
+
 }

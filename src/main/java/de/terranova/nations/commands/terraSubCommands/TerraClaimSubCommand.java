@@ -10,6 +10,8 @@ import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.RegionTypes.GridRegion;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -31,6 +33,11 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return;
 
+        if(!(cache.getRegion() instanceof GridRegion region)){
+            p.sendMessage(Chat.errorFade("Du kannst die ausgewählte region nicht durch claimen erweitern"));
+            return;
+        }
+
         if (args[0].equalsIgnoreCase("claim")) {
 
             AccessLevel access = cache.getAccess();
@@ -42,7 +49,7 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
 
             double abstand = Integer.MAX_VALUE;
             for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
-                if (cache.getSettle().location.equals(location)) continue;
+                if (region.getLocation().equals(location)) continue;
                 double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
                 if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
                     abstand = abstandneu;
@@ -63,16 +70,18 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-            if (cache.getSettle().claims >= cache.getSettle().getMaxClaims()) {
+            if (region.getClaims() >= region.getMaxClaims()) {
                 p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
                 return;
             }
 
-            RegionClaimFunctions.addToExistingClaim(p, cache.getSettle().region);
-            NationsPlugin.settleManager.addSettlementToPl3xmap(cache.getSettle());
-            cache.getSettle().claims = RegionClaimFunctions.getClaimAnzahl(cache.getSettle().id);
-            cache.getSettle().region = cache.getSettle().getWorldguardRegion();
-            p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + cache.getSettle().claims + "/" + cache.getSettle().getMaxClaims() + ")"));
+            RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().region);
+            if(cache.getRegion() instanceof SettleRegionType){
+                NationsPlugin.settleManager.addSettlementToPl3xmap((SettleRegionType) cache.getRegion());
+            }
+            region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().id));
+            cache.getRegion().region = cache.getRegion().getWorldguardRegion();
+            p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
         }
     }
 }

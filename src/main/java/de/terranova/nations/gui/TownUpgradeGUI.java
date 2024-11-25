@@ -35,7 +35,7 @@ public class TownUpgradeGUI extends RoseGUI {
             goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
-        boolean canLevelup = settle.bank >= goalObjective.getSilver()  && progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
+        boolean canLevelup = settle.getBank() >= goalObjective.getSilver()  && progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
                 progressObjective.getObjective_c() == goalObjective.getObjective_c();
 
         RoseItem filler = new RoseItem.Builder()
@@ -71,8 +71,8 @@ public class TownUpgradeGUI extends RoseGUI {
         RoseItem objective_bank = new RoseItem.Builder()
                 .material("terranova_silver")
                 .displayName("Bank")
-                .addLore(settle.bank >= goalObjective.getSilver() ? Chat.greenFade(String.format(settle.bank + " / " + goalObjective.getSilver())) : Chat.redFade(String.format(settle.bank + " / " + goalObjective.getSilver())))
-                .isEnchanted(settle.bank >= goalObjective.getSilver())
+                .addLore(settle.getBank() >= goalObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank() + " / " + goalObjective.getSilver())) : Chat.redFade(String.format(settle.getBank() + " / " + goalObjective.getSilver())))
+                .isEnchanted(settle.getBank() >= goalObjective.getSilver())
                 .build();
 
         RoseItem objective_a = new RoseItem.Builder()

@@ -1,6 +1,8 @@
 package de.terranova.nations.commands;
 
 import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.settlements.RegionType;
+import de.terranova.nations.settlements.RegionTypes.Access;
 import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 
 import java.util.HashMap;
@@ -10,15 +12,19 @@ import java.util.UUID;
 public class TerraSelectCache {
     public static Map<UUID, TerraSelectCache> selectCache = new HashMap<>();
 
-    private SettleRegionType settle;
+    private RegionType region;
     private AccessLevel access;
-    public TerraSelectCache(SettleRegionType settle, AccessLevel access) {
-        this.settle = settle;
-        this.access = access;
+    public TerraSelectCache(RegionType region, UUID uuid) {
+        this.region = region;
+        if(region instanceof Access access){
+            this.access = access.getAccess(uuid);
+        } else {
+            this.access = null;
+        }
     }
 
-    public SettleRegionType getSettle() {
-        return settle;
+    public RegionType getRegion() {
+        return region;
     }
 
     public AccessLevel getAccess() {
