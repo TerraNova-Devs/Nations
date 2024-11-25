@@ -173,15 +173,6 @@ public class RegionClaimFunctions {
         return !(set.size() == 0);
     }
 
-    public static void addOrRemoveFromSettlement(Player p, SettleRegionType settle, boolean addRemove) {
-        if (addRemove) {
-            settle.getWorldguardRegion().getMembers().addPlayer(p.getUniqueId());
-        } else {
-            settle.getWorldguardRegion().getMembers().removePlayer(p.getUniqueId());
-        }
-    }
-
-
     public static int getClaimAnzahl(UUID settle) {
         World world = Bukkit.getWorld("world");
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();

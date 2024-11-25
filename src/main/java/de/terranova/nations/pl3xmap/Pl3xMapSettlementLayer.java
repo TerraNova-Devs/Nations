@@ -46,7 +46,6 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
         setDefaultHidden(false);
         setPriority(100);
         setZIndex(999);
-
         for (SettleRegionType settle : NationsPlugin.settleManager.settlements.values()) {
 
             Collection<Point> markerPoints = new ArrayList<>();

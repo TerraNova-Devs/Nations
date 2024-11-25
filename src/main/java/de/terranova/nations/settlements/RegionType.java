@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
 import net.citizensnpcs.api.CitizensAPI;
@@ -18,6 +19,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import java.util.ArrayList;
@@ -30,7 +32,7 @@ public abstract class RegionType {
     public UUID id;
     public String name;
     public ProtectedRegion region;
-    protected NPC npc;
+    public NPC npc;
     String type;
 
     public static List<String> regionTypes = List.of("settle","outpost");
@@ -161,6 +163,14 @@ public abstract class RegionType {
         RegionManager regions = container.get(BukkitAdapter.adapt(Objects.requireNonNull(Bukkit.getWorld("world"))));
         assert regions != null;
         regions.removeRegion(region.getId());
+    }
+
+    public void addMember(UUID uuid) {
+        this.region.getMembers().addPlayer(uuid);
+    }
+
+    public void removeMember(UUID uuid) {
+        this.region.getMembers().removePlayer(uuid);
     }
 
 }

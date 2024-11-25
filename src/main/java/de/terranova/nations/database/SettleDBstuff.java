@@ -53,7 +53,7 @@ public class SettleDBstuff {
                     NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
-                settlements.put(SUUID, new SettleRegionType(SUUID, settleDB.getMembersAccess(), new Vectore2(location), name, level, objective, settleDB.getTransactionHistory()));
+                settlements.put(SUUID, new SettleRegionType(SUUID, new Vectore2(location), name, level, objective));
             }
             NationsPlugin.settleManager.setSettlements(settlements);
         } catch (SQLException e) {
@@ -95,7 +95,7 @@ public class SettleDBstuff {
         return result;
     }
 
-    private HashMap<UUID, AccessLevel> getMembersAccess() throws SQLException {
+    public HashMap<UUID, AccessLevel> getMembersAccess() throws SQLException {
         String sql = "SELECT * FROM `access_table` WHERE SUUID = ?";
         HashMap<UUID, AccessLevel> access = new HashMap<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
@@ -109,22 +109,6 @@ public class SettleDBstuff {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
         }
         return access;
-    }
-
-    private List<Transaction> getTransactionHistory() throws SQLException {
-        String sql = "SELECT * FROM `transaction_table` WHERE SUUID = ? ORDER BY timestamp";
-        List<Transaction> transactions = new ArrayList<>();
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
-            statement.setString(1, SUUID.toString());
-            ResultSet rs = statement.executeQuery();
-            while (rs.next()) {
-                transactions.add(new Transaction(rs.getString("username"), rs.getInt("amount"), rs.getTimestamp("timestamp")));
-            }
-        } catch (SQLException e) {
-            throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
-        }
-        return transactions;
     }
 
     public void changeMemberAccess(UUID PUUID, AccessLevel access) {
@@ -152,6 +136,24 @@ public class SettleDBstuff {
             }
         }
     }
+
+    public List<Transaction> getTransactionHistory() throws SQLException {
+        String sql = "SELECT * FROM `transaction_table` WHERE SUUID = ? ORDER BY timestamp";
+        List<Transaction> transactions = new ArrayList<>();
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement statement = con.prepareStatement(sql)) {
+            statement.setString(1, SUUID.toString());
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                transactions.add(new Transaction(rs.getString("username"), rs.getInt("amount"), rs.getTimestamp("timestamp")));
+            }
+        } catch (SQLException e) {
+            throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
+        }
+        return transactions;
+    }
+
+
 
     public void rename(String name) {
         String sql = "UPDATE settlements_table SET name = ? WHERE SUUID = ?";
