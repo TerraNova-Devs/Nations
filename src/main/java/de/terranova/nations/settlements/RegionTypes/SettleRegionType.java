@@ -23,7 +23,6 @@ import java.util.*;
 
 public class SettleRegionType extends RegionType implements Bank, GridRegion, Access {
 
-    private static final boolean cashInProgress = false;
     public final Vectore2 location;
     public int level;
     private int bank;
