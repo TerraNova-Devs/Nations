@@ -3,7 +3,6 @@ package de.terranova.nations.commands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.terraSubCommands.*;
-import de.terranova.nations.settlements.RegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -52,18 +51,32 @@ public class TerraRegionCommand implements BasicCommand {
 
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-
-        if(args.length == 0) return subCommands.keySet();
-        if(args[0].equalsIgnoreCase("create")) {
-            if(args.length == 1) return RegionType.regionTypes;
-            if(args.length == 2) return List.of("<regions_name>");
-        }
-        if(args[0].equalsIgnoreCase("select")) {
-            return NationsPlugin.settleManager.nameCache;
+        if (args.length == 0) {
+            // No arguments provided, suggest all subcommands
+            return subCommands.keySet();
         }
 
+        if (args.length == 1) {
+            // Suggest matching subcommands based on the first argument
+            return filterSuggestions(subCommands.keySet(), args[0]);
+        }
+
+        if (subCommands.containsKey(args[0])) {
+            // Delegate suggestion handling to the relevant subcommand, if any
+            BasicCommand subCommand = subCommands.get(args[0]);
+            if (subCommand != null) {
+                return subCommand.suggest(commandSourceStack, Arrays.copyOfRange(args, 1, args.length));
+            }
+        }
+
+        // Fallback to empty list for unsupported or invalid input
         return List.of();
     }
 
+    private Collection<String> filterSuggestions(Collection<String> suggestions, String input) {
+        return suggestions.stream()
+                .filter(s -> s.toLowerCase().startsWith(input.toLowerCase()))
+                .toList();
+    }
 
 }

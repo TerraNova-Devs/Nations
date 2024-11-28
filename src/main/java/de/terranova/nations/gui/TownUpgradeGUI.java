@@ -5,9 +5,8 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
-import de.terranova.nations.settlements.level.Objective;
-import io.th0rgal.oraxen.api.OraxenItems;
+import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.rank.RankObjective;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -26,17 +25,17 @@ public class TownUpgradeGUI extends RoseGUI {
     @Override
     public void onOpen(InventoryOpenEvent event) {
 
-        Objective progressObjective = settle.objective;
-        Objective goalObjective;
+        RankObjective progressRankObjective = settle.getRank().getRankObjective();
+        RankObjective goalRankObjective;
 
-        if (!(NationsPlugin.levelObjectives.size() + 1 == settle.level)) {
-            goalObjective = NationsPlugin.levelObjectives.get(settle.level);
+        if (!(NationsPlugin.levelObjectives.size() + 1 == settle.getRank().getLevel())) {
+            goalRankObjective = NationsPlugin.levelObjectives.get(settle.getRank().getLevel());
         } else {
-            goalObjective = new Objective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...");
+            goalRankObjective = new RankObjective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
 
-        boolean canLevelup = settle.getBank() >= goalObjective.getSilver()  && progressObjective.getObjective_a() == goalObjective.getObjective_a() && progressObjective.getObjective_b() == goalObjective.getObjective_b() &&
-                progressObjective.getObjective_c() == goalObjective.getObjective_c();
+        boolean canLevelup = settle.getBank().getCredit() >= goalRankObjective.getSilver()  && progressRankObjective.getObjective_a() == goalRankObjective.getObjective_a() && progressRankObjective.getObjective_b() == goalRankObjective.getObjective_b() &&
+                progressRankObjective.getObjective_c() == goalRankObjective.getObjective_c();
 
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
@@ -63,7 +62,7 @@ public class TownUpgradeGUI extends RoseGUI {
                 .build();
         if (canLevelup) {
             submit.onClick(e -> {
-                settle.levelUP();
+                settle.getRank().levelUP();
                 new TownUpgradeGUI(player, settle).open();
             });
         }
@@ -71,45 +70,45 @@ public class TownUpgradeGUI extends RoseGUI {
         RoseItem objective_bank = new RoseItem.Builder()
                 .material("terranova_silver")
                 .displayName("Bank")
-                .addLore(settle.getBank() >= goalObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank() + " / " + goalObjective.getSilver())) : Chat.redFade(String.format(settle.getBank() + " / " + goalObjective.getSilver())))
-                .isEnchanted(settle.getBank() >= goalObjective.getSilver())
+                .addLore(settle.getBank().getCredit() >= goalRankObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank() + " / " + goalRankObjective.getSilver())) : Chat.redFade(String.format(settle.getBank() + " / " + goalRankObjective.getSilver())))
+                .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
                 .build();
 
         RoseItem objective_a = new RoseItem.Builder()
-                .material(goalObjective.getMaterial_a())
-                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
-                .addLore(progressObjective.getObjective_a() == goalObjective.getObjective_a() ? Chat.greenFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())) : Chat.redFade(String.format(progressObjective.getObjective_a() + " / " + goalObjective.getObjective_a())))
-                .isEnchanted(progressObjective.getObjective_a() == goalObjective.getObjective_a())
+                .material(goalRankObjective.getMaterial_a())
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalRankObjective.getMaterial_a().replaceAll("_", " ").toLowerCase())))
+                .addLore(progressRankObjective.getObjective_a() == goalRankObjective.getObjective_a() ? Chat.greenFade(String.format(progressRankObjective.getObjective_a() + " / " + goalRankObjective.getObjective_a())) : Chat.redFade(String.format(progressRankObjective.getObjective_a() + " / " + goalRankObjective.getObjective_a())))
+                .isEnchanted(progressRankObjective.getObjective_a() == goalRankObjective.getObjective_a())
                 .build();
-        if (progressObjective.getObjective_a() != goalObjective.getObjective_a()) {
+        if (progressRankObjective.getObjective_a() != goalRankObjective.getObjective_a()) {
             objective_a.onClick(e -> {
-                settle.contributeObjective(player, "a");
+                settle.getRank().contributeObjective(player, "a");
                 new TownUpgradeGUI(player, settle).open();
             });
         }
 
         RoseItem objective_b = new RoseItem.Builder()
-                .material(goalObjective.getMaterial_b())
-                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
-                .addLore(progressObjective.getObjective_b() == goalObjective.getObjective_b() ? Chat.greenFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())) : Chat.redFade(String.format(progressObjective.getObjective_b() + " / " + goalObjective.getObjective_b())))
-                .isEnchanted(progressObjective.getObjective_b() == goalObjective.getObjective_b())
+                .material(goalRankObjective.getMaterial_b())
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalRankObjective.getMaterial_b().replaceAll("_", " ").toLowerCase())))
+                .addLore(progressRankObjective.getObjective_b() == goalRankObjective.getObjective_b() ? Chat.greenFade(String.format(progressRankObjective.getObjective_b() + " / " + goalRankObjective.getObjective_b())) : Chat.redFade(String.format(progressRankObjective.getObjective_b() + " / " + goalRankObjective.getObjective_b())))
+                .isEnchanted(progressRankObjective.getObjective_b() == goalRankObjective.getObjective_b())
                 .build();
-        if (progressObjective.getObjective_b() != goalObjective.getObjective_b()) {
+        if (progressRankObjective.getObjective_b() != goalRankObjective.getObjective_b()) {
             objective_b.onClick(e -> {
-                settle.contributeObjective(player, "b");
+                settle.getRank().contributeObjective(player, "b");
                 new TownUpgradeGUI(player, settle).open();
             });
         }
 
         RoseItem objective_c = new RoseItem.Builder()
-                .material(goalObjective.getMaterial_c())
-                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
-                .addLore(progressObjective.getObjective_c() == goalObjective.getObjective_c() ? Chat.greenFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())) : Chat.redFade(String.format(progressObjective.getObjective_c() + " / " + goalObjective.getObjective_c())))
-                .isEnchanted(progressObjective.getObjective_c() == goalObjective.getObjective_c())
+                .material(goalRankObjective.getMaterial_c())
+                .displayName(Chat.blueFade("<b>" + WordUtils.capitalize(goalRankObjective.getMaterial_c().replaceAll("_", " ").toLowerCase())))
+                .addLore(progressRankObjective.getObjective_c() == goalRankObjective.getObjective_c() ? Chat.greenFade(String.format(progressRankObjective.getObjective_c() + " / " + goalRankObjective.getObjective_c())) : Chat.redFade(String.format(progressRankObjective.getObjective_c() + " / " + goalRankObjective.getObjective_c())))
+                .isEnchanted(progressRankObjective.getObjective_c() == goalRankObjective.getObjective_c())
                 .build();
-        if (progressObjective.getObjective_c() != goalObjective.getObjective_c()) {
+        if (progressRankObjective.getObjective_c() != goalRankObjective.getObjective_c()) {
             objective_c.onClick(e -> {
-                settle.contributeObjective(player, "c");
+                settle.getRank().contributeObjective(player, "c");
                 new TownUpgradeGUI(player, settle).open();
             });
         }

@@ -2,8 +2,7 @@ package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.entity.Player;
@@ -31,8 +30,8 @@ public class SettleRemoveSubCommand extends SubCommand implements BasicCommand {
             if (!hasPermission(p, "nations.admin.remove")) return;
             Optional<SettleRegionType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
             if (settle.isEmpty()) return;
-            NationsPlugin.settleManager.removeSettlement(settle.get().id);
-            p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().name + " wurde erfolgreich entfernt."));
+            NationsPlugin.settleManager.removeSettlement(settle.get().getId());
+            p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().getName() + " wurde erfolgreich entfernt."));
         }
     }
 }
