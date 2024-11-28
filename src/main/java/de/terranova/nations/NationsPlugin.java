@@ -1,7 +1,6 @@
 package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.UUIDFlag;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
@@ -9,13 +8,11 @@ import de.terranova.nations.commands.SettleCommand;
 import de.terranova.nations.commands.TerraRegionCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.SettleManager;
+import de.terranova.nations.regions.SettleManager;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.settlements.level.Objective;
+import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
-import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
-import de.terranova.nations.worldguard.NationsRegionFlag.SettleHandler;
 import io.papermc.paper.command.brigadier.Commands;
 import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
 import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
@@ -50,7 +47,7 @@ public final class NationsPlugin extends JavaPlugin {
     public static SettleManager settleManager;
     //public YMLHandler levelYML;
     public static HikariCP hikari;
-    public static Map<Integer, Objective> levelObjectives;
+    public static Map<Integer, RankObjective> levelObjectives;
     public YMLHandler skinsYML;
     public static Logger logger;
     private Registry<Layer> layerRegistry;
@@ -78,6 +75,7 @@ public final class NationsPlugin extends JavaPlugin {
         listenerRegistry();
         serilizationRegistry();
         citizensTraitRegistry();
+        nationsRegionTypeRegistry();
         try {
             loadConfigs();
         } catch (IOException e) {
@@ -87,6 +85,16 @@ public final class NationsPlugin extends JavaPlugin {
 
         SettleDBstuff.getInitialSettlementData();
         settleManager.addSettlementsToPl3xmap();
+
+    }
+
+    private void nationsRegionTypeRegistry() {
+        try {
+            Class.forName("de.terranova.nations.regions.grid.SettleRegionType");
+            Class.forName("de.terranova.nations.regions.grid.OutpostRegionType");
+        } catch (ClassNotFoundException e) {
+            getLogger().severe("Failed to load region types: " + e.getMessage());
+        }
     }
 
     @Override
@@ -160,17 +168,17 @@ public final class NationsPlugin extends JavaPlugin {
         dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
         Representer representer = new Representer(dumperOptions);
-        representer.addClassTag(Objective.class, new Tag("Stadtlevel"));
+        representer.addClassTag(RankObjective.class, new Tag("Stadtlevel"));
 
         Constructor constructor = new Constructor(loaderOptions);
-        constructor.addTypeDescription(new TypeDescription(Objective.class, new Tag("Stadtlevel")));
+        constructor.addTypeDescription(new TypeDescription(RankObjective.class, new Tag("Stadtlevel")));
 
         Yaml yaml = new Yaml(constructor, representer, dumperOptions, loaderOptions);
 
         if (file.createNewFile()) {
-            HashMap<Integer, Objective> exampleObj = new HashMap<>();
-            exampleObj.put(1, new Objective(1, 1, 1, 1, 1,  "Test", "Test", "Test"));
-            exampleObj.put(2, new Objective(2, 2, 1, 2, 2,  "Test2", "Test2", "Test2"));
+            HashMap<Integer, RankObjective> exampleObj = new HashMap<>();
+            exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1,  "Test", "Test", "Test"));
+            exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2,  "Test2", "Test2", "Test2"));
             FileWriter writer = new FileWriter(file);
             yaml.dump(exampleObj, writer);
         }

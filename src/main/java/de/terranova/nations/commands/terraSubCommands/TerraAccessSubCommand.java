@@ -3,9 +3,8 @@ package de.terranova.nations.commands.terraSubCommands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
-import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionTypes.Access;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.AccessControlled;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
@@ -27,7 +26,7 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
         if (cache == null) return;
 
 
-        if (!(cache.getRegion() instanceof Access access)) {
+        if (!(cache.getRegion() instanceof AccessControlled access)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Ränge"));
             return;
         }
@@ -54,9 +53,9 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s konnte nicht gefunden werden", args[2])));
             return;
         }
-        AccessLevel targetAccessLevel = access.getAccess(target.getUniqueId());
+        AccessLevel targetAccessLevel = access.getAccess().getAccessLevel(target.getUniqueId());
 
-        if (!access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
+        if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein.");
             return;
         }
@@ -67,12 +66,11 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-
             cache.getRegion().addMember(target.getUniqueId());
-            access.setAccessLevel(target.getUniqueId(), AccessLevel.CITIZEN);
+            access.getAccess().setAccessLevel(target.getUniqueId(), AccessLevel.CITIZEN);
 
-            target.sendMessage(Chat.greenFade(String.format("Du wurdest zu der Region %s als Mitglied hinzugefügt.", cache.getRegion().name)));
-            p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich zur Stadt %s als Mitglied hinzugefügt.", target.getName(), cache.getRegion().name)));
+            target.sendMessage(Chat.greenFade(String.format("Du wurdest zu der Region %s als Mitglied hinzugefügt.", cache.getRegion().getName())));
+            p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich zur Stadt %s als Mitglied hinzugefügt.", target.getName(), cache.getRegion().getName())));
         } else if (args[1].equalsIgnoreCase("remove")) {
             if (targetAccessLevel == null) {
                 p.sendMessage(Chat.errorFade(String.format("Der Spieler %s kann nicht entfernt werden, er ist kein Mitglied deiner Stadt.", target.getName())));
@@ -81,8 +79,8 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
 
             cache.getRegion().removeMember(target.getUniqueId());
 
-            target.sendMessage(Chat.redFade(String.format("Du wurdest von der Region %s als Mitglied entfernt.", cache.getRegion().name)));
-            p.sendMessage(Chat.redFade(String.format("Du hast %s erfolgreich von der Stadt %s entfernt.", target.getName(), cache.getRegion().name)));
+            target.sendMessage(Chat.redFade(String.format("Du wurdest von der Region %s als Mitglied entfernt.", cache.getRegion().getName())));
+            p.sendMessage(Chat.redFade(String.format("Du hast %s erfolgreich von der Stadt %s entfernt.", target.getName(), cache.getRegion().getName())));
         } else if (args[1].equalsIgnoreCase("rank")) {
             if (!(args.length == 4)) {
                 p.sendMessage(Chat.errorFade("Bitte nutze /t user rank <username> <rank>"));
@@ -97,9 +95,9 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-            access.setAccessLevel(target.getUniqueId(), inputAccessLevel);
+            access.getAccess().setAccessLevel(target.getUniqueId(), inputAccessLevel);
 
-            target.sendMessage(Chat.redFade(String.format("Dein Rang wurde in der Region %s auf %s geändert.", cache.getRegion().name, inputAccessLevel.name())));
+            target.sendMessage(Chat.redFade(String.format("Dein Rang wurde in der Region %s auf %s geändert.", cache.getRegion().getName(), inputAccessLevel.name())));
             p.sendMessage(Chat.redFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), inputAccessLevel.name())));
         } else if (args[1].equalsIgnoreCase("resign")) {
             if (!hasAccess(cache.getAccess(), AccessLevel.MAJOR)) {
@@ -115,10 +113,10 @@ public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
                 p.sendMessage("Dein gegenüber hat dem Transfer der Stadt nicht zugestimmt.");
                 return;
             }
-            access.setAccessLevel(p.getUniqueId(), null);
-            access.setAccessLevel(target.getUniqueId(), AccessLevel.MAJOR);
-            target.sendMessage(Chat.redFade(String.format("Dir wurde erfolgreich die Stadt %s übertragen.", cache.getRegion().name)));
-            p.sendMessage(Chat.redFade(String.format("Du hast %s erfolgreich die Stadt %s übertragen.", target.getName(), cache.getRegion().name)));
+            access.getAccess().setAccessLevel(p.getUniqueId(), null);
+            access.getAccess().setAccessLevel(target.getUniqueId(), AccessLevel.MAJOR);
+            target.sendMessage(Chat.redFade(String.format("Dir wurde erfolgreich die Stadt %s übertragen.", cache.getRegion().getName())));
+            p.sendMessage(Chat.redFade(String.format("Du hast %s erfolgreich die Stadt %s übertragen.", target.getName(), cache.getRegion().getName())));
         } else {
             p.sendMessage(Chat.errorFade("Bitte nutze /t user <add|remove|rank|resign> <username> (<rank>)"));
         }

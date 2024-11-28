@@ -1,10 +1,10 @@
 package de.terranova.nations.database;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
-import de.terranova.nations.settlements.RegionTypes.Transaction;
-import de.terranova.nations.settlements.level.Objective;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.bank.Transaction;
+import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.io.IOException;
@@ -48,12 +48,12 @@ public class SettleDBstuff {
                 int obj_b = rs.getInt("obj_a");
                 int obj_c = rs.getInt("obj_b");
                 int obj_d = rs.getInt("obj_c");
-                Objective objective = new Objective(0, bank, obj_b, obj_c, obj_d, null, null, null);
+                RankObjective rankObjective = new RankObjective(0, bank, obj_b, obj_c, obj_d, null, null, null);
                 if (NationsPlugin.debug)
                     NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
                 SettleDBstuff settleDB = new SettleDBstuff(SUUID);
-                settlements.put(SUUID, new SettleRegionType(SUUID, new Vectore2(location), name, level, objective));
+                settlements.put(SUUID, new SettleRegionType(SUUID, new Vectore2(location), name, level, rankObjective));
             }
             NationsPlugin.settleManager.setSettlements(settlements);
         } catch (SQLException e) {

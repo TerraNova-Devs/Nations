@@ -9,9 +9,9 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionTypes.GridRegion;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.base.GridRegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -33,7 +33,7 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return;
 
-        if(!(cache.getRegion() instanceof GridRegion region)){
+        if(!(cache.getRegion() instanceof GridRegionType region)){
             p.sendMessage(Chat.errorFade("Du kannst die ausgewählte region nicht durch claimen erweitern"));
             return;
         }
@@ -75,12 +75,11 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
                 return;
             }
 
-            RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().region);
+            RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
             if(cache.getRegion() instanceof SettleRegionType){
                 NationsPlugin.settleManager.addSettlementToPl3xmap((SettleRegionType) cache.getRegion());
             }
-            region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().id));
-            cache.getRegion().region = cache.getRegion().getWorldguardRegion();
+            region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
             p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
         }
     }

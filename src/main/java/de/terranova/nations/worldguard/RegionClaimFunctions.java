@@ -17,9 +17,7 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
-import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import net.goldtreeservers.worldguardextraflags.flags.Flags;

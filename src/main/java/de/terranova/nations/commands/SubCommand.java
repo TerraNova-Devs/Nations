@@ -1,14 +1,13 @@
 package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.settlements.AccessLevel;
+import de.terranova.nations.regions.access.AccessLevel;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.List;
+import java.util.Collection;
 import java.util.Optional;
-import java.util.UUID;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class SubCommand {
@@ -50,6 +49,12 @@ public abstract class SubCommand {
             return Optional.empty();
         }
         return Optional.of(target);
+    }
+
+    protected Collection<String> filterSuggestions(Collection<String> suggestions, String input) {
+        return suggestions.stream()
+                .filter(s -> s.toLowerCase().startsWith(input.toLowerCase()))
+                .toList();
     }
 
 }
