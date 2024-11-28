@@ -17,9 +17,11 @@ import static de.terranova.nations.NationsPlugin.plugin;
 public class SettleDBstuff {
 
     private UUID SUUID;
+    private String type;
 
-    public SettleDBstuff(UUID SUUID) {
+    public SettleDBstuff(UUID SUUID, String type) {
         this.SUUID = SUUID;
+        this.type = type;
         try {
             if (!verifySettlement()) {
                 this.SUUID = null;
@@ -52,7 +54,7 @@ public class SettleDBstuff {
                 if (NationsPlugin.debug)
                     NationsPlugin.logger.info("[DEBUG] Getting settlement: " + name + " | UUID: " + SUUID);
 
-                SettleDBstuff settleDB = new SettleDBstuff(SUUID);
+                SettleDBstuff settleDB = new SettleDBstuff(SUUID,"settle");
                 settlements.put(SUUID, new SettleRegionType(SUUID, new Vectore2(location), name, level, rankObjective));
             }
             NationsPlugin.settleManager.setSettlements(settlements);

@@ -20,22 +20,6 @@ public abstract class GridRegionType extends RegionType {
     @Override
     public abstract void remove();
 
-    public static void registerType() {
-        RegionType.registerRegionType("grid", new RegionCreator() {
-            @Override
-            public RegionType create(String name, Player player, UUID id, Vectore2 location) {
-                return new SettleRegionType(name, player);
-            }
-
-            @Override
-            public boolean conditionCheck(Player player, String name) {
-                // Implement specific condition checks for GridRegionType
-                return true;
-            }
-        });
-    }
-
-
     public abstract int getMaxClaims();
 
 

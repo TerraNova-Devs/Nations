@@ -16,8 +16,9 @@ public class NPCr {
     private UUID id;
     private NPC npc;
 
-    public NPCr(String name, Location loc) {
+    public NPCr(String name, Location loc, UUID id) {
         createNPC(name, loc);
+        this.id = id;
     }
 
     public NPCr(UUID id) {
