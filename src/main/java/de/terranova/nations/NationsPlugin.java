@@ -10,6 +10,8 @@ import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
 import de.terranova.nations.citizens.SettleTrait;
+import de.terranova.nations.regions.base.RegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
@@ -89,12 +91,7 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void nationsRegionTypeRegistry() {
-        try {
-            Class.forName("de.terranova.nations.regions.grid.SettleRegionType");
-            Class.forName("de.terranova.nations.regions.grid.OutpostRegionType");
-        } catch (ClassNotFoundException e) {
-            getLogger().severe("Failed to load region types: " + e.getMessage());
-        }
+        RegionType.registerRegionType(SettleRegionType.type, SettleRegionType::new);
     }
 
     @Override

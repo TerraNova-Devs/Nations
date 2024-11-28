@@ -18,7 +18,7 @@ import java.util.*;
 public abstract class RegionType {
 
     // Registry for storing region creators by type name
-    private static final Map<String, RegionCreator> registry = new HashMap<>();
+  //  private static final Map<String, RegionCreator> registry = new HashMap<>();
 
     // Static registry for storing region types
     private static final Set<String> regionTypes = new HashSet<>();
@@ -34,25 +34,9 @@ public abstract class RegionType {
         this.type = type;
     }
 
-    // Static method to create a region instance dynamically
-    public static RegionType createRegion(String typeName, String name, Player player, UUID id, Vectore2 location) {
-        RegionCreator creator = registry.get(typeName.toLowerCase());
-        if (creator == null) {
-            throw new IllegalArgumentException("Unknown region type: " + typeName);
-        }
-        return creator.create(name, player, id, location);
-    }
 
     // Abstract method to enforce implementation in subclasses
     public abstract void remove();
-
-    // Static method for registering new region types
-    protected static void registerRegionType(String typeName, RegionCreator creator) {
-        if (!regionTypes.contains(typeName.toLowerCase())) {
-            regionTypes.add(typeName.toLowerCase());
-            registry.put(typeName.toLowerCase(), creator);
-        }
-    }
 
     // Static method to get all registered region types
     public static Set<String> getAvailableRegionTypes() {
@@ -81,7 +65,7 @@ public abstract class RegionType {
             // Update the region reference
             this.region = newRegion;
 
-            SettleDBstuff settleDB = new SettleDBstuff(this.id);
+            SettleDBstuff settleDB = new SettleDBstuff(this.id, this.type);
             settleDB.rename(name);
 
             this.name = name;
@@ -153,20 +137,27 @@ public abstract class RegionType {
         return type;
     }
 
-    // Static method to check if a condition is met for a region type
-    public static boolean conditionCheck(String typeName, Player player, String name) {
-        RegionCreator creator = registry.get(typeName.toLowerCase());
-        if (creator == null) {
-            return false;
-        }
-        return creator.conditionCheck(player, name);
+
+    // Registry for dynamically adding RegionType
+    private static final Map<String, RegionFactory> registry = new HashMap<>();
+
+    // Method to register new RegionType creators
+    public static void registerRegionType(String type, RegionFactory factory) {
+        registry.put(type.toLowerCase(), factory);
     }
 
-    // Abstract Factory interface for creating regions
-    public interface RegionCreator {
-        RegionType create(String name, Player player, UUID id, Vectore2 location);
+    // Method to deregister an RegionType
+    public static void deregisterRegionType(String type) {
+        registry.remove(type.toLowerCase());
+    }
 
-        boolean conditionCheck(Player player, String name);
+    // Factory method to create RegionTypes
+    public static RegionType createRegionType(String type, String name, Player p) {
+        RegionFactory factory = registry.get(type.toLowerCase());
+        if (factory == null) {
+            throw new IllegalArgumentException("No such animal type registered: " + type);
+        }
+        return factory.create(name, p);
     }
 }
 

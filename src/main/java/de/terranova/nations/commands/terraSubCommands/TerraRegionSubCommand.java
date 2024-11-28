@@ -3,10 +3,8 @@ package de.terranova.nations.commands.terraSubCommands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.SubCommand;
 import de.terranova.nations.commands.TerraSelectCache;
-import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.worldguard.math.Vectore2;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.minimessage.MiniMessage;
@@ -16,21 +14,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.UUID;
 
 public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
 
     public TerraRegionSubCommand(String permission) {
         super(permission);
     }
-
+    Player p;
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-        Player player = isPlayer(commandSourceStack);
-        if (player == null) return;
+        p = isPlayer(commandSourceStack);
+        if (p == null) return;
 
         if (args.length < 2) {
-            player.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.getAvailableRegionTypes())));
+            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.getAvailableRegionTypes())));
             return;
         }
 
@@ -40,38 +37,24 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
 
         switch (action) {
             case "create":
-                handleCreate(player, type, name);
+                handleCreate(p, type, name);
                 break;
             case "remove":
-                TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(player.getUniqueId());
+                TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(p.getUniqueId());
                 if (selectedCache == null) {
-                    player.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> um die zu betreffende Stadt auszuwählen."));
+                    p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> um die zu betreffende Stadt auszuwählen."));
                     return;
                 }
-                handleRemove(player, selectedCache);
+                handleRemove(p, selectedCache);
                 break;
             default:
-                player.sendMessage(Chat.errorFade(String.format("Ungültige Aktion: %s. Bitte benutze 'create' oder 'remove'.", action)));
+                p.sendMessage(Chat.errorFade(String.format("Ungültige Aktion: %s. Bitte benutze 'create' oder 'remove'.", action)));
         }
     }
 
     private void handleCreate(Player player, String type, String name) {
         if (!hasPermission(player, permission + "." + type)) return;
-
-        if (!RegionType.conditionCheck(type, player, name)) {
-            player.sendMessage(Chat.errorFade("Failed to create region. Condition check did not pass."));
-            return;
-        }
-
-        Vectore2 location = new Vectore2(player.getLocation());
-        UUID regionId = UUID.randomUUID();
-        try {
-            RegionType newRegion = RegionType.createRegion(type, name, player, regionId, location);
-            player.sendMessage(Chat.greenFade("Region of type \"" + type + "\" named \"" + name + "\" successfully created."));
-            SettleDBstuff.addSettlement(newRegion.getId(), newRegion.getName(), location, player.getUniqueId());
-        } catch (IllegalArgumentException e) {
-            player.sendMessage(Chat.errorFade(e.getMessage()));
-        }
+        RegionType.createRegionType(type, name, p);
     }
 
     private void handleRemove(Player player, TerraSelectCache selectedCache) {

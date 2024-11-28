@@ -3,22 +3,21 @@ package de.terranova.nations.regions.grid;
 import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
 import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.access.AccessControlled;
+import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.bank.Transaction;
-import de.terranova.nations.regions.base.*;
+import de.terranova.nations.regions.base.GridRegionType;
+import de.terranova.nations.regions.npc.NPCHolder;
 import de.terranova.nations.regions.npc.NPCr;
 import de.terranova.nations.regions.rank.Rank;
 import de.terranova.nations.regions.rank.RankObjective;
-import de.terranova.nations.regions.npc.NPCHolder;
 import de.terranova.nations.regions.rank.RankedRegion;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -35,42 +34,28 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     public static final String type = "settle";
 
-    private Rank rank;
-    private NPCr npc;
-    private Access access;
-    private Bank bank;
-
-    static {
-        RegionType.registerRegionType(type, new RegionCreator() {
-            @Override
-            public RegionType create(String name, Player player, UUID id, Vectore2 location) {
-                return new SettleRegionType(name, player);
-            }
-
-            @Override
-            public boolean conditionCheck(Player player, String name) {
-                // Custom condition check logic for SettleRegionType
-                return isValidName(name) && !isInBlacklistedBiome(player) && NationsPlugin.settleManager.isNameAvaible(name) &&
-                        !RegionClaimFunctions.checkAreaForSettles(player) && !isTooCloseToAnotherSettlement(player);
-            }
-        });
-    }
+    private final Rank rank;
+    private final NPCr npc;
+    private final Access access;
+    private final Bank bank;
 
     //Beim neu erstellen
     public SettleRegionType(String name, Player p) {
-        super(name, UUID.randomUUID(), type, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
+        super(isValidName(name, p), UUID.randomUUID(), type, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
+        checkConditions(p);
         NationsPlugin.settleManager.locationCache.add(this.location);
         NationsPlugin.settleManager.nameCache.add(this.name);
-        this.rank = new Rank(this,1,new RankObjective(0, 0, 0, 0, 0, null, null, null));
+        this.rank = new Rank(this, 1, new RankObjective(0, 0, 0, 0, 0, null, null, null));
         access = new Access(p.getUniqueId(), AccessLevel.MAJOR);
         this.region = RegionClaimFunctions.createClaim(name, p, this.id);
-        this.npc = new NPCr(name, p.getLocation());
+        this.npc = new NPCr(name, p.getLocation(), id);
         this.bank = new Bank(this);
         setLevel();
         this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
         Set<EntityType> set = getDeniedSpawnEntityTypes();
         region.setFlag(Flags.DENY_SPAWN, set);
         region.setFlag(Flags.PVP, StateFlag.State.DENY);
+        createNewSettlement(p, name);
     }
 
     //Von der Datenbank
@@ -78,48 +63,28 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         super(name, settlementUUID, "settle", RegionClaimFunctions.getSChunkMiddle(location));
         NationsPlugin.settleManager.locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
         NationsPlugin.settleManager.nameCache.add(this.name);
-        this.rank = new Rank(this, level,rankObjective);
+        this.npc = new NPCr(id);
+        this.rank = new Rank(this, level, rankObjective);
         this.access = new Access(this);
         this.region = getWorldguardRegion();
-        this.bank = new Bank(this, rankObjective.getSilver() );
+        this.bank = new Bank(this, rankObjective.getSilver());
         this.claims = RegionClaimFunctions.getClaimAnzahl(settlementUUID);
         //funktioniert nicht im Constructor
         npc.getCitizensNPCbySUUID();
     }
 
-    //Bedingungen Überprüfen
-    public void conditionCheck(Player p, String name) {
-        if (!isValidName(name)) {
-            p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
-            return;
+    private static String isValidName(String name, Player p) {
+        if (name.matches("^[a-zA-Z0-9_]{1,20}$")) {
+            return name;
         }
-        if (isInBlacklistedBiome(p)) {
-            p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
-            return;
-        }
-        if (!NationsPlugin.settleManager.isNameAvaible(name)) {
-            p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
-            return;
-        }
-        if (RegionClaimFunctions.checkAreaForSettles(p)) {
-            p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
-            return;
-        }
-        if (isTooCloseToAnotherSettlement(p)) {
-            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden."));
-            p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(getClosestSettlementDistance(p)))));
-            return;
-        }
-
-        createNewSettlement(p, name);
+        p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
+        throw new IllegalArgumentException("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden.");
     }
 
-    private static boolean isValidName(String name) {
-        return name.matches("^[a-zA-Z0-9_]{1,20}$");
-    }
     private static boolean isTooCloseToAnotherSettlement(Player p) {
         return getClosestSettlementDistance(p) < 2000;
     }
+
     private static double getClosestSettlementDistance(Player p) {
         double minDistance = Integer.MAX_VALUE;
         for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
@@ -133,32 +98,58 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     private static boolean isInBlacklistedBiome(Player p) {
         List<Biome> biomeblacklist = List.of(
-                Biome.DEEP_OCEAN,Biome.OCEAN,Biome.WARM_OCEAN
-                ,Biome.FROZEN_OCEAN,Biome.LUKEWARM_OCEAN,Biome.COLD_OCEAN
-                ,Biome.DEEP_FROZEN_OCEAN,Biome.DEEP_LUKEWARM_OCEAN,Biome.DEEP_COLD_OCEAN
-                ,Biome.RIVER,Biome.BEACH,Biome.SNOWY_BEACH);
+                Biome.DEEP_OCEAN, Biome.OCEAN, Biome.WARM_OCEAN
+                , Biome.FROZEN_OCEAN, Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN
+                , Biome.DEEP_FROZEN_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN
+                , Biome.RIVER, Biome.BEACH, Biome.SNOWY_BEACH);
         return biomeblacklist.contains(p.getLocation().getBlock().getBiome());
+    }
+
+    public void checkConditions(Player p) {
+        if (isInBlacklistedBiome(p)) {
+            p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
+            throw new IllegalArgumentException("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)");
+        }
+        if (!NationsPlugin.settleManager.isNameAvaible(name)) {
+            p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
+            throw new IllegalArgumentException("Der Name ist leider bereits vergeben.");
+        }
+        if (RegionClaimFunctions.checkAreaForSettles(p)) {
+            p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
+            throw new IllegalArgumentException("Der Claim ist bereits in Besitz eines anderen Spielers.");
+        }
+        if (isTooCloseToAnotherSettlement(p)) {
+            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden."));
+            p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(getClosestSettlementDistance(p)))));
+            throw new IllegalArgumentException("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden.");
+        }
+    }
+
+    private void createNewSettlement(Player p, String name) {
+        NationsPlugin.settleManager.addSettlement(id, this);
+        SettleDBstuff.addSettlement(id, name, new Vectore2(p.getLocation()), p.getUniqueId());
+        NationsPlugin.settleManager.addSettlementToPl3xmap(this);
+        p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }
 
     private Set<EntityType> getDeniedSpawnEntityTypes() {
         HashSet<EntityType> deniedEntityTypes = new HashSet<>();
-        Stream.of("zombie_villager","zombie","spider","skeleton","enderman","phantom",
-                "drowned","witch","pillager","husk","creeper").forEach(entity -> deniedEntityTypes.add(new EntityType(entity)));
+        Stream.of("zombie_villager", "zombie", "spider", "skeleton", "enderman", "phantom",
+                "drowned", "witch", "pillager", "husk", "creeper").forEach(entity -> deniedEntityTypes.add(new EntityType(entity)));
         return deniedEntityTypes;
     }
 
-    private static void createNewSettlement(Player p, String name) {
-        SettleRegionType settle = new SettleRegionType(name, p);
-        NationsPlugin.settleManager.addSettlement(settle.id, settle);
-        SettleDBstuff.addSettlement(settle.id, settle.name, new Vectore2(p.getLocation()), p.getUniqueId());
-        NationsPlugin.settleManager.addSettlementToPl3xmap(settle);
-        p.sendMessage(Chat.greenFade("Deine Stadt " + settle.name + " wurde erfolgreich gegründet."));
+
+    //RegionType
+    @Override
+    public void rename(String name) {
+        renameRegion(name);
+        npc.renameNPC(name);
     }
 
-    //remove the Region
     @Override
     public void remove() {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         settleDB.dropSettlement();
         npc.removeNPC();
         removeWGRegion();
@@ -166,6 +157,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         NationsPlugin.settleManager.removeSettlement(this.id);
     }
 
+    //GridRegionType
     @Override
     public int getMaxClaims() {
         int claims = 9;
@@ -184,13 +176,13 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     @Override
     public void dataBaseCallTransaction(int value, int amount, String username, Timestamp timestamp) {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id,this.getType());
         settleDB.cash(bank.getCredit(), amount, username, timestamp);
     }
 
     @Override
     public List<Transaction> dataBaseRetrieveBank() {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id,this.getType());
         try {
             return settleDB.getTransactionHistory();
         } catch (Exception e) {
@@ -207,13 +199,13 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     @Override
     public void dataBaseCallAccess(UUID PUUID, AccessLevel access) {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         settleDB.changeMemberAccess(PUUID, access);
     }
 
     @Override
     public HashMap<UUID, AccessLevel> dataBaseRetrieveAccess() {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         try {
             return settleDB.getMembersAccess();
         } catch (Exception e) {
@@ -235,17 +227,10 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         hologramTrait.addLine(String.format("<#B0EB94>Level: [%s]", rank.getLevel()));
     }
 
-    //RegionType
-    @Override
-    public void rename(String name){
-        renameRegion(name);
-        npc.renameNPC(name);
-    }
-
     //Rank
     @Override
-    public void onLevelUP(){
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+    public void onLevelUP() {
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         settleDB.setLevel(rank.getLevel());
         setLevel();
     }
@@ -257,7 +242,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     @Override
     public void dataBaseCallRank(RankObjective progressRankObjective) {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id);
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         settleDB.syncObjectives(rank.getRankObjective().getObjective_a(), rank.getRankObjective().getObjective_b(), rank.getRankObjective().getObjective_c());
     }
 
