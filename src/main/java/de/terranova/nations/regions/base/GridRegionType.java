@@ -1,7 +1,13 @@
 package de.terranova.nations.regions.base;
 
 import de.terranova.nations.regions.SettleManager;
+import de.terranova.nations.regions.access.Access;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.npc.NPCr;
+import de.terranova.nations.regions.rank.Rank;
+import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
 
@@ -22,7 +28,10 @@ public abstract class GridRegionType extends RegionType {
 
     public abstract int getMaxClaims();
 
+    @Override
+    public void postInit(Player p) {
 
+    }
 
     public Vectore2 getLocation() {
         return this.location;

@@ -21,9 +21,7 @@ import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.regions.rank.RankedRegion;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
-import de.terranova.nations.worldguard.math.claimCalc;
 import net.citizensnpcs.trait.HologramTrait;
-import org.bukkit.block.Biome;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
@@ -34,28 +32,14 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     public static final String type = "settle";
 
-    private final Rank rank;
-    private final NPCr npc;
-    private final Access access;
-    private final Bank bank;
+    private Rank rank;
+    private NPCr npc;
+    private Access access;
+    private Bank bank;
 
     //Beim neu erstellen
     public SettleRegionType(String name, Player p) {
-        super(isValidName(name, p), UUID.randomUUID(), type, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
-        checkConditions(p);
-        NationsPlugin.settleManager.locationCache.add(this.location);
-        NationsPlugin.settleManager.nameCache.add(this.name);
-        this.rank = new Rank(this, 1, new RankObjective(0, 0, 0, 0, 0, null, null, null));
-        access = new Access(p.getUniqueId(), AccessLevel.MAJOR);
-        this.region = RegionClaimFunctions.createClaim(name, p, this.id);
-        this.npc = new NPCr(name, p.getLocation(), id);
-        this.bank = new Bank(this);
-        setLevel();
-        this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
-        Set<EntityType> set = getDeniedSpawnEntityTypes();
-        region.setFlag(Flags.DENY_SPAWN, set);
-        region.setFlag(Flags.PVP, StateFlag.State.DENY);
-        createNewSettlement(p, name);
+        super(name, UUID.randomUUID(), type, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
     }
 
     //Von der Datenbank
@@ -73,62 +57,26 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         npc.getCitizensNPCbySUUID();
     }
 
-    private static String isValidName(String name, Player p) {
-        if (name.matches("^[a-zA-Z0-9_]{1,20}$")) {
-            return name;
-        }
-        p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
-        throw new IllegalArgumentException("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden.");
-    }
-
-    private static boolean isTooCloseToAnotherSettlement(Player p) {
-        return getClosestSettlementDistance(p) < 2000;
-    }
-
-    private static double getClosestSettlementDistance(Player p) {
-        double minDistance = Integer.MAX_VALUE;
-        for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
-            double distance = claimCalc.abstand(location, new Vectore2(p.getLocation()));
-            if (distance < minDistance) {
-                minDistance = distance;
-            }
-        }
-        return minDistance;
-    }
-
-    private static boolean isInBlacklistedBiome(Player p) {
-        List<Biome> biomeblacklist = List.of(
-                Biome.DEEP_OCEAN, Biome.OCEAN, Biome.WARM_OCEAN
-                , Biome.FROZEN_OCEAN, Biome.LUKEWARM_OCEAN, Biome.COLD_OCEAN
-                , Biome.DEEP_FROZEN_OCEAN, Biome.DEEP_LUKEWARM_OCEAN, Biome.DEEP_COLD_OCEAN
-                , Biome.RIVER, Biome.BEACH, Biome.SNOWY_BEACH);
-        return biomeblacklist.contains(p.getLocation().getBlock().getBiome());
-    }
-
-    public void checkConditions(Player p) {
-        if (isInBlacklistedBiome(p)) {
-            p.sendMessage(Chat.errorFade("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
-            throw new IllegalArgumentException("Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)");
-        }
-        if (!NationsPlugin.settleManager.isNameAvaible(name)) {
-            p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
-            throw new IllegalArgumentException("Der Name ist leider bereits vergeben.");
-        }
-        if (RegionClaimFunctions.checkAreaForSettles(p)) {
-            p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
-            throw new IllegalArgumentException("Der Claim ist bereits in Besitz eines anderen Spielers.");
-        }
-        if (isTooCloseToAnotherSettlement(p)) {
-            p.sendMessage(Chat.errorFade("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden."));
-            p.sendMessage(Chat.errorFade(String.format("Die nächste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.", (int) Math.floor(getClosestSettlementDistance(p)))));
-            throw new IllegalArgumentException("Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden.");
-        }
-    }
-
-    private void createNewSettlement(Player p, String name) {
+    @Override
+    public void postInit(Player p) {
+        NationsPlugin.settleManager.locationCache.add(this.location);
+        NationsPlugin.settleManager.nameCache.add(this.name);
+        this.region = RegionClaimFunctions.createClaim(name, p, this.id);
+        this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
+        Set<EntityType> set = getDeniedSpawnEntityTypes();
+        region.setFlag(Flags.DENY_SPAWN, set);
+        region.setFlag(Flags.PVP, StateFlag.State.DENY);
         NationsPlugin.settleManager.addSettlement(id, this);
         SettleDBstuff.addSettlement(id, name, new Vectore2(p.getLocation()), p.getUniqueId());
-        NationsPlugin.settleManager.addSettlementToPl3xmap(this);
+        this.rank = new Rank(this, 1, new RankObjective(0, 0, 0, 0, 0, null, null, null));
+        this.access = new Access(this, p.getUniqueId(), AccessLevel.MAJOR);
+        //Settlement braucht access
+        NationsPlugin.settleManager.addSettlementsToPl3xmap();
+        this.npc = new NPCr(name, p.getLocation(), id);
+        //setLevel braucht NPC
+        setLevel();
+        this.bank = new Bank(this);
+
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }
 
@@ -176,13 +124,13 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
     @Override
     public void dataBaseCallTransaction(int value, int amount, String username, Timestamp timestamp) {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id,this.getType());
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         settleDB.cash(bank.getCredit(), amount, username, timestamp);
     }
 
     @Override
     public List<Transaction> dataBaseRetrieveBank() {
-        SettleDBstuff settleDB = new SettleDBstuff(this.id,this.getType());
+        SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
         try {
             return settleDB.getTransactionHistory();
         } catch (Exception e) {

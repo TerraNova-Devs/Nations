@@ -56,19 +56,20 @@ public class TerraRegionCommand implements BasicCommand {
             return subCommands.keySet();
         }
 
-        if (args.length == 1) {
-            // Suggest matching subcommands based on the first argument
-            return filterSuggestions(subCommands.keySet(), args[0]);
-        }
-
         if (subCommands.containsKey(args[0])) {
             // Delegate suggestion handling to the relevant subcommand, if any
             BasicCommand subCommand = subCommands.get(args[0]);
             if (subCommand != null) {
                 return subCommand.suggest(commandSourceStack, Arrays.copyOfRange(args, 1, args.length));
+
             }
+
         }
 
+        if (args.length == 1) {
+            // Suggest matching subcommands based on the first argument
+            return filterSuggestions(subCommands.keySet(), args[0]);
+        }
         // Fallback to empty list for unsupported or invalid input
         return List.of();
     }

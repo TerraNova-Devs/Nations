@@ -6,9 +6,9 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
-import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -21,7 +21,7 @@ public abstract class RegionType {
   //  private static final Map<String, RegionCreator> registry = new HashMap<>();
 
     // Static registry for storing region types
-    private static final Set<String> regionTypes = new HashSet<>();
+
 
     protected final UUID id;
     protected String name;
@@ -30,17 +30,15 @@ public abstract class RegionType {
 
     public RegionType(String name, UUID id, String type) {
         this.id = id;
-        this.name = name;
         this.type = type;
+        if(name == null) return;
+        this.name = name;
     }
 
 
     // Abstract method to enforce implementation in subclasses
     public abstract void remove();
-
-    // Static method to get all registered region types
-    public static Set<String> getAvailableRegionTypes() {
-        return Collections.unmodifiableSet(regionTypes); // Return an unmodifiable view of the set
+    public void postInit(Player p) {
     }
 
     // Method to rename the region
@@ -139,7 +137,7 @@ public abstract class RegionType {
 
 
     // Registry for dynamically adding RegionType
-    private static final Map<String, RegionFactory> registry = new HashMap<>();
+    public static final Map<String, RegionFactory> registry = new HashMap<>();
 
     // Method to register new RegionType creators
     public static void registerRegionType(String type, RegionFactory factory) {
@@ -152,12 +150,19 @@ public abstract class RegionType {
     }
 
     // Factory method to create RegionTypes
-    public static RegionType createRegionType(String type, String name, Player p) {
+    public static Optional<RegionType> createRegionType(String type, String name, Player p) {
         RegionFactory factory = registry.get(type.toLowerCase());
         if (factory == null) {
-            throw new IllegalArgumentException("No such animal type registered: " + type);
+            p.sendMessage(Chat.errorFade("No such region type registered: " + type));
+            return Optional.empty();
         }
-        return factory.create(name, p);
+
+        RegionType regionType = factory.create(name, p);
+        if (regionType == null) {
+            return Optional.empty();  // Creation failed due to validation issues.
+        }
+
+        return Optional.of(regionType);
     }
 }
 
