@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
 
@@ -24,37 +25,45 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
         p = isPlayer(commandSourceStack);
-        if (p == null) return;
 
-        if (args.length < 2) {
-            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.getAvailableRegionTypes())));
-            return;
+        if (args[0].equalsIgnoreCase("remove")) {
+            TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(p.getUniqueId());
+            if (selectedCache == null) {
+                p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> um die zu betreffende Stadt auszuwählen."));
+                return;
+            }
+            handleRemove(p, selectedCache);
         }
 
-        String action = args[0].toLowerCase();
-        String type = args[1].toLowerCase();
-        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length)));
 
-        switch (action) {
-            case "create":
-                handleCreate(p, type, name);
-                break;
-            case "remove":
-                TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(p.getUniqueId());
-                if (selectedCache == null) {
-                    p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> um die zu betreffende Stadt auszuwählen."));
-                    return;
-                }
-                handleRemove(p, selectedCache);
-                break;
-            default:
-                p.sendMessage(Chat.errorFade(String.format("Ungültige Aktion: %s. Bitte benutze 'create' oder 'remove'.", action)));
+
+        if (args[0].equalsIgnoreCase("create") && args.length >= 3) {
+
+            String type = args[1].toLowerCase();
+            String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length)));
+
+            if(!RegionType.registry.containsKey(type)){
+                p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.registry.keySet())));
+                return;
+            }
+            handleCreate(p, type, name);
         }
     }
 
-    private void handleCreate(Player player, String type, String name) {
-        if (!hasPermission(player, permission + "." + type)) return;
-        RegionType.createRegionType(type, name, p);
+    private void handleCreate(Player p, String type, String name) {
+        if (!hasPermission(p, permission + "." + type)) {
+            p.sendMessage(Chat.errorFade("You do not have the necessary permission."));
+            return;
+        }
+
+        Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name, p);
+        if (regionTypeOpt.isPresent()) {
+            RegionType regionType = regionTypeOpt.get();
+            regionType.postInit(p);
+            p.sendMessage(Chat.greenFade("Region " + name + " was successfully created."));
+        } else {
+            p.sendMessage(Chat.errorFade("Failed to create the region. Check conditions or name validity."));
+        }
     }
 
     private void handleRemove(Player player, TerraSelectCache selectedCache) {
@@ -77,14 +86,14 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
 
     @Override
     public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-        if (args.length == 1) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("create")) {
             // Suggest actions for the first argument
-            return filterSuggestions(List.of("create", "remove"), args[0]);
+            return filterSuggestions(RegionType.registry.keySet(), args[0]);
         }
 
         if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
             // Suggest available region types for the "create" action
-            return filterSuggestions(RegionType.getAvailableRegionTypes(), args[1]);
+            return filterSuggestions(RegionType.registry.keySet(), args[1]);
         }
 
         if (args.length == 3 && args[0].equalsIgnoreCase("create")) {

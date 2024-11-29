@@ -2,6 +2,7 @@ package de.terranova.nations.pl3xmap;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.pl3x.map.core.Pl3xMap;
@@ -46,18 +47,23 @@ public class Pl3xMapSettlementLayer extends WorldLayer {
         setDefaultHidden(false);
         setPriority(100);
         setZIndex(999);
-        for (SettleRegionType settle : NationsPlugin.settleManager.settlements.values()) {
 
-            Collection<Point> markerPoints = new ArrayList<>();
+        for (RegionType type : NationsPlugin.settleManager.settlements.values()) {
+
+            if(!(type instanceof SettleRegionType settle)){
+                continue;
+            }
+
             if(settle.getWorldguardRegion() == null) {
                 Bukkit.getLogger().severe(String.format("Wordguard Region wurde für %s nicht gefunden!",settle.getName()));
                 continue;
             }
+
+            Collection<Point> markerPoints = new ArrayList<>();
+
             for (Vectore2 v : Vectore2.fromBlockVectorList(settle.getWorldguardRegion().getPoints()))
                 markerPoints.add(v.asPoint());
             Polygon polygonMarker = new Polygon("polygon" + settle.getId(), new Polyline("line" + settle.getId(), markerPoints));
-
-
 
             Collection<String> vices = settle.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.VICE);
             Collection<String> councils = settle.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.COUNCIL);

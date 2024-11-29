@@ -11,6 +11,7 @@ import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.regions.base.RegionType;
+import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
@@ -91,7 +92,7 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionType.registerRegionType(SettleRegionType.type, SettleRegionType::new);
+        RegionType.registerRegionType(SettleRegionType.type, new SettleRegionFactory());
     }
 
     @Override

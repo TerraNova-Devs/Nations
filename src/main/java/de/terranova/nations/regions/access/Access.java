@@ -18,7 +18,8 @@ public class Access {
         this.accessLevel = controlled.dataBaseRetrieveAccess();
     }
 
-    public Access(UUID uuid, AccessLevel access) {
+    public Access(AccessControlled controlled, UUID uuid, AccessLevel access) {
+        this.controlled = controlled;
         setAccessLevel(uuid, access);
     }
 

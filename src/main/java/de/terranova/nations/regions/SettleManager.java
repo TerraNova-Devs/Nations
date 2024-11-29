@@ -3,6 +3,7 @@ package de.terranova.nations.regions;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
@@ -14,7 +15,9 @@ import de.terranova.nations.worldguard.NationsRegionFlag.SettleFlag;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -79,23 +82,6 @@ public class SettleManager {
 
     public void addSettlementsToPl3xmap() {
         layerRegistry.register("settlement-layer",new Pl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
-    }
-
-    public void addSettlementToPl3xmap(SettleRegionType settle) {
-        addSettlementsToPl3xmap();
-        /*
-        World world = Bukkit.getWorld("world");
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        assert world != null;
-        RegionManager regions = container.get(BukkitAdapter.adapt(world));
-
-
-        for (ProtectedRegion region :regions.getRegions().values()){
-            if(!Objects.equals(region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG), settle.id.toString()))continue;
-            layerRegistry.register("settlement-layer",new createPl3xMapSettlementLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")), Vectore2.fromBlockVectorList(region.getPoints()),settle));
-        }
-
-         */
     }
 
     public Optional<SettleRegionType> getSettle(UUID settlementUUID){

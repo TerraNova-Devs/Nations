@@ -77,7 +77,7 @@ public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
 
             RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
             if(cache.getRegion() instanceof SettleRegionType){
-                NationsPlugin.settleManager.addSettlementToPl3xmap((SettleRegionType) cache.getRegion());
+                NationsPlugin.settleManager.addSettlementsToPl3xmap();
             }
             region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
             p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
