@@ -30,16 +30,16 @@ import java.util.stream.Stream;
 
 public class SettleRegionType extends GridRegionType implements BankHolder, AccessControlled, NPCHolder, RankedRegion {
 
-    public static final String type = "settle";
-
     private Rank rank;
     private NPCr npc;
     private Access access;
     private Bank bank;
 
+    public static final String REGION_TYPE = "settle";
+
     //Beim neu erstellen
     public SettleRegionType(String name, Player p) {
-        super(name, UUID.randomUUID(), type, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
+        super(name, UUID.randomUUID(), REGION_TYPE, RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
     }
 
     //Von der Datenbank

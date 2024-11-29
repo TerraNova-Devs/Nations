@@ -5,7 +5,7 @@ import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.commands.SettleCommand;
-import de.terranova.nations.commands.TerraRegionCommand;
+import de.terranova.nations.commands.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
@@ -92,7 +92,7 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionType.registerRegionType(SettleRegionType.type, new SettleRegionFactory());
+        RegionType.registerRegionType(SettleRegionType.REGION_TYPE, new SettleRegionFactory());
     }
 
     @Override
@@ -140,7 +140,7 @@ public final class NationsPlugin extends JavaPlugin {
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
             commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
-            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraRegionCommand(this));
+            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand(this));
         });
         //Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }

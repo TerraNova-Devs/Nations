@@ -26,11 +26,11 @@ public abstract class RegionType {
     protected final UUID id;
     protected String name;
     protected ProtectedRegion region;
-    private final String type;
+    protected final String type;
 
     public RegionType(String name, UUID id, String type) {
         this.id = id;
-        this.type = type;
+        this.type = type.toLowerCase();
         if(name == null) return;
         this.name = name;
     }
