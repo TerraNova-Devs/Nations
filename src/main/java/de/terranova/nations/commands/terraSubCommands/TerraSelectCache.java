@@ -1,4 +1,4 @@
-package de.terranova.nations.commands;
+package de.terranova.nations.commands.terraSubCommands;
 
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.RegionType;

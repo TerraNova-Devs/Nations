@@ -14,13 +14,13 @@ import java.util.Collection;
 import java.util.*;
 
 @SuppressWarnings("UnstableApiUsage")
-public class TerraRegionCommand implements BasicCommand {
+public class TerraCommand implements BasicCommand {
 
     private final Map<String, BasicCommand> subCommands = new HashMap<>();
 
     NationsPlugin plugin;
 
-    public TerraRegionCommand(NationsPlugin plugin) {
+    public TerraCommand(NationsPlugin plugin) {
         this.plugin = plugin;
         subCommands.put("create", new TerraRegionSubCommand("nations.create"));
         subCommands.put("remove", new TerraRegionSubCommand("nations.remove"));
