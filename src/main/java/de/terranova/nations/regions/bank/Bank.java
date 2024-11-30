@@ -17,35 +17,49 @@ public class Bank {
     private final List<Transaction> transactions;
     private int credit;
     private boolean transactionInProgress = false;
+    private String regionName;
 
-    public Bank(BankHolder holder) {
+    public Bank(BankHolder holder, String regionName) {
         this.credit = 0;
+        this.holder = holder;
+        this.regionName = regionName;
         transactions = new ArrayList<>();
     }
 
-    public Bank(BankHolder holder, int credit) {
+    public Bank(BankHolder holder, String regionName, int credit) {
         this.credit = credit;
         this.holder = holder;
+        this.regionName = regionName;
         this.transactions = holder.dataBaseRetrieveBank();
     }
 
-    public void cashIn(Player p, int amount, RegionType type) {
+    public void cashInFromInv(Player p, int amount) {
         if (!startCashTransaction(p)) return;
 
         try {
             int charged = ItemTransfer.charge(p, "terranova_silver", amount, false);
-            updateBankBalance(p, type, charged, "deposited");
+            updateBankBalance(p.getName(), charged, "deposited");
         } finally {
             transactionInProgress = false;
         }
     }
     
-    public void cashOut(Player p, int amount, RegionType type) {
+    public void cashOutFromInv(Player p, int amount) {
         if (!startCashTransaction(p)) return;
 
         try {
             int credited = ItemTransfer.credit(p, "terranova_silver", Math.min(amount, credit), false);
-            updateBankBalance(p, type, -credited, "withdrew");
+            updateBankBalance(p.getName(),  -credited, "withdrew");
+        } finally {
+            transactionInProgress = false;
+        }
+    }
+
+    public void cashTransfer(String record,String action, int amount) {
+        if (!startCashTransaction()) return;
+
+        try {
+            updateBankBalance(record, amount, action);
         } finally {
             transactionInProgress = false;
         }
@@ -60,20 +74,22 @@ public class Bank {
         return true;
     }
 
-    private void updateBankBalance(Player p, RegionType regionType, int amount, String action) {
+    private boolean startCashTransaction() {
+        if (transactionInProgress) return false;
+        transactionInProgress = true;
+        return true;
+    }
 
-
+    private void updateBankBalance(String record, int amount, String action) {
 
         if (transactions.size() >= 50) transactions.removeFirst();
         Timestamp time = Timestamp.from(Instant.now());
-        transactions.add(new Transaction(p.getName(), amount, time));
+        transactions.add(new Transaction(record, amount, time));
 
         credit += amount;
-        holder.dataBaseCallTransaction(credit, amount, p.getName(), time);
+        holder.dataBaseCallTransaction(credit, amount, record, time);
 
-        Bukkit.getLogger().info(String.format("Player %s -> Settlement %s -> %s %s, Total Amount: %s", p.getName(), regionType.getName(), action, Math.abs(amount), credit));
-        p.sendMessage(Chat.greenFade(String.format("You have successfully %s %s from the settlement %s's treasury. New total: %s.", action, Math.abs(amount), regionType.getName(), credit)));
-
+        Bukkit.getLogger().info(String.format("Player %s -> Settlement %s -> %s %s, Total Amount: %s", record, this.regionName, action, Math.abs(amount), credit));
     }
 
     public List<Transaction> getTransactions() {

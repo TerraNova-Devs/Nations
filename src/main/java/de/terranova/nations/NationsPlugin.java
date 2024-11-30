@@ -4,12 +4,11 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
-import de.terranova.nations.commands.SettleCommand;
+import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.commands.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
-import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegionType;
@@ -51,10 +50,10 @@ public final class NationsPlugin extends JavaPlugin {
     //public YMLHandler levelYML;
     public static HikariCP hikari;
     public static Map<Integer, RankObjective> levelObjectives;
-    public YMLHandler skinsYML;
     public static Logger logger;
-    private Registry<Layer> layerRegistry;
     static public Plugin plugin;
+    public YMLHandler skinsYML;
+    private Registry<Layer> layerRegistry;
 
     //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
     //EIGENE KLASSE FÜR ACCESS
@@ -133,18 +132,14 @@ public final class NationsPlugin extends JavaPlugin {
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
     }
 
-
     @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("settle", "Command facilitates settlements creation.", List.of("s"), new SettleCommand(this));
             commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand(this));
         });
-        //Objects.requireNonNull(getCommand("settle")).setTabCompleter(new SettleCommand(this));
     }
-    //Objects.requireNonNull(getCommand("settle")).setExecutor(new settle(this));
 
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
@@ -175,8 +170,8 @@ public final class NationsPlugin extends JavaPlugin {
 
         if (file.createNewFile()) {
             HashMap<Integer, RankObjective> exampleObj = new HashMap<>();
-            exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1,  "Test", "Test", "Test"));
-            exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2,  "Test2", "Test2", "Test2"));
+            exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1, "Test", "Test", "Test"));
+            exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2, "Test2", "Test2", "Test2"));
             FileWriter writer = new FileWriter(file);
             yaml.dump(exampleObj, writer);
         }

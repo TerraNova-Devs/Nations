@@ -62,7 +62,9 @@ public class TownUpgradeGUI extends RoseGUI {
                 .build();
         if (canLevelup) {
             submit.onClick(e -> {
+                settle.getBank().cashTransfer("Region-LevelUp","remove",-goalRankObjective.getSilver());
                 settle.getRank().levelUP();
+
                 new TownUpgradeGUI(player, settle).open();
             });
         }
@@ -70,7 +72,7 @@ public class TownUpgradeGUI extends RoseGUI {
         RoseItem objective_bank = new RoseItem.Builder()
                 .material("terranova_silver")
                 .displayName("Bank")
-                .addLore(settle.getBank().getCredit() >= goalRankObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank() + " / " + goalRankObjective.getSilver())) : Chat.redFade(String.format(settle.getBank() + " / " + goalRankObjective.getSilver())))
+                .addLore(settle.getBank().getCredit() >= goalRankObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())) : Chat.redFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())))
                 .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
                 .build();
 

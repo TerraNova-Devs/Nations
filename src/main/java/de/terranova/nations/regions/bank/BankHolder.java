@@ -5,6 +5,7 @@ import java.util.List;
 
 public interface BankHolder {
     Bank getBank();
+    //default void onTransaction(){}
     List<Transaction> dataBaseRetrieveBank();
     void dataBaseCallTransaction(int value, int amount, String username, Timestamp timestamp);
 }

@@ -13,22 +13,23 @@ import java.util.UUID;
 
 public class NPCr {
 
-    private UUID id;
+    private final UUID id;
     private NPC npc;
 
     public NPCr(String name, Location loc, UUID id) {
-        createNPC(name, loc);
         this.id = id;
+        this.npc = createNPC(name, loc, id);
     }
 
     public NPCr(UUID id) {
         this.id = id;
+        getCitizensNPCbySUUID();
     }
 
 
 
-    public NPC createNPC(String name, Location location) {
-        net.citizensnpcs.api.npc.NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+    public NPC createNPC(String name, Location location, UUID id) {
+        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
         skinTrait.setSkinPersistent(name, NPCSkins.BEGGAR.getSkinSign(), NPCSkins.BEGGAR.getSkinTexture());
@@ -47,7 +48,7 @@ public class NPCr {
 
     public void getCitizensNPCbySUUID() {
         if (this.npc == null) {
-            for (net.citizensnpcs.api.npc.NPC npc : CitizensAPI.getNPCRegistry()) {
+            for (NPC npc : CitizensAPI.getNPCRegistry()) {
 
                 if (!npc.hasTrait(SettleTrait.class)) continue;
                 if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(id)) {
@@ -58,7 +59,7 @@ public class NPCr {
     }
 
     public void tpNPC(Location location) {
-        for (net.citizensnpcs.api.npc.NPC npc : CitizensAPI.getNPCRegistry()) {
+        for (NPC npc : CitizensAPI.getNPCRegistry()) {
             if (!npc.hasTrait(SettleTrait.class)) {
                 continue;
             }

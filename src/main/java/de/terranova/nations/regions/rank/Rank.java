@@ -12,10 +12,13 @@ public class Rank {
     private RankedRegion rankedRegion;
 
     public Rank(RankedRegion rankedRegion, int level, RankObjective rankObjective) {
+        this.level = level;
         this.rankedRegion = rankedRegion;
+        this.rankObjective = rankObjective;
     }
 
     public void levelUP() {
+
         RankObjective progressRankObjective = this.rankObjective;
         RankObjective goalRankObjective;
 
