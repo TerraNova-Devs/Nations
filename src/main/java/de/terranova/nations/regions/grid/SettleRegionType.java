@@ -30,12 +30,11 @@ import java.util.stream.Stream;
 
 public class SettleRegionType extends GridRegionType implements BankHolder, AccessControlled, NPCHolder, RankedRegion {
 
+    public static final String REGION_TYPE = "settle";
     private Rank rank;
     private NPCr npc;
     private Access access;
     private Bank bank;
-
-    public static final String REGION_TYPE = "settle";
 
     //Beim neu erstellen
     public SettleRegionType(String name, Player p) {
@@ -51,7 +50,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         this.rank = new Rank(this, level, rankObjective);
         this.access = new Access(this);
         this.region = getWorldguardRegion();
-        this.bank = new Bank(this, rankObjective.getSilver());
+        this.bank = new Bank(this, this.name,rankObjective.getSilver());
         this.claims = RegionClaimFunctions.getClaimAnzahl(settlementUUID);
         //funktioniert nicht im Constructor
         npc.getCitizensNPCbySUUID();
@@ -75,7 +74,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         this.npc = new NPCr(name, p.getLocation(), id);
         //setLevel braucht NPC
         setLevel();
-        this.bank = new Bank(this);
+        this.bank = new Bank(this, this.name);
 
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }

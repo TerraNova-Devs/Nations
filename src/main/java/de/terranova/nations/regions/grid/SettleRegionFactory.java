@@ -1,5 +1,6 @@
 package de.terranova.nations.regions.grid;
 
+import de.mcterranova.terranovaLib.utils.BiomeUtil;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.RegionFactory;
@@ -7,10 +8,17 @@ import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.server.level.ServerLevel;
+import org.bukkit.Location;
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
+import java.util.Set;
 
 public class SettleRegionFactory implements RegionFactory {
 
@@ -65,19 +73,45 @@ public class SettleRegionFactory implements RegionFactory {
     }
 
     private boolean isValidName(String name, Player p) {
-        if (name.matches("^[a-zA-Z0-9_]{1,20}$")) {
+        if (name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
             return true;
+        }
+        Set<String> blacklistedNames = Set.of("admin", "root", "moderator", "support");
+        if (blacklistedNames.contains(name.toLowerCase())) {
+            return false;
         }
         p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
         return false;
     }
 
-    private static boolean isInBlacklistedBiome(Player p) {
-        List<org.bukkit.block.Biome> biomeblacklist = List.of(
-                org.bukkit.block.Biome.DEEP_OCEAN, org.bukkit.block.Biome.OCEAN, org.bukkit.block.Biome.WARM_OCEAN
-                , org.bukkit.block.Biome.FROZEN_OCEAN, org.bukkit.block.Biome.LUKEWARM_OCEAN, org.bukkit.block.Biome.COLD_OCEAN
-                , org.bukkit.block.Biome.DEEP_FROZEN_OCEAN, org.bukkit.block.Biome.DEEP_LUKEWARM_OCEAN, org.bukkit.block.Biome.DEEP_COLD_OCEAN
-                , org.bukkit.block.Biome.RIVER, org.bukkit.block.Biome.BEACH, Biome.SNOWY_BEACH);
-        return biomeblacklist.contains(p.getLocation().getBlock().getBiome());
+    public static boolean isInBlacklistedBiome(Player player) {
+        List<String> biomeTranslationKeys = List.of(
+                //Minecraft biomes
+                "minecraft:deep_ocean", "minecraft:ocean", "minecraft:warm_ocean",
+                "minecraft:frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:cold_ocean",
+                "minecraft:deep_frozen_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:deep_cold_ocean",
+                "minecraft:river", "minecraft:beach", "minecraft:snowy_beach",
+                //Terralith biomes
+                "terralith:gravel_beach", "terralith:snowy_beach", "terralith:oceanic_plateau",
+                "terralith:tropical_bay", "terralith:rocky_coast","terralith:white_cliffs",
+                "terralith:sandstone_valley"
+        );
+
+        return BiomeUtil.isBiomeInList(player.getLocation(), biomeTranslationKeys);
+    }
+    public boolean isBiomeInList(Location location, List<String> biomeNames) {
+        if (location == null || location.getWorld() == null || biomeNames == null || biomeNames.isEmpty()) {
+            throw new IllegalArgumentException("Location, world, or biome names cannot be null or empty.");
+        }
+
+        ServerLevel nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
+        BlockPos blockPos = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        ResourceKey<net.minecraft.world.level.biome.Biome> biomeKey = nmsWorld.getBiome(blockPos).unwrapKey().orElse(null);
+
+        if (biomeKey != null) {
+            String fullBiomeName = biomeKey.location().toString();
+            return biomeNames.stream().anyMatch(biomeName -> biomeName.equalsIgnoreCase(fullBiomeName));
+        }
+        return false;
     }
 }

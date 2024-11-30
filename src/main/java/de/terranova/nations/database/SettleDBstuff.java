@@ -65,19 +65,14 @@ public class SettleDBstuff {
 
     public static void addSettlement(UUID SUUID, String name, Vectore2 location, UUID owner) {
         String settlementSql = "INSERT INTO `settlements_table` (`SUUID`, `Name`, `Location`) VALUES (?, ?, ?)";
-        String accessSql = "INSERT INTO `access_table` (`SUUID`, `PUUID`, `ACCESS`) VALUES (?, ?, 'MAJOR')";
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement settlementStatement = con.prepareStatement(settlementSql);
-             PreparedStatement accessStatement = con.prepareStatement(accessSql)) {
+             PreparedStatement settlementStatement = con.prepareStatement(settlementSql)) {
 
             settlementStatement.setString(1, SUUID.toString());
             settlementStatement.setString(2, name);
             settlementStatement.setString(3, location.asString());
             settlementStatement.executeUpdate();
 
-            accessStatement.setString(1, SUUID.toString());
-            accessStatement.setString(2, owner.toString());
-            accessStatement.executeUpdate();
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
         }

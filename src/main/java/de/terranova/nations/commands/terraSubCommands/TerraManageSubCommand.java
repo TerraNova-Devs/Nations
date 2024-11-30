@@ -33,7 +33,7 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
 
             if(args.length == 2){
 
-                p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt %s",bank.getBank())));
+                p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt %s",bank.getBank().getCredit())));
                 return;
             } else if(args[2].equals("history")&& args.length == 3) {
                 if(!hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
@@ -53,6 +53,7 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
             int amount;
             try {
                 amount = Integer.parseInt(args[3]);
+                if(amount <= 0) throw new NumberFormatException();
             } catch (NumberFormatException e) {
                 p.sendMessage(Chat.errorFade("Bitte nutze /t bank (<withdraw|deposit>) (<value>)"));
                 p.sendMessage(Chat.errorFade("Bitte gib als value eine Zahl zwischen 1 und 2304!"));
@@ -64,7 +65,7 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
                     p.sendMessage(Chat.errorFade("Du musst mindestens Council sein um von der Stadtkasse abheben zu können"));
                     return;
                 }
-                bank.getBank().cashOut(p, amount, cache.getRegion());
+                bank.getBank().cashOutFromInv(p, amount);
 
             }
             if(args[2].equals("deposit")){
@@ -72,7 +73,7 @@ public class TerraManageSubCommand extends SubCommand implements BasicCommand {
                     p.sendMessage(Chat.errorFade("Du musst mindestens Member sein um in die Stadtkasse einzahlen zu können"));
                     return;
                 }
-                bank.getBank().cashIn(p, amount,cache.getRegion());
+                bank.getBank().cashInFromInv(p, amount);
             }
 
         }
