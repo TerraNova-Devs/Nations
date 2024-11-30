@@ -12,7 +12,7 @@ import com.sk89q.worldguard.session.handler.Handler;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
@@ -43,7 +43,7 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
                 Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if(Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
-                p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.name.replaceAll("_", " "))));
+                p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.getName().replaceAll("_", " "))));
             }
 
         } else {
@@ -53,7 +53,7 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
                 Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
                 if(Osettle.isEmpty()) return true;
                 SettleRegionType settle = Osettle.get();
-                p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.name.replaceAll("_", " "))));
+                p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.getName().replaceAll("_", " "))));
             }
         }
 

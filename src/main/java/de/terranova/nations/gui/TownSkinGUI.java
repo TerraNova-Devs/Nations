@@ -5,18 +5,15 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
-import de.terranova.nations.settlements.TownSkins;
+import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.npc.NPCSkins;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Method;
-import java.util.Optional;
 
 public class TownSkinGUI extends RoseGUI {
 
@@ -53,28 +50,21 @@ public class TownSkinGUI extends RoseGUI {
 
         int index = 0;
 
-        for (TownSkins skin : TownSkins.values()) {
+        for (NPCSkins skin : NPCSkins.values()) {
 
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
-            JavaPlugin.getPlugin(NationsPlugin.class);
-            Optional<SettleRegionType> settlement = NationsPlugin.settleManager.getSettle(player.getLocation());
-            if (settlement.isPresent()) {
                 RoseItem skull = new RoseItem.Builder()
                         .setSkull(skin.getSkinTexture())
                         .displayName(Chat.yellowFade("<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
-                        .addLore(settlement.get().level >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
+                        .addLore(settle.getRank().getLevel() >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
                         .build();
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
-                    if (settlement.get().level >= skin.getLEVEL()) settlement.get().reskinNpc(skin);
+                    if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
                 });
                 index++;
-            } else {
-                player.sendMessage(Chat.redFade(String.format("Bitte befinde dich innerhalb deines Claimes f%sr diese Aktion.", 0xC3)));
-                player.sendMessage(Chat.redFade("Meistens hilft schon ein kleiner Schritt zur Seite. ^^"));
-                break;
-            }
+
         }
     }
 

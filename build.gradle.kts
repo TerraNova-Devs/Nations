@@ -74,8 +74,8 @@ dependencies {
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("io.th0rgal:oraxen:1.180.0")
-  implementation("de.mcterranova:terranova-lib:0.6.7")
+  compileOnly("io.th0rgal:oraxen:1.184.0")
+  implementation("de.mcterranova:terranova-lib:0.7.4")
 }
 
 tasks {

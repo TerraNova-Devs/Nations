@@ -1,7 +1,7 @@
 package de.terranova.nations.api;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import org.bukkit.Location;
 
 import java.util.Optional;

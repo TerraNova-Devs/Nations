@@ -2,7 +2,7 @@ package de.terranova.nations.citizens;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.gui.TownGUI;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegionType;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
