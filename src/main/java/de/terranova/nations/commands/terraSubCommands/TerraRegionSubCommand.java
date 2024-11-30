@@ -1,16 +1,14 @@
 package de.terranova.nations.commands.terraSubCommands;
 
-import de.mcterranova.terranovaLib.utils.BiomeUtil;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.RegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -21,7 +19,7 @@ import java.util.Optional;
 public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
 
     public TerraRegionSubCommand(String permission) {
-        super(permission);
+
     }
     Player p;
     @Override
@@ -53,7 +51,7 @@ public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
     }
 
     private void handleCreate(Player p, String type, String name) {
-        if (!hasPermission(p, permission + "." + type)) {
+        if (!hasPermission(p,  "." + type)) {
             p.sendMessage(Chat.errorFade("You do not have the necessary permission."));
             return;
         }

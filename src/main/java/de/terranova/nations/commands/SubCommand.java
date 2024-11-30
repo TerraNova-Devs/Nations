@@ -1,7 +1,6 @@
 package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.commands.terraSubCommands.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import org.bukkit.Bukkit;
@@ -12,12 +11,6 @@ import java.util.Optional;
 
 @SuppressWarnings("UnstableApiUsage")
 public abstract class SubCommand {
-
-    public String permission;
-
-    public SubCommand(String permission) {
-        this.permission = permission;
-    }
 
     public static boolean hasPermission(Player p, String permission) {
         if (p.hasPermission(permission)) return true;
@@ -37,7 +30,7 @@ public abstract class SubCommand {
         return access.getWeight() >= neededAcess.getWeight();
     }
 
-    public TerraSelectCache hasSelect(Player p) {
+    public static TerraSelectCache hasSelect(Player p) {
         if(TerraSelectCache.selectCache.containsKey(p.getUniqueId())) return TerraSelectCache.selectCache.get(p.getUniqueId());
         p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> umd die zu betreffende Stadt auszuwählen."));
         return null;

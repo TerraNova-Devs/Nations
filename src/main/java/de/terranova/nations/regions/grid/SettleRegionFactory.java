@@ -12,10 +12,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import org.bukkit.Location;
-import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.CraftWorld;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.Set;
@@ -35,7 +33,7 @@ public class SettleRegionFactory implements RegionFactory {
             return null;
         }
 
-        if (!NationsPlugin.settleManager.isNameAvaible(name)) {
+        if (!NationsPlugin.settleManager.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }
