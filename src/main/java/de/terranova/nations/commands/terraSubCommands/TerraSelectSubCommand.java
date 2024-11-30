@@ -3,6 +3,7 @@ package de.terranova.nations.commands.terraSubCommands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
@@ -16,14 +17,14 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
     public static Component nonSelectError = Chat.errorFade("Bitte wähle zuerst mit '/terra select <Stadt_Name>' eine Stadt aus.");
 
     public TerraSelectSubCommand(String permission) {
-        super(permission);
+
     }
 
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
 
         Player p = isPlayer(commandSourceStack);
-        hasPermission(p, permission + ".select");
+        hasPermission(p,  ".select");
 
         if (args.length == 1 && TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getRegion().getName(), TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
@@ -32,6 +33,9 @@ public class TerraSelectSubCommand extends SubCommand implements BasicCommand {
             p.sendMessage(nonSelectError);
             return;
         }
+
+
+
 
         Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettleByName(args[1]);
         if (osettle.isEmpty()) {

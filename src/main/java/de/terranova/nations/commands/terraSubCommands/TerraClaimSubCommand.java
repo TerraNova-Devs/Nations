@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.GridRegionType;
 import de.terranova.nations.regions.grid.SettleRegionType;
@@ -21,7 +22,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TerraClaimSubCommand extends SubCommand implements BasicCommand {
     public TerraClaimSubCommand(String permission) {
-        super(permission);
+
     }
 
     @Override

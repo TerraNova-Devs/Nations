@@ -2,6 +2,7 @@ package de.terranova.nations.commands.terraSubCommands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.access.AccessControlled;
 import io.papermc.paper.command.brigadier.BasicCommand;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 //ask join and leave commands, update pl3xmap after changes, cache checken bei wichtigen commands, cache clearen nach x minuten
 public class TerraAccessSubCommand extends SubCommand implements BasicCommand {
     public TerraAccessSubCommand(String permission) {
-        super(permission);
+
     }
 
     @Override

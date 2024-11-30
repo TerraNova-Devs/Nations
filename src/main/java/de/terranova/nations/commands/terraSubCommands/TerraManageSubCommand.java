@@ -2,6 +2,7 @@ package de.terranova.nations.commands.terraSubCommands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.SubCommand;
+import de.terranova.nations.commands.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.npc.NPCHolder;
@@ -13,7 +14,7 @@ import org.jetbrains.annotations.NotNull;
 
 public class TerraManageSubCommand extends SubCommand implements BasicCommand {
     public TerraManageSubCommand(String permission) {
-        super(permission);
+
     }
 
     @Override

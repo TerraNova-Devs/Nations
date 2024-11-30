@@ -1,11 +1,12 @@
 package de.terranova.nations;
 
+import com.mojang.brigadier.Command;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.commands.TerraCommand;
+import de.terranova.nations.commands.*;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
@@ -32,15 +33,14 @@ import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
+import java.util.List;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 public final class NationsPlugin extends JavaPlugin {
@@ -78,6 +78,7 @@ public final class NationsPlugin extends JavaPlugin {
         serilizationRegistry();
         citizensTraitRegistry();
         nationsRegionTypeRegistry();
+
         try {
             loadConfigs();
         } catch (IOException e) {
@@ -134,12 +135,23 @@ public final class NationsPlugin extends JavaPlugin {
 
     @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
+        /*
         LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
         manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
             final Commands commands = event.registrar();
-            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand(this));
+            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand());
         });
+         */
+        TerraCommand terraCommand = new TerraCommand();
+        if (this.getCommand("terra") == null) {
+            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
+            return;
+        }
+        Objects.requireNonNull(this.getCommand("terra")).setExecutor(terraCommand);
+        Objects.requireNonNull(this.getCommand("terra")).setTabCompleter(terraCommand);
+
     }
+
 
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);

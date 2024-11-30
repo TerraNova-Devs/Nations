@@ -7,10 +7,12 @@ prefix: TerraNova
 website: mcterranova.de
 description: Nations Plugin tailored & written by & for TerraNova.
 commands:
-  settle:
-    description: Command facilitates settlements creation.
   terra:
-    description: Command facilitates settlements creation.
-depend: [WorldGuard, Citizens, Bona, Pl3xMap, WorldGuardExtraFlags, Oraxen]
+    description: The main command for TerraNova Nations.
+    usage: /terra <region|bank> <subcommand>
+    aliases: [t]
+    permission: nations.use
+    permission-message: You do not have permission to use this command.
+depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Oraxen]
 
 

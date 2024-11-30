@@ -31,7 +31,7 @@ public class OutpostRegionType extends RegionType {
         }
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
         SettleRegionType settle = osettle.get();
-        if (!NationsPlugin.settleManager.isNameAvaible(name)) {
+        if (!NationsPlugin.settleManager.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }
