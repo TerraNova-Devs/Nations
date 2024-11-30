@@ -1,73 +1,122 @@
 package de.terranova.nations.commands.terraSubCommands;
 
+import de.mcterranova.terranovaLib.utils.BiomeUtil;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.SubCommand;
-import de.terranova.nations.commands.TerraSelectCache;
-import de.terranova.nations.database.SettleDBstuff;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionType;
-import de.terranova.nations.settlements.RegionTypes.OutpostRegionType;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
-import de.terranova.nations.worldguard.math.Vectore2;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.base.RegionType;
 import io.papermc.paper.command.brigadier.BasicCommand;
 import io.papermc.paper.command.brigadier.CommandSourceStack;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public class TerraRegionSubCommand extends SubCommand implements BasicCommand {
+
     public TerraRegionSubCommand(String permission) {
         super(permission);
     }
-
+    Player p;
     @Override
     public void execute(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
-        Player p = isPlayer(commandSourceStack);
-        if (p == null) return;
+        p = isPlayer(commandSourceStack);
 
-        if (args[0].equalsIgnoreCase("create")) {
-            if (args.length <= 2) {
-                p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen:", RegionType.regionTypes)));
+        if (args[0].equalsIgnoreCase("remove")) {
+            TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(p.getUniqueId());
+            if (selectedCache == null) {
+                p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> um die zu betreffende Stadt auszuwählen."));
                 return;
             }
-            String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
-            switch (args[1].toLowerCase()) {
-                case "settle":
-                    hasPermission(p, permission + ".settle");
-                    SettleRegionType.conditionCheck(p, name);
-                case "outpost":
-                    hasPermission(p, permission + ".outpost");
-                    TerraSelectCache cache = hasSelect(p);
-                    if (cache == null) return;
-                    OutpostRegionType outpost = OutpostRegionType.conditionCheck(p, args);
-                    if (outpost == null) return;
-                    //NationsPlugin.settleManager.addSettlement(outpost.id, outpost);
-                    SettleDBstuff.addSettlement(outpost.id, outpost.name, new Vectore2(p.getLocation()), p.getUniqueId());
-                    p.sendMessage(Chat.greenFade("Deine Stadt " + outpost.name + " wurde erfolgreich gegründet."));
-                    //NationsPlugin.settleManager.addSettlementToPl3xmap(outpost);
-                default:
-                    p.sendMessage(Chat.errorFade(String.format("Der Regionstyp %s existiert nicht. Folgende Regionstypen sind zulässig: %s.", args[1], RegionType.regionTypes)));
+            handleRemove(p, selectedCache);
+        }
+
+
+
+        if (args[0].equalsIgnoreCase("create") && args.length >= 3) {
+
+            String type = args[1].toLowerCase();
+            String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length)));
+
+            if(!RegionType.registry.containsKey(type)){
+                p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.registry.keySet())));
+                return;
+            }
+            handleCreate(p, type, name);
+        }
+    }
+
+    private void handleCreate(Player p, String type, String name) {
+        if (!hasPermission(p, permission + "." + type)) {
+            p.sendMessage(Chat.errorFade("You do not have the necessary permission."));
+            return;
+        }
+
+        Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name, p);
+        if (regionTypeOpt.isPresent()) {
+            //RegionType regionType = regionTypeOpt.get();
+            p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
+        } else {
+            p.sendMessage(Chat.errorFade("Die Erstellung der Region wurde abgebrochen."));
+        }
+    }
+
+    private void handleRemove(Player player, TerraSelectCache selectedCache) {
+        RegionType region = selectedCache.getRegion();
+        AccessLevel playerAccess = selectedCache.getAccess();
+
+        if (region == null) {
+            player.sendMessage(Chat.errorFade("Keine ausgewählte Region gefunden."));
+            return;
+        }
+
+        if (playerAccess == null || !hasAccess(playerAccess, AccessLevel.MAJOR)) {
+            player.sendMessage(Chat.errorFade("You do not have the required access level to remove this settlement."));
+            return;
+        }
+
+        region.remove();
+        player.sendMessage(Chat.greenFade("Die Stadt " + region.getName() + " wurde erfolgreich entfernt."));
+    }
+
+    @Override
+    public @NotNull Collection<String> suggest(@NotNull CommandSourceStack commandSourceStack, @NotNull String[] args) {
+        if (args.length == 1 && args[0].equalsIgnoreCase("create")) {
+            // Suggest actions for the first argument
+            return filterSuggestions(RegionType.registry.keySet(), args[0]);
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("create")) {
+            // Suggest available region types for the "create" action
+            return filterSuggestions(RegionType.registry.keySet(), args[1]);
+        }
+
+        if (args.length == 3 && args[0].equalsIgnoreCase("create")) {
+            // Suggest placeholder for the region name
+            return List.of("<region_name>");
+        }
+
+        if (args.length == 2 && args[0].equalsIgnoreCase("remove")) {
+            // Suggest settlements from the player's selected cache
+            Player player = isPlayer(commandSourceStack);
+            if (player != null && TerraSelectCache.selectCache.containsKey(player.getUniqueId())) {
+                TerraSelectCache selectedCache = TerraSelectCache.selectCache.get(player.getUniqueId());
+                if (selectedCache != null) {
+                    RegionType region = selectedCache.getRegion();
+                    if (region != null) {
+                        return filterSuggestions(List.of(region.getName()), args[1]);
+                    }
+                }
             }
         }
-        if (args[0].equalsIgnoreCase("remove")) {
-            switch (args[1].toLowerCase()) {
-                case "settle":
-                    if (!hasPermission(p, "nations.remove")) return;
-                    Optional<SettleRegionType> settle = NationsPlugin.settleManager.getSettle(p.getLocation());
-                    if (settle.isEmpty()) return;
-                    Optional<AccessLevel> access = NationsPlugin.settleManager.getAccessLevel(p, settle.get().id);
-                    if (access.isEmpty()) return;
-                    if (!access.get().equals(AccessLevel.MAJOR)) return;
-                    NationsPlugin.settleManager.removeSettlement(settle.get().id);
-                    p.sendMessage(Chat.greenFade("Die Stadt " + settle.get().name + " wurde erfolgreich entfernt."));
-                case "outpost":
-                default:
-                    p.sendMessage(Chat.errorFade(String.format("Der Regionstyp %s existiert nicht. Folgende Regionstypen sind zulässig: %s.", args[1], RegionType.regionTypes)));
-            }
-        }
+
+        // Fallback to an empty list if no matches
+        return List.of();
     }
 }

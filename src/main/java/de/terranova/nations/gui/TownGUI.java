@@ -5,14 +5,13 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.settlements.AccessLevel;
-import de.terranova.nations.settlements.RegionTypes.SettleRegionType;
-import de.terranova.nations.settlements.TownSkins;
+import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.npc.NPCSkins;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -28,7 +27,7 @@ public class TownGUI extends RoseGUI {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.id);
+        Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.getId());
         if (OAccess.isEmpty()) return;
         AccessLevel access = OAccess.get();
 
@@ -40,8 +39,8 @@ public class TownGUI extends RoseGUI {
 
         RoseItem level = new RoseItem.Builder()
                 .material(Material.NETHER_STAR)
-                .displayName(Chat.redFade("<b>Stadtlevel: " + settle.level))
-                .addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.claims,settle.getMaxClaims())))
+                .displayName(Chat.redFade("<b>Stadtlevel: " + settle.getRank().getLevel()))
+                .addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.getClaims(),settle.getMaxClaims())))
                 .build();
 
         RoseItem skins = new RoseItem.Builder()
@@ -102,11 +101,11 @@ public class TownGUI extends RoseGUI {
         skins.onClick(e -> {
             if (!player.hasPermission("nations.menu.skin")) return;
             int rowsSkins = 3;
-            if (TownSkins.values().length >= 8) {
+            if (NPCSkins.values().length >= 8) {
                 rowsSkins = 4;
-            } else if (TownSkins.values().length >= 15) {
+            } else if (NPCSkins.values().length >= 15) {
                 rowsSkins = 5;
-            } else if (TownSkins.values().length >= 22) {
+            } else if (NPCSkins.values().length >= 22) {
                 rowsSkins = 6;
             }
             new TownSkinGUI(player, rowsSkins, settle).open();
