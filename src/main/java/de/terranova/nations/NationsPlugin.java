@@ -1,12 +1,11 @@
 package de.terranova.nations;
 
-import com.mojang.brigadier.Command;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.commands.*;
+import de.terranova.nations.commands.TerraCommands.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
 import de.terranova.nations.regions.SettleManager;
@@ -16,9 +15,6 @@ import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
-import io.papermc.paper.command.brigadier.Commands;
-import io.papermc.paper.plugin.lifecycle.event.LifecycleEventManager;
-import io.papermc.paper.plugin.lifecycle.event.types.LifecycleEvents;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
@@ -32,8 +28,6 @@ import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
-
-import java.util.List;
 
 import java.io.File;
 import java.io.FileInputStream;
