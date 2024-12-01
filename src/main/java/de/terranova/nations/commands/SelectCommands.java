@@ -7,12 +7,10 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-import static de.terranova.nations.commands.terraSubCommands.TerraSelectSubCommand.nonSelectError;
-
 class SelectCommands {
 
     @CommandAnnotation(
-            name = "terra.select",
+            domain = "terra.select",
             permission = "nations.select",
             description = "Print out selected region",
             usage = "/t select"
@@ -28,22 +26,28 @@ class SelectCommands {
     }
 
     @CommandAnnotation(
-            name = "terra.select",
+            domain = "terra.select.$ARGUMENT",
             permission = "nations.select.region",
             description = "Select a region",
             usage = "/t select <name>",
             tabCompletion = {"$REGION_NAMES"}
     )
     public static boolean selectRegion(Player p, String[] args) {
-        p.sendMessage(args[0].toLowerCase());
-        if(!NationsPlugin.settleManager.isNameCached(args[0].toLowerCase())){
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt" + args[0].toLowerCase() + "gibt es leider nicht."));
+        if (args.length == 1) {
+            p.sendMessage(Chat.errorFade("Bitte gebe den Namen einer Stadt an."));
             return false;
         }
 
-        Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettleByName(args[0]);
+        String regionName = args[1].toLowerCase();
+        p.sendMessage(regionName);
+        if (!NationsPlugin.settleManager.isNameCached(regionName)) {
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
+            return false;
+        }
+
+        Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettleByName(regionName);
         if (osettle.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt %s gibt es leider nicht."));
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
             return false;
         }
 

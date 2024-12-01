@@ -10,7 +10,7 @@ import static de.terranova.nations.commands.SubCommand.hasSelect;
 class BankCommands {
 
     @CommandAnnotation(
-            name = "terra.bank.balance",
+            domain = "terra.bank.balance",
             permission = "nations.bank.balance",
             description = "Checks the bank balance",
             usage = "/terra bank balance"
@@ -27,7 +27,7 @@ class BankCommands {
     }
 
     @CommandAnnotation(
-            name = "terra.bank.deposit",
+            domain = "terra.bank.deposit",
             permission = "nations.bank.deposit",
             description = "Deposits an amount to the bank",
             usage = "/terra bank deposit <amount>",
@@ -39,7 +39,7 @@ class BankCommands {
     }
 
     @CommandAnnotation(
-            name = "terra.bank.withdraw",
+            domain = "terra.bank.withdraw",
             permission = "nations.bank.withdraw",
             description = "Withdraws an amount from the bank",
             usage = "/terra bank withdraw <amount>",
@@ -51,7 +51,7 @@ class BankCommands {
     }
 
     @CommandAnnotation(
-            name = "terra.bank.history",
+            domain = "terra.bank.history",
             permission = "nations.bank.history",
             description = "Shows you the banks recent transactions",
             usage = "/terra bank history"
