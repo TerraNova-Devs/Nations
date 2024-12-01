@@ -25,7 +25,16 @@ public class SettleManager {
     public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(2,2,2,2,3,2,2,2,2,4));
 
     public List<Vectore2> locationCache;
-    public List<String> nameCache;
+
+    public List<String> getNameCache() {
+        return nameCache;
+    }
+
+    private List<String> nameCache;
+
+    public void addNameToCache(String name) {
+        nameCache.add(name);
+    }
 
     private Registry<Layer> layerRegistry;
 
@@ -46,7 +55,7 @@ public class SettleManager {
     }
 
     public boolean isNameCached(String name) {
-        return !nameCache.contains(name.toLowerCase());
+        return nameCache.contains(name.toLowerCase());
     }
 
     public void removeSettlement(UUID uuid) {

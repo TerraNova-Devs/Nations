@@ -1,5 +1,6 @@
 package de.terranova.nations.commands;
 
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.RegionType;
 import org.bukkit.Bukkit;
@@ -27,7 +28,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(CommandAnnotation.class)) {
                 CommandAnnotation commandAnnotation = method.getAnnotation(CommandAnnotation.class);
-                commandMethods.put(commandAnnotation.name(), method);
+                commandMethods.put(commandAnnotation.domain(), method);
             }
         }
         commandGroups.add(groupName);
@@ -35,11 +36,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!command.getName().equalsIgnoreCase("terra") && !command.getName().equalsIgnoreCase("t")) {
-            return false;
-        }
-
-        if (!(sender instanceof Player player)) {
+        if (!(sender instanceof Player p)) {
             sender.sendMessage("This command can only be run by a player.");
             return true;
         }
@@ -49,34 +46,57 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        String groupName = args[0].toLowerCase();
-        String subCommand = args.length > 1 ? args[1].toLowerCase() : "";
-        String commandKey = "terra." + groupName + (subCommand.isEmpty() ? "" : "." + subCommand);
-        Method commandMethod = commandMethods.get(commandKey);
+        StringBuilder subCommandKeyBuilder = new StringBuilder("terra." + args[0].toLowerCase());
+        Method commandMethod = findCommandMethod(subCommandKeyBuilder, args);
 
         if (commandMethod == null) {
-            sender.sendMessage("Unknown subcommand. Usage: /terra <" + String.join("|", commandGroups) + "> <subcommand>");
+            p.sendMessage(Chat.errorFade("Unknown subcommand. Usage: /terra <" + String.join("|", commandGroups) + "> <subcommand>"));
             return true;
         }
 
         CommandAnnotation annotation = commandMethod.getAnnotation(CommandAnnotation.class);
         if (!annotation.permission().isEmpty() && !sender.hasPermission(annotation.permission())) {
-            sender.sendMessage("You do not have permission to execute this command.");
-            return true;
-        }
-
-        if (args.length < annotation.tabCompletion().length + 2) {
-            sender.sendMessage("Usage: " + annotation.usage());
+            sender.sendMessage("You do not have permission (" + annotation.permission() + ") to execute this command.");
             return true;
         }
 
         try {
-            return (boolean) commandMethod.invoke(null, player, Arrays.stream(args).skip(1).toArray(String[]::new));
+            // Execute the command with all arguments, as found by findCommandMethod
+            return (boolean) commandMethod.invoke(null, p, args);
         } catch (Exception e) {
             sender.sendMessage("An error occurred while executing the command. Please try again.");
             e.printStackTrace();
             return true;
         }
+    }
+
+    private Method findCommandMethod(StringBuilder subCommandKeyBuilder, String[] args) {
+        // Step 1: Find the initial exact match (e.g., "terra.select")
+        Method commandMethod = commandMethods.get(subCommandKeyBuilder.toString());
+        Method fallbackMethod = commandMethod; // Save this in case no $ARGUMENT method is found
+        int index = 1;
+
+        // Step 2: If arguments are present, try to find a more specific match with $ARGUMENT
+        while (index < args.length) {
+            subCommandKeyBuilder.append(".").append(args[index].toLowerCase());
+            commandMethod = commandMethods.get(subCommandKeyBuilder.toString());
+
+            if (commandMethod != null) {
+                // Found a more specific command method, update fallbackMethod
+                fallbackMethod = commandMethod;
+            } else {
+                // If no exact match is found, look for a method with $ARGUMENT placeholder
+                String argumentCommandKey = subCommandKeyBuilder.substring(0, subCommandKeyBuilder.lastIndexOf(".")) + ".$ARGUMENT";
+                Method argumentMethod = commandMethods.get(argumentCommandKey);
+                if (argumentMethod != null) {
+                    fallbackMethod = argumentMethod;
+                }
+            }
+            index++;
+        }
+
+        // Step 3: Return the most appropriate method found (either a specific or the initial one)
+        return fallbackMethod;
     }
 
     @Override
@@ -96,7 +116,12 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
             return completions;
         }
 
-        String baseCommand = "terra." + args[0].toLowerCase();
+        StringBuilder baseCommandBuilder = new StringBuilder("terra." + args[0].toLowerCase());
+        for (int i = 1; i < args.length - 1; i++) {
+            baseCommandBuilder.append(".").append(args[i].toLowerCase());
+        }
+
+        String baseCommand = baseCommandBuilder.toString();
         for (Map.Entry<String, Method> entry : commandMethods.entrySet()) {
             String commandName = entry.getKey();
 
@@ -108,13 +133,11 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
             String[] annotationTabCompletion = annotation.tabCompletion();
             String[] commandParts = commandName.split("\\.");
 
-            if (args.length == 2 && commandParts.length == 3 && commandParts[1].equalsIgnoreCase(args[0])) {
-                if (args[1].isEmpty() || commandParts[2].toLowerCase().startsWith(args[1].toLowerCase())) {
-                    completions.add(commandParts[2]);
-                }
-            } else if (args.length == 3 && commandParts.length > 2 && args[1].equalsIgnoreCase(commandParts[2])) {
+            if (args.length == commandParts.length && commandParts[commandParts.length - 1].toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
+                completions.add(commandParts[commandParts.length - 1]);
+            } else if (args.length == commandParts.length + 1) {
                 for (String suggestion : annotationTabCompletion) {
-                    if (!suggestion.equalsIgnoreCase(commandParts[2]) && suggestion.toLowerCase().startsWith(args[2].toLowerCase())) {
+                    if (suggestion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
                         completions.add(resolvePlaceholder(suggestion, sender));
                     }
                 }
@@ -135,10 +158,10 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
             // Example: Replace with logic to get available regions
 
             return String.join(",", RegionType.registry.keySet());
-        }else if (placeholder.equalsIgnoreCase("$REGION_NAMES")) {
+        } else if (placeholder.equalsIgnoreCase("$REGION_NAMES")) {
             // Example: Replace with logic to get available regions
 
-            return String.join(",", NationsPlugin.settleManager.nameCache);
+            return String.join(",", NationsPlugin.settleManager.getNameCache());
         }
         return placeholder;
     }

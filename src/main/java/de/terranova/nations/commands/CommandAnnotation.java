@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
 public @interface CommandAnnotation {
-    String name(); // Command name (e.g., "region.create")
+    String domain(); // Command name (e.g., "region.create")
 
     String permission() default ""; // Required permission
 
