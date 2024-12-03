@@ -29,15 +29,15 @@ import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
 public class RegionCommands {
 
     @CommandAnnotation(
-            domain = "terra.region.create",
+            domain = "region.create.$ARGUMENT",
             permission = "nations.region.create",
             description = "Creates a new region",
             usage = "/terra region create <name>",
-            tabCompletion = {"create"}
+            tabCompletion = {"$REGISTERED_REGION_TYPES"}
     )
     public static boolean createRegion(Player p, String[] args) {
-        String type = args[1].toLowerCase();
-        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length)));
+        String type = args[2].toLowerCase();
+        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 3, args.length)));
 
         if(!RegionType.registry.containsKey(type)){
             p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.registry.keySet())));
@@ -56,7 +56,7 @@ public class RegionCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.region.delete",
+            domain = "region.delete",
             permission = "nations.region.delete",
             description = "Removes an existing region",
             usage = "/terra region remove <name>",
@@ -85,7 +85,7 @@ public class RegionCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.region.claim",
+            domain = "region.claim",
             permission = "nations.region.claim",
             description = "Adds Claimes to GridRegions",
             usage = "/terra region claim",

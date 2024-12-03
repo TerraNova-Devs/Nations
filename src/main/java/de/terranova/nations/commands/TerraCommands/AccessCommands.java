@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 public class AccessCommands {
 
     @CommandAnnotation(
-            domain = "terra.access.add.$ARGUMENT",
+            domain = "access.add.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Fügt den ausgewählten Spieler deiner Region hinzu",
             usage = "/terra add <player>"
@@ -41,7 +41,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.access.remove.$ARGUMENT",
+            domain = "access.remove.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Entfernt den ausgewählten Spieler von deiner Region",
             usage = "/terra remove <player>"
@@ -70,7 +70,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.access.rank.$ARGUMENT.$ARGUMENT",
+            domain = "access.rank.$ARGUMENT.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Setzt den Rang eines Spielers",
             usage = "/terra rank <player> <rank>"
