@@ -33,26 +33,31 @@ public class Bank {
         this.transactions = holder.dataBaseRetrieveBank();
     }
 
-    public void cashInFromInv(Player p, int amount) {
-        if (!startCashTransaction(p)) return;
+    public Integer cashInFromInv(Player p, int amount) {
+        if (!startCashTransaction(p)) return null;
+        int charged;
 
         try {
-            int charged = ItemTransfer.charge(p, "terranova_silver", amount, false);
+            charged = ItemTransfer.charge(p, "terranova_silver", amount, false);
             updateBankBalance(p.getName(), charged, "deposited");
+
         } finally {
             transactionInProgress = false;
+
         }
+        return charged;
     }
     
-    public void cashOutFromInv(Player p, int amount) {
-        if (!startCashTransaction(p)) return;
-
+    public Integer cashOutFromInv(Player p, int amount) {
+        if (!startCashTransaction(p)) return null;
+        int credited;
         try {
-            int credited = ItemTransfer.credit(p, "terranova_silver", Math.min(amount, credit), false);
+            credited = ItemTransfer.credit(p, "terranova_silver", Math.min(amount, credit), false);
             updateBankBalance(p.getName(),  -credited, "withdrew");
         } finally {
             transactionInProgress = false;
         }
+        return credited;
     }
 
     public void cashTransfer(String record,String action, int amount) {

@@ -45,7 +45,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     public SettleRegionType(UUID settlementUUID, Vectore2 location, String name, int level, RankObjective rankObjective) {
         super(name, settlementUUID, "settle", RegionClaimFunctions.getSChunkMiddle(location));
         NationsPlugin.settleManager.locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
-        NationsPlugin.settleManager.nameCache.add(this.name);
+        NationsPlugin.settleManager.addNameToCache(this.name);
         this.npc = new NPCr(id);
         this.rank = new Rank(this, level, rankObjective);
         this.access = new Access(this);
@@ -59,7 +59,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     @Override
     public void postInit(Player p) {
         NationsPlugin.settleManager.locationCache.add(this.location);
-        NationsPlugin.settleManager.nameCache.add(this.name);
+        NationsPlugin.settleManager.addNameToCache(this.name);
         this.region = RegionClaimFunctions.createClaim(name, p, this.id);
         this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
         Set<EntityType> set = getDeniedSpawnEntityTypes();

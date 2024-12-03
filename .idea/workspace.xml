@@ -9,27 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="2 fixed some bugs relating the factorypattern">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added remaining commands to framework">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraManageSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraManageSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraRegionSubCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/terraSubCommands/TerraRegionSubCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankHolder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/Rank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/Rank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/BankCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/RegionCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/SelectCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/TerraCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExportToHTMLSettings">
+    <option name="OUTPUT_DIRECTORY" value="$PROJECT_DIR$/../Nations\exportToHTML" />
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -80,7 +75,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="master" />
+        <entry key="$PROJECT_DIR$" value="property" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -95,6 +90,16 @@
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/TerraNova-Devs/Nations.git&quot;,
     &quot;accountId&quot;: &quot;d3c1b960-1fc2-40bb-b6b9-2f155ab32ab6&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;TerraNova-Devs&quot;,
+    &quot;repository&quot;: &quot;Nations&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -125,7 +130,7 @@
     "project.structure.last.edited": "Project",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "preferences.lookFeel",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
@@ -143,8 +148,8 @@
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Pl3xMap\web\images\banner" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
+      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\jars" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Opibus" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\resources\settlement" />
@@ -352,7 +357,15 @@
       <workItem from="1732742626597" duration="4619000" />
       <workItem from="1732785200516" duration="29658000" />
       <workItem from="1732837358668" duration="3944000" />
-      <workItem from="1732883937427" duration="31716000" />
+      <workItem from="1732883937427" duration="32069000" />
+      <workItem from="1732943729397" duration="45000" />
+      <workItem from="1732943780815" duration="71000" />
+      <workItem from="1732943861709" duration="2861000" />
+      <workItem from="1732978253341" duration="31215000" />
+      <workItem from="1733058450155" duration="20010000" />
+      <workItem from="1733095833346" duration="11000" />
+      <workItem from="1733097723287" duration="2429000" />
+      <workItem from="1733161049399" duration="4488000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -554,7 +567,47 @@
       <option name="project" value="LOCAL" />
       <updated>1732888572157</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="fixed any obvious bugs">
+      <option name="closed" value="true" />
+      <created>1732934867706</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1732934867706</updated>
+    </task>
+    <task id="LOCAL-00027" summary="changed some names for better console output">
+      <option name="closed" value="true" />
+      <created>1732946728965</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1732946728965</updated>
+    </task>
+    <task id="LOCAL-00028" summary="working towards a new command foundation">
+      <option name="closed" value="true" />
+      <created>1733011005213</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1733011005213</updated>
+    </task>
+    <task id="LOCAL-00029" summary="command framework is slowly coming together">
+      <option name="closed" value="true" />
+      <created>1733021677520</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1733021677520</updated>
+    </task>
+    <task id="LOCAL-00030" summary="added remaining commands to framework">
+      <option name="closed" value="true" />
+      <created>1733065988226</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1733065988226</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -583,7 +636,12 @@
     <MESSAGE value="working towards making the database stuff also working without implementing it for every region" />
     <MESSAGE value="Added FactoryCondition Class for each RegionType to see if everything is valid before creating and database calls" />
     <MESSAGE value="2 fixed some bugs relating the factorypattern" />
-    <option name="LAST_COMMIT_MESSAGE" value="2 fixed some bugs relating the factorypattern" />
+    <MESSAGE value="fixed any obvious bugs" />
+    <MESSAGE value="changed some names for better console output" />
+    <MESSAGE value="working towards a new command foundation" />
+    <MESSAGE value="command framework is slowly coming together" />
+    <MESSAGE value="added remaining commands to framework" />
+    <option name="LAST_COMMIT_MESSAGE" value="added remaining commands to framework" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
