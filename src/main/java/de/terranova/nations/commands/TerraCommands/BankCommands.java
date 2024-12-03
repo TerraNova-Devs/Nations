@@ -13,7 +13,7 @@ import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
 public class BankCommands {
 
     @CommandAnnotation(
-            domain = "terra.bank.balance",
+            domain = "bank.balance",
             permission = "nations.bank.balance",
             description = "Checks the bank balance",
             usage = "/terra bank balance"
@@ -30,10 +30,10 @@ public class BankCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.bank.deposit",
+            domain = "bank.deposit.$ARGUMENT",
             permission = "nations.bank.deposit",
             description = "Deposits an amount to the bank",
-            usage = "/terra bank deposit <amount>",
+            usage = "/terra bank deposit $ARGUMENT",
             tabCompletion = {"<amount>"}
     )
     public static boolean deposit(Player p, String[] args) {
@@ -49,22 +49,27 @@ public class BankCommands {
         }
         int amount;
         try {
-            amount = Integer.parseInt(args[3]);
+            amount = Integer.parseInt(args[2]);
             if(amount <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             p.sendMessage(Chat.errorFade("Bitte nutze /t bank (<withdraw|deposit>) (<value>)"));
             p.sendMessage(Chat.errorFade("Bitte gib als value eine Zahl zwischen 1 und 2304!"));
             return false;
         }
-        bank.getBank().cashInFromInv(p, amount);
+        Integer deposit = bank.getBank().cashInFromInv(p, amount);
+        if(deposit == null) {
+            p.sendMessage("Error während Zahlung");
+            return false;
+        }
+        p.sendMessage("" + deposit);
         return true;
     }
 
     @CommandAnnotation(
-            domain = "terra.bank.withdraw",
+            domain = "bank.withdraw.$ARGUMENT",
             permission = "nations.bank.withdraw",
             description = "Withdraws an amount from the bank",
-            usage = "/terra bank withdraw <amount>",
+            usage = "/terra bank withdraw $ARGUMENT",
             tabCompletion = {"<amount>"}
     )
     public static boolean withdraw(Player p, String[] args) {
@@ -80,19 +85,24 @@ public class BankCommands {
         }
         int amount;
         try {
-            amount = Integer.parseInt(args[3]);
+            amount = Integer.parseInt(args[2]);
             if(amount <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             p.sendMessage(Chat.errorFade("Bitte nutze /t bank (<withdraw|deposit>) (<value>)"));
             p.sendMessage(Chat.errorFade("Bitte gib als value eine Zahl zwischen 1 und 2304!"));
             return false;
         }
-        bank.getBank().cashOutFromInv(p, amount);
+        Integer withdraw = bank.getBank().cashOutFromInv(p, amount);
+        if(withdraw == null) {
+            p.sendMessage("Error während Zahlung");
+            return false;
+        }
+        p.sendMessage("" + withdraw);
         return true;
     }
 
     @CommandAnnotation(
-            domain = "terra.bank.history",
+            domain = "bank.history",
             permission = "nations.bank.history",
             description = "Shows you the banks recent transactions",
             usage = "/terra bank history"

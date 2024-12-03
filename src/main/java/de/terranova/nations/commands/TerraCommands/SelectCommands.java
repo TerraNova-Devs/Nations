@@ -11,7 +11,7 @@ import java.util.Optional;
 class SelectCommands {
 
     @CommandAnnotation(
-            domain = "terra.select",
+            domain = "select",
             permission = "nations.select",
             description = "Print out selected region",
             usage = "/t select"
@@ -27,7 +27,7 @@ class SelectCommands {
     }
 
     @CommandAnnotation(
-            domain = "terra.select.$ARGUMENT",
+            domain = "select.$ARGUMENT",
             permission = "nations.select",
             description = "Select a region",
             usage = "/t select <name>",

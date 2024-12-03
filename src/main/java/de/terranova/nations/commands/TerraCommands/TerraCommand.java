@@ -3,6 +3,7 @@ package de.terranova.nations.commands.TerraCommands;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.commands.CommandUtil;
 import de.terranova.nations.regions.base.RegionType;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -13,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TerraCommand implements CommandExecutor, TabCompleter {
 
@@ -48,8 +50,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        StringBuilder subCommandKeyBuilder = new StringBuilder("terra." + args[0].toLowerCase());
-        Method commandMethod = findCommandMethod(subCommandKeyBuilder, args);
+        Method commandMethod = CommandUtil.findExactCommand(CommandUtil.findCommands(commandMethods,args),args);
 
         if (commandMethod == null) {
             p.sendMessage(Chat.errorFade("Unknown subcommand. Usage: /terra <" + String.join("|", commandGroups) + "> <subcommand>"));
@@ -72,77 +73,90 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
         }
     }
 
-    private Method findCommandMethod(StringBuilder subCommandKeyBuilder, String[] args) {
-        // Step 1: Find the initial exact match (e.g., "terra.select")
-        Method commandMethod = commandMethods.get(subCommandKeyBuilder.toString());
-        Method fallbackMethod = commandMethod; // Save this in case no $ARGUMENT method is found
-        int index = 1;
-
-        // Step 2: If arguments are present, try to find a more specific match with $ARGUMENT
-        while (index < args.length) {
-            subCommandKeyBuilder.append(".").append(args[index].toLowerCase());
-            commandMethod = commandMethods.get(subCommandKeyBuilder.toString());
-
-            if (commandMethod != null) {
-                // Found a more specific command method, update fallbackMethod
-                fallbackMethod = commandMethod;
-            } else {
-                // If no exact match is found, look for a method with $ARGUMENT placeholder
-                String argumentCommandKey = subCommandKeyBuilder.substring(0, subCommandKeyBuilder.lastIndexOf(".")) + ".$ARGUMENT";
-                Method argumentMethod = commandMethods.get(argumentCommandKey);
-                if (argumentMethod != null) {
-                    fallbackMethod = argumentMethod;
-                }
-            }
-            index++;
-        }
-
-        // Step 3: Return the most appropriate method found (either a specific or the initial one)
-        return fallbackMethod;
-    }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         List<String> completions = new ArrayList<>();
+        String commandLabel = command.getName().toLowerCase(); // Should be "terra" or "t"
 
-        if (!command.getName().equalsIgnoreCase("terra") && !command.getName().equalsIgnoreCase("t")) {
-            return completions;
-        }
+        int argsLength = args.length;
 
-        if (args.length == 1) {
-            for (String group : commandGroups) {
-                if (group.toLowerCase().startsWith(args[0].toLowerCase())) {
-                    completions.add(group);
-                }
-            }
-            return completions;
-        }
-
-        StringBuilder baseCommandBuilder = new StringBuilder("terra." + args[0].toLowerCase());
-        for (int i = 1; i < args.length - 1; i++) {
-            baseCommandBuilder.append(".").append(args[i].toLowerCase());
-        }
-
-        String baseCommand = baseCommandBuilder.toString();
         for (Map.Entry<String, Method> entry : commandMethods.entrySet()) {
-            String commandName = entry.getKey();
+            String domain = entry.getKey();
+            Method method = entry.getValue();
+            CommandAnnotation annotation = method.getAnnotation(CommandAnnotation.class);
+            if (annotation == null) continue;
 
-            if (!commandName.startsWith(baseCommand)) {
-                continue;
+            String[] domainParts = domain.split("\\.");
+
+            if (!domainParts[0].equalsIgnoreCase(commandLabel)) continue;
+
+            int domainIndex = 1; // Start after "terra"
+            int argsIndex = 0; // Start from first arg in args
+
+            boolean match = true;
+            while (domainIndex < domainParts.length && argsIndex < argsLength) {
+                String domainPart = domainParts[domainIndex];
+                String arg = args[argsIndex];
+
+                if (domainPart.equals("$ARGUMENT")) {
+                    // Any arg matches
+                } else if (!domainPart.equalsIgnoreCase(arg)) {
+                    match = false;
+                    break;
+                }
+
+                domainIndex++;
+                argsIndex++;
             }
 
-            CommandAnnotation annotation = entry.getValue().getAnnotation(CommandAnnotation.class);
-            String[] annotationTabCompletion = annotation.tabCompletion();
-            String[] commandParts = commandName.split("\\.");
+            if (!match) continue;
 
-            if (args.length == commandParts.length && commandParts[commandParts.length - 1].toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                completions.add(commandParts[commandParts.length - 1]);
-            } else if (args.length == commandParts.length + 1) {
-                for (String suggestion : annotationTabCompletion) {
-                    if (suggestion.toLowerCase().startsWith(args[args.length - 1].toLowerCase())) {
-                        completions.add(resolvePlaceholder(suggestion, sender));
+            // Handle the case where the last argument is empty (user typed a space and is expecting suggestions)
+            boolean isExpectingArgument = argsLength == domainIndex && (argsLength == 0 || args[argsLength - 1].isEmpty());
+
+            if (isExpectingArgument) {
+                if (domainIndex < domainParts.length) {
+                    String nextDomainPart = domainParts[domainIndex];
+
+                    if (nextDomainPart.equals("$ARGUMENT")) {
+                        int argPositionIndex = 0;
+                        for (int i = 1; i <= domainIndex; i++) {
+                            if (domainParts[i].equals("$ARGUMENT")) {
+                                argPositionIndex++;
+                            }
+                        }
+                        argPositionIndex--; // Adjust to zero-based index
+
+                        String[] tabCompletions = annotation.tabCompletion();
+                        if (argPositionIndex < tabCompletions.length) {
+                            String tabCompletion = tabCompletions[argPositionIndex];
+                            // Process tabCompletion
+                            if (tabCompletion.startsWith("$")) {
+                                String replacement = resolvePlaceholder(tabCompletion, sender);
+                                if (replacement != null && !replacement.isEmpty()) {
+                                    String[] options = replacement.split(",");
+                                    completions.addAll(Arrays.asList(options));
+                                }
+                            } else {
+                                completions.add(tabCompletion);
+                            }
+                        }
+                    } else {
+                        completions.add(nextDomainPart);
                     }
                 }
+            }
+        }
+
+        // Remove duplicates
+        completions = new ArrayList<>(new HashSet<>(completions));
+
+        // Filter completions based on current input
+        if (argsLength > 0) {
+            String currentArg = args[argsLength - 1].toLowerCase();
+            if (!currentArg.isEmpty()) {
+                completions.removeIf(s -> !s.toLowerCase().startsWith(currentArg));
             }
         }
 
@@ -151,21 +165,16 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
 
     private String resolvePlaceholder(String placeholder, CommandSender sender) {
         if (placeholder.equalsIgnoreCase("$PLAYER")) {
-            List<String> playerNames = new ArrayList<>();
-            for (Player player : Bukkit.getOnlinePlayers()) {
-                playerNames.add(player.getName());
-            }
-            return String.join(",", playerNames);
+            return Bukkit.getOnlinePlayers().stream()
+                    .map(Player::getName)
+                    .collect(Collectors.joining(","));
         } else if (placeholder.equalsIgnoreCase("$REGISTERED_REGION_TYPES")) {
-            // Example: Replace with logic to get available regions
-
             return String.join(",", RegionType.registry.keySet());
         } else if (placeholder.equalsIgnoreCase("$REGION_NAMES")) {
-            // Example: Replace with logic to get available regions
-
             return String.join(",", NationsPlugin.settleManager.getNameCache());
         }
         return placeholder;
     }
+
 }
 
