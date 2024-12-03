@@ -24,7 +24,7 @@ public class SettleRegionFactory implements RegionFactory {
     public RegionType create(String name, Player p) {
         // Perform all necessary validations before creation
         if (!isValidName(name, p)) {
-            p.sendMessage(Chat.errorFade("Invalid name for settlement."));
+            p.sendMessage(Chat.errorFade("Invalid name for settlement." + name));
             return null;  // Return null to indicate creation failure.
         }
 
@@ -33,7 +33,7 @@ public class SettleRegionFactory implements RegionFactory {
             return null;
         }
 
-        if (!NationsPlugin.settleManager.isNameCached(name)) {
+        if (NationsPlugin.settleManager.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }

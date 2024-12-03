@@ -29,7 +29,7 @@ import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
 public class RegionCommands {
 
     @CommandAnnotation(
-            domain = "region.create.$ARGUMENT",
+            domain = "region.create.$ARGUMENT.$ARGUMENT",
             permission = "nations.region.create",
             description = "Creates a new region",
             usage = "/terra region create <name>",
