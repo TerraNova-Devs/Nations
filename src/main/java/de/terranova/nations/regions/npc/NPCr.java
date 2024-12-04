@@ -18,7 +18,7 @@ public class NPCr {
 
     public NPCr(String name, Location loc, UUID id) {
         this.id = id;
-        this.npc = createNPC(name, loc, id);
+        this.npc = createNPC(name, loc);
     }
 
     public NPCr(UUID id) {
@@ -28,7 +28,7 @@ public class NPCr {
 
 
 
-    public NPC createNPC(String name, Location location, UUID id) {
+    public NPC createNPC(String name, Location location) {
         NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
 
         SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);

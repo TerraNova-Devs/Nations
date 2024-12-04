@@ -38,12 +38,17 @@ public class SettleTrait extends Trait {
 
     @EventHandler
     public void onRightClickNPC(NPCRightClickEvent event) {
+        System.out.println("0");
         if (event.getNPC() != this.getNPC()) return;
+        System.out.println("1");
         Player player = event.getClicker().getPlayer();
         if (player == null) return;
+        System.out.println("2");
         if (!player.hasPermission("nations.menu")) return;
+        System.out.println("3");
         Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettle(settlement_uuid);
         if(osettle.isEmpty()) return;
+        System.out.println("4");
         new TownGUI(player, osettle.get()).open();
     }
 

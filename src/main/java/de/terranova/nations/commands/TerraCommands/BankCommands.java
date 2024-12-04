@@ -34,7 +34,7 @@ public class BankCommands {
             permission = "nations.bank.deposit",
             description = "Deposits an amount to the bank",
             usage = "/terra bank deposit $ARGUMENT",
-            tabCompletion = {"<amount>"}
+            tabCompletion = {"amount"}
     )
     public static boolean deposit(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -70,7 +70,7 @@ public class BankCommands {
             permission = "nations.bank.withdraw",
             description = "Withdraws an amount from the bank",
             usage = "/terra bank withdraw $ARGUMENT",
-            tabCompletion = {"<amount>"}
+            tabCompletion = {"amount"}
     )
     public static boolean withdraw(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
