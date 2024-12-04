@@ -33,7 +33,7 @@ public class RegionCommands {
             permission = "nations.region.create",
             description = "Creates a new region",
             usage = "/terra region create <name>",
-            tabCompletion = {"$REGISTERED_REGION_TYPES"}
+            tabCompletion = {"$REGISTERED_REGION_TYPES", "name"}
     )
     public static boolean createRegion(Player p, String[] args) {
         String type = args[2].toLowerCase();
@@ -56,11 +56,10 @@ public class RegionCommands {
     }
 
     @CommandAnnotation(
-            domain = "region.delete",
+            domain = "region.remove",
             permission = "nations.region.delete",
             description = "Removes an existing region",
-            usage = "/terra region remove <name>",
-            tabCompletion = {"remove"}
+            usage = "/terra region remove"
     )
     public static boolean removeRegion(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -88,8 +87,7 @@ public class RegionCommands {
             domain = "region.claim",
             permission = "nations.region.claim",
             description = "Adds Claimes to GridRegions",
-            usage = "/terra region claim",
-            tabCompletion = {"claim"}
+            usage = "/terra region claim"
     )
     public static boolean claimRegion(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);

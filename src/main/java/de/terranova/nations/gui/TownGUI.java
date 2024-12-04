@@ -27,8 +27,10 @@ public class TownGUI extends RoseGUI {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
+        System.out.println("5");
         Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.getId());
         if (OAccess.isEmpty()) return;
+        System.out.println("6");
         AccessLevel access = OAccess.get();
 
         RoseItem filler = new RoseItem.Builder()

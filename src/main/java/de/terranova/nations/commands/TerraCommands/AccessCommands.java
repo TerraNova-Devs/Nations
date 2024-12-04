@@ -13,7 +13,8 @@ public class AccessCommands {
             domain = "access.add.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Fügt den ausgewählten Spieler deiner Region hinzu",
-            usage = "/terra add <player>"
+            usage = "/terra add <player>",
+            tabCompletion = {"name"}
     )
     public static boolean addPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -44,7 +45,8 @@ public class AccessCommands {
             domain = "access.remove.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Entfernt den ausgewählten Spieler von deiner Region",
-            usage = "/terra remove <player>"
+            usage = "/terra remove <player>",
+            tabCompletion = {"name"}
     )
     public static boolean removePlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -73,7 +75,8 @@ public class AccessCommands {
             domain = "access.rank.$ARGUMENT.$ARGUMENT",
             permission = "nations.access.ranks",
             description = "Setzt den Rang eines Spielers",
-            usage = "/terra rank <player> <rank>"
+            usage = "/terra rank <player> <rank>",
+            tabCompletion = {"name,$RANKS"}
     )
     public static boolean rankPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
