@@ -45,26 +45,29 @@ public class Rank {
         } else {
             goalRankObjective = new RankObjective(0, 0, 0, 0, 0, "Coming Soon...", "Coming Soon...", "Coming Soon...");
         }
-
+        int charged;
         switch (objective) {
             case "a":
-                int chargeda = ItemTransfer.charge(p, goalRankObjective.getMaterial_a(), goalRankObjective.getObjective_a() - progressRankObjective.getObjective_a(), false);
-                if (chargeda <= 0) return;
-                progressRankObjective.setObjective_a(progressRankObjective.getObjective_a() + chargeda);
+                charged = ItemTransfer.charge(p, goalRankObjective.getMaterial_a(), goalRankObjective.getObjective_a() - progressRankObjective.getObjective_a(), false);
+                if (charged <= 0) return;
+                rankedRegion.onContribute(goalRankObjective.getMaterial_a(), charged, p.getName());
+                progressRankObjective.setObjective_a(progressRankObjective.getObjective_a() + charged);
                 this.rankObjective = progressRankObjective;
                 rankedRegion.dataBaseCallRank(progressRankObjective);
                 break;
             case "b":
-                int chargedb = ItemTransfer.charge(p, goalRankObjective.getMaterial_b(), goalRankObjective.getObjective_b() - progressRankObjective.getObjective_b(), false);
-                if (chargedb <= 0) return;
-                progressRankObjective.setObjective_b(progressRankObjective.getObjective_b() + chargedb);
+                charged = ItemTransfer.charge(p, goalRankObjective.getMaterial_b(), goalRankObjective.getObjective_b() - progressRankObjective.getObjective_b(), false);
+                if (charged <= 0) return;
+                rankedRegion.onContribute(goalRankObjective.getMaterial_a(), charged, p.getName());
+                progressRankObjective.setObjective_b(progressRankObjective.getObjective_b() + charged);
                 this.rankObjective = progressRankObjective;
                 rankedRegion.dataBaseCallRank(progressRankObjective);
                 break;
             case "c":
-                int chargedc = ItemTransfer.charge(p, goalRankObjective.getMaterial_c(), goalRankObjective.getObjective_c() - progressRankObjective.getObjective_c(), false);
-                if (chargedc <= 0) return;
-                progressRankObjective.setObjective_c(progressRankObjective.getObjective_c() + chargedc);
+                charged = ItemTransfer.charge(p, goalRankObjective.getMaterial_c(), goalRankObjective.getObjective_c() - progressRankObjective.getObjective_c(), false);
+                if (charged <= 0) return;
+                rankedRegion.onContribute(goalRankObjective.getMaterial_a(), charged, p.getName());
+                progressRankObjective.setObjective_c(progressRankObjective.getObjective_c() + charged);
                 this.rankObjective = progressRankObjective;
                 rankedRegion.dataBaseCallRank(progressRankObjective);
                 break;

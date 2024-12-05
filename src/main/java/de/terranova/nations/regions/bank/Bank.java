@@ -2,6 +2,7 @@ package de.terranova.nations.regions.bank;
 
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.RegionType;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -17,19 +18,17 @@ public class Bank {
     private final List<Transaction> transactions;
     private int credit;
     private boolean transactionInProgress = false;
-    private String regionName;
 
-    public Bank(BankHolder holder, String regionName) {
+
+    public Bank(BankHolder holder) {
         this.credit = 0;
         this.holder = holder;
-        this.regionName = regionName;
         transactions = new ArrayList<>();
     }
 
-    public Bank(BankHolder holder, String regionName, int credit) {
+    public Bank(BankHolder holder, int credit) {
         this.credit = credit;
         this.holder = holder;
-        this.regionName = regionName;
         this.transactions = holder.dataBaseRetrieveBank();
     }
 
@@ -39,7 +38,7 @@ public class Bank {
 
         try {
             charged = ItemTransfer.charge(p, "terranova_silver", amount, false);
-            updateBankBalance(p.getName(), charged, "deposited");
+            updateBankBalance(p.getName(), charged);
 
         } finally {
             transactionInProgress = false;
@@ -53,18 +52,18 @@ public class Bank {
         int credited;
         try {
             credited = ItemTransfer.credit(p, "terranova_silver", Math.min(amount, credit), false);
-            updateBankBalance(p.getName(),  -credited, "withdrew");
+            updateBankBalance(p.getName(),  -credited);
         } finally {
             transactionInProgress = false;
         }
         return credited;
     }
 
-    public void cashTransfer(String record,String action, int amount) {
+    public void cashTransfer(String record, int amount) {
         if (!startCashTransaction()) return;
 
         try {
-            updateBankBalance(record, amount, action);
+            updateBankBalance(record, amount);
         } finally {
             transactionInProgress = false;
         }
@@ -85,7 +84,7 @@ public class Bank {
         return true;
     }
 
-    private void updateBankBalance(String record, int amount, String action) {
+    private void updateBankBalance(String record, int amount) {
 
         if (transactions.size() >= 50) transactions.removeFirst();
         Timestamp time = Timestamp.from(Instant.now());
@@ -94,7 +93,7 @@ public class Bank {
         credit += amount;
         holder.dataBaseCallTransaction(credit, amount, record, time);
 
-        Bukkit.getLogger().info(String.format("Player %s -> Settlement %s -> %s %s, Total Amount: %s", record, this.regionName, action, Math.abs(amount), credit));
+        holder.onTransaction(record, credit);
     }
 
     public List<Transaction> getTransactions() {

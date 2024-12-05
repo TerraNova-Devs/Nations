@@ -8,6 +8,7 @@ import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.commands.TerraCommands.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.SettleDBstuff;
+import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.regions.SettleManager;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
@@ -33,6 +34,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.*;
 import java.util.logging.Logger;
@@ -48,12 +52,14 @@ public final class NationsPlugin extends JavaPlugin {
     static public Plugin plugin;
     public YMLHandler skinsYML;
     private Registry<Layer> layerRegistry;
+    public  static FileLogger nationsLogger;
 
     //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
     //EIGENE KLASSE FÜR ACCESS
 
     @Override
     public void onLoad() {
+        nationsLogger = new FileLogger(getDataFolder().getAbsolutePath()+"/logs");
         worldguardFlagRegistry();
         initDatabase();
     }
@@ -96,6 +102,7 @@ public final class NationsPlugin extends JavaPlugin {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        nationsLogger.close();
     }
 
     private void pl3xmapMarkerRegistry() {

@@ -33,7 +33,7 @@ public class SettleManager {
     private List<String> nameCache;
 
     public void addNameToCache(String name) {
-        nameCache.add(name);
+        nameCache.add(name.toLowerCase());
     }
 
     private Registry<Layer> layerRegistry;
@@ -55,6 +55,8 @@ public class SettleManager {
     }
 
     public boolean isNameCached(String name) {
+        System.out.println(name);
+        System.out.println(nameCache);
         return nameCache.contains(name.toLowerCase());
     }
 

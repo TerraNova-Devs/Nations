@@ -42,13 +42,13 @@ class SelectCommands {
         String regionName = args[1].toLowerCase();
         p.sendMessage(regionName);
         if (!NationsPlugin.settleManager.isNameCached(regionName)) {
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht.(x)"));
             return false;
         }
 
         Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettleByName(regionName);
         if (osettle.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht.(z)"));
             return false;
         }
 
