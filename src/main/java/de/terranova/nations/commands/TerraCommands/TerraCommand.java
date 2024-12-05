@@ -26,7 +26,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
         registerCommands(SelectCommands.class, "select");
         registerCommands(AccessCommands.class, "access");
 
-        List<String> strings = CommandUtil.resolvePlaceholder(commandTabReplacements);
+        List<String> strings = CommandManager.resolvePlaceholder(commandTabReplacements);
         if(NationsPlugin.debug){
             System.out.println(commandTabReplacements.keySet());
             System.out.println(strings);
