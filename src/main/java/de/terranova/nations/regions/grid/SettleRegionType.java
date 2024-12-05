@@ -50,7 +50,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         this.rank = new Rank(this, level, rankObjective);
         this.access = new Access(this);
         this.region = getWorldguardRegion();
-        this.bank = new Bank(this, this.name,rankObjective.getSilver());
+        this.bank = new Bank(this, rankObjective.getSilver());
         this.claims = RegionClaimFunctions.getClaimAnzahl(settlementUUID);
         //funktioniert nicht im Constructor
         npc.getCitizensNPCbySUUID();
@@ -74,7 +74,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         this.npc = new NPCr(name, p.getLocation(), id);
         //setLevel braucht NPC
         setLevel();
-        this.bank = new Bank(this, this.name);
+        this.bank = new Bank(this);
 
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }
@@ -116,6 +116,12 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     }
 
     //Bank
+    @Override
+    public void onTransaction(String record, int amount){
+        NationsPlugin.nationsLogger.logInfo("(Transfer) Type: " + this.getType() + " ID: " + this.id + " Name: " + this.name + " User: " + record + " Amount: " + amount + " BankCredit: " + bank.getCredit());
+    }
+
+
     @Override
     public Bank getBank() {
         return this.bank;
@@ -178,8 +184,14 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     @Override
     public void onLevelUP() {
         SettleDBstuff settleDB = new SettleDBstuff(this.id, this.getType());
+        NationsPlugin.nationsLogger.logInfo("(LevelUp) Type: " + this.getType() + " ID: " + this.id + " Name: " + this.name + " Level: " + (rank.getLevel()-1) + " -> " + rank.getLevel());
         settleDB.setLevel(rank.getLevel());
         setLevel();
+    }
+
+    @Override
+    public void onContribute(String material, int amount, String username){
+        NationsPlugin.nationsLogger.logInfo("(UpgradeContribute) Type: " + this.getType() + " ID: " + this.id + " Name: " + this.name + " Username: " + username + " Material: " + material + " Amount: " + amount);
     }
 
     @Override

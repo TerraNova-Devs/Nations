@@ -62,7 +62,7 @@ public class TownUpgradeGUI extends RoseGUI {
                 .build();
         if (canLevelup) {
             submit.onClick(e -> {
-                settle.getBank().cashTransfer("Region-LevelUp","remove",-goalRankObjective.getSilver());
+                settle.getBank().cashTransfer("Region-LevelUp",-goalRankObjective.getSilver());
                 settle.getRank().levelUP();
 
                 new TownUpgradeGUI(player, settle).open();
