@@ -56,6 +56,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         region.setFlag(Flags.DENY_SPAWN, set);
         region.setFlag(Flags.PVP, StateFlag.State.DENY);
         access.setAccessLevel(p.getUniqueId(), AccessLevel.MAJOR);
+        RegionLayer.updateRegion(this);
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }
 

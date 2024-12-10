@@ -51,8 +51,8 @@ public class NPCr implements RegionTypeListener {
     }
 
     public boolean verifyNPC() {
-        boolean beenFound = false;
         if (this.npc == null) {
+            boolean beenFound = false;
             for (NPC npc : CitizensAPI.getNPCRegistry()) {
                 if (!npc.hasTrait(SettleTrait.class)) continue;
                 if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
@@ -61,8 +61,9 @@ public class NPCr implements RegionTypeListener {
                     break;
                 }
             }
+            return beenFound;
         }
-        return beenFound;
+        return true;
     }
 
     public void tpNPC(Location location) {
