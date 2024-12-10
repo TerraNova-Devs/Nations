@@ -1,36 +1,60 @@
 package de.terranova.nations.regions.base;
 
-import de.terranova.nations.regions.SettleManager;
-import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.bank.Bank;
-import de.terranova.nations.regions.grid.SettleRegionType;
-import de.terranova.nations.regions.npc.NPCr;
-import de.terranova.nations.regions.rank.Rank;
-import de.terranova.nations.regions.rank.RankObjective;
+import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public abstract class GridRegionType extends RegionType {
 
-    protected int claims;
+    public static List<Vectore2> locationCache = new ArrayList<>();
     protected final Vectore2 location;
+    protected int claims;
 
     public GridRegionType(String name, UUID id, String type, Vectore2 location) {
         super(name, id, type);
         this.location = location;
+        this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
     }
-
-    @Override
-    public abstract void remove();
 
     public abstract int getMaxClaims();
 
     @Override
-    public void postInit(Player p) {
+    public final void onCreation(Player p) {
+        this.region = RegionClaimFunctions.createClaim(name, p, this.id);
+        locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
+        onGridCreation(p);
+    }
 
+    public void onGridCreation(Player p) {
+
+    }
+
+    @Override
+    public final void onRemove() {
+        GridRegionType.locationCache.remove(this.location);
+        RegionTypeDatabase database = new RegionTypeDatabase(getId());
+        database.removeGridRegion();
+        onGridRemove();
+    }
+
+    @Override
+    public void onRename(String name) {
+        RegionTypeDatabase database = new RegionTypeDatabase(getId());
+        database.updateGridRegionName(name);
+    }
+
+    public void onGridRemove() {
+
+    }
+
+    @Override
+    public final void dataBaseCall() {
+        RegionTypeDatabase database = new RegionTypeDatabase(getId());
+        database.insertGridRegion(this);
     }
 
     public Vectore2 getLocation() {

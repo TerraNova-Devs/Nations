@@ -67,6 +67,7 @@ public class AccessCommands {
         }
 
         cache.getRegion().removeMember(target.getUniqueId());
+        access.getAccess().removeAccess(target.getUniqueId());
         sendSuccessMessages(p, target, cache.getRegion().getName(), "entfernt");
         return true;
     }

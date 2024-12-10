@@ -17,23 +17,20 @@ public class FileLogger {
     private int fileId;
     private String path; // Path to the log directory
     private String className; // For the initial header line
+    private String filename;
 
-    public FileLogger(String path) {
-        // Initialize the logger
-        logger = Logger.getLogger(FileLogger.class.getName());
-        logger.setUseParentHandlers(false); // Disable console logging
+    public FileLogger(String path, String filename) {
+        // Initialize the logger with a unique name
+        this.logger = Logger.getLogger(FileLogger.class.getName() + "_" + filename);
+        this.logger.setUseParentHandlers(false); // Disable console logging
 
-        // Store the provided path
+        // Rest of the constructor remains the same
         this.path = path;
         this.className = FileLogger.class.getName();
+        this.filename = filename;
 
-        // Initialize the current date
-        currentDate = LocalDate.now();
-
-        // Determine the next available file ID
-        fileId = getNextFileId(currentDate);
-
-        // Set up the FileHandler
+        this.currentDate = LocalDate.now();
+        this.fileId = getNextFileId(currentDate);
         setupFileHandler();
     }
 
@@ -68,7 +65,7 @@ public class FileLogger {
     private String getFileNameForDate(LocalDate date, int id) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd_MMMM_yyyy");
         String dateString = date.format(formatter);
-        String fileName = String.format("Nations_%s_%d.log", dateString, id);
+        String fileName = String.format(filename + "_%s_%d.log", dateString, id);
 
         // Combine the path and file name
         if (path != null && !path.isEmpty()) {

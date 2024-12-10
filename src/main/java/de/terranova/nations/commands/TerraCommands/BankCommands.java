@@ -122,7 +122,7 @@ public class BankCommands {
             p.sendMessage("No Transactions found");
         } else {
             for (Transaction t : bank.getBank().getTransactions()) {
-                p.sendMessage(Chat.cottonCandy(String.format("Transaktion: %s -> %s am %s",t.user,t.amount,Chat.prettyInstant(t.date))));
+                p.sendMessage(Chat.cottonCandy(String.format("Transaktion: %s -> %s am %s (%s)",t.user,t.amount,Chat.prettyInstant(t.timestamp.toInstant()),t.total)));
             }
         }
         return true;

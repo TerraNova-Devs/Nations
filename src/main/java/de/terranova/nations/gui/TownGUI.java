@@ -5,6 +5,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.npc.NPCSkins;
@@ -27,11 +28,10 @@ public class TownGUI extends RoseGUI {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        System.out.println("5");
-        Optional<AccessLevel> OAccess = NationsPlugin.settleManager.getAccessLevel(player, settle.getId());
-        if (OAccess.isEmpty()) return;
-        System.out.println("6");
-        AccessLevel access = OAccess.get();
+        if(!(settle instanceof AccessControlled access)) {
+            return;
+        }
+
 
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)

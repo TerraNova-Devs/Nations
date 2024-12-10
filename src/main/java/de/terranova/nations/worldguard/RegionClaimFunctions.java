@@ -15,7 +15,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -135,32 +134,6 @@ public class RegionClaimFunctions {
         return new Vectore2(x + 24, z + 24);
     }
 
-    //Später mehr als nur die erste zurückgeben
-    public static Optional<ProtectedRegion> checkSurrAreaForSettles(Player p) {
-        int nx = (int) Math.floor(p.getLocation().x() / 48);
-        int nz = (int) Math.floor(p.getLocation().z() / 48);
-
-        Vector2 north = Vector2.at(nx - 1, nz);
-        Vector2 south = Vector2.at(nx + 1, nz);
-        Vector2 west = Vector2.at(nx, nz - 1);
-        Vector2 east = Vector2.at(nx, nz + 1);
-
-        BlockVector3[] bpos = new BlockVector3[]{BlockVector3.at(north.x() * 48, -64, north.z() * 48), BlockVector3.at(south.x() * 48, -64, south.z() * 48), BlockVector3.at(west.x() * 48, -64, west.z() * 48), BlockVector3.at(east.x() * 48, -64, east.z() * 48)};
-
-        LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
-        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-        RegionManager regions = container.get(lp.getWorld());
-
-        for (BlockVector3 pos : bpos) {
-            assert regions != null;
-            ApplicableRegionSet set = regions.getApplicableRegions(pos);
-            if (!(set.size() == 0)) {
-                return set.getRegions().stream().findFirst();
-            }
-        }
-        return Optional.empty();
-    }
-
     public static boolean checkAreaForSettles(Player p) {
         LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
@@ -177,21 +150,18 @@ public class RegionClaimFunctions {
         assert world != null;
         RegionManager regions = container.get(BukkitAdapter.adapt(world));
 
-        //System.out.println("starte adden");
         for (ProtectedRegion region : regions.getRegions().values()) {
-            //System.out.println("iteriere" + region.getFlag(settlementFlag.SETTLEMENT_UUID_FLAG) + "fffffffff" +  settle.toString());
+
             if (!Objects.equals(region.getFlag(RegionFlag.REGION_UUID_FLAG), settle.toString())) continue;
-            //System.out.println("Volumen: " + region.getId());
-            //System.out.println("Volumen: " + region.volume());
+
             List<Vectore2> list2 = new ArrayList();
             list2.addAll(Vectore2.fromBlockVectorList(region.getPoints()));
             List<Vectore2> list3;
             list3 = claimCalc.aufplustern(claimCalc.normalisieren(list2));
 
-
             return (int) claimCalc.area(list3.toArray(new Vectore2[list3.size()])) / 2304;
         }
-        return Integer.MAX_VALUE;
+        return 1;
     }
 
     public static void remove(String name) {

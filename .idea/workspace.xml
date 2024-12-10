@@ -9,9 +9,61 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="Fixed Bugs and added local logs">
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/CommandUtil.java" beforeDir="false" />
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="removed old code">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeEventBus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeListener.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/RankDatabase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/access.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/bank.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/rank.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/database/regions.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/api/SettleAPI.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/CommandManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/DomainCommandResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/DomainTabCompleter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/DomainTabResolver.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/BankCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/RegionCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/SelectCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommands/TerraCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/SettleDBstuff.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/logging/FileLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/logging/FileLogger.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/Pl3xMapSettlementLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/SettleManager.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessControlled.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessControlled.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankHolder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankHolder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/GridRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/GridRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/PolyRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/PolyRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/OutpostRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/OutpostRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionTypeFactory.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/Rank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/Rank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/RankedRegion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/RankedRegion.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionFlag.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionFlag.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/RegionHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/SettleHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/NationsRegionFlag/SettleHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/RegionClaimFunctions.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/RegionClaimFunctions.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/Vectore2.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/worldguard/math/Vectore2.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/transaction.sql" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Pl3xMap/config.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -131,6 +183,10 @@
   &quot;keyToStringList&quot;: {
     &quot;DatabaseDriversLRU&quot;: [
       &quot;mariadb&quot;
+    ],
+    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
+      &quot;MariaDB&quot;,
+      &quot;MySQL&quot;
     ]
   }
 }</component>
@@ -363,7 +419,15 @@
       <workItem from="1733161049399" duration="4488000" />
       <workItem from="1733231997184" duration="8859000" />
       <workItem from="1733315571434" duration="1064000" />
-      <workItem from="1733319116548" duration="21659000" />
+      <workItem from="1733319116548" duration="21809000" />
+      <workItem from="1733404247783" duration="9626000" />
+      <workItem from="1733580713111" duration="7179000" />
+      <workItem from="1733662940253" duration="5950000" />
+      <workItem from="1733697659730" duration="9864000" />
+      <workItem from="1733749052174" duration="2010000" />
+      <workItem from="1733753169603" duration="22874000" />
+      <workItem from="1733795109268" duration="9125000" />
+      <workItem from="1733833879706" duration="30250000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -629,7 +693,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733358361487</updated>
     </task>
-    <option name="localTasksCounter" value="34" />
+    <task id="LOCAL-00034" summary="removed old code">
+      <option name="closed" value="true" />
+      <created>1733358559644</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1733358559644</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -640,7 +712,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="cleaned up gitignore" />
     <MESSAGE value="abstracted settlement into a propertyType, introduced property types" />
     <MESSAGE value="added Oraxen to gitignore" />
     <MESSAGE value="working towards making outposts and regions createbale again" />
@@ -665,7 +736,8 @@
     <MESSAGE value="fixed error where name check in SettleRegionFactory was inverted" />
     <MESSAGE value="added simple tab completion placeholder still have to be replaced" />
     <MESSAGE value="Fixed Bugs and added local logs" />
-    <option name="LAST_COMMIT_MESSAGE" value="Fixed Bugs and added local logs" />
+    <MESSAGE value="removed old code" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed old code" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

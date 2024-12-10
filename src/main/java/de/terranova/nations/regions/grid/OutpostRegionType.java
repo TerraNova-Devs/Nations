@@ -2,6 +2,7 @@ package de.terranova.nations.regions.grid;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.regions.base.GridRegionType;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -24,14 +25,9 @@ public class OutpostRegionType extends RegionType {
     }
 
     public static OutpostRegionType conditionCheck(Player p, String[] args) {
-        Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getOwnedSettlement(p);
-        if(osettle.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Du besitzt keine Stadt für die du einen Aussenposten gründen kannst."));
-            return null;
-        }
+
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
-        SettleRegionType settle = osettle.get();
-        if (!NationsPlugin.settleManager.isNameCached(name)) {
+        if (!RegionType.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }
@@ -41,7 +37,7 @@ public class OutpostRegionType extends RegionType {
         }
 
         double abstand = Integer.MAX_VALUE;
-        for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
+        for (Vectore2 location : GridRegionType.locationCache) {
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
                 abstand = abstandneu;
@@ -54,7 +50,7 @@ public class OutpostRegionType extends RegionType {
         }
 
         double abstand2 = Integer.MAX_VALUE;
-        for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
+        for (Vectore2 location : GridRegionType.locationCache) {
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand2 == Integer.MAX_VALUE || abstand2 > abstandneu) {
                 abstand2 = abstandneu;
@@ -70,7 +66,7 @@ public class OutpostRegionType extends RegionType {
     }
 
     @Override
-    public void remove() {
+    public void dataBaseCall() {
 
     }
 }

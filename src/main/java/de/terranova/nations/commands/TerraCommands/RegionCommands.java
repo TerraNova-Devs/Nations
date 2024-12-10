@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.GridRegionType;
 import de.terranova.nations.regions.base.RegionType;
@@ -44,7 +45,7 @@ public class RegionCommands {
             return false;
         }
 
-        Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name, p);
+        Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name ,p);
         if (regionTypeOpt.isPresent()) {
             //RegionType regionType = regionTypeOpt.get();
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
@@ -105,7 +106,7 @@ public class RegionCommands {
 
 
         double abstand = Integer.MAX_VALUE;
-        for (Vectore2 location : NationsPlugin.settleManager.locationCache) {
+        for (Vectore2 location : GridRegionType.locationCache) {
             if (region.getLocation().equals(location)) continue;
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
@@ -133,8 +134,8 @@ public class RegionCommands {
         }
 
         RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
-        if(cache.getRegion() instanceof SettleRegionType){
-            NationsPlugin.settleManager.addSettlementsToPl3xmap();
+        if(cache.getRegion() instanceof SettleRegionType settle){
+            RegionLayer.updateRegion(settle);
         }
         region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
         p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));

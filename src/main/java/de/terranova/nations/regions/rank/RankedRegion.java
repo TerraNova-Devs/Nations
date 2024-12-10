@@ -1,5 +1,6 @@
 package de.terranova.nations.regions.rank;
 
+import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.npc.NPCr;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.ApiStatus;
@@ -15,7 +16,5 @@ public interface RankedRegion {
     default void onContribute(String material, int amount, String username){}
 
     Rank getRank();
-
-    void dataBaseCallRank(RankObjective progressRankObjective);
 
 }

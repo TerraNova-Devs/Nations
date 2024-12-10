@@ -75,7 +75,7 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.184.0")
-  implementation("de.mcterranova:terranova-lib:0.7.5")
+  implementation("de.mcterranova:terranova-lib:0.7.6")
 }
 
 tasks {
@@ -96,18 +96,24 @@ tasks {
 
 bukkitPluginYaml {
   name = "Nations"
-  version = "1.0.0-SNAPSHOT"
-  main = "io.papermc.paperweight.testplugin.TestPlugin"
-  load = BukkitPluginYaml.PluginLoadOrder.STARTUP
-  authors.add("gerryxn")
+  version = project.version.toString()
+  main = "${project.group}.NationsPlugin"
   apiVersion = "1.21"
-  prefix = "TerraNova"
-  website = "mcterranova.de"
-  description = "Nations Plugin tailored & written by & for TerraNova."
-  //commands:
-  //settle:
-  //description: Command facilitates settlements creation.
-  //depend: [WorldGuard, Citizens]
+  authors = listOf("gerryxn", "bastizeit")
+  prefix = "Nations"
+  website = "https://mcterranova.de"
+  description = project.description.toString()
+  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "Pl3xMap", "WorldGuardExtraFlags", "Oraxen")
+
+  commands {
+    register("terra") {
+      description = "The main command for TerraNova Nations."
+      usage = "/terra <region|bank> <subcommand>"
+      aliases = listOf("t")
+      permission = "nations.use"
+      permissionMessage = "You do not have permission to use this command."
+    }
+  }
 }
 
 tasks.processResources {

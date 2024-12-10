@@ -1,5 +1,7 @@
 package de.terranova.nations.regions.access;
 
+import de.terranova.nations.regions.base.RegionType;
+import de.terranova.nations.regions.base.RegionTypeListener;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 
@@ -8,19 +10,19 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.UUID;
 
-public class Access {
+public class Access implements RegionTypeListener {
 
-    private AccessControlled controlled;
+    private RegionType regionType;
     private HashMap<UUID, AccessLevel> accessLevel = new HashMap<>();
+    AccessDatabase accessDatabase;
 
-    public Access(AccessControlled controlled) {
-        this.controlled = controlled;
-        this.accessLevel = controlled.dataBaseRetrieveAccess();
-    }
+    public Access(RegionType regionType) {
+        if(!(regionType instanceof AccessControlled)) throw new IllegalArgumentException();
+        this.regionType = regionType;
+        this.accessDatabase = new AccessDatabase(regionType.getId());
+        this.accessLevel = accessDatabase.getMembersAccess();
+        regionType.addListener(this);
 
-    public Access(AccessControlled controlled, UUID uuid, AccessLevel access) {
-        this.controlled = controlled;
-        setAccessLevel(uuid, access);
     }
 
     public HashMap<UUID, AccessLevel> getAccessLevels() {
@@ -32,10 +34,11 @@ public class Access {
     }
 
 
+
     public void removeAccess(UUID uuid){
         HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
         accessLevels.remove(uuid);
-        controlled.dataBaseCallAccess(uuid, null);
+        accessDatabase.changeMemberAccess(uuid, null);
         setAccessLevels(accessLevels);
     };
 
@@ -46,7 +49,7 @@ public class Access {
         } else {
             accessLevels.put(uuid, accessLevel);
         }
-        controlled.dataBaseCallAccess(uuid, accessLevel);
+        accessDatabase.changeMemberAccess(uuid, accessLevel);
         setAccessLevels(accessLevels);
     }
 
@@ -83,5 +86,9 @@ public class Access {
         return output;
     }
 
+    @Override
+    public void onRegionTypeRemoved(){
+        accessDatabase.removeEveryAccess();
+    }
 
 }

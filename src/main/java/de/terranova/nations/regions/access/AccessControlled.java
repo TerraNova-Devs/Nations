@@ -8,9 +8,6 @@ import java.util.UUID;
 public interface AccessControlled {
 
     Access getAccess();
-    void dataBaseCallAccess(UUID PUUID, AccessLevel access);
-    HashMap<UUID, AccessLevel> dataBaseRetrieveAccess();
-
-
+    UUID getId();
 
 }
