@@ -3,6 +3,7 @@ package de.terranova.nations.citizens;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.gui.TownGUI;
 import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.RegionManager;
 import net.citizensnpcs.api.event.NPCRightClickEvent;
 import net.citizensnpcs.api.persistence.Persist;
 import net.citizensnpcs.api.trait.Trait;
@@ -46,7 +47,8 @@ public class SettleTrait extends Trait {
         System.out.println("2");
         if (!player.hasPermission("nations.menu")) return;
         System.out.println("3");
-        Optional<SettleRegionType> osettle = NationsPlugin.settleManager.getSettle(settlement_uuid);
+
+        Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", settlement_uuid);
         if(osettle.isEmpty()) return;
         System.out.println("4");
         new TownGUI(player, osettle.get()).open();

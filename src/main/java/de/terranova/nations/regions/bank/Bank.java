@@ -1,35 +1,39 @@
 package de.terranova.nations.regions.bank;
 
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
+import de.mcterranova.terranovaLib.database.UniqueTimestampGenerator;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.RegionType;
-import org.bukkit.Bukkit;
+import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.regions.rank.RankedRegion;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-public class Bank {
+public class Bank implements RegionTypeListener {
 
-    private BankHolder holder;
+    private static final UniqueTimestampGenerator tsg = new UniqueTimestampGenerator();
+
     private final List<Transaction> transactions;
     private int credit;
     private boolean transactionInProgress = false;
+    private final BankDatabase bankDatabase;
+    private final RegionType regionType;
+    private final BankHolder bankHolder;
 
-
-    public Bank(BankHolder holder) {
-        this.credit = 0;
-        this.holder = holder;
-        transactions = new ArrayList<>();
-    }
-
-    public Bank(BankHolder holder, int credit) {
-        this.credit = credit;
-        this.holder = holder;
-        this.transactions = holder.dataBaseRetrieveBank();
+    public Bank(RegionType regionType) {
+        if(!(regionType instanceof BankHolder bankHolderr)) throw new IllegalArgumentException();
+        this.bankDatabase = new BankDatabase(regionType.getId());
+        this.transactions = bankDatabase.getLatestTransactions();
+        Optional<Transaction> latestTransaction = bankDatabase.getLatestBankStatus();
+        latestTransaction.ifPresent(transaction -> this.credit = transaction.total);
+        this.regionType = regionType;
+        this.bankHolder = bankHolderr;
+        regionType.addListener(this);
     }
 
     public Integer cashInFromInv(Player p, int amount) {
@@ -85,15 +89,14 @@ public class Bank {
     }
 
     private void updateBankBalance(String record, int amount) {
-
         if (transactions.size() >= 50) transactions.removeFirst();
-        Timestamp time = Timestamp.from(Instant.now());
-        transactions.add(new Transaction(record, amount, time));
+        Timestamp timestamp = tsg.generate(regionType.getId());
+        Transaction transaction = new Transaction(record, amount, timestamp, credit += amount);
 
-        credit += amount;
-        holder.dataBaseCallTransaction(credit, amount, record, time);
-
-        holder.onTransaction(record, credit);
+        bankDatabase.insertTransaction(transaction);
+        transactions.add(transaction);
+        NationsPlugin.nationsLogger.logInfo("(Transfer) Type: " + regionType.getType() + ", ID: " + regionType.getId() + ", Name: " + regionType.getName() + ", User: " + record + ", Amount: " + amount + ", BankCredit: " + credit);
+        bankHolder.onTransaction(record, amount);
     }
 
     public List<Transaction> getTransactions() {
@@ -108,7 +111,8 @@ public class Bank {
         return this;
     }
 
-    public void setHolder(BankHolder holder) {
-        this.holder = holder;
+    @Override
+    public void onRegionTypeRemoved(){
+        bankDatabase.deleteAllEntries();
     }
 }

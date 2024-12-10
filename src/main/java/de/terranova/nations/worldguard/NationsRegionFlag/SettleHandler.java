@@ -11,8 +11,8 @@ import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import com.sk89q.worldguard.session.handler.Handler;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.RegionManager;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
 import java.util.Optional;
@@ -40,9 +40,9 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : exited) {
                 String flag = region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 if (flag == null || flag.isEmpty()) return true;
-                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
-                if(Osettle.isEmpty()) return true;
-                SettleRegionType settle = Osettle.get();
+                Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+                if(osettle.isEmpty()) return true;
+                SettleRegionType settle = osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.getName().replaceAll("_", " "))));
             }
 
@@ -50,9 +50,9 @@ public class SettleHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : entered) {
                 String flag = region.getFlag(SettleFlag.SETTLEMENT_UUID_FLAG);
                 if (flag == null || flag.isEmpty()) return true;
-                Optional<SettleRegionType> Osettle = NationsPlugin.settleManager.getSettle(UUID.fromString(flag));
-                if(Osettle.isEmpty()) return true;
-                SettleRegionType settle = Osettle.get();
+                Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+                if(osettle.isEmpty()) return true;
+                SettleRegionType settle = osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.getName().replaceAll("_", " "))));
             }
         }
