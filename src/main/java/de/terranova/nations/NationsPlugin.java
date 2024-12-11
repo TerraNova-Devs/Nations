@@ -17,11 +17,14 @@ import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
+import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
 import net.pl3x.map.core.registry.Registry;
 import net.pl3x.map.core.world.World;
 import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.DumperOptions;
@@ -41,7 +44,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
-public final class NationsPlugin extends JavaPlugin {
+public final class NationsPlugin extends JavaPlugin implements Listener {
 
     public static boolean debug = true;
     //public YMLHandler levelYML;
@@ -69,6 +72,7 @@ public final class NationsPlugin extends JavaPlugin {
     public void onEnable() {
         //Stillbugs is used to send Action Bar to player later
         plugin = this;
+        citizensTraitRegistry();
         worldguardHandlerRegistry();
         pl3xmapMarkerRegistry();
         layerRegistry.register("settlement-layer",new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
@@ -76,15 +80,17 @@ public final class NationsPlugin extends JavaPlugin {
         commandRegistry();
         listenerRegistry();
         serilizationRegistry();
-        citizensTraitRegistry();
         nationsRegionTypeRegistry();
-        RegionManager.cacheRegions("settle", RegionTypeDatabase.fetchRegions("settle"));
         try {
             loadConfigs();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
 
+    @EventHandler
+    public void onCitizensEnable(CitizensEnableEvent event) {
+        RegionManager.cacheRegions("settle", RegionTypeDatabase.fetchRegions("settle"));
     }
 
     private void nationsRegionTypeRegistry() {
@@ -115,6 +121,7 @@ public final class NationsPlugin extends JavaPlugin {
     }
 
     private void citizensTraitRegistry() {
+        System.out.println("DEBUG Trait registering");
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettleTrait.class));
     }
 
@@ -152,6 +159,7 @@ public final class NationsPlugin extends JavaPlugin {
 
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
+        Bukkit.getPluginManager().registerEvents(this, this);
     }
 
     public void serilizationRegistry() {
