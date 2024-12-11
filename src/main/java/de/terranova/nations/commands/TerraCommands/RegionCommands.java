@@ -134,10 +134,11 @@ public class RegionCommands {
         }
 
         RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
+
+        region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
         if(cache.getRegion() instanceof SettleRegionType settle){
             RegionLayer.updateRegion(settle);
         }
-        region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
         p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
 
         return true;
