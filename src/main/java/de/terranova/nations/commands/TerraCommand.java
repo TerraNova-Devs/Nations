@@ -1,10 +1,11 @@
-package de.terranova.nations.commands.TerraCommands;
+package de.terranova.nations.commands;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.commands.CommandAnnotation;
-import de.terranova.nations.commands.DomainCommandResolver;
-import de.terranova.nations.commands.DomainTabResolver;
+import de.terranova.nations.regions.access.AccessCommands;
+import de.terranova.nations.regions.bank.BankCommands;
+import de.terranova.nations.regions.base.RegionCommands;
+import de.terranova.nations.regions.base.SelectCommands;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
