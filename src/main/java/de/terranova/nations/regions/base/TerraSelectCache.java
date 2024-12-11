@@ -1,7 +1,6 @@
-package de.terranova.nations.commands.TerraCommands;
+package de.terranova.nations.regions.base;
 
 import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.access.AccessControlled;
 
 import java.util.HashMap;

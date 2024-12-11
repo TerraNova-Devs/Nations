@@ -1,15 +1,14 @@
-package de.terranova.nations.commands.TerraCommands;
+package de.terranova.nations.regions.base;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.commands.CommandAnnotation;
-import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.RegionManager;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-class SelectCommands {
+public class SelectCommands {
 
     @CommandAnnotation(
             domain = "select",
@@ -66,4 +65,5 @@ class SelectCommands {
 
         return true;
     }
+
 }

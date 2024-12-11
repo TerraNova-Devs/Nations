@@ -1,4 +1,4 @@
-package de.terranova.nations.commands.TerraCommands;
+package de.terranova.nations.regions.base;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -6,18 +6,14 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.commands.CommandAnnotation;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.base.GridRegionType;
-import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
@@ -143,4 +139,36 @@ public class RegionCommands {
 
         return true;
     }
+    @CommandAnnotation(
+            domain = "region.rename.$ARGUMENT",
+            permission = "nations.region.rename",
+            description = "Renames a Region",
+            usage = "/terra region rename $ARGUMENT"
+    )
+    public static boolean renameRegion(Player p, String[] args) {
+        TerraSelectCache cache = hasSelect(p);
+        if (cache == null) return false;
+        AccessLevel access = cache.getAccess();
+        if (!hasAccess(access, AccessLevel.MAJOR)) {
+            p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
+            return false;
+        }
+        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length))).toLowerCase();
+        if (!name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
+            p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
+            return false;
+        }
+
+        if (!RegionType.getNameCache().contains(name)) {
+            p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
+            return false;
+        }
+
+        cache.getRegion().renameRegion(name);
+        return false;
+    }
+
+
+
+
 }
