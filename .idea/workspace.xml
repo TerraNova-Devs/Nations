@@ -9,11 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="bug fixes -&gt; npc duplication, map updates on region creation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/RankDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/rank/RankDatabase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -378,7 +380,7 @@
       <workItem from="1733749052174" duration="2010000" />
       <workItem from="1733753169603" duration="22874000" />
       <workItem from="1733795109268" duration="9125000" />
-      <workItem from="1733833879706" duration="32236000" />
+      <workItem from="1733833879706" duration="37457000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -660,7 +662,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733872185426</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary="bug fixes -&gt; npc duplication, map updates on region creation">
+      <option name="closed" value="true" />
+      <created>1733875003806</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1733875003806</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -671,7 +681,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added Oraxen to gitignore" />
     <MESSAGE value="working towards making outposts and regions createbale again" />
     <MESSAGE value="optimated Citizen/Town Menu open code" />
     <MESSAGE value="working towards that regions are creatable again" />
@@ -696,7 +705,8 @@
     <MESSAGE value="Fixed Bugs and added local logs" />
     <MESSAGE value="removed old code" />
     <MESSAGE value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
+    <MESSAGE value="bug fixes -&gt; npc duplication, map updates on region creation" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixes -&gt; npc duplication, map updates on region creation" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -26,6 +26,7 @@ public class NPCr implements RegionTypeListener {
         this.regionType = regionType;
         if(!verifyNPC()){
             if(regionType instanceof GridRegionType gridRegionType){
+                System.out.println("DEBUG NPC wird erstellt");
                 this.npc = createNPC(regionType.getName(), gridRegionType.getLocation().asLocation());
             }
         }
@@ -56,13 +57,16 @@ public class NPCr implements RegionTypeListener {
             for (NPC npc : CitizensAPI.getNPCRegistry()) {
                 if (!npc.hasTrait(SettleTrait.class)) continue;
                 if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
+                    System.out.println("DEBUG NPC GEFUNDEN");
                     this.npc = npc;
                     beenFound = true;
                     break;
                 }
             }
+            System.out.println("DEBUG" + beenFound);
             return beenFound;
         }
+        System.out.println("NPC vorhanden");
         return true;
     }
 

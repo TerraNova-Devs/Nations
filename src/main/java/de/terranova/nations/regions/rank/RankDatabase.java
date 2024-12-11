@@ -98,7 +98,7 @@ public class RankDatabase {
         if (!"obj_a".equals(column) && !"obj_b".equals(column) && !"obj_c".equals(column)) {
             throw new IllegalArgumentException("Invalid column name: " + column);
         }
-        String sql = String.format(queries.get("update objective "),column);
+        String sql = String.format(queries.get("update objective"),column);
         if (sql == null) throw new IllegalArgumentException("Query not found!");
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement preparedStatement = con.prepareStatement(sql)) {

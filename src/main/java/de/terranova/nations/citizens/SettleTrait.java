@@ -19,18 +19,16 @@ import java.util.UUID;
 @TraitName("nations-settlement-uuid")
 public class SettleTrait extends Trait {
 
-    NationsPlugin plugin;
-
     @Persist("nations-settlement-uuid")
     UUID settlement_uuid;
 
     public SettleTrait() {
         super("nations-settlement-uuid");
-        plugin = JavaPlugin.getPlugin(NationsPlugin.class);
     }
 
     public void load(DataKey key) {
         settlement_uuid = UUID.fromString(key.getString("settlement_uuid"));
+        System.out.println("DEBUG data key loadet");
     }
 
     public void save(DataKey key) {
@@ -39,18 +37,13 @@ public class SettleTrait extends Trait {
 
     @EventHandler
     public void onRightClickNPC(NPCRightClickEvent event) {
-        System.out.println("0");
         if (event.getNPC() != this.getNPC()) return;
-        System.out.println("1");
         Player player = event.getClicker().getPlayer();
         if (player == null) return;
-        System.out.println("2");
         if (!player.hasPermission("nations.menu")) return;
-        System.out.println("3");
 
         Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", settlement_uuid);
         if(osettle.isEmpty()) return;
-        System.out.println("4");
         new TownGUI(player, osettle.get()).open();
     }
 
