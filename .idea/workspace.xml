@@ -9,7 +9,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="bug fixes -&gt; npc duplication, objective sql whitespace" />
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="bug fixes -&gt; plexmap claim display lagging one behind">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Proficisci-1.0.0-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Proficisci-1.0.0-all.jar" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -102,44 +106,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Download Sources.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Nations [shadowJar].executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Nations [wrapper].executor&quot;: &quot;Run&quot;,
-    &quot;JAR Application.testserver.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/marte/Desktop/TerraNova Repositories/Nations/testserver/plugins/Nations&quot;,
-    &quot;list.type.of.created.stylesheet&quot;: &quot;CSS&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Download Sources.executor": "Run",
+    "Gradle.Nations [shadowJar].executor": "Run",
+    "Gradle.Nations [wrapper].executor": "Run",
+    "JAR Application.testserver.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/marte/Desktop/TerraNova Repositories/Nations/testserver/plugins",
+    "list.type.of.created.stylesheet": "CSS",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Project",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;mariadb&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mariadb"
     ],
-    &quot;com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect&quot;: [
-      &quot;MariaDB&quot;,
-      &quot;MySQL&quot;
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "MariaDB",
+      "MySQL"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Nations" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\src\main\resources\settlement" />
-      <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Opibus" />
       <recent name="C:\Users\marte\Desktop\TerraNova Repositories\Nations\testserver\plugins\Pl3xMap\web\images\banner" />
     </key>
@@ -372,7 +376,7 @@
       <workItem from="1733749052174" duration="2010000" />
       <workItem from="1733753169603" duration="22874000" />
       <workItem from="1733795109268" duration="9125000" />
-      <workItem from="1733833879706" duration="37889000" />
+      <workItem from="1733833879706" duration="39172000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -670,7 +674,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733881534230</updated>
     </task>
-    <option name="localTasksCounter" value="38" />
+    <task id="LOCAL-00038" summary="bug fixes -&gt; plexmap claim display lagging one behind">
+      <option name="closed" value="true" />
+      <created>1733882277809</created>
+      <option name="number" value="00038" />
+      <option name="presentableId" value="LOCAL-00038" />
+      <option name="project" value="LOCAL" />
+      <updated>1733882277809</updated>
+    </task>
+    <option name="localTasksCounter" value="39" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -681,7 +693,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="optimated Citizen/Town Menu open code" />
     <MESSAGE value="working towards that regions are creatable again" />
     <MESSAGE value="creating settlements works again" />
     <MESSAGE value="working towards new rank mechanic (just internal)" />
@@ -706,7 +717,8 @@
     <MESSAGE value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
     <MESSAGE value="bug fixes -&gt; npc duplication, map updates on region creation" />
     <MESSAGE value="bug fixes -&gt; npc duplication, objective sql whitespace" />
-    <option name="LAST_COMMIT_MESSAGE" value="bug fixes -&gt; npc duplication, objective sql whitespace" />
+    <MESSAGE value="bug fixes -&gt; plexmap claim display lagging one behind" />
+    <option name="LAST_COMMIT_MESSAGE" value="bug fixes -&gt; plexmap claim display lagging one behind" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
