@@ -32,7 +32,7 @@ public class BankCommands {
             domain = "bank.deposit.$ARGUMENT",
             permission = "nations.bank.deposit",
             description = "Deposits an amount to the bank",
-            usage = "/terra bank deposit $ARGUMENT",
+            usage = "/terra bank deposit <amount>",
             tabCompletion = {"amount"}
     )
     public static boolean deposit(Player p, String[] args) {
@@ -68,7 +68,7 @@ public class BankCommands {
             domain = "bank.withdraw.$ARGUMENT",
             permission = "nations.bank.withdraw",
             description = "Withdraws an amount from the bank",
-            usage = "/terra bank withdraw $ARGUMENT",
+            usage = "/terra bank withdraw <amount>",
             tabCompletion = {"amount"}
     )
     public static boolean withdraw(Player p, String[] args) {

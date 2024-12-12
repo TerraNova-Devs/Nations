@@ -1,5 +1,8 @@
 package de.terranova.nations.commands;
 
+import de.mcterranova.terranovaLib.utils.Chat;
+import org.bukkit.entity.Player;
+
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.regex.Matcher;
@@ -14,7 +17,7 @@ public class DomainCommandResolver {
     }
 
     // Method to replace placeholders in command methods
-    public Map<String, Method> replacePlaceholder(String[] test) {
+    public Map<String, Method> replacePlaceholder(String[] input) {
         Map<String, Method> result = new HashMap<>();
         Set<String> exactKeys = new HashSet<>();
 
@@ -38,8 +41,23 @@ public class DomainCommandResolver {
 
                 for (int i = 0; i < tokens.length; i++) {
                     if (tokens[i].equals("$ARGUMENT")) {
-                        if (i < test.length) {
-                            tokens[i] = test[i];
+                        if (i < input.length) {
+                            tokens[i] = input[i];
+                        } else {
+                            canReplace = false;
+                            break;
+                        }
+                    } else if (tokens[i].equals("$ARGUMENTS")) {
+                        if (i < input.length) {
+                            // Add all remaining elements of input to tokens starting at the current index
+                            StringBuilder remainingArguments = new StringBuilder();
+                            for (int j = i; j < input.length; j++) {
+                                if (remainingArguments.length() > 0) {
+                                    remainingArguments.append(".");
+                                }
+                                remainingArguments.append(input[j]);
+                            }
+                            tokens[i] = remainingArguments.toString(); // Replace $ARGUMENT... with combined elements
                         } else {
                             canReplace = false;
                             break;
@@ -65,38 +83,67 @@ public class DomainCommandResolver {
     }
 
     // Method to match commands based on input test array
-    public Method matchCommands(String[] test) {
-        Map<String, Method> resolvedCommandMethods = replacePlaceholder(test);
-        String[] testSegments = test;
+    public Method matchCommands(String[] input, Player p) {
+        Map<String, Method> resolvedCommandMethods = replacePlaceholder(input);
 
-        Method bestMethod = null;
-        int maxMatchLength = -1;
+        // Join the input array with dots
+        String joinedCommand = String.join(".", input);
+        System.out.println(commandMethods.keySet());
+        System.out.println(resolvedCommandMethods.keySet());
+        System.out.println(joinedCommand);
+        // Look up the exact match
+        Method exactMatch = resolvedCommandMethods.get(joinedCommand);
+        if (exactMatch != null) {
+            return exactMatch;
+        }
 
-        for (Map.Entry<String, Method> entry : resolvedCommandMethods.entrySet()) {
-            String key = entry.getKey();
-            String[] keySegments = key.split("\\.");
+        //Find Domains which the user could have wanted
+        List<String> bestMatches = new ArrayList<>();
 
-            int matchLength = 0;
-            int minLength = Math.min(testSegments.length, keySegments.length);
-
-            // Compare segments from the beginning
-            for (int i = 0; i < minLength; i++) {
-                if (testSegments[i].equals(keySegments[i])) {
-                    matchLength++;
-                } else {
-                    break; // Stop at the first non-matching segment
-                }
-            }
-
-            // Update the best match if current match is longer
-            if (matchLength > maxMatchLength) {
-                maxMatchLength = matchLength;
-                bestMethod = entry.getValue();
+        for (String key : commandMethods.keySet()) {
+            if (key.startsWith(joinedCommand) || joinedCommand.startsWith(key)) {
+                bestMatches.add(key);
             }
         }
 
-        return bestMethod;
+        if(!bestMatches.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Possible Commands:"));
+            bestMatches.forEach(match -> {
+                CommandAnnotation commandAnnotation = commandMethods.get(match).getAnnotation(CommandAnnotation.class);
+                if (commandAnnotation != null) {
+                    p.sendMessage(Chat.greenFade("Did you mean: " + commandAnnotation.usage() + "?"));
+                }
+            });
+            return null;
+        }
+        //Checking if a command with arguments could have been wanted
+        while (joinedCommand.contains(".")) {
+            // Prüfen, ob der aktuelle Domain-String in der Liste enthalten ist
+            for (String key : commandMethods.keySet()) {
+                if (key.startsWith(joinedCommand) || joinedCommand.startsWith(key)) {
+                    bestMatches.add(key);
+                }
+            }
+            // Entferne alles nach dem letzten Punkt
+            joinedCommand = joinedCommand.substring(0, joinedCommand.lastIndexOf("."));
+        }
+
+        if(!bestMatches.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Possible Commands:"));
+            bestMatches.forEach(match -> {
+                CommandAnnotation commandAnnotation = commandMethods.get(match).getAnnotation(CommandAnnotation.class);
+                if (commandAnnotation != null) {
+                    p.sendMessage(Chat.greenFade("Did you mean: " + commandAnnotation.usage() + "?"));
+                }
+            });
+            return null;
+        }
+
+        p.sendMessage(Chat.errorFade("Es konnte kein command gefunden werden."));
+        return null;
     }
+
+
 
     // Static method to resolve placeholders in command tab domains
     public static List<String> resolvePlaceholder(Map<String, String[]> commandTabDomains) {

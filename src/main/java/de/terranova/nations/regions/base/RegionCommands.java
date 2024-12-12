@@ -26,10 +26,10 @@ import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
 public class RegionCommands {
 
     @CommandAnnotation(
-            domain = "region.create.$ARGUMENT.$ARGUMENT",
+            domain = "region.create.$ARGUMENT.$ARGUMENTS",
             permission = "nations.region.create",
             description = "Creates a new region",
-            usage = "/terra region create <name>",
+            usage = "/terra region create <type> <name>",
             tabCompletion = {"$REGISTERED_REGION_TYPES", "name"}
     )
     public static boolean createRegion(Player p, String[] args) {
@@ -140,7 +140,7 @@ public class RegionCommands {
         return true;
     }
     @CommandAnnotation(
-            domain = "region.rename.$ARGUMENT",
+            domain = "region.rename.$ARGUMENT...",
             permission = "nations.region.rename",
             description = "Renames a Region",
             usage = "/terra region rename $ARGUMENT"

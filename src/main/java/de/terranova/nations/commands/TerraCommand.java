@@ -6,6 +6,7 @@ import de.terranova.nations.regions.access.AccessCommands;
 import de.terranova.nations.regions.bank.BankCommands;
 import de.terranova.nations.regions.base.RegionCommands;
 import de.terranova.nations.regions.base.SelectCommands;
+import de.terranova.nations.regions.npc.NPCCommands;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
@@ -14,7 +15,7 @@ import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
 import java.util.*;
-
+//TODO Abstraction help
 public class TerraCommand implements CommandExecutor, TabCompleter {
 
     private static final Map<String, Method> commandMethods = new HashMap<>();
@@ -25,6 +26,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
         registerCommands(BankCommands.class, "bank");
         registerCommands(SelectCommands.class, "select");
         registerCommands(AccessCommands.class, "access");
+        registerCommands(NPCCommands.class, "npc");
 
         List<String> strings = DomainCommandResolver.resolvePlaceholder(commandTabReplacements);
         if(NationsPlugin.debug){
@@ -52,17 +54,15 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            sender.sendMessage("Usage: /terra <" + String.join("|", commandGroups) + "> <subcommand>");
+            sender.sendMessage(Chat.greenFade("Usage: /" + command.getName() + " <" + String.join("|", commandGroups) + ">"));
             return true;
         }
 
         DomainCommandResolver resolver = new DomainCommandResolver(commandMethods);
         //Method commandMethod = CommandUtil.matchCommands(CommandUtil.replacePlaceholder(commandMethods,args),args);
-        Method commandMethod = resolver.matchCommands(args);
-        if (commandMethod == null) {
-            p.sendMessage(Chat.errorFade("Unknown subcommand. Usage: /terra <" + String.join("|", commandGroups) + "> <subcommand>"));
-            return true;
-        }
+        Method commandMethod = resolver.matchCommands(args, p);
+
+        if (commandMethod == null) return true;
 
         CommandAnnotation annotation = commandMethod.getAnnotation(CommandAnnotation.class);
         if (!annotation.permission().isEmpty() && !sender.hasPermission(annotation.permission())) {
@@ -72,6 +72,7 @@ public class TerraCommand implements CommandExecutor, TabCompleter {
 
         try {
             // Execute the command with all arguments, as found by findCommandMethod
+            System.out.println("DEBUG4");
             return (boolean) commandMethod.invoke(null, p, args);
         } catch (Exception e) {
             sender.sendMessage("An error occurred while executing the command. Please try again.");
