@@ -92,6 +92,11 @@ public class DomainTabResolver {
                 if (inputEndsWithEmpty && domainParts.length > args.length - 1) {
                     String nextPart = domainParts[args.length - 1];
                     nextElements.add(nextPart);
+                } else if (!inputEndsWithEmpty && domainParts.length >= args.length) {
+                    String candidatePart = domainParts[args.length - 1];
+                    if (candidatePart.startsWith(args[args.length - 1]) || isWildcard(candidatePart)) {
+                        nextElements.add(candidatePart);
+                    }
                 }
             }
         }
@@ -122,14 +127,8 @@ public class DomainTabResolver {
             if (inputPart.isEmpty()) {
                 return false; // Empty input parts are not expected here
             } else {
-                if (i == 0 && args.length == 1 && !inputEndsWithEmpty) {
-                    if (!isWildcard && !domainPart.startsWith(inputPart)) {
-                        return false;
-                    }
-                } else {
-                    if (!isWildcard && !domainPart.equals(inputPart)) {
-                        return false;
-                    }
+                if (!isWildcard && !domainPart.startsWith(inputPart)) {
+                    return false;
                 }
             }
         }

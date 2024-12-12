@@ -1,9 +1,6 @@
-package de.terranova.nations.command.commands;
+package de.terranova.nations.command;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.command.CommandAnnotation;
-import de.terranova.nations.command.DomainCommandResolver;
-import de.terranova.nations.command.DomainTabResolver;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;

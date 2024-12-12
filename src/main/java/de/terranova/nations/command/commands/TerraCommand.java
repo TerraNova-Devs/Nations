@@ -1,5 +1,6 @@
 package de.terranova.nations.command.commands;
 
+import de.terranova.nations.command.AbstractCommand;
 import de.terranova.nations.regions.access.AccessCommands;
 import de.terranova.nations.regions.bank.BankCommands;
 import de.terranova.nations.regions.base.RegionCommands;

@@ -9,14 +9,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added automatic generated help command to Commands">
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/AbstractCommand.java" afterDir="false" />
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added AbstractCommand">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/AbstractCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/AbstractCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -382,7 +378,8 @@
       <workItem from="1733795109268" duration="9125000" />
       <workItem from="1733833879706" duration="39172000" />
       <workItem from="1733915519713" duration="10896000" />
-      <workItem from="1733988396819" duration="15766000" />
+      <workItem from="1733988396819" duration="19740000" />
+      <workItem from="1734022268226" duration="829000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -712,7 +709,23 @@
       <option name="project" value="LOCAL" />
       <updated>1733998276216</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="added automatic generated help command to Commands">
+      <option name="closed" value="true" />
+      <created>1734005369374</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1734005369374</updated>
+    </task>
+    <task id="LOCAL-00043" summary="added AbstractCommand">
+      <option name="closed" value="true" />
+      <created>1734005429634</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1734005429634</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -723,7 +736,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ranking system working again" />
     <MESSAGE value="stadtkasse mit history" />
     <MESSAGE value="fixed some bank bugs" />
     <MESSAGE value="added bank access and gridregion interfaces for better abstraction" />
@@ -748,7 +760,8 @@
     <MESSAGE value="readded region rename and npc move commands" />
     <MESSAGE value="fixed and optimated DomainCommandResolver" />
     <MESSAGE value="added automatic generated help command to Commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="added automatic generated help command to Commands" />
+    <MESSAGE value="added AbstractCommand" />
+    <option name="LAST_COMMIT_MESSAGE" value="added AbstractCommand" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
