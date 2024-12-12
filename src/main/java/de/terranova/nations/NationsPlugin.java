@@ -5,7 +5,7 @@ import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.commands.TerraCommand;
+import de.terranova.nations.command.commands.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.regions.RegionManager;

@@ -6,7 +6,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegionType;
@@ -19,8 +19,8 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static de.terranova.nations.commands.NationCommandUtil.hasAccess;
-import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
+import static de.terranova.nations.regions.base.NationCommandUtil.hasAccess;
+import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 
 public class RegionCommands {

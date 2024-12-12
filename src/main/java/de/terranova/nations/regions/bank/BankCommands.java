@@ -1,13 +1,13 @@
 package de.terranova.nations.regions.bank;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;
 
-import static de.terranova.nations.commands.NationCommandUtil.hasAccess;
-import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
+import static de.terranova.nations.regions.base.NationCommandUtil.hasAccess;
+import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class BankCommands {
 

@@ -1,18 +1,16 @@
 package de.terranova.nations.regions.npc;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
-import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
+import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class NPCCommands {
     @CommandAnnotation(
