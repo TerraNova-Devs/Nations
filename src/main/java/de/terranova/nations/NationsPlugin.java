@@ -55,9 +55,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public YMLHandler skinsYML;
     private Registry<Layer> layerRegistry;
 
-    //NPC UND WORLDGUARDREGION IN SETTLEMENTS CACHEN
-    //EIGENE KLASSE FÜR ACCESS
-
     @Override
     public void onLoad() {
         nationsDebugger = new FileLogger(getDataFolder().getAbsolutePath() + "/logs/debug", "Nations_Debug");
@@ -145,11 +142,13 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
             commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand());
         });
          */
+        //TerraCommand terraCommand = new TerraCommand();
         TerraCommand terraCommand = new TerraCommand();
         if (this.getCommand("terra") == null) {
             getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
             return;
         }
+
         Objects.requireNonNull(this.getCommand("terra")).setExecutor(terraCommand);
         Objects.requireNonNull(this.getCommand("terra")).setTabCompleter(terraCommand);
 
