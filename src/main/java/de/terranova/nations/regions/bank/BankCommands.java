@@ -13,7 +13,7 @@ public class BankCommands {
 
     @CommandAnnotation(
             domain = "bank.balance",
-            permission = "nations.bank.balance",
+            permission = "terra.bank.balance",
             description = "Checks the bank balance",
             usage = "/terra bank balance"
     )
@@ -30,7 +30,7 @@ public class BankCommands {
 
     @CommandAnnotation(
             domain = "bank.deposit.$ARGUMENT",
-            permission = "nations.bank.deposit",
+            permission = "terra.bank.deposit",
             description = "Deposits an amount to the bank",
             usage = "/terra bank deposit <amount>",
             tabCompletion = {"amount"}
@@ -66,7 +66,7 @@ public class BankCommands {
 
     @CommandAnnotation(
             domain = "bank.withdraw.$ARGUMENT",
-            permission = "nations.bank.withdraw",
+            permission = "terra.bank.withdraw",
             description = "Withdraws an amount from the bank",
             usage = "/terra bank withdraw <amount>",
             tabCompletion = {"amount"}
@@ -102,7 +102,7 @@ public class BankCommands {
 
     @CommandAnnotation(
             domain = "bank.history",
-            permission = "nations.bank.history",
+            permission = "terra.bank.history",
             description = "Shows you the banks recent transactions",
             usage = "/terra bank history"
     )

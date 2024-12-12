@@ -140,7 +140,7 @@ public class RegionCommands {
         return true;
     }
     @CommandAnnotation(
-            domain = "region.rename.$ARGUMENT...",
+            domain = "region.rename.$ARGUMENTS",
             permission = "nations.region.rename",
             description = "Renames a Region",
             usage = "/terra region rename $ARGUMENT"

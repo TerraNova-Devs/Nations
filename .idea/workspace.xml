@@ -9,19 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed and optimated DomainCommandResolver">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added automatic generated help command to Commands">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/AbstractCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/CommandAnnotation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/CommandAnnotation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/DomainCommandResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/DomainCommandResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/DomainTabResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/DomainTabResolver.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/NationCommandUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/NationCommandUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/commands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -388,7 +382,7 @@
       <workItem from="1733795109268" duration="9125000" />
       <workItem from="1733833879706" duration="39172000" />
       <workItem from="1733915519713" duration="10896000" />
-      <workItem from="1733988396819" duration="9418000" />
+      <workItem from="1733988396819" duration="15766000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -710,7 +704,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733994209087</updated>
     </task>
-    <option name="localTasksCounter" value="41" />
+    <task id="LOCAL-00041" summary="added automatic generated help command to Commands">
+      <option name="closed" value="true" />
+      <created>1733998276216</created>
+      <option name="number" value="00041" />
+      <option name="presentableId" value="LOCAL-00041" />
+      <option name="project" value="LOCAL" />
+      <updated>1733998276216</updated>
+    </task>
+    <option name="localTasksCounter" value="42" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -721,7 +723,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="working towards new rank mechanic (just internal)" />
     <MESSAGE value="ranking system working again" />
     <MESSAGE value="stadtkasse mit history" />
     <MESSAGE value="fixed some bank bugs" />
@@ -746,7 +747,8 @@
     <MESSAGE value="bug fixes -&gt; plexmap claim display lagging one behind" />
     <MESSAGE value="readded region rename and npc move commands" />
     <MESSAGE value="fixed and optimated DomainCommandResolver" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed and optimated DomainCommandResolver" />
+    <MESSAGE value="added automatic generated help command to Commands" />
+    <option name="LAST_COMMIT_MESSAGE" value="added automatic generated help command to Commands" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
