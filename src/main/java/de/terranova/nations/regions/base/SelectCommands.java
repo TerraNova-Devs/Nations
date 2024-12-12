@@ -1,7 +1,7 @@
 package de.terranova.nations.regions.base;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.commands.CommandAnnotation;
+import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.regions.RegionManager;
 import org.bukkit.entity.Player;
