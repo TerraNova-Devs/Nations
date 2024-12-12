@@ -6,6 +6,8 @@ import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import static de.terranova.nations.commands.NationCommandUtil.hasSelect;
+
 public class AccessCommands {
 
     @CommandAnnotation(
@@ -102,12 +104,6 @@ public class AccessCommands {
         access.getAccess().setAccessLevel(target.getUniqueId(), newRank);
         p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), newRank.name())));
         return true;
-    }
-
-    // Helper methods
-    private static TerraSelectCache hasSelect(Player p) {
-        // Implementation for selecting a region
-        return null;
     }
 
     private static AccessControlled getAccessControlledRegion(Player p, TerraSelectCache cache) {
