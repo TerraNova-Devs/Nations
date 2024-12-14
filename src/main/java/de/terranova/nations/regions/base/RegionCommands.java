@@ -30,7 +30,7 @@ public class RegionCommands {
             permission = "nations.region.create",
             description = "Creates a new region",
             usage = "/terra region create <type> <name>",
-            tabCompletion = {"$REGISTERED_REGION_TYPES", "name"}
+            tabCompletion = {"$REGISTERED_REGION_TYPES", "<name>"}
     )
     public static boolean createRegion(Player p, String[] args) {
         String type = args[2].toLowerCase();
@@ -43,7 +43,6 @@ public class RegionCommands {
 
         Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name ,p);
         if (regionTypeOpt.isPresent()) {
-            //RegionType regionType = regionTypeOpt.get();
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
         } else {
             p.sendMessage(Chat.errorFade("Die Erstellung der Region wurde abgebrochen."));
