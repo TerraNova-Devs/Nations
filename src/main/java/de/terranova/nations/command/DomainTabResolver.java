@@ -1,9 +1,7 @@
 package de.terranova.nations.command;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * The DomainTabCompleter class processes a list of domain strings and provides
@@ -12,26 +10,17 @@ import java.util.Set;
 public class DomainTabResolver {
 
     private List<String[]> domainPartsList;
+    protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
 
-    /**
-     * Constructs a DomainTabCompleter with the given list of domains.
-     *
-     * @param domains List of domain strings to be processed.
-     */
-    public DomainTabResolver(List<String> domains) {
+    public DomainTabResolver(List<String> domains, Map<String, Supplier<List<String>>> commandTabPlaceholders) {
         this.domainPartsList = new ArrayList<>();
         for (String domain : domains) {
             String[] parts = domain.split("\\.");
             this.domainPartsList.add(parts);
         }
+        this.commandTabPlaceholders.putAll(commandTabPlaceholders);
     }
 
-    /**
-     * Returns the list of next possible elements based on the provided arguments.
-     *
-     * @param args Array of input strings representing parts of a domain.
-     * @return List of possible next elements.
-     */
     public List<String> getNextElements(String[] args) {
         Set<String> nextElements = new HashSet<>();
         boolean inputEndsWithEmpty = args.length > 0 && args[args.length - 1].isEmpty();
@@ -45,14 +34,12 @@ public class DomainTabResolver {
             processDomains(nextElements, args, inputEndsWithEmpty);
         }
 
+        // Now filter and replace placeholders respecting the current user's input
+        replaceAndFilterPlaceholders(nextElements, args);
+
         return new ArrayList<>(nextElements);
     }
 
-    /**
-     * Collects all possible first elements from the domain parts.
-     *
-     * @param nextElements Set to collect next elements into.
-     */
     private void collectFirstElements(Set<String> nextElements) {
         for (String[] domainParts : domainPartsList) {
             if (domainParts.length > 0) {
@@ -61,12 +48,6 @@ public class DomainTabResolver {
         }
     }
 
-    /**
-     * Collects matching first elements based on the partial input.
-     *
-     * @param nextElements Set to collect next elements into.
-     * @param inputPart    The partial input string.
-     */
     private void collectMatchingFirstElements(Set<String> nextElements, String inputPart) {
         for (String[] domainParts : domainPartsList) {
             if (domainParts.length > 0) {
@@ -79,13 +60,6 @@ public class DomainTabResolver {
         }
     }
 
-    /**
-     * Processes domains to find matching next elements based on the input arguments.
-     *
-     * @param nextElements      Set to collect next elements into.
-     * @param args              Array of input strings representing parts of a domain.
-     * @param inputEndsWithEmpty Flag indicating if the input ends with an empty string.
-     */
     private void processDomains(Set<String> nextElements, String[] args, boolean inputEndsWithEmpty) {
         for (String[] domainParts : domainPartsList) {
             if (domainPartsMatchInput(domainParts, args, inputEndsWithEmpty)) {
@@ -102,14 +76,6 @@ public class DomainTabResolver {
         }
     }
 
-    /**
-     * Checks if the domain parts match the input arguments.
-     *
-     * @param domainParts       Array of domain parts.
-     * @param args              Array of input strings representing parts of a domain.
-     * @param inputEndsWithEmpty Flag indicating if the input ends with an empty string.
-     * @return True if the domain parts match the input, false otherwise.
-     */
     private boolean domainPartsMatchInput(String[] domainParts, String[] args, boolean inputEndsWithEmpty) {
         int inputSize = args.length;
         int domainSize = domainParts.length;
@@ -135,13 +101,92 @@ public class DomainTabResolver {
         return true;
     }
 
-    /**
-     * Checks if the domain part is a wildcard.
-     *
-     * @param domainPart The domain part string.
-     * @return True if the domain part is a wildcard, false otherwise.
-     */
     private boolean isWildcard(String domainPart) {
         return domainPart.startsWith("$") || (domainPart.startsWith("<") && domainPart.endsWith(">"));
     }
+
+    /**
+     * Replace placeholders in nextElements with the supplier results, filtered by the current user input.
+     * For example, if the placeholder is $ONLINEPLAYERS and the user typed "test.add.a", we only show players
+     * starting with "a".
+     */
+    private void replaceAndFilterPlaceholders(Set<String> nextElements, String[] args) {
+        // Determine the current user input at this domain part (if any)
+        String userInput = "";
+        if (args.length > 0) {
+            userInput = args[args.length - 1];
+        }
+
+        // For each placeholder found in nextElements, replace it with filtered results
+        for (String placeholder : new HashSet<>(nextElements)) {
+            if (commandTabPlaceholders.containsKey(placeholder) && nextElements.contains(placeholder)) {
+                List<String> allResults = commandTabPlaceholders.get(placeholder).get();
+
+                // Filter based on user's partial input
+                List<String> filteredResults = new ArrayList<>();
+                for (String result : allResults) {
+                    if (result.startsWith(userInput)) {
+                        filteredResults.add(result);
+                    }
+                }
+
+                // Replace the placeholder in nextElements
+                nextElements.remove(placeholder);
+                nextElements.addAll(filteredResults);
+            }
+        }
+    }
+
+    public static List<String> processDomains(Map<String, String[]> inputMap) {
+        List<String> results = new ArrayList<>();
+
+        for (Map.Entry<String, String[]> entry : inputMap.entrySet()) {
+            String processed = processDomain(entry.getKey(), entry.getValue());
+            results.add(processed);
+        }
+
+        return results;
+    }
+
+    private static String processDomain(String domain, String[] arguments) {
+        // If no placeholders present, just return the domain as is
+        if (!domain.contains("$ARGUMENT")) {
+            return domain;
+        }
+
+        String[] segments = domain.split("\\.");
+        List<String> resultSegments = new ArrayList<>();
+
+        int argIndex = 0;
+        for (String segment : segments) {
+            if (segment.equals("$ARGUMENT")) {
+                // Replace with a single argument if available
+                if (argIndex < arguments.length) {
+                    resultSegments.add(arguments[argIndex]);
+                    argIndex++;
+                } else {
+                    resultSegments.add(segment);
+                }
+            } else if (segment.equals("$ARGUMENTS")) {
+                // Replace with all remaining arguments, joined by '.'
+                if (argIndex < arguments.length) {
+                    StringBuilder sb = new StringBuilder();
+                    for (int j = argIndex; j < arguments.length; j++) {
+                        if (sb.length() > 0) sb.append('.');
+                        sb.append(arguments[j]);
+                    }
+                    resultSegments.add(sb.toString());
+                    argIndex = arguments.length;
+                } else {
+                    resultSegments.add(segment);
+                }
+            } else {
+                // Normal segment
+                resultSegments.add(segment);
+            }
+        }
+
+        return String.join(".", resultSegments);
+    }
 }
+

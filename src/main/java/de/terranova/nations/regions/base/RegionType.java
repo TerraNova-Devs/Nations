@@ -205,5 +205,9 @@ public abstract class RegionType {
     public String getType() {
         return type;
     }
+
+    public static List<String> getRegionTypes() {
+        return new ArrayList<>(registry.keySet());
+    }
 }
 

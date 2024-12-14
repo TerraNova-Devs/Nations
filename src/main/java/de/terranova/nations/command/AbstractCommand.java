@@ -9,20 +9,23 @@ import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Supplier;
 
 public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     protected final Map<String, Method> commandMethods = new HashMap<>();
     protected final Map<String, Class<?>> commandClasses = new HashMap<>();
     protected final Map<String, String[]> commandTabReplacements = new HashMap<>();
+    protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
 
     public AbstractCommand() {
         registerSubCommands();
         setupHelpCommand();
+    }
+
+    protected void addPlaceholder(String key, Supplier<List<String>> replacements) {
+        this.commandTabPlaceholders.put(key, replacements);
     }
 
     protected abstract void registerSubCommands();
@@ -110,8 +113,9 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        DomainTabResolver resolver = new DomainTabResolver(new ArrayList<>(commandTabReplacements.keySet()));
-        return resolver.getNextElements(args);
+        DomainTabResolver resolver = new DomainTabResolver(new ArrayList<>(DomainTabResolver.processDomains(commandTabReplacements)), commandTabPlaceholders);
+        List<String> results = resolver.getNextElements(args);
+        return results;
     }
 }
 

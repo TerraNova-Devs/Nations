@@ -15,8 +15,8 @@ import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 public class NPCCommands {
     @CommandAnnotation(
             domain = "npc.move",
-            permission = "nations.bank.balance",
-            description = "Checks the bank balance",
+            permission = "nations.npc.move",
+            description = "Moves the npc to your location",
             usage = "/terra npc move"
     )
     public static boolean moveNPC(Player p, String[] args) {

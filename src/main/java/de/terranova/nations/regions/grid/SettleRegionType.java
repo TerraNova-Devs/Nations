@@ -17,9 +17,11 @@ import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.Rank;
 import de.terranova.nations.regions.rank.RankedRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class SettleRegionType extends GridRegionType implements BankHolder, AccessControlled, NPCHolder, RankedRegion {
@@ -30,6 +32,8 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     private final NPCr npc;
     private final Access access;
     private final Bank bank;
+
+
 
     public SettleRegionType(String name, UUID ruuid, Vectore2 loc) {
         super(name, ruuid, REGION_TYPE, loc);
@@ -43,10 +47,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
     }
 
     private Set<EntityType> getDeniedSpawnEntityTypes() {
-        HashSet<EntityType> deniedEntityTypes = new HashSet<>();
-        Stream.of("zombie_villager", "zombie", "spider", "skeleton", "enderman", "phantom", "drowned", "witch", "pillager", "husk", "creeper")
-                .forEach(entity -> deniedEntityTypes.add(new EntityType(entity)));
-        return deniedEntityTypes;
+        return Stream.of("zombie_villager", "zombie", "spider", "skeleton", "enderman", "phantom", "drowned", "witch", "pillager", "husk", "creeper").map(EntityType::new).collect(Collectors.toSet());
     }
 
     //GridRegionType

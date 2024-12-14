@@ -9,10 +9,19 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added AbstractCommand">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed tab completion not working on partial array entrys after the first">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/CachingSupplier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/AbstractCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/AbstractCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/AbstractCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/AbstractCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/DomainTabResolver.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/DomainTabResolver.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/commands/TerraCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -379,7 +388,10 @@
       <workItem from="1733833879706" duration="39172000" />
       <workItem from="1733915519713" duration="10896000" />
       <workItem from="1733988396819" duration="19740000" />
-      <workItem from="1734022268226" duration="829000" />
+      <workItem from="1734022268226" duration="6538000" />
+      <workItem from="1734088329339" duration="1956000" />
+      <workItem from="1734100159824" duration="2467000" />
+      <workItem from="1734128848266" duration="4628000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -725,7 +737,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734005429634</updated>
     </task>
-    <option name="localTasksCounter" value="44" />
+    <task id="LOCAL-00044" summary="fixed tab completion not working on partial array entrys after the first">
+      <option name="closed" value="true" />
+      <created>1734023527435</created>
+      <option name="number" value="00044" />
+      <option name="presentableId" value="LOCAL-00044" />
+      <option name="project" value="LOCAL" />
+      <updated>1734023527435</updated>
+    </task>
+    <option name="localTasksCounter" value="45" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -736,7 +756,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="stadtkasse mit history" />
     <MESSAGE value="fixed some bank bugs" />
     <MESSAGE value="added bank access and gridregion interfaces for better abstraction" />
     <MESSAGE value="removed unnecessary static constant in settles related to old bank code" />
@@ -761,7 +780,8 @@
     <MESSAGE value="fixed and optimated DomainCommandResolver" />
     <MESSAGE value="added automatic generated help command to Commands" />
     <MESSAGE value="added AbstractCommand" />
-    <option name="LAST_COMMIT_MESSAGE" value="added AbstractCommand" />
+    <MESSAGE value="fixed tab completion not working on partial array entrys after the first" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed tab completion not working on partial array entrys after the first" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

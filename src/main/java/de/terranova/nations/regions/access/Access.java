@@ -1,5 +1,6 @@
 package de.terranova.nations.regions.access;
 
+import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.base.RegionTypeListener;
 import org.bukkit.Bukkit;
@@ -35,7 +36,7 @@ public class Access implements RegionTypeListener {
 
 
 
-    public void removeAccess(UUID uuid){
+    public void removeAccess(UUID uuid) {
         HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
         accessLevels.remove(uuid);
         accessDatabase.changeMemberAccess(uuid, null);
