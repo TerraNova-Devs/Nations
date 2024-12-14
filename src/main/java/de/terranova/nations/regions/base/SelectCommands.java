@@ -27,11 +27,10 @@ public class SelectCommands {
     }
 
     @CommandAnnotation(
-            domain = "select.$ARGUMENT",
+            domain = "select.$REGION_NAMES",
             permission = "nations.select",
             description = "Select a region",
-            usage = "/t select <name>",
-            tabCompletion = {"$REGION_NAMES"}
+            usage = "/t select <name>"
     )
     public static boolean selectRegion(Player p, String[] args) {
         if (args.length == 1) {

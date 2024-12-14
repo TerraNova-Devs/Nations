@@ -16,5 +16,4 @@ public @interface CommandAnnotation {
 
     String usage() default ""; // Usage information
 
-    String[] tabCompletion() default {}; // Tab completion options (including dynamic placeholders)
 }

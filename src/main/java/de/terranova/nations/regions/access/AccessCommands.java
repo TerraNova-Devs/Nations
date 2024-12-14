@@ -11,11 +11,10 @@ import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 public class AccessCommands {
 
     @CommandAnnotation(
-            domain = "access.add.$ARGUMENT",
+            domain = "access.add.$ONLINEPLAYERS",
             permission = "nations.access.ranks",
             description = "Fügt den ausgewählten Spieler deiner Region hinzu",
-            usage = "/terra add <player>",
-            tabCompletion = {"$ONLINEPLAYERS"}
+            usage = "/terra add <player>"
     )
     public static boolean addPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -43,11 +42,10 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.remove.$ARGUMENT",
+            domain = "access.remove.$<name>",
             permission = "nations.access.ranks",
             description = "Entfernt den ausgewählten Spieler von deiner Region",
-            usage = "/terra remove <player>",
-            tabCompletion = {"<name>"}
+            usage = "/terra remove <player>"
     )
     public static boolean removePlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -74,11 +72,10 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.rank.$ARGUMENT.$ARGUMENT",
+            domain = "access.rank.$<name>.$RANKS",
             permission = "nations.access.ranks",
             description = "Setzt den Rang eines Spielers",
-            usage = "/terra rank <player> <rank>",
-            tabCompletion = {"<name>","$RANKS"}
+            usage = "/terra rank <player> <rank>"
     )
     public static boolean rankPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);

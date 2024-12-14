@@ -102,7 +102,7 @@ public class DomainTabResolver {
     }
 
     private boolean isWildcard(String domainPart) {
-        return domainPart.startsWith("$") || (domainPart.startsWith("<") && domainPart.endsWith(">"));
+        return domainPart.startsWith("$") || domainPart.startsWith("%");
     }
 
     /**
@@ -112,81 +112,39 @@ public class DomainTabResolver {
      */
     private void replaceAndFilterPlaceholders(Set<String> nextElements, String[] args) {
         // Determine the current user input at this domain part (if any)
-        String userInput = "";
-        if (args.length > 0) {
-            userInput = args[args.length - 1];
-        }
+        String userInput = (args.length > 0) ? args[args.length - 1] : "";
 
         // For each placeholder found in nextElements, replace it with filtered results
         for (String placeholder : new HashSet<>(nextElements)) {
-            if (commandTabPlaceholders.containsKey(placeholder) && nextElements.contains(placeholder)) {
-                List<String> allResults = commandTabPlaceholders.get(placeholder).get();
+            if (isWildcard(placeholder)) {
+                // If we have a supplier for this placeholder, use it
+                if (commandTabPlaceholders.containsKey(placeholder)) {
+                    List<String> allResults = commandTabPlaceholders.get(placeholder).get();
 
-                // Filter based on user's partial input
-                List<String> filteredResults = new ArrayList<>();
-                for (String result : allResults) {
-                    if (result.startsWith(userInput)) {
-                        filteredResults.add(result);
+                    // Filter based on user's partial input
+                    List<String> filteredResults = new ArrayList<>();
+                    for (String result : allResults) {
+                        if (result.startsWith(userInput)) {
+                            filteredResults.add(result);
+                        }
+                    }
+
+                    // Replace the placeholder in nextElements
+                    nextElements.remove(placeholder);
+                    nextElements.addAll(filteredResults);
+                } else {
+                    // No placeholder found in commandTabPlaceholders
+                    // Use the string after the wildcard character ($ or %)
+                    String fallback = placeholder.substring(1); // remove the leading $ or %
+                    nextElements.remove(placeholder);
+
+                    // Only add it if it matches the user input (if any)
+                    if (fallback.startsWith(userInput)) {
+                        nextElements.add(fallback);
                     }
                 }
-
-                // Replace the placeholder in nextElements
-                nextElements.remove(placeholder);
-                nextElements.addAll(filteredResults);
             }
         }
-    }
-
-    public static List<String> processDomains(Map<String, String[]> inputMap) {
-        List<String> results = new ArrayList<>();
-
-        for (Map.Entry<String, String[]> entry : inputMap.entrySet()) {
-            String processed = processDomain(entry.getKey(), entry.getValue());
-            results.add(processed);
-        }
-
-        return results;
-    }
-
-    private static String processDomain(String domain, String[] arguments) {
-        // If no placeholders present, just return the domain as is
-        if (!domain.contains("$ARGUMENT")) {
-            return domain;
-        }
-
-        String[] segments = domain.split("\\.");
-        List<String> resultSegments = new ArrayList<>();
-
-        int argIndex = 0;
-        for (String segment : segments) {
-            if (segment.equals("$ARGUMENT")) {
-                // Replace with a single argument if available
-                if (argIndex < arguments.length) {
-                    resultSegments.add(arguments[argIndex]);
-                    argIndex++;
-                } else {
-                    resultSegments.add(segment);
-                }
-            } else if (segment.equals("$ARGUMENTS")) {
-                // Replace with all remaining arguments, joined by '.'
-                if (argIndex < arguments.length) {
-                    StringBuilder sb = new StringBuilder();
-                    for (int j = argIndex; j < arguments.length; j++) {
-                        if (sb.length() > 0) sb.append('.');
-                        sb.append(arguments[j]);
-                    }
-                    resultSegments.add(sb.toString());
-                    argIndex = arguments.length;
-                } else {
-                    resultSegments.add(segment);
-                }
-            } else {
-                // Normal segment
-                resultSegments.add(segment);
-            }
-        }
-
-        return String.join(".", resultSegments);
     }
 }
 

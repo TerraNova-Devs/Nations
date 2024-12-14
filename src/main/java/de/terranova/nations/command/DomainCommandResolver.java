@@ -32,7 +32,7 @@ public class DomainCommandResolver {
             String key = entry.getKey();
             Method method = entry.getValue();
 
-            if (!key.contains("$ARGUMENT")) {
+            if (!key.contains("$") && !key.contains("%")) {
                 result.put(key, method);
             } else {
                 String[] tokens = key.split("\\.");
@@ -40,14 +40,14 @@ public class DomainCommandResolver {
                 StringBuilder newKeyBuilder = new StringBuilder();
 
                 for (int i = 0; i < tokens.length; i++) {
-                    if (tokens[i].equals("$ARGUMENT")) {
+                    if (tokens[i].startsWith("$")) {
                         if (i < input.length) {
                             tokens[i] = input[i];
                         } else {
                             canReplace = false;
                             break;
                         }
-                    } else if (tokens[i].equals("$ARGUMENTS")) {
+                    } else if (tokens[i].startsWith("%")) {
                         if (i < input.length) {
                             // Add all remaining elements of input to tokens starting at the current index
                             StringBuilder remainingArguments = new StringBuilder();
@@ -143,43 +143,4 @@ public class DomainCommandResolver {
         return null;
     }
 
-
-
-    // Static method to resolve placeholders in command tab domains
-    public static List<String> resolvePlaceholder(Map<String, String[]> commandTabDomains) {
-        List<String> result = new ArrayList<>();
-        for (Map.Entry<String, String[]> entry : commandTabDomains.entrySet()) {
-            String domain = entry.getKey();
-            String[] words = entry.getValue();
-            int placeholderCount = countOccurrences(domain, "$ARGUMENT");
-            if (placeholderCount == 0) {
-                // No placeholders, add domain as is
-                result.add(domain);
-            } else if (placeholderCount == words.length) {
-                // Replace placeholders with corresponding words
-                String resolvedDomain = domain;
-                for (String word : words) {
-                    // Wrap the word with < and > unless it starts with $
-                    String replacementWord = word.startsWith("$") ? word : "<" + word + ">";
-                    // Escape the replacement string
-                    String safeWord = Matcher.quoteReplacement(replacementWord);
-                    resolvedDomain = resolvedDomain.replaceFirst("\\$ARGUMENT", safeWord);
-                }
-                result.add(resolvedDomain);
-            }
-            // Skip entries where placeholders don't match words
-        }
-        return result;
-    }
-
-    // Static helper method to count occurrences of a substring
-    private static int countOccurrences(String str, String sub) {
-        int count = 0;
-        int idx = 0;
-        while ((idx = str.indexOf(sub, idx)) != -1) {
-            count++;
-            idx += sub.length();
-        }
-        return count;
-    }
 }
