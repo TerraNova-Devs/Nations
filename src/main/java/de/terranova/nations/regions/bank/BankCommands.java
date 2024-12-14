@@ -29,11 +29,10 @@ public class BankCommands {
     }
 
     @CommandAnnotation(
-            domain = "bank.deposit.$ARGUMENT",
+            domain = "bank.deposit.$<amount>",
             permission = "terra.bank.deposit",
             description = "Deposits an amount to the bank",
-            usage = "/terra bank deposit <amount>",
-            tabCompletion = {"amount"}
+            usage = "/terra bank deposit <amount>"
     )
     public static boolean deposit(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -65,11 +64,10 @@ public class BankCommands {
     }
 
     @CommandAnnotation(
-            domain = "bank.withdraw.$ARGUMENT",
+            domain = "bank.withdraw.$<amount>",
             permission = "terra.bank.withdraw",
             description = "Withdraws an amount from the bank",
-            usage = "/terra bank withdraw <amount>",
-            tabCompletion = {"amount"}
+            usage = "/terra bank withdraw <amount>"
     )
     public static boolean withdraw(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);

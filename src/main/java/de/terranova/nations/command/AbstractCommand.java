@@ -16,7 +16,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     protected final Map<String, Method> commandMethods = new HashMap<>();
     protected final Map<String, Class<?>> commandClasses = new HashMap<>();
-    protected final Map<String, String[]> commandTabReplacements = new HashMap<>();
     protected final Map<String, Supplier<List<String>>> commandTabPlaceholders = new HashMap<>();
 
     public AbstractCommand() {
@@ -38,9 +37,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
                     newEntries.put("help." + group, AbstractCommand.class.getDeclaredMethod("help", Player.class, String[].class, String.class, Map.class));
                 }
                 commandMethods.putAll(newEntries);
-                for (String key : newEntries.keySet()) {
-                    commandTabReplacements.put(key, null);
-                }
             } catch (NoSuchMethodException e) {
                 System.out.println("ERROR: " + e.getMessage());
             }
@@ -52,7 +48,6 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
             if (method.isAnnotationPresent(CommandAnnotation.class)) {
                 CommandAnnotation annotation = method.getAnnotation(CommandAnnotation.class);
                 commandMethods.put(annotation.domain(), method);
-                commandTabReplacements.put(annotation.domain(), annotation.tabCompletion());
             }
         }
         commandClasses.put(groupName, clazz);
@@ -113,7 +108,7 @@ public abstract class AbstractCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        DomainTabResolver resolver = new DomainTabResolver(new ArrayList<>(DomainTabResolver.processDomains(commandTabReplacements)), commandTabPlaceholders);
+        DomainTabResolver resolver = new DomainTabResolver(new ArrayList<>(commandMethods.keySet()), commandTabPlaceholders);
         List<String> results = resolver.getNextElements(args);
         return results;
     }
