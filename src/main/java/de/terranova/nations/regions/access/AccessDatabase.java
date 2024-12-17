@@ -57,9 +57,6 @@ public class AccessDatabase {
     }
 
     public void changeMemberAccess(UUID PUUID, AccessLevel access) {
-        queries.forEach((y,x) -> {
-            System.out.println(y + "<------------->" +  x);
-        });
         if (access == null) {
             String sql = queries.get("remove a members access");
             if (sql == null) throw new IllegalArgumentException("Query not found!");

@@ -1,7 +1,7 @@
 package de.terranova.nations.regions.access;
 
+import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

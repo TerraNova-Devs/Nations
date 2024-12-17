@@ -3,9 +3,8 @@ package de.terranova.nations;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
-import de.mcterranova.terranovaLib.utils.YMLHandler;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.command.commands.TerraCommand;
+import de.terranova.nations.command.TerraCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.regions.RegionManager;
@@ -46,13 +45,11 @@ import java.util.Objects;
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
     public static boolean debug = true;
-    //public YMLHandler levelYML;
     public static HikariCP hikari;
     public static Map<Integer, RankObjective> levelObjectives;
     static public Plugin plugin;
     public static FileLogger nationsLogger;
     public static FileLogger nationsDebugger;
-    public YMLHandler skinsYML;
     private Registry<Layer> layerRegistry;
 
     @Override
@@ -63,10 +60,8 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         initDatabase();
     }
 
-    // version savedata
     @Override
     public void onEnable() {
-        //Stillbugs is used to send Action Bar to player later
         plugin = this;
         citizensTraitRegistry();
         worldguardHandlerRegistry();
@@ -77,11 +72,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         listenerRegistry();
         serilizationRegistry();
         nationsRegionTypeRegistry();
-        try {
-            loadConfigs();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        loadConfigs();
     }
 
     @EventHandler
@@ -122,38 +113,24 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     private void worldguardFlagRegistry() {
-        //SettleFlag.registerSettlementFlag();
         RegionFlag.registerRegionFlag(this);
     }
 
     private void worldguardHandlerRegistry() {
-        //SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
-        //sessionManager.registerHandler(SettleHandler.FACTORY, null);
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
     }
 
     @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
-        /*
-        LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
-        manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
-            final Commands commands = event.registrar();
-            commands.register("terra", "Command facilitates settlements creation.", List.of("t"), new TerraCommand());
-        });
-         */
-        //TerraCommand terraCommand = new TerraCommand();
         TerraCommand terraCommand = new TerraCommand();
         if (this.getCommand("terra") == null) {
             getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
             return;
         }
-
         Objects.requireNonNull(this.getCommand("terra")).setExecutor(terraCommand);
         Objects.requireNonNull(this.getCommand("terra")).setTabCompleter(terraCommand);
-
     }
-
 
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
@@ -163,38 +140,39 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public void serilizationRegistry() {
     }
 
-    public void loadConfigs() throws IOException {
+    public void loadConfigs() {
+        try {
+            File file = new File(this.getDataFolder(), "level.yml");
 
-        File file = new File(this.getDataFolder(), "level.yml");
+            LoaderOptions loaderOptions = new LoaderOptions();
 
-        LoaderOptions loaderOptions = new LoaderOptions();
+            DumperOptions dumperOptions = new DumperOptions();
+            dumperOptions.setIndent(2);
+            dumperOptions.setSplitLines(false);
+            dumperOptions.setPrettyFlow(true);
+            dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
 
-        DumperOptions dumperOptions = new DumperOptions();
-        dumperOptions.setIndent(2);
-        dumperOptions.setSplitLines(false);
-        dumperOptions.setPrettyFlow(true);
-        dumperOptions.setDefaultFlowStyle(DumperOptions.FlowStyle.BLOCK);
+            Representer representer = new Representer(dumperOptions);
+            representer.addClassTag(RankObjective.class, new Tag("Stadtlevel"));
 
-        Representer representer = new Representer(dumperOptions);
-        representer.addClassTag(RankObjective.class, new Tag("Stadtlevel"));
+            Constructor constructor = new Constructor(loaderOptions);
+            constructor.addTypeDescription(new TypeDescription(RankObjective.class, new Tag("Stadtlevel")));
 
-        Constructor constructor = new Constructor(loaderOptions);
-        constructor.addTypeDescription(new TypeDescription(RankObjective.class, new Tag("Stadtlevel")));
+            Yaml yaml = new Yaml(constructor, representer, dumperOptions, loaderOptions);
 
-        Yaml yaml = new Yaml(constructor, representer, dumperOptions, loaderOptions);
+            if (file.createNewFile()) {
+                HashMap<Integer, RankObjective> exampleObj = new HashMap<>();
+                exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1, "Test", "Test", "Test"));
+                exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2, "Test2", "Test2", "Test2"));
+                FileWriter writer = new FileWriter(file);
+                yaml.dump(exampleObj, writer);
+            }
 
-        if (file.createNewFile()) {
-            HashMap<Integer, RankObjective> exampleObj = new HashMap<>();
-            exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1, "Test", "Test", "Test"));
-            exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2, "Test2", "Test2", "Test2"));
-            FileWriter writer = new FileWriter(file);
-            yaml.dump(exampleObj, writer);
+            levelObjectives = yaml.load(new FileInputStream(file));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-
-        levelObjectives = yaml.load(new FileInputStream(file));
-
     }
-
 }
 
 

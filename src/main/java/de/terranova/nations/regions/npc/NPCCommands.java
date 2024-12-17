@@ -1,7 +1,7 @@
 package de.terranova.nations.regions.npc;
 
+import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
