@@ -75,7 +75,7 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.184.0")
-  implementation("de.mcterranova:terranova-lib:0.8.0")
+  implementation("de.mcterranova:terranova-lib:0.8.1")
 }
 
 tasks {
