@@ -1,7 +1,7 @@
 package de.terranova.nations.regions.bank;
 
+import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.command.CommandAnnotation;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;
@@ -29,7 +29,7 @@ public class BankCommands {
     }
 
     @CommandAnnotation(
-            domain = "bank.deposit.$<amount>",
+            domain = "bank.deposit.$0",
             permission = "terra.bank.deposit",
             description = "Deposits an amount to the bank",
             usage = "/terra bank deposit <amount>"
@@ -64,7 +64,7 @@ public class BankCommands {
     }
 
     @CommandAnnotation(
-            domain = "bank.withdraw.$<amount>",
+            domain = "bank.withdraw.$0",
             permission = "terra.bank.withdraw",
             description = "Withdraws an amount from the bank",
             usage = "/terra bank withdraw <amount>"

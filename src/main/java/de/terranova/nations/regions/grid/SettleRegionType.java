@@ -17,7 +17,6 @@ import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.Rank;
 import de.terranova.nations.regions.rank.RankedRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.*;

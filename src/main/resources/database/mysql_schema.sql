@@ -1,9 +1,9 @@
 # Set the storage engine
 SET DEFAULT_STORAGE_ENGINE = INNODB;
-
+--
 # Enable foreign key constraints
 SET FOREIGN_KEY_CHECKS = 1;
-
+--
 CREATE TABLE IF NOT EXISTS `grid_regions` (
     `RUUID` varchar(36) NOT NULL,
     `name` varchar(36) NOT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `grid_regions` (
     PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
-
+--
 CREATE TABLE IF NOT EXISTS `poly_regions` (
      `RUUID` varchar(36) NOT NULL,
      `name` varchar(36) NOT NULL,
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `poly_regions` (
      PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
-
+--
 CREATE TABLE IF NOT EXISTS `access` (
     `RUUID` varchar(36) NOT NULL,
     `PUUID` varchar(36) NOT NULL,
@@ -28,17 +28,17 @@ CREATE TABLE IF NOT EXISTS `access` (
         PRIMARY KEY (`RUUID`, `PUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
-
+--
 CREATE TABLE IF NOT EXISTS `bank` (
     `RUUID` varchar(36) NOT NULL,
     `user` varchar(16) NOT NULL,
     `credit` mediumint NOT NULL,
-    `timestamp` timestamp NOT NULL,
+    `timestamp` timestamp(6) NOT NULL,
     `total` mediumint NOT NULL,
         PRIMARY KEY (`RUUID`, `timestamp`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
-
+--
 CREATE TABLE IF NOT EXISTS `rank` (
       `RUUID` varchar(36) NOT NULL,
       `Level` smallint NOT NULL DEFAULT 1,
@@ -48,21 +48,3 @@ CREATE TABLE IF NOT EXISTS `rank` (
       PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
-
--- CREATE TRIGGER maintain_50_transactions
--- AFTER INSERT ON bank
---     FOR EACH ROW
--- BEGIN
---     DELETE FROM bank
---     WHERE RUUID = NEW.RUUID
---       AND timestamp < (
- --        SELECT MIN(temp.timestamp)
---        FROM (
---                  SELECT timestamp
---                 FROM bank
---                 WHERE RUUID = NEW.RUUID
---                 ORDER BY timestamp DESC
---                 LIMIT 50
---             ) AS temp
---     );
--- END;
