@@ -10,13 +10,17 @@ import java.util.Optional;
 
 public class SelectCommands {
 
+    public SelectCommands(){
+
+    }
+
     @CommandAnnotation(
             domain = "select",
             permission = "nations.select",
             description = "Print out selected region",
             usage = "/t select"
     )
-    public static boolean select(Player p, String[] args) {
+    public boolean select(Player p, String[] args) {
         if (TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getRegion().getName(), TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
             return true;
@@ -32,7 +36,7 @@ public class SelectCommands {
             description = "Select a region",
             usage = "/t select <name>"
     )
-    public static boolean selectRegion(Player p, String[] args) {
+    public boolean selectRegion(Player p, String[] args) {
         if (args.length == 1) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen einer Stadt an."));
             return false;

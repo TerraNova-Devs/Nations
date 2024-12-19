@@ -13,13 +13,18 @@ import java.util.Optional;
 import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class NPCCommands {
+
+    public NPCCommands(){
+
+    }
+
     @CommandAnnotation(
             domain = "npc.move",
             permission = "nations.npc.move",
             description = "Moves the npc to your location",
             usage = "/terra npc move"
     )
-    public static boolean moveNPC(Player p, String[] args) {
+    public boolean moveNPC(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return false;
 
