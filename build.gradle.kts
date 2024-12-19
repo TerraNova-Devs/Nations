@@ -3,7 +3,7 @@ import java.util.*
 
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "1.7.1"
+  id("io.papermc.paperweight.userdev") version "1.7.3"
   id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("io.github.goooler.shadow") version "8.1.8"
