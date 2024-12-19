@@ -10,13 +10,17 @@ import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class AccessCommands {
 
+    public AccessCommands(){
+
+    }
+
     @CommandAnnotation(
             domain = "access.add.$ONLINEPLAYERS",
             permission = "nations.access.ranks",
             description = "Fügt den ausgewählten Spieler deiner Region hinzu",
             usage = "/terra add <player>"
     )
-    public static boolean addPlayer(Player p, String[] args) {
+    public boolean addPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
@@ -47,7 +51,7 @@ public class AccessCommands {
             description = "Entfernt den ausgewählten Spieler von deiner Region",
             usage = "/terra remove <player>"
     )
-    public static boolean removePlayer(Player p, String[] args) {
+    public boolean removePlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
@@ -77,7 +81,7 @@ public class AccessCommands {
             description = "Setzt den Rang eines Spielers",
             usage = "/terra rank <player> <rank>"
     )
-    public static boolean rankPlayer(Player p, String[] args) {
+    public boolean rankPlayer(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
@@ -103,7 +107,7 @@ public class AccessCommands {
         return true;
     }
 
-    private static AccessControlled getAccessControlledRegion(Player p, TerraSelectCache cache) {
+    private AccessControlled getAccessControlledRegion(Player p, TerraSelectCache cache) {
         if (cache == null) return null;
         if (!(cache.getRegion() instanceof AccessControlled access)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Ränge"));
@@ -112,7 +116,7 @@ public class AccessCommands {
         return access;
     }
 
-    private static Player getTargetPlayer(Player p, String[] args, int index) {
+    private Player getTargetPlayer(Player p, String[] args, int index) {
         if (args.length <= index) {
             p.sendMessage(Chat.errorFade("Bitte gib den Spielernamen an."));
             return null;
@@ -124,7 +128,7 @@ public class AccessCommands {
         return target;
     }
 
-    private static AccessLevel getAccessLevelFromArgs(Player p, String[] args, int index) {
+    private AccessLevel getAccessLevelFromArgs(Player p, String[] args, int index) {
         if (args.length <= index) {
             p.sendMessage(Chat.errorFade("Bitte gib ein gültiges AccessLevel an."));
             return null;
@@ -138,7 +142,7 @@ public class AccessCommands {
         return null;
     }
 
-    private static void sendSuccessMessages(Player p, Player target, String regionName, String action) {
+    private void sendSuccessMessages(Player p, Player target, String regionName, String action) {
         target.sendMessage(Chat.greenFade(String.format("Du wurdest von der Region %s %s.", regionName, action)));
         p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich von der Stadt %s %s.", target.getName(), regionName, action)));
     }

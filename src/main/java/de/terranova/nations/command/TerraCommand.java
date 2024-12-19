@@ -19,15 +19,16 @@ public class TerraCommand extends AbstractCommand {
         addPlaceholder("$ONLINEPLAYERS", new CachedSupplier<>(() -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()), 10000));
         addPlaceholder("$REGION_NAMES", RegionType::getNameCache);
         addPlaceholder("$REGISTERED_REGION_TYPES", RegionType::getRegionTypes);
+        registerSubCommand(RegionCommands.class, "region");
+        registerSubCommand(new BankCommands(), "bank");
+        registerSubCommand(new SelectCommands(), "select");
+        registerSubCommand(new AccessCommands(), "access");
+        registerSubCommand(new NPCCommands(), "npc");
+        setupHelpCommand();
+        initialize();
     }
 
-    @Override
-    protected void registerSubCommands() {
-        registerSubCommand(RegionCommands.class, "region");
-        registerSubCommand(BankCommands.class, "bank");
-        registerSubCommand(SelectCommands.class, "select");
-        registerSubCommand(AccessCommands.class, "access");
-        registerSubCommand(NPCCommands.class, "npc");
-    }
+
+
 
 }

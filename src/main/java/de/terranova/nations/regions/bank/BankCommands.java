@@ -11,13 +11,17 @@ import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class BankCommands {
 
+    public BankCommands(){
+
+    }
+
     @CommandAnnotation(
             domain = "bank.balance",
             permission = "terra.bank.balance",
             description = "Checks the bank balance",
             usage = "/terra bank balance"
     )
-    public static boolean checkBalance(Player p, String[] args) {
+    public boolean checkBalance(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
@@ -34,7 +38,7 @@ public class BankCommands {
             description = "Deposits an amount to the bank",
             usage = "/terra bank deposit <amount>"
     )
-    public static boolean deposit(Player p, String[] args) {
+    public boolean deposit(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
@@ -69,7 +73,7 @@ public class BankCommands {
             description = "Withdraws an amount from the bank",
             usage = "/terra bank withdraw <amount>"
     )
-    public static boolean withdraw(Player p, String[] args) {
+    public boolean withdraw(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
@@ -104,7 +108,7 @@ public class BankCommands {
             description = "Shows you the banks recent transactions",
             usage = "/terra bank history"
     )
-    public static boolean history(Player p, String[] args) {
+    public boolean history(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
