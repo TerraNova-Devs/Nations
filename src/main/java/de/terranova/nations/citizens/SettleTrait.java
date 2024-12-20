@@ -28,7 +28,6 @@ public class SettleTrait extends Trait {
 
     public void load(DataKey key) {
         settlement_uuid = UUID.fromString(key.getString("settlement_uuid"));
-        System.out.println("DEBUG data key loadet");
     }
 
     public void save(DataKey key) {

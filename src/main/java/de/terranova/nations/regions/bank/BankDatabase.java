@@ -91,10 +91,12 @@ public class BankDatabase {
 
     public void insertTransaction(Transaction transaction) {
         String sql = queries.get("insert value into bank");
+        String sql2 = queries.get("check for more than 50 entries");
         if (sql == null) throw new IllegalArgumentException("Query not found!");
 
 
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement ps2 = conn.prepareStatement(sql2);
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, ruuid);
             ps.setString(2, transaction.user);
@@ -102,6 +104,9 @@ public class BankDatabase {
             ps.setTimestamp(4, transaction.timestamp);
             ps.setInt(5, transaction.total);
             ps.executeUpdate();
+            ps2.setString(1, ruuid);
+            ps2.setString(2, ruuid);
+            ps2.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
         }

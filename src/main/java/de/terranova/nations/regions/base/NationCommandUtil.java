@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 public class NationCommandUtil {
 
     public static boolean hasAccess(AccessLevel access, AccessLevel neededAcess) {
+        if (access == null) return false;
         return access.getWeight() >= neededAcess.getWeight();
     }
 

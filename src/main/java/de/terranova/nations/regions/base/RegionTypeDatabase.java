@@ -51,7 +51,6 @@ public class RegionTypeDatabase {
 
     public void insertGridRegion(GridRegionType gridRegion) {
         queries.forEach((y,x) -> {
-            System.out.println(y + "<------------->" +  x);
         });
         String sql = queries.get("grid region insert");
         if (sql == null) throw new IllegalArgumentException("Query not found!");

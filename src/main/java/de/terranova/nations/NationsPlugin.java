@@ -44,7 +44,7 @@ import java.util.Objects;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
-    public static boolean debug = true;
+    public static boolean debug = false;
     public static HikariCP hikari;
     public static Map<Integer, RankObjective> levelObjectives;
     static public Plugin plugin;

@@ -141,7 +141,7 @@ public class RegionCommands {
             domain = "region.rename.%<name>",
             permission = "nations.region.rename",
             description = "Renames a Region",
-            usage = "/terra region rename $ARGUMENT"
+            usage = "/terra region rename <name>"
     )
     public static boolean renameRegion(Player p, String[] args) {
         TerraSelectCache cache = hasSelect(p);
@@ -151,18 +151,18 @@ public class RegionCommands {
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
             return false;
         }
-        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length))).toLowerCase();
+        String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length))).toLowerCase();
         if (!name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
             p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
             return false;
         }
 
-        if (!RegionType.getNameCache().contains(name)) {
+        if (RegionType.getNameCache().contains(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return false;
         }
 
-        cache.getRegion().renameRegion(name);
+        cache.getRegion().rename(name);
         return false;
     }
 

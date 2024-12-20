@@ -19,3 +19,18 @@ VALUES (?, ?, ?, ?, ?);
 -- delete ruuid from bank
 DELETE FROM `bank`
 WHERE `RUUID` = ?;
+
+-- check for more than 50 entries
+DELETE FROM `bank`
+WHERE `RUUID` = ?
+  AND `timestamp` NOT IN (
+    SELECT `timestamp`
+    FROM (
+             SELECT `timestamp`
+             FROM `bank`
+             WHERE `RUUID` = ?
+             ORDER BY `timestamp` DESC
+             LIMIT 50
+         ) AS recent_timestamps
+)
+LIMIT 1;
