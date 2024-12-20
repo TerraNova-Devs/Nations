@@ -25,7 +25,7 @@ public abstract class RegionType {
     private final RegionTypeEventBus eventBus = new RegionTypeEventBus();
     protected String name;
     protected ProtectedRegion region;
-    private static List<String> nameCache = new ArrayList<>();
+    private static final List<String> nameCache = new ArrayList<>();
 
 
     public RegionType(String name, UUID id, String type) {
@@ -93,6 +93,7 @@ public abstract class RegionType {
     public final void remove() {
         eventBus.publishRemoval();
         removeWGRegion();
+        nameCache.remove(name);
         onRemove();
     }
 

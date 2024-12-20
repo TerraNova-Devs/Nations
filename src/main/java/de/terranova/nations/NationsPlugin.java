@@ -108,7 +108,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     private void citizensTraitRegistry() {
-        System.out.println("DEBUG Trait registering");
         net.citizensnpcs.api.CitizensAPI.getTraitFactory().registerTrait(net.citizensnpcs.api.trait.TraitInfo.create(SettleTrait.class));
     }
 

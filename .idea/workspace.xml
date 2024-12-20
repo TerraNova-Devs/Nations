@@ -9,25 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="refactored some command related stuff for more flexibility">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bugs">
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/NationsPlugin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/citizens/SettleTrait.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/NationCommandUtil.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/NationCommandUtil.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/RegionTypeDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/grid/SettleRegionType.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/npc/NPCr.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/bank.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/bank.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/mysql_schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -427,7 +411,7 @@
       <workItem from="1734611714656" duration="8606000" />
       <workItem from="1734642814855" duration="902000" />
       <workItem from="1734701745257" duration="8472000" />
-      <workItem from="1734730558511" duration="1504000" />
+      <workItem from="1734730558511" duration="1926000" />
     </task>
     <task id="LOCAL-00001" summary="comitted ful,l testserver gitignore following">
       <option name="closed" value="true" />
@@ -813,7 +797,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734609446815</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="fixed bugs">
+      <option name="closed" value="true" />
+      <created>1734732095254</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1734732095254</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -824,7 +816,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="working towards making the database stuff also working without implementing it for every region" />
     <MESSAGE value="Added FactoryCondition Class for each RegionType to see if everything is valid before creating and database calls" />
     <MESSAGE value="2 fixed some bugs relating the factorypattern" />
     <MESSAGE value="fixed any obvious bugs" />
@@ -849,7 +840,8 @@
     <MESSAGE value="fixed bug in terranovaLib" />
     <MESSAGE value="updated paperweight" />
     <MESSAGE value="refactored some command related stuff for more flexibility" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactored some command related stuff for more flexibility" />
+    <MESSAGE value="fixed bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
