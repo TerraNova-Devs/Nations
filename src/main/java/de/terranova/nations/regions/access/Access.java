@@ -55,6 +55,7 @@ public class Access implements RegionTypeListener {
     }
 
     public boolean hasAccess(AccessLevel access, AccessLevel neededAcess) {
+        if(access == null) return false;
         return access.getWeight() >= neededAcess.getWeight();
     }
 

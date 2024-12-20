@@ -43,6 +43,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
         npc.hologramNPC(new String[]{String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
         this.bank = new Bank(this);
         RegionLayer.updateRegion(this);
+        this.region = getWorldguardRegion();
     }
 
     private Set<EntityType> getDeniedSpawnEntityTypes() {

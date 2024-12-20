@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS `grid_regions` (
     `RUUID` varchar(36) NOT NULL,
     `name` varchar(36) NOT NULL,
     `type` varchar(36) NOT NULL,
-    `location` varchar(36) NOT NULL,
+    `location` varchar(60) NOT NULL,
     PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;

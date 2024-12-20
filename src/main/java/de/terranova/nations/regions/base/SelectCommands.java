@@ -22,7 +22,9 @@ public class SelectCommands {
     )
     public boolean select(Player p, String[] args) {
         if (TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
-            p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", TerraSelectCache.selectCache.get(p.getUniqueId()).getRegion().getName(), TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
+            p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s",
+                    TerraSelectCache.selectCache.get(p.getUniqueId()).getRegion().getName(),
+                    TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess() == null ? "nix": TerraSelectCache.selectCache.get(p.getUniqueId()).getAccess().name())));
             return true;
         } else {
             p.sendMessage(Chat.errorFade("Bitte wähle zuerst mit '/terra select <Stadt_Name>' eine Stadt aus."));
@@ -43,28 +45,24 @@ public class SelectCommands {
         }
 
         String regionName = args[1].toLowerCase();
-        p.sendMessage(regionName);
         if (!RegionType.isNameCached(regionName)) {
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht.(x)"));
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
             return false;
         }
 
 
         Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", regionName);
         if (osettle.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht.(z)"));
+            p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
             return false;
         }
 
-        SettleRegionType settle = osettle.get();
-
-        TerraSelectCache cache = new TerraSelectCache(settle, p.getUniqueId());
-
+        TerraSelectCache cache = new TerraSelectCache(osettle.get(), p.getUniqueId());
         if (!TerraSelectCache.selectCache.containsKey(p.getUniqueId()))
             TerraSelectCache.selectCache.put(p.getUniqueId(), cache);
         else TerraSelectCache.selectCache.replace(p.getUniqueId(), cache);
 
-        p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", cache.getRegion().getName(), cache.getAccess().name())));
+        p.sendMessage(Chat.blueFade(String.format("Du hast die Stadt %s ausgewählt, dein Rang lautet %s", cache.getRegion().getName(), cache.getAccess() == null ? "nix" : cache.getAccess().name())));
 
         return true;
     }

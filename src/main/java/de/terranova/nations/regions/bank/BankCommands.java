@@ -28,7 +28,7 @@ public class BankCommands {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
             return false;
         }
-        p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt %s",bank.getBank().getCredit())));
+        p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt: %s Silber",bank.getBank().getCredit())));
         return true;
     }
 
@@ -63,7 +63,7 @@ public class BankCommands {
             p.sendMessage("Error während Zahlung");
             return false;
         }
-        p.sendMessage("" + deposit);
+        p.sendMessage(Chat.cottonCandy("Du hast erfolgreich: " + deposit + " Silber eingezahlt."));
         return true;
     }
 
@@ -98,7 +98,7 @@ public class BankCommands {
             p.sendMessage("Error während Zahlung");
             return false;
         }
-        p.sendMessage("" + withdraw);
+        p.sendMessage(Chat.cottonCandy("Du hast erfolgreich: " + withdraw + " Silber abgehoben."));
         return true;
     }
 

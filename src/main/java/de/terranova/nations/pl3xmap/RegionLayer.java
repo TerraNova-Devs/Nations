@@ -47,11 +47,11 @@ public class RegionLayer extends WorldLayer {
     static Map<String,Marker<?>> markers = new HashMap<>();
 
     public static void updateRegion(SettleRegionType region){
-        System.out.println("DEBUG Updating region 0" + region);
+
         if(markers.containsKey(region.getId() + "icon")) removeRegion(region.getId());
-        System.out.println("DEBUG Updating region 1" + region);
+
         if(region.getWorldguardRegion() == null) {
-            Bukkit.getLogger().severe(String.format("Wordguard Region wurde für %s nicht gefunden!",region.getName()));
+
             return;
         }
 
@@ -83,9 +83,6 @@ public class RegionLayer extends WorldLayer {
                 .fillColor(0x5540E53F)
                 .strokeColor(0xDD8640E6)
                 .build();
-        System.out.println("DEBUG Updating region 2" + region);
-        System.out.println("DEBUG" + region.getId() + "" +  region.getLocation().x + "" + region.getLocation().z);
-        System.out.println("DEBUG" + optionspoly);
         markers.put(region.getId().toString() + "icon",Marker.icon("icon" + region.getId(), region.getLocation().x, region.getLocation().z, "castle", 32).setOptions(optionsicon));
         markers.put(region.getId().toString() + "area",polygonMarker.setOptions(optionspoly));
     }

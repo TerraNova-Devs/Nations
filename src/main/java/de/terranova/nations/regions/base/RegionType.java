@@ -106,7 +106,7 @@ public abstract class RegionType {
     }
 
     // Method to rename the region
-    private void rename(String name) {
+    protected void rename(String name) {
         renameRegion(name);
         eventBus.publishRename(name);
         onRename(name);
@@ -120,7 +120,7 @@ public abstract class RegionType {
         eventBus.subscribe(listener); // Dynamically add listeners
     }
 
-    protected void renameRegion(String name) {
+    private void renameRegion(String name) {
         try {
             ProtectedPolygonalRegion newRegion = new ProtectedPolygonalRegion(name, region.getPoints(), region.getMinimumPoint().y(), region.getMaximumPoint().y());
             RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();

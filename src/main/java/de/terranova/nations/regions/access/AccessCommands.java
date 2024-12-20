@@ -26,7 +26,7 @@ public class AccessCommands {
         if (access == null) return false;
 
         if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
-            p.sendMessage("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein.");
+            p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
 
@@ -34,7 +34,7 @@ public class AccessCommands {
         if (target == null) return false;
 
         if (access.getAccess().getAccessLevel(target.getUniqueId()) != null) {
-            p.sendMessage(String.format("Der Spieler %s ist bereits Mitglied deiner Stadt.", target.getName()));
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits Mitglied deiner Stadt.", target.getName())));
             return false;
         }
 
@@ -46,7 +46,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.remove.$<name>",
+            domain = "access.remove.$ONLINEPLAYERS",
             permission = "nations.access.ranks",
             description = "Entfernt den ausgewählten Spieler von deiner Region",
             usage = "/terra remove <player>"
@@ -57,7 +57,7 @@ public class AccessCommands {
         if (access == null) return false;
 
         if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
-            p.sendMessage("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein.");
+            p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
 
@@ -76,7 +76,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.rank.$<name>.$RANKS",
+            domain = "access.rank.$ONLINEPLAYERS.$RANKS",
             permission = "nations.access.ranks",
             description = "Setzt den Rang eines Spielers",
             usage = "/terra rank <player> <rank>"
@@ -87,7 +87,7 @@ public class AccessCommands {
         if (access == null) return false;
 
         if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
-            p.sendMessage("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein.");
+            p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
 
