@@ -1,7 +1,9 @@
 package de.terranova.nations.regions.base;
 
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.access.AccessControlled;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -27,5 +29,11 @@ public class TerraSelectCache {
 
     public AccessLevel getAccess() {
         return access;
+    }
+
+    public static TerraSelectCache hasSelect(Player p) {
+        if(selectCache.containsKey(p.getUniqueId())) return selectCache.get(p.getUniqueId());
+        p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> umd die zu betreffende Stadt auszuwählen."));
+        return null;
     }
 }

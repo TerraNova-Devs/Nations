@@ -2,12 +2,10 @@ package de.terranova.nations.regions.bank;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;
-
-import static de.terranova.nations.regions.base.NationCommandUtil.hasAccess;
-import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class BankCommands {
 
@@ -22,7 +20,7 @@ public class BankCommands {
             usage = "/terra bank balance"
     )
     public boolean checkBalance(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
@@ -39,13 +37,13 @@ public class BankCommands {
             usage = "/terra bank deposit <amount>"
     )
     public boolean deposit(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
             return false;
         }
-        if(!hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
+        if(!Access.hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Member sein um in die Stadtkasse einzahlen zu können"));
             return false;
         }
@@ -74,13 +72,13 @@ public class BankCommands {
             usage = "/terra bank withdraw <amount>"
     )
     public boolean withdraw(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
             return false;
         }
-        if(!hasAccess(cache.getAccess(), AccessLevel.COUNCIL)) {
+        if(!Access.hasAccess(cache.getAccess(), AccessLevel.COUNCIL)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Council sein um von der Stadtkasse abheben zu können"));
             return false;
         }
@@ -109,13 +107,13 @@ public class BankCommands {
             usage = "/terra bank history"
     )
     public boolean history(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         if(!(cache.getRegion() instanceof BankHolder bank)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Bank"));
             return false;
         }
-        if(!hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
+        if(!Access.hasAccess(cache.getAccess(), AccessLevel.CITIZEN)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Member sein um die Historie sehen zu können"));
             return false;
         }

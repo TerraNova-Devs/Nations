@@ -6,7 +6,6 @@ import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class AccessCommands {
 
@@ -21,7 +20,7 @@ public class AccessCommands {
             usage = "/terra add <player>"
     )
     public boolean addPlayer(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
@@ -52,7 +51,7 @@ public class AccessCommands {
             usage = "/terra remove <player>"
     )
     public boolean removePlayer(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
@@ -82,7 +81,7 @@ public class AccessCommands {
             usage = "/terra rank <player> <rank>"
     )
     public boolean rankPlayer(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 

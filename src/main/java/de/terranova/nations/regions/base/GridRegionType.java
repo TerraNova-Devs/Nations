@@ -18,7 +18,7 @@ public abstract class GridRegionType extends RegionType {
         super(name, id, type);
         this.location = location;
         this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
-        locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
+        locationCache.add(location);
     }
 
     public abstract int getMaxClaims();

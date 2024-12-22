@@ -1,22 +1,17 @@
 package de.terranova.nations.regions.bank;
 
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
-import de.mcterranova.terranovaLib.database.UniqueTimestampGenerator;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.base.RegionTypeListener;
-import de.terranova.nations.regions.rank.RankedRegion;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class Bank implements RegionTypeListener {
-
-    private static final UniqueTimestampGenerator tsg = new UniqueTimestampGenerator();
 
     private final List<Transaction> transactions;
     private int credit;
@@ -90,7 +85,7 @@ public class Bank implements RegionTypeListener {
 
     private void updateBankBalance(String record, int amount) {
         if (transactions.size() >= 50) transactions.removeFirst();
-        Timestamp timestamp = tsg.generate(regionType.getId());
+        Timestamp timestamp = MonotonicTimestampGen.generateTimestamp(regionType.getId());
         Transaction transaction = new Transaction(record, amount, timestamp, credit += amount);
 
         bankDatabase.insertTransaction(transaction);
