@@ -24,7 +24,8 @@ public class AccessCommands {
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
+        access.getAccess();
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -55,7 +56,8 @@ public class AccessCommands {
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
+        access.getAccess();
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -85,7 +87,8 @@ public class AccessCommands {
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if (!access.getAccess().hasAccess(cache.getAccess(), AccessLevel.VICE)) {
+        access.getAccess();
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -98,6 +101,16 @@ public class AccessCommands {
 
         if (access.getAccess().getAccessLevel(target.getUniqueId()) == null) {
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", target.getName())));
+            return false;
+        }
+
+        if(newRank.equals(AccessLevel.MAJOR) || newRank.equals(AccessLevel.ADMIN)) {
+            p.sendMessage(Chat.errorFade("Du kannst den Stadtbesitzer nicht ändern."));
+            return false;
+        }
+
+        if(target.getUniqueId() == p.getUniqueId() && cache.getAccess().equals(AccessLevel.MAJOR)) {
+            p.sendMessage(Chat.errorFade("Du kannst deinen eigenen Rang nicht ändern!"));
             return false;
         }
 

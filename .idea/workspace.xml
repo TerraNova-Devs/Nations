@@ -9,8 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="bugfixes">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bank but timestamps are still somewhat glitchy showing 1970">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -178,7 +182,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
+  <component name="RunManager" selected="JAR Application.testserver">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -415,14 +419,8 @@
       <workItem from="1734873664466" duration="5387000" />
       <workItem from="1734880740029" duration="2536000" />
       <workItem from="1734891198404" duration="3333000" />
-    </task>
-    <task id="LOCAL-00004" summary="cleaned up gitignore">
-      <option name="closed" value="true" />
-      <created>1730474035040</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1730474035040</updated>
+      <workItem from="1734896146008" duration="637000" />
+      <workItem from="1734900692548" duration="2735000" />
     </task>
     <task id="LOCAL-00005" summary="abstracted settlement into a propertyType, introduced property types">
       <option name="closed" value="true" />
@@ -808,7 +806,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734893333750</updated>
     </task>
-    <option name="localTasksCounter" value="53" />
+    <task id="LOCAL-00053" summary="fixed bank but timestamps are still somewhat glitchy showing 1970">
+      <option name="closed" value="true" />
+      <created>1734896779690</created>
+      <option name="number" value="00053" />
+      <option name="presentableId" value="LOCAL-00053" />
+      <option name="project" value="LOCAL" />
+      <updated>1734896779691</updated>
+    </task>
+    <option name="localTasksCounter" value="54" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -819,7 +825,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="fixed any obvious bugs" />
     <MESSAGE value="changed some names for better console output" />
     <MESSAGE value="working towards a new command foundation" />
     <MESSAGE value="command framework is slowly coming together" />
@@ -844,7 +849,8 @@
     <MESSAGE value="fixed bugs" />
     <MESSAGE value="fixed regionname wasnt removed from the cash onRemoval" />
     <MESSAGE value="bugfixes" />
-    <option name="LAST_COMMIT_MESSAGE" value="bugfixes" />
+    <MESSAGE value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

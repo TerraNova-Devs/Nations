@@ -22,8 +22,7 @@ public class TimestampGenerator {
         public static synchronized Timestamp generateTimestamp(UUID uuid) {
             // 1. Get current time in microseconds since epoch
             Instant now = Instant.now();
-            //long currentMicros = now.getEpochSecond() * 1_000_000 + (now.getNano() / 1_000);
-            long currentMicros = 304535;
+            long currentMicros = now.getEpochSecond() * 1_000_000 + (now.getNano() / 1_000);
             // 2. Compare with the last timestamp for this UUID, if any
             Long lastUsedMicros = lastTimestamps.get(uuid);
             if (lastUsedMicros != null && currentMicros <= lastUsedMicros) {
