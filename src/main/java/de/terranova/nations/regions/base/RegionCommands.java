@@ -8,6 +8,7 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegionType;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
@@ -19,8 +20,6 @@ import org.bukkit.entity.Player;
 import java.util.Arrays;
 import java.util.Optional;
 
-import static de.terranova.nations.regions.base.NationCommandUtil.hasAccess;
-import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 
 public class RegionCommands {
@@ -57,7 +56,7 @@ public class RegionCommands {
             usage = "/terra region remove"
     )
     public static boolean removeRegion(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         RegionType region = cache.getRegion();
         AccessLevel playerAccess = cache.getAccess();
@@ -67,7 +66,7 @@ public class RegionCommands {
             return false;
         }
 
-        if (playerAccess == null || !hasAccess(playerAccess, AccessLevel.MAJOR)) {
+        if (playerAccess == null || !Access.hasAccess(playerAccess, AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("You do not have the required access level to remove this settlement."));
             return false;
         }
@@ -85,7 +84,7 @@ public class RegionCommands {
             usage = "/terra region claim"
     )
     public static boolean claimRegion(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
 
         if(!(cache.getRegion() instanceof GridRegionType region)){
@@ -93,7 +92,7 @@ public class RegionCommands {
             return false;
         }
         AccessLevel access = cache.getAccess();
-        if (!hasAccess(access, AccessLevel.VICE)) {
+        if (!Access.hasAccess(access, AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
             return false;
         }
@@ -144,10 +143,10 @@ public class RegionCommands {
             usage = "/terra region rename <name>"
     )
     public static boolean renameRegion(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         AccessLevel access = cache.getAccess();
-        if (!hasAccess(access, AccessLevel.MAJOR)) {
+        if (!Access.hasAccess(access, AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
             return false;
         }
@@ -163,7 +162,7 @@ public class RegionCommands {
         }
 
         cache.getRegion().rename(name);
-        return false;
+        return true;
     }
 
 

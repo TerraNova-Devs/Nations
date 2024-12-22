@@ -3,14 +3,15 @@ package de.terranova.nations.regions.npc;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegionType;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-import static de.terranova.nations.regions.base.NationCommandUtil.hasSelect;
 
 public class NPCCommands {
 
@@ -25,7 +26,7 @@ public class NPCCommands {
             usage = "/terra npc move"
     )
     public boolean moveNPC(Player p, String[] args) {
-        TerraSelectCache cache = hasSelect(p);
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
 
         Optional<SettleRegionType> settle = RegionManager.retrieveRegion("settle", p.getLocation());
@@ -34,7 +35,7 @@ public class NPCCommands {
             return false;
         }
 
-        if(!settle.get().getAccess().hasAccess(settle.get().getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
+        if(!Access.hasAccess(settle.get().getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung den NPC zu verschieben."));
             return false;
         }

@@ -4,17 +4,16 @@ import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.base.RegionTypeListener;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.UUID;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class Access implements RegionTypeListener {
 
     private RegionType regionType;
-    private HashMap<UUID, AccessLevel> accessLevel = new HashMap<>();
+    private HashMap<UUID, AccessLevel> accessLevel;
     AccessDatabase accessDatabase;
 
     public Access(RegionType regionType) {
@@ -34,7 +33,22 @@ public class Access implements RegionTypeListener {
         this.accessLevel = accessLevels;
     }
 
+    public UUID getMajor() {
+        return accessLevel.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == AccessLevel.MAJOR)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+    }
 
+    public List<UUID> getAllUUIDsOfLevel(AccessLevel level) {
+        return accessLevel.entrySet()
+                .stream()
+                .filter(entry -> entry.getValue() == level)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toList());
+    }
 
     public void removeAccess(UUID uuid) {
         HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
@@ -54,8 +68,8 @@ public class Access implements RegionTypeListener {
         setAccessLevels(accessLevels);
     }
 
-    public boolean hasAccess(AccessLevel access, AccessLevel neededAcess) {
-        if(access == null) return false;
+    public static boolean hasAccess(AccessLevel access, AccessLevel neededAcess) {
+        if (access == null) return false;
         return access.getWeight() >= neededAcess.getWeight();
     }
 

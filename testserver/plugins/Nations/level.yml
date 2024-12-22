@@ -55,7 +55,7 @@
 6: !<Stadtlevel>
   material_a: ACACIA_LOG
   material_b: LIGHT_BLUE_WOOL
-  material_c: BLOCK_OF_AMETHYST
+  material_c: AMETHYST_BLOCK
   objective_a: 3456
   objective_b: 320
   objective_c: 1728

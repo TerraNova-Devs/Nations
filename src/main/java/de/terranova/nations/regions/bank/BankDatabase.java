@@ -36,7 +36,7 @@ public class BankDatabase {
         }
     }
 
-    public List<Transaction>    getLatestTransactions() {
+    public List<Transaction> getLatestTransactions() {
         List<Transaction> transactions = new ArrayList<>();
         String sql = queries.get("get latest transactions");
         if (sql == null) throw new IllegalArgumentException("Query not found!");
@@ -93,7 +93,7 @@ public class BankDatabase {
         String sql = queries.get("insert value into bank");
         String sql2 = queries.get("check for more than 50 entries");
         if (sql == null) throw new IllegalArgumentException("Query not found!");
-
+        System.out.println(transaction.timestamp);
 
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps2 = conn.prepareStatement(sql2);

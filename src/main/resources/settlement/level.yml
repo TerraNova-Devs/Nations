@@ -73,7 +73,7 @@
 8: !<Stadtlevel>
   material_a: CHERRY_LOG
   material_b: PURPLE_WOOL
-  material_c: BLOCK_OF_COPPER
+  material_c: COPPER_BLOCK
   objective_a: 3456
   objective_b: 320
   objective_c: 320

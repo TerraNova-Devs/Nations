@@ -5,6 +5,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegionType;
@@ -84,16 +85,14 @@ public class TownGUI extends RoseGUI {
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
-            if (Objects.equals(access, AccessLevel.MAJOR) || Objects.equals(access, AccessLevel.VICE) || Objects.equals(access, AccessLevel.COUNCIL) || player.isOp()) {
+            if(Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL)  || player.isOp()){
                 new TownUpgradeGUI(player, settle).open();
-            } else {
-                player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
-            }
+            } else player.sendMessage(Chat.errorFade("Dein Rang in der Stadt ist leider nicht hoch genug um hierauf zuzugreifen."));
         });
 
         settings.onClick(e -> {
             if (!player.hasPermission("nations.menu.settings")) return;
-            if (Objects.equals(access, AccessLevel.MAJOR) || Objects.equals(access, AccessLevel.VICE) || player.isOp()) {
+            if (Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL) || player.isOp()) {
                 new TownSettingsGUI(player, settle).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));

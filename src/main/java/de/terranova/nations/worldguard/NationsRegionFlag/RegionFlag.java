@@ -20,13 +20,13 @@ public class RegionFlag {
         FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
         try {
             // create a flag with the name "my-custom-flag", defaulting to true
-            StringFlag flag = new StringFlag("nations-region-uuid", DefaultValue);
+            StringFlag flag = new StringFlag("nations-settlement-uuid", DefaultValue);
             registry.register(flag);
             REGION_UUID_FLAG = flag; // only set our field if there was no error
         } catch (FlagConflictException e) {
             // some other plugin registered a flag by the same name already.
             // you can use the existing flag, but this may cause conflicts - be sure to check type
-            Flag<?> existing = registry.get("nations-region-uuid");
+            Flag<?> existing = registry.get("nations-settlement-uuid");
             if (existing instanceof StringFlag) {
                 REGION_UUID_FLAG = (StringFlag) existing;
             } else {
