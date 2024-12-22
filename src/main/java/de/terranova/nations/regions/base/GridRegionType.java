@@ -26,7 +26,6 @@ public abstract class GridRegionType extends RegionType {
     @Override
     public final void onCreation(Player p) {
         this.region = RegionClaimFunctions.createClaim(name, p, this.id);
-        locationCache.add(RegionClaimFunctions.getSChunkMiddle(location));
         onGridCreation(p);
     }
 
