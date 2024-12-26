@@ -53,7 +53,10 @@ public class RegionManager {
         if (typeMap == null) {
             return Optional.empty(); // Type not found
         }
-        return Optional.of(typeMap.get(uuid)); // Retrieve animal by name
+        if(typeMap.containsKey(uuid)) {
+            return Optional.of(typeMap.get(uuid)); // Retrieve region by name
+        }
+        return Optional.empty();
     }
 
     public static <T extends RegionType> Optional<T> retrieveRegion(String type, String name) {
@@ -72,11 +75,12 @@ public class RegionManager {
 
         for (ProtectedRegion region : set) {
             for (RegionType regionType : regions.values()) {
-                String UUIDstring = region.getFlag( RegionFlag.REGION_UUID_FLAG);
-                if(UUIDstring == null) continue;
-                UUID settlementUUID = UUID.fromString(UUIDstring);
-                if(regionType.getId().equals(settlementUUID)) {
-                    return Optional.of(regions.get(settlementUUID));
+                String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
+                if(regionUUIDString == null) continue;
+                if(regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) continue;
+                UUID regionUUID = UUID.fromString(regionUUIDString);
+                if(regionType.getId().equals(regionUUID)) {
+                    return Optional.of(regions.get(regionUUID));
                 }
             }
         }

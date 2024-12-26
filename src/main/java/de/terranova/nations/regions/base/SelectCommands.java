@@ -57,7 +57,7 @@ public class SelectCommands {
             return false;
         }
 
-        TerraSelectCache cache = new TerraSelectCache(osettle.get(), p.getUniqueId());
+        TerraSelectCache cache = new TerraSelectCache(osettle.get(), p);
         if (!TerraSelectCache.selectCache.containsKey(p.getUniqueId()))
             TerraSelectCache.selectCache.put(p.getUniqueId(), cache);
         else TerraSelectCache.selectCache.replace(p.getUniqueId(), cache);

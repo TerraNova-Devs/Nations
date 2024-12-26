@@ -71,7 +71,7 @@ public class TownUpgradeGUI extends RoseGUI {
 
         RoseItem objective_bank = new RoseItem.Builder()
                 .material("terranova_silver")
-                .displayName("Bank")
+                .displayName(Chat.blueFade("<b>" + "Bank"))
                 .addLore(settle.getBank().getCredit() >= goalRankObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())) : Chat.redFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())))
                 .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
                 .build();

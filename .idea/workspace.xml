@@ -9,11 +9,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bank but timestamps are still somewhat glitchy showing 1970">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fexed bugs within access">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -182,7 +186,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.testserver">
+  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -420,15 +424,17 @@
       <workItem from="1734880740029" duration="2536000" />
       <workItem from="1734891198404" duration="3333000" />
       <workItem from="1734896146008" duration="637000" />
-      <workItem from="1734900692548" duration="2735000" />
-    </task>
-    <task id="LOCAL-00005" summary="abstracted settlement into a propertyType, introduced property types">
-      <option name="closed" value="true" />
-      <created>1731269294093</created>
-      <option name="number" value="00005" />
-      <option name="presentableId" value="LOCAL-00005" />
-      <option name="project" value="LOCAL" />
-      <updated>1731269294093</updated>
+      <workItem from="1734900692548" duration="2856000" />
+      <workItem from="1734910158088" duration="623000" />
+      <workItem from="1734958656414" duration="15000" />
+      <workItem from="1734977256937" duration="1723000" />
+      <workItem from="1734986077296" duration="55000" />
+      <workItem from="1734995002598" duration="4458000" />
+      <workItem from="1735041278464" duration="3933000" />
+      <workItem from="1735084597797" duration="4000" />
+      <workItem from="1735084838742" duration="355000" />
+      <workItem from="1735119058856" duration="1570000" />
+      <workItem from="1735230055069" duration="2574000" />
     </task>
     <task id="LOCAL-00006" summary="added Oraxen to gitignore">
       <option name="closed" value="true" />
@@ -814,7 +820,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734896779691</updated>
     </task>
-    <option name="localTasksCounter" value="54" />
+    <task id="LOCAL-00054" summary="fexed bugs within access">
+      <option name="closed" value="true" />
+      <created>1734903680099</created>
+      <option name="number" value="00054" />
+      <option name="presentableId" value="LOCAL-00054" />
+      <option name="project" value="LOCAL" />
+      <updated>1734903680099</updated>
+    </task>
+    <option name="localTasksCounter" value="55" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -825,7 +839,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="changed some names for better console output" />
     <MESSAGE value="working towards a new command foundation" />
     <MESSAGE value="command framework is slowly coming together" />
     <MESSAGE value="added remaining commands to framework" />
@@ -850,7 +863,8 @@
     <MESSAGE value="fixed regionname wasnt removed from the cash onRemoval" />
     <MESSAGE value="bugfixes" />
     <MESSAGE value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
+    <MESSAGE value="fexed bugs within access" />
+    <option name="LAST_COMMIT_MESSAGE" value="fexed bugs within access" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

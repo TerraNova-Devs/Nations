@@ -4,6 +4,7 @@ import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 
@@ -96,15 +97,15 @@ public class AccessCommands {
         Player target = getTargetPlayer(p, args, 2);
         if (target == null) return false;
 
-        AccessLevel newRank = getAccessLevelFromArgs(p, args, 3);
-        if (newRank == null) return false;
+        AccessLevel newAccess = getAccessLevelFromArgs(p, args, 3);
+        if (newAccess == null) return false;
 
         if (access.getAccess().getAccessLevel(target.getUniqueId()) == null) {
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", target.getName())));
             return false;
         }
 
-        if(newRank.equals(AccessLevel.MAJOR) || newRank.equals(AccessLevel.ADMIN)) {
+        if(newAccess.equals(AccessLevel.MAJOR) || newAccess.equals(AccessLevel.ADMIN)) {
             p.sendMessage(Chat.errorFade("Du kannst den Stadtbesitzer nicht ändern."));
             return false;
         }
@@ -114,8 +115,23 @@ public class AccessCommands {
             return false;
         }
 
-        access.getAccess().setAccessLevel(target.getUniqueId(), newRank);
-        p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), newRank.name())));
+        if(access.getAccess().getAccessLevel(target.getUniqueId()) == newAccess) {
+            p.sendMessage(Chat.errorFade("Der Spieler " + target.getName() + " ist bereits auf dem Rang " + newAccess.name() +"."));
+            return false;
+        }
+
+        if(access.getAccess().getAccessLevel(target.getUniqueId()).weight >= access.getAccess().getAccessLevel(p.getUniqueId()).weight){
+            p.sendMessage(Chat.errorFade("Du kannst nicht den Rang eines Spielers ändern der höher oder gleich ist als deiner selbst."));
+            return false;
+        }
+
+        if(!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
+            p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um access level ändern zu können."));
+            return false;
+        }
+
+        access.getAccess().setAccessLevel(target.getUniqueId(), newAccess);
+        p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), newAccess.name())));
         return true;
     }
 

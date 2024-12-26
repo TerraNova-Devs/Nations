@@ -21,7 +21,7 @@ public class TerraCommand extends AbstractCommand {
         addPlaceholder("$ONLINEPLAYERS", new CachedSupplier<>(() -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()), 10000));
         addPlaceholder("$REGION_NAMES", RegionType::getNameCache);
         addPlaceholder("$REGISTERED_REGION_TYPES", RegionType::getRegionTypes);
-        addPlaceholder("$RANKS", () -> Arrays.stream(AccessLevel.values()).filter(level -> level != AccessLevel.ADMIN).map(Enum::name).collect(Collectors.toList()));
+        addPlaceholder("$RANKS", () -> Arrays.stream(AccessLevel.values()).filter(level -> level != AccessLevel.ADMIN).filter(level -> level != AccessLevel.MAJOR).map(Enum::name).collect(Collectors.toList()));
 
         registerSubCommand(RegionCommands.class, "region");
         registerSubCommand(new BankCommands(), "bank");
