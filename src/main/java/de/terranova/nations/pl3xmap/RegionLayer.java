@@ -63,7 +63,10 @@ public class RegionLayer extends WorldLayer {
 
         Collection<String> vices = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.VICE);
         Collection<String> councils = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.COUNCIL);
-        String owner = Bukkit.getOfflinePlayer(region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().get()).getName();
+        String owner = "error";
+        if(region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().isPresent()){
+            owner = Bukkit.getOfflinePlayer(region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().get()).getName();
+        }
 
         String tooltip = String.format(
                 "<style> @font-face { font-family: minecraft; src: url('images/font/Minecrafter.Reg.ttf'); } p { font-family: minecraft; text-align: center; margin-top: 0; margin-bottom: 0; color:#D9D9D9; } p.mid { text-align: left; } p.color{ color: #68D9B0; font-size: 30px;} </style>" +

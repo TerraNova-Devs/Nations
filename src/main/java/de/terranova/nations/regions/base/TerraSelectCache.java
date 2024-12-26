@@ -14,10 +14,11 @@ public class TerraSelectCache {
 
     private RegionType region;
     private AccessLevel access;
-    public TerraSelectCache(RegionType region, UUID uuid) {
+    public TerraSelectCache(RegionType region, Player p) {
         this.region = region;
         if(region instanceof AccessControlled access){
-            this.access = access.getAccess().getAccessLevel(uuid);
+            if(p.isOp()) this.access = AccessLevel.ADMIN;
+            else this.access = access.getAccess().getAccessLevel(p.getUniqueId());
         } else {
             this.access = null;
         }

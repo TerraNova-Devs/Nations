@@ -1,0 +1,28 @@
+terranova_ghosttrophy:
+  itemname: <gold><bold>Trophy</bold>
+  material: PAPER
+  Pack:
+    generate_model: false
+    model: terranova/ghosttrophy
+    custom_model_data: 1000
+  Mechanics:
+    furniture:
+      type: DISPLAY_ENTITY
+      offset:
+        x: 0
+        y: 0.5  
+        z: 0
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      barrier: false
+      block_sounds:
+        break_sound: block.wood.break
+        place_sound: item.shield.block
+        hit_sound: ambient.weather.thunder
+      drop:
+        silktouch: false
+        loots:
+        - oraxen_item: terranova_ghosttrophy
+          probability: 1.0
