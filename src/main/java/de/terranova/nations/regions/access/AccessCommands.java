@@ -5,7 +5,12 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class AccessCommands {
@@ -14,18 +19,19 @@ public class AccessCommands {
 
     }
 
+    static Map<UUID, UUID> invites = new HashMap<>();
+
     @CommandAnnotation(
-            domain = "access.add.$ONLINEPLAYERS",
+            domain = "access.invite.$ONLINEPLAYERS",
             permission = "nations.access.ranks",
             description = "Fügt den ausgewählten Spieler deiner Region hinzu",
             usage = "/terra add <player>"
     )
-    public boolean addPlayer(Player p, String[] args) {
+    public boolean invitePlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        access.getAccess();
         if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
@@ -38,11 +44,46 @@ public class AccessCommands {
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits Mitglied deiner Stadt.", target.getName())));
             return false;
         }
+        if(invites.containsKey(target.getUniqueId())){
+            if(invites.get(target.getUniqueId()).equals(cache.getRegion().getId())){
+                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits eingeladen.", target.getName())));
+                return false;
+            }
+        }
+        System.out.println(target.getUniqueId());
+        invites.put(target.getUniqueId(), cache.getRegion().getId());
+        System.out.println(invites);
+        p.sendMessage(Chat.greenFade("Du hast " + target.getName() + " erfolgreich in die Stadt " + cache.getRegion().getName() + " eigeladen."));
+        target.sendMessage(Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + cache.getRegion().getName() + " eigeladen."));
+        return true;
+    }
 
-        cache.getRegion().addMember(target.getUniqueId());
-        access.getAccess().setAccessLevel(target.getUniqueId(), AccessLevel.CITIZEN);
+    @CommandAnnotation(
+            domain = "access.accept",
+            permission = "nations.access.ranks",
+            description = "Fügt den ausgewählten Spieler deiner Region hinzu",
+            usage = "/terra add <player>"
+    )
+    public boolean acceptPlayer(Player p, String[] args) {
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
+        AccessControlled access = getAccessControlledRegion(p, cache);
+        if (access == null) return false;
 
-        sendSuccessMessages(p, target, cache.getRegion().getName(), "hinzugefügt");
+        if(!invites.containsKey(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Es wurden keine Einladungen für dich gefunden!"));
+            return false;
+        }
+        if(!invites.get(p.getUniqueId()).equals(cache.getRegion().getId())){
+            p.sendMessage(Chat.errorFade("Für die von dir ausgewählte Region wurden keine Einladungen für dich gefunden!"));
+            return false;
+        }
+
+        access.getAccess().broadcast(p.getName() + " ist erfolgreich der Stadt " + cache.getRegion().getName() + " beigetreten.");
+        cache.getRegion().addMember(p.getUniqueId());
+        access.getAccess().setAccessLevel(p.getUniqueId(), AccessLevel.CITIZEN);
+        p.sendMessage(Chat.greenFade("Du bist erfolgreich der Stadt " + cache.getRegion().getName() + " beigetreten."));
+
+        TerraSelectCache.renewSelect(p);
         return true;
     }
 
@@ -57,7 +98,6 @@ public class AccessCommands {
         AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        access.getAccess();
         if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
@@ -71,9 +111,43 @@ public class AccessCommands {
             return false;
         }
 
+        if(access.getAccess().getAccessLevel(target.getUniqueId()).weight >= access.getAccess().getAccessLevel(p.getUniqueId()).weight){
+            p.sendMessage(Chat.errorFade("Du kannst keinen Spieler entfernen der höher gleich du im Rang ist."));
+            return false;
+        }
+
+        if(!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
+            p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um einen Spieler von der Stadt zu entfernen."));
+            return false;
+        }
+
         cache.getRegion().removeMember(target.getUniqueId());
         access.getAccess().removeAccess(target.getUniqueId());
-        sendSuccessMessages(p, target, cache.getRegion().getName(), "entfernt");
+        access.getAccess().broadcast(target.getName() + " wurde von " + p.getName() + " der Stadt " + cache.getRegion().getName() + " verwiesen.");
+        TerraSelectCache.renewSelect(target);
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "access.leave",
+            permission = "nations.access.ranks",
+            description = "Verlässt eine Stadt.",
+            usage = "/terra leave"
+    )
+    public boolean leave(Player p, String[] args) {
+        TerraSelectCache cache = TerraSelectCache.hasSelect(p);
+        AccessControlled access = getAccessControlledRegion(p, cache);
+        if (access == null) return false;
+
+        if(Access.hasAccess(cache.getAccess(), AccessLevel.MAJOR) || Access.hasAccess(cache.getAccess(), AccessLevel.ADMIN)){
+            p.sendMessage(Chat.errorFade("Der Major kann seine Stadt nicht verlassen!"));
+            return false;
+        }
+
+        cache.getRegion().removeMember(p.getUniqueId());
+        access.getAccess().removeAccess(p.getUniqueId());
+        access.getAccess().broadcast(p.getName() + " hat die Stadt " + cache.getRegion().getName() + " verlassen.");
+        TerraSelectCache.renewSelect(p);
         return true;
     }
 
@@ -132,6 +206,7 @@ public class AccessCommands {
 
         access.getAccess().setAccessLevel(target.getUniqueId(), newAccess);
         p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), newAccess.name())));
+        TerraSelectCache.renewSelect(target);
         return true;
     }
 
@@ -150,8 +225,9 @@ public class AccessCommands {
             return null;
         }
         Player target = Bukkit.getPlayer(args[index]);
+
         if (target == null) {
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s konnte nicht gefunden werden", args[index])));
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[index]);
         }
         return target;
     }
@@ -168,10 +244,5 @@ public class AccessCommands {
         }
         p.sendMessage(Chat.errorFade(String.format("Das AccessLevel %s konnte nicht gefunden werden", args[index])));
         return null;
-    }
-
-    private void sendSuccessMessages(Player p, Player target, String regionName, String action) {
-        target.sendMessage(Chat.greenFade(String.format("Du wurdest von der Region %s %s.", regionName, action)));
-        p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich von der Stadt %s %s.", target.getName(), regionName, action)));
     }
 }

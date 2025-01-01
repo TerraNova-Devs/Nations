@@ -1,12 +1,14 @@
 package de.terranova.nations.regions.base;
 
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.access.AccessControlled;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 public class TerraSelectCache {
@@ -15,6 +17,7 @@ public class TerraSelectCache {
     private RegionType region;
     private AccessLevel access;
     public TerraSelectCache(RegionType region, Player p) {
+        p.sendMessage(String.valueOf(p.isOp()));
         this.region = region;
         if(region instanceof AccessControlled access){
             if(p.isOp()) this.access = AccessLevel.ADMIN;
@@ -35,6 +38,16 @@ public class TerraSelectCache {
     public static TerraSelectCache hasSelect(Player p) {
         if(selectCache.containsKey(p.getUniqueId())) return selectCache.get(p.getUniqueId());
         p.sendMessage(Chat.errorFade("Bitte nutze für die Aktion erst ./t select <Stadtname> umd die zu betreffende Stadt auszuwählen."));
+        return null;
+    }
+
+    public static TerraSelectCache renewSelect(Player p) {
+        if(selectCache.containsKey(p.getUniqueId())){
+            TerraSelectCache oldCache = selectCache.get(p.getUniqueId());
+            selectCache.remove(p.getUniqueId());
+            Optional<RegionType> updatedRegion = RegionManager.retrieveRegion(oldCache.region.type,oldCache.region.id);
+            updatedRegion.ifPresent(regionType -> selectCache.put(p.getUniqueId(), new TerraSelectCache(regionType, p)));
+        }
         return null;
     }
 }
