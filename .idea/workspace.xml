@@ -9,16 +9,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fexed bugs within access">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bugs in access and added new invite function + removing of offline players">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/CachedKeyedSupplier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/gui/TownUpgradeGUI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/pl3xmap/RegionLayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/RegionManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/SelectCommands.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Oraxen/items/terranova_ghosttrophy.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,11 +180,12 @@
       <recent name="de.terranova.nations.worldguard.math" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="de.terranova.nations.command" />
       <recent name="de.terranova.nations.worldguard" />
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
+  <component name="RunManager" selected="JAR Application.testserver">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -434,15 +433,13 @@
       <workItem from="1735084597797" duration="4000" />
       <workItem from="1735084838742" duration="355000" />
       <workItem from="1735119058856" duration="1570000" />
-      <workItem from="1735230055069" duration="2574000" />
-    </task>
-    <task id="LOCAL-00006" summary="added Oraxen to gitignore">
-      <option name="closed" value="true" />
-      <created>1731269499411</created>
-      <option name="number" value="00006" />
-      <option name="presentableId" value="LOCAL-00006" />
-      <option name="project" value="LOCAL" />
-      <updated>1731269499411</updated>
+      <workItem from="1735230055069" duration="3407000" />
+      <workItem from="1735237293086" duration="2684000" />
+      <workItem from="1735304688925" duration="5762000" />
+      <workItem from="1735391888347" duration="2026000" />
+      <workItem from="1735476769456" duration="9438000" />
+      <workItem from="1735576507367" duration="607000" />
+      <workItem from="1735734571094" duration="445000" />
     </task>
     <task id="LOCAL-00007" summary="working towards making outposts and regions createbale again">
       <option name="closed" value="true" />
@@ -828,7 +825,15 @@
       <option name="project" value="LOCAL" />
       <updated>1734903680099</updated>
     </task>
-    <option name="localTasksCounter" value="55" />
+    <task id="LOCAL-00055" summary="fixed access abuse and no major found">
+      <option name="closed" value="true" />
+      <created>1735233413591</created>
+      <option name="number" value="00055" />
+      <option name="presentableId" value="LOCAL-00055" />
+      <option name="project" value="LOCAL" />
+      <updated>1735233413591</updated>
+    </task>
+    <option name="localTasksCounter" value="56" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -839,7 +844,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="working towards a new command foundation" />
     <MESSAGE value="command framework is slowly coming together" />
     <MESSAGE value="added remaining commands to framework" />
     <MESSAGE value="fixed error where name check in SettleRegionFactory was inverted" />
@@ -864,7 +868,8 @@
     <MESSAGE value="bugfixes" />
     <MESSAGE value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
     <MESSAGE value="fexed bugs within access" />
-    <option name="LAST_COMMIT_MESSAGE" value="fexed bugs within access" />
+    <MESSAGE value="fixed access abuse and no major found" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed access abuse and no major found" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
