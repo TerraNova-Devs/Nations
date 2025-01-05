@@ -17,7 +17,6 @@ public class TerraSelectCache {
     private RegionType region;
     private AccessLevel access;
     public TerraSelectCache(RegionType region, Player p) {
-        p.sendMessage(String.valueOf(p.isOp()));
         this.region = region;
         if(region instanceof AccessControlled access){
             if(p.isOp()) this.access = AccessLevel.ADMIN;

@@ -24,8 +24,8 @@ public class AccessCommands {
     @CommandAnnotation(
             domain = "access.invite.$ONLINEPLAYERS",
             permission = "nations.access.ranks",
-            description = "Fügt den ausgewählten Spieler deiner Region hinzu",
-            usage = "/terra add <player>"
+            description = "Lädt den angegebenen Spieler in deine Stadt ein.",
+            usage = "/terra access invite <player>"
     )
     public boolean invitePlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
@@ -61,8 +61,8 @@ public class AccessCommands {
     @CommandAnnotation(
             domain = "access.accept",
             permission = "nations.access.ranks",
-            description = "Fügt den ausgewählten Spieler deiner Region hinzu",
-            usage = "/terra add <player>"
+            description = "Nimmt die Einladung einer Stadt an.",
+            usage = "/terra access accept"
     )
     public boolean acceptPlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
