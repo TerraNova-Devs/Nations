@@ -9,9 +9,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bugs in access and added new invite function + removing of offline players">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added uuid based tab completion for access commands">
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -181,7 +185,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
+  <component name="RunManager" selected="JAR Application.testserver">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -436,14 +440,7 @@
       <workItem from="1735476769456" duration="9438000" />
       <workItem from="1735576507367" duration="607000" />
       <workItem from="1735734571094" duration="1381000" />
-    </task>
-    <task id="LOCAL-00008" summary="optimated Citizen/Town Menu open code">
-      <option name="closed" value="true" />
-      <created>1731612146760</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1731612146760</updated>
+      <workItem from="1736075988950" duration="5666000" />
     </task>
     <task id="LOCAL-00009" summary="working towards that regions are creatable again">
       <option name="closed" value="true" />
@@ -829,7 +826,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735735074695</updated>
     </task>
-    <option name="localTasksCounter" value="57" />
+    <task id="LOCAL-00057" summary="removed debug message in the select cache">
+      <option name="closed" value="true" />
+      <created>1736076079227</created>
+      <option name="number" value="00057" />
+      <option name="presentableId" value="LOCAL-00057" />
+      <option name="project" value="LOCAL" />
+      <updated>1736076079228</updated>
+    </task>
+    <option name="localTasksCounter" value="58" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -840,8 +845,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added remaining commands to framework" />
-    <MESSAGE value="fixed error where name check in SettleRegionFactory was inverted" />
     <MESSAGE value="added simple tab completion placeholder still have to be replaced" />
     <MESSAGE value="Fixed Bugs and added local logs" />
     <MESSAGE value="removed old code" />
@@ -865,7 +868,9 @@
     <MESSAGE value="fexed bugs within access" />
     <MESSAGE value="fixed access abuse and no major found" />
     <MESSAGE value="fixed bugs in access and added new invite function + removing of offline players" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs in access and added new invite function + removing of offline players" />
+    <MESSAGE value="removed debug message in the select cache" />
+    <MESSAGE value="added uuid based tab completion for access commands" />
+    <option name="LAST_COMMIT_MESSAGE" value="added uuid based tab completion for access commands" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

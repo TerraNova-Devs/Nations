@@ -49,4 +49,11 @@ public class TerraSelectCache {
         }
         return null;
     }
+
+    public static Optional<TerraSelectCache> getSelect(UUID uuid) {
+        if(selectCache.containsKey(uuid)) return Optional.of(selectCache.get(uuid));
+        return Optional.empty();
+    }
+
+
 }

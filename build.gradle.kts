@@ -2,7 +2,7 @@ import java.util.*
 
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "1.7.3"
+  id("io.papermc.paperweight.userdev") version "1.7.2"
   id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("io.github.goooler.shadow") version "8.1.8"
@@ -24,7 +24,12 @@ envPropertiesFile.bufferedReader(Charsets.UTF_8).use { reader ->
 }
 
 repositories {
-
+  mavenCentral()
+  gradlePluginPortal()
+  maven {
+    name = "papermc-repo"
+    url = uri("https://repo.papermc.io/repository/maven-public/")
+  }
   maven {
     name = "citizens-repo"
     url = uri("https://maven.citizensnpcs.co/repo")
@@ -43,6 +48,7 @@ repositories {
     }
     filter { includeGroup("maven.modrinth") }
   }
+
   maven {
     name = "GitHubPackages"
     url = uri("https://maven.pkg.github.com/TerraNova-Devs/TerranovaLib")
@@ -82,7 +88,7 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("io.th0rgal:oraxen:1.184.0")
-  implementation("de.mcterranova:terranova-lib:0.8.10")
+  implementation("de.mcterranova:terranova-lib:0.8.13")
 }
 
 tasks {
