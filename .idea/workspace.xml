@@ -10,13 +10,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fixed bugs in access and added new invite function + removing of offline players">
-      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/CachedKeyedSupplier.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/Access.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/access/AccessCommands.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/base/TerraSelectCache.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/plugins/Oraxen/items/terranova_ghosttrophy.yml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,7 +181,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="JAR Application.testserver">
+  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -439,15 +435,7 @@
       <workItem from="1735391888347" duration="2026000" />
       <workItem from="1735476769456" duration="9438000" />
       <workItem from="1735576507367" duration="607000" />
-      <workItem from="1735734571094" duration="445000" />
-    </task>
-    <task id="LOCAL-00007" summary="working towards making outposts and regions createbale again">
-      <option name="closed" value="true" />
-      <created>1731611408187</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1731611408187</updated>
+      <workItem from="1735734571094" duration="1381000" />
     </task>
     <task id="LOCAL-00008" summary="optimated Citizen/Town Menu open code">
       <option name="closed" value="true" />
@@ -833,7 +821,15 @@
       <option name="project" value="LOCAL" />
       <updated>1735233413591</updated>
     </task>
-    <option name="localTasksCounter" value="56" />
+    <task id="LOCAL-00056" summary="fixed bugs in access and added new invite function + removing of offline players">
+      <option name="closed" value="true" />
+      <created>1735735074695</created>
+      <option name="number" value="00056" />
+      <option name="presentableId" value="LOCAL-00056" />
+      <option name="project" value="LOCAL" />
+      <updated>1735735074695</updated>
+    </task>
+    <option name="localTasksCounter" value="57" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -844,7 +840,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="command framework is slowly coming together" />
     <MESSAGE value="added remaining commands to framework" />
     <MESSAGE value="fixed error where name check in SettleRegionFactory was inverted" />
     <MESSAGE value="added simple tab completion placeholder still have to be replaced" />
@@ -869,7 +864,8 @@
     <MESSAGE value="fixed bank but timestamps are still somewhat glitchy showing 1970" />
     <MESSAGE value="fexed bugs within access" />
     <MESSAGE value="fixed access abuse and no major found" />
-    <option name="LAST_COMMIT_MESSAGE" value="fixed access abuse and no major found" />
+    <MESSAGE value="fixed bugs in access and added new invite function + removing of offline players" />
+    <option name="LAST_COMMIT_MESSAGE" value="fixed bugs in access and added new invite function + removing of offline players" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
