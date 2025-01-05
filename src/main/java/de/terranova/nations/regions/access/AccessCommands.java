@@ -88,7 +88,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.remove.$ONLINEPLAYERS",
+            domain = "access.remove.$REGION_ACCESS_USERS",
             permission = "nations.access.ranks",
             description = "Entfernt den ausgewählten Spieler von deiner Region",
             usage = "/terra remove <player>"
@@ -152,7 +152,7 @@ public class AccessCommands {
     }
 
     @CommandAnnotation(
-            domain = "access.rank.$ONLINEPLAYERS.$RANKS",
+            domain = "access.rank.$REGION_ACCESS_USERS.$RANKS",
             permission = "nations.access.ranks",
             description = "Setzt den Rang eines Spielers",
             usage = "/terra rank <player> <rank>"
