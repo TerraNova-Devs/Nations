@@ -85,7 +85,7 @@ public class Bank implements RegionTypeListener {
 
     private void updateBankBalance(String record, int amount) {
         if (transactions.size() >= 50) transactions.removeFirst();
-        Timestamp timestamp = TimestampGenerator.generateTimestamp(regionType.getId());
+        Timestamp timestamp = TimestampGenerator.processUUID(regionType.getId());
         Transaction transaction = new Transaction(record, amount, timestamp, credit += amount);
 
         bankDatabase.insertTransaction(transaction);

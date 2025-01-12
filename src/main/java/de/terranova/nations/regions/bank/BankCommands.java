@@ -7,6 +7,15 @@ import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;
 
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.time.Clock;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.UUID;
+
 public class BankCommands {
 
     public BankCommands(){
@@ -64,7 +73,19 @@ public class BankCommands {
         p.sendMessage(Chat.cottonCandy("Du hast erfolgreich: " + deposit + " Silber eingezahlt."));
         return true;
     }
+    @CommandAnnotation(
+            domain = "bank.debug",
+            permission = "nations.admin",
+            description = "xxxx",
+            usage = "xxxx"
+    )
+    public boolean debug(Player p, String[] args) {
 
+        p.sendMessage("Returned Timestamp: " + TimestampGenerator.processUUID(UUID.randomUUID()));
+
+
+        return true;
+    }
     @CommandAnnotation(
             domain = "bank.withdraw.$0",
             permission = "terra.bank.withdraw",
