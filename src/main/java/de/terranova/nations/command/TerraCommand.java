@@ -16,6 +16,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Objects;
@@ -41,7 +42,6 @@ public class TerraCommand extends AbstractCommand {
         addPlaceholder("$REGION_ACCESS_USERS",
                 PlayerAwarePlaceholder.ofCachedPlayerFunction(
                         (UUID uuid) -> {
-                            // Must return the result of the map/orElseGet chain
                             return TerraSelectCache.getSelect(uuid)
                                     .map(cache -> {
                                         if (cache.getRegion() instanceof AccessControlled access) {
@@ -53,7 +53,6 @@ public class TerraCommand extends AbstractCommand {
                                                     .filter(Objects::nonNull)
                                                     .collect(Collectors.toList());
                                         }
-                                        // If not AccessControlled, return empty
                                         return Collections.<String>emptyList();
                                     })
                                     .orElseGet(Collections::emptyList);

@@ -1,49 +1,52 @@
 package de.terranova.nations.regions.bank;
 
 import java.sql.Timestamp;
-import java.time.Instant;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
 public class TimestampGenerator {
 
-        // Stores the last used microseconds timestamp for each UUID
-        private static final ConcurrentMap<UUID, Long> lastTimestamps = new ConcurrentHashMap<>();
+    // Example in-memory cache keyed by UUID
+    private static final ConcurrentMap<UUID, Long> cache = new ConcurrentHashMap<>();
 
-        /**
-         * Generates a strictly increasing Timestamp(6) for the given UUID.
-         * If the newly computed timestamp (in microseconds) is <= the last seen
-         * timestamp for that UUID, it is incremented by 1 microsecond.
-         *
-         * @param uuid The UUID for which we want to generate a Timestamp(6).
-         * @return A java.sql.Timestamp with microsecond precision.
-         */
-        public static synchronized Timestamp generateTimestamp(UUID uuid) {
-            // 1. Get current time in microseconds since epoch
-            Instant now = Instant.now();
-            long currentMicros = now.getEpochSecond() * 1_000_000 + (now.getNano() / 1_000);
-            // 2. Compare with the last timestamp for this UUID, if any
-            Long lastUsedMicros = lastTimestamps.get(uuid);
-            if (lastUsedMicros != null && currentMicros <= lastUsedMicros) {
-                // Make sure we always move forward by at least 1 microsecond
-                currentMicros = lastUsedMicros + 1;
+    /**
+     * Takes a UUID, determines a "nano timestamp" with System.nanoTime(),
+     * compares it to what's in the cache:
+     *  - If the cache has a value and that value >= newNanos,
+     *    use cacheValue+1 instead.
+     *  - Else, use the newNanos.
+     * Stores this final value in the cache, then creates a Timestamp
+     * (epoch-based) using the final nanos value as the fractional part.
+     *
+     * @param uuid The UUID key
+     * @return A Timestamp with nanosecond precision in Java
+     */
+    public static Timestamp processUUID(UUID uuid) {
+        long newNanos = System.nanoTime();
+
+        // Get the existing nanos from the cache if any
+        Long oldNanos = cache.get(uuid);
+
+        if (oldNanos != null) {
+            // If the new nanos <= old nanos, increment the old nanos by 1
+            if (newNanos <= oldNanos) {
+                newNanos = oldNanos + 1;
             }
-
-            // 3. Update cache
-            lastTimestamps.put(uuid, currentMicros);
-
-            // 4. Convert microseconds to a java.sql.Timestamp
-            //    - seconds part
-            long seconds = currentMicros / 1_000_000;
-            //    - leftover micros to convert to nanos
-            int nanos = (int) ((currentMicros % 1_000_000) * 1_000);
-
-            // Create a Timestamp from the seconds, then set the nanoseconds
-            Timestamp ts = new Timestamp(seconds * 1000);
-            ts.setNanos(nanos);
-
-            return ts;
         }
+
+        // Update the cache with the final nanos
+        cache.put(uuid, newNanos);
+
+        // Create a timestamp from the epoch-based current time
+        long currentMillis = System.currentTimeMillis();
+        Timestamp timestamp = new Timestamp(currentMillis);
+
+        // Use newNanos % 1,000,000,000 for the fractional second portion
+        int nanoFraction = (int)(newNanos % 1_000_000_000L);
+        timestamp.setNanos(nanoFraction);
+
+        return timestamp;
+    }
 
 }
