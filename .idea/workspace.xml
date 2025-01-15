@@ -9,12 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="added uuid based tab completion for access commands">
-      <change afterPath="$PROJECT_DIR$/src/main/resources/level.yml" afterDir="false" />
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fix bugs">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/command/TerraCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
@@ -445,15 +442,9 @@
       <workItem from="1736346664311" duration="3471000" />
       <workItem from="1736362530743" duration="1888000" />
       <workItem from="1736427857705" duration="1255000" />
-      <workItem from="1736686708357" duration="2904000" />
-    </task>
-    <task id="LOCAL-00009" summary="working towards that regions are creatable again">
-      <option name="closed" value="true" />
-      <created>1731613788634</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1731613788634</updated>
+      <workItem from="1736686708357" duration="4638000" />
+      <workItem from="1736889435764" duration="90000" />
+      <workItem from="1736960332265" duration="1282000" />
     </task>
     <task id="LOCAL-00010" summary="working towards that regions are creatable again">
       <option name="closed" value="true" />
@@ -839,7 +830,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736076079228</updated>
     </task>
-    <option name="localTasksCounter" value="58" />
+    <task id="LOCAL-00058" summary="fix bugs">
+      <option name="closed" value="true" />
+      <created>1736689906400</created>
+      <option name="number" value="00058" />
+      <option name="presentableId" value="LOCAL-00058" />
+      <option name="project" value="LOCAL" />
+      <updated>1736689906400</updated>
+    </task>
+    <option name="localTasksCounter" value="59" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -850,7 +849,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="added simple tab completion placeholder still have to be replaced" />
     <MESSAGE value="Fixed Bugs and added local logs" />
     <MESSAGE value="removed old code" />
     <MESSAGE value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
@@ -875,7 +873,8 @@
     <MESSAGE value="fixed bugs in access and added new invite function + removing of offline players" />
     <MESSAGE value="removed debug message in the select cache" />
     <MESSAGE value="added uuid based tab completion for access commands" />
-    <option name="LAST_COMMIT_MESSAGE" value="added uuid based tab completion for access commands" />
+    <MESSAGE value="fix bugs" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix bugs" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

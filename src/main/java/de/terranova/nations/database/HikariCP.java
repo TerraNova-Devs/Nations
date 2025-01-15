@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
@@ -36,6 +37,11 @@ public class HikariCP {
 
         HikariConfig config = getHikariConfig();
         dataSource = new HikariDataSource(config);
+        DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
+        System.out.println("Driver Name: " + metaData.getDriverName());
+        System.out.println("Driver Version: " + metaData.getDriverVersion());
+        System.out.println("Database Product Name: " + metaData.getDatabaseProductName());
+        System.out.println("Database Product Version: " + metaData.getDatabaseProductVersion());
         prepareTables();
     }
 
@@ -67,7 +73,6 @@ public class HikariCP {
 
     private void prepareTables() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
-
             final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split("--");
             try (Statement statement = connection.createStatement()) {
                 for (String tableCreationStatement : databaseSchema) {

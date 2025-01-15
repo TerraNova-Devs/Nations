@@ -17,10 +17,11 @@ public class TimestampGenerator {
      *    use cacheValue+1 instead.
      *  - Else, use the newNanos.
      * Stores this final value in the cache, then creates a Timestamp
-     * (epoch-based) using the final nanos value as the fractional part.
+     * (epoch-based) using the final nanos value as the fractional part,
+     * but only up to microsecond precision for a TIMESTAMP(6) field.
      *
      * @param uuid The UUID key
-     * @return A Timestamp with nanosecond precision in Java
+     * @return A Timestamp with microsecond precision (6 digits)
      */
     public static Timestamp processUUID(UUID uuid) {
         long newNanos = System.nanoTime();
@@ -42,9 +43,15 @@ public class TimestampGenerator {
         long currentMillis = System.currentTimeMillis();
         Timestamp timestamp = new Timestamp(currentMillis);
 
-        // Use newNanos % 1,000,000,000 for the fractional second portion
-        int nanoFraction = (int)(newNanos % 1_000_000_000L);
-        timestamp.setNanos(nanoFraction);
+        // Convert newNanos to microseconds (6 digits):
+        //   1 second = 1,000,000,000 ns
+        //   1 second = 1,000,000 µs
+        // So we divide nanoseconds by 1000 to get microseconds
+        long nanoFraction = newNanos % 1_000_000_000L;
+        int microFraction = (int)(nanoFraction / 1_000);
+
+        // Store microseconds back as nanoseconds in the Timestamp
+        timestamp.setNanos(microFraction * 1_000);
 
         return timestamp;
     }
