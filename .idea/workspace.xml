@@ -9,11 +9,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="fix bugs">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="idk shit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -182,7 +180,7 @@
       <recent name="de.terranova.nations" />
     </key>
   </component>
-  <component name="RunManager" selected="Gradle.Nations [shadowJar]">
+  <component name="RunManager" selected="JAR Application.testserver">
     <configuration name="Nations [shadowJar]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
       <ExternalSystemSettings>
         <option name="executionName" />
@@ -444,15 +442,8 @@
       <workItem from="1736427857705" duration="1255000" />
       <workItem from="1736686708357" duration="4638000" />
       <workItem from="1736889435764" duration="90000" />
-      <workItem from="1736960332265" duration="1282000" />
-    </task>
-    <task id="LOCAL-00010" summary="working towards that regions are creatable again">
-      <option name="closed" value="true" />
-      <created>1731630205467</created>
-      <option name="number" value="00010" />
-      <option name="presentableId" value="LOCAL-00010" />
-      <option name="project" value="LOCAL" />
-      <updated>1731630205467</updated>
+      <workItem from="1736960332265" duration="1921000" />
+      <workItem from="1736970317868" duration="726000" />
     </task>
     <task id="LOCAL-00011" summary="working towards that regions are creatable again">
       <option name="closed" value="true" />
@@ -838,7 +829,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736689906400</updated>
     </task>
-    <option name="localTasksCounter" value="59" />
+    <task id="LOCAL-00059" summary="idk shit">
+      <option name="closed" value="true" />
+      <created>1736965007647</created>
+      <option name="number" value="00059" />
+      <option name="presentableId" value="LOCAL-00059" />
+      <option name="project" value="LOCAL" />
+      <updated>1736965007647</updated>
+    </task>
+    <option name="localTasksCounter" value="60" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -849,7 +848,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Fixed Bugs and added local logs" />
     <MESSAGE value="removed old code" />
     <MESSAGE value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
     <MESSAGE value="bug fixes -&gt; npc duplication, map updates on region creation" />
@@ -874,7 +872,8 @@
     <MESSAGE value="removed debug message in the select cache" />
     <MESSAGE value="added uuid based tab completion for access commands" />
     <MESSAGE value="fix bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="fix bugs" />
+    <MESSAGE value="idk shit" />
+    <option name="LAST_COMMIT_MESSAGE" value="idk shit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
