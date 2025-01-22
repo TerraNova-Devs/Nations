@@ -2,7 +2,7 @@
 SELECT `user`, `credit` AS amount, `timestamp` AS date, `total`
 FROM `bank`
 WHERE `RUUID` = ?
-ORDER BY `timestamp` DESC
+ORDER BY `timestamp` ASC 
 LIMIT 50;
 
 -- get bank credit

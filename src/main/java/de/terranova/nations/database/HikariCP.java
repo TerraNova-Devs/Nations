@@ -60,10 +60,12 @@ public class HikariCP {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        config.addDataSourceProperty("useServerPrepStmts", "true");
+        //before true
+        config.addDataSourceProperty("useServerPrepStmts", "false");
         config.addDataSourceProperty("useLocalSessionState", "true");
         config.addDataSourceProperty("useLocalTransactionState", "true");
-        config.addDataSourceProperty("rewriteBatchedStatements", "true");
+        //before true
+        config.addDataSourceProperty("rewriteBatchedStatements", "false");
         config.addDataSourceProperty("cacheServerConfiguration", "true");
         config.addDataSourceProperty("cacheResultSetMetadata", "true");
         config.addDataSourceProperty("elideSetAutoCommits", "true");

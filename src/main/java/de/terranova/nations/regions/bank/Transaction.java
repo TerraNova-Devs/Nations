@@ -1,18 +1,18 @@
 package de.terranova.nations.regions.bank;
 
-import java.sql.Timestamp;
+import java.time.Instant;
 
 public class Transaction {
 
     public String user;
     public int amount;
-    public Timestamp timestamp;
+    public Instant instant;
     public int total;
 
-    public Transaction(String user, int amount, Timestamp timestamp, int total) {
+    public Transaction(String user, int amount, Instant instant, int total) {
         this.user = user;
         this.amount = amount;
-        this.timestamp = timestamp;
+        this.instant = instant;
         this.total = total;
     }
 
