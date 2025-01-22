@@ -52,7 +52,7 @@ public class BankDatabase {
                     transactions.add(new Transaction(
                             rs.getString("user"),
                             rs.getInt("amount"),
-                            rs.getTimestamp("date"),
+                            rs.getTimestamp("date").toInstant(),
                             rs.getInt("total")
                     ));
                 }
@@ -78,7 +78,7 @@ public class BankDatabase {
                     return Optional.of(new Transaction(
                             rs.getString("user"),
                             rs.getInt("amount"),
-                            rs.getTimestamp("date"),
+                            rs.getTimestamp("date").toInstant(),
                             rs.getInt("total"))
                     );
                 }
@@ -93,7 +93,6 @@ public class BankDatabase {
         String sql = queries.get("insert value into bank");
         String sql2 = queries.get("check for more than 50 entries");
         if (sql == null) throw new IllegalArgumentException("Query not found!");
-        System.out.println(transaction.timestamp);
 
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps2 = conn.prepareStatement(sql2);
@@ -101,8 +100,9 @@ public class BankDatabase {
             ps.setString(1, ruuid);
             ps.setString(2, transaction.user);
             ps.setInt(3, transaction.amount);
-            ps.setTimestamp(4, transaction.timestamp);
+            ps.setObject(4, transaction.instant);
             ps.setInt(5, transaction.total);
+            System.out.println("Prepared statement for insertion: " + ps);
             ps.executeUpdate();
             ps2.setString(1, ruuid);
             ps2.setString(2, ruuid);

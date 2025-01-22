@@ -9,9 +9,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="idk shit">
+    <list default="true" id="95c64017-beed-440a-9365-29bc3772df48" name="Changes" comment="updated hikari cp dependency">
+      <change afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/InstantGenerator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/database/HikariCP.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Bank.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankCommands.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/BankDatabase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/TimestampGenerator.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Transaction.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/de/terranova/nations/regions/bank/Transaction.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/resources/database/bank.sql" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/database/bank.sql" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" beforeDir="false" afterPath="$PROJECT_DIR$/testserver/plugins/Nations-1.0.0-SNAPSHOT-all.jar" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -443,15 +451,14 @@
       <workItem from="1736686708357" duration="4638000" />
       <workItem from="1736889435764" duration="90000" />
       <workItem from="1736960332265" duration="1921000" />
-      <workItem from="1736970317868" duration="726000" />
-    </task>
-    <task id="LOCAL-00011" summary="working towards that regions are creatable again">
-      <option name="closed" value="true" />
-      <created>1731681180869</created>
-      <option name="number" value="00011" />
-      <option name="presentableId" value="LOCAL-00011" />
-      <option name="project" value="LOCAL" />
-      <updated>1731681180869</updated>
+      <workItem from="1736970317868" duration="1314000" />
+      <workItem from="1736975995695" duration="2792000" />
+      <workItem from="1736982266742" duration="1371000" />
+      <workItem from="1737040445051" duration="4753000" />
+      <workItem from="1737064176379" duration="1760000" />
+      <workItem from="1737417520563" duration="1264000" />
+      <workItem from="1737468554914" duration="2423000" />
+      <workItem from="1737546371777" duration="474000" />
     </task>
     <task id="LOCAL-00012" summary="working towards that regions are creatable again">
       <option name="closed" value="true" />
@@ -837,7 +844,15 @@
       <option name="project" value="LOCAL" />
       <updated>1736965007647</updated>
     </task>
-    <option name="localTasksCounter" value="60" />
+    <task id="LOCAL-00060" summary="updated hikari cp dependency">
+      <option name="closed" value="true" />
+      <created>1736971184048</created>
+      <option name="number" value="00060" />
+      <option name="presentableId" value="LOCAL-00060" />
+      <option name="project" value="LOCAL" />
+      <updated>1736971184048</updated>
+    </task>
+    <option name="localTasksCounter" value="61" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -848,7 +863,6 @@
     <option featureType="dependencySupport" implementationName="java:io.papermc.paper:paper-api" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="removed old code" />
     <MESSAGE value="reworked Database Structure switched from SettleManager to a more generic RegionManager Pl3xmap now supports updating single regions fixed bugs" />
     <MESSAGE value="bug fixes -&gt; npc duplication, map updates on region creation" />
     <MESSAGE value="bug fixes -&gt; npc duplication, objective sql whitespace" />
@@ -873,7 +887,8 @@
     <MESSAGE value="added uuid based tab completion for access commands" />
     <MESSAGE value="fix bugs" />
     <MESSAGE value="idk shit" />
-    <option name="LAST_COMMIT_MESSAGE" value="idk shit" />
+    <MESSAGE value="updated hikari cp dependency" />
+    <option name="LAST_COMMIT_MESSAGE" value="updated hikari cp dependency" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

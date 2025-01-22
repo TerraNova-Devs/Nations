@@ -7,13 +7,6 @@ import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;
 
-import java.sql.Date;
-import java.sql.Timestamp;
-import java.time.Clock;
-import java.time.Instant;
-import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class BankCommands {
@@ -81,7 +74,7 @@ public class BankCommands {
     )
     public boolean debug(Player p, String[] args) {
 
-        p.sendMessage("Returned Timestamp: " + TimestampGenerator.processUUID(UUID.randomUUID()));
+        p.sendMessage("Returned Timestamp: " + InstantGenerator.generateInstant(UUID.fromString("00000000-0000-0000-0000-000000000000")));
 
 
         return true;
@@ -142,7 +135,7 @@ public class BankCommands {
             p.sendMessage("No Transactions found");
         } else {
             for (Transaction t : bank.getBank().getTransactions()) {
-                p.sendMessage(Chat.cottonCandy(String.format("Transaktion: %s -> %s am %s (%s)",t.user,t.amount,Chat.prettyInstant(t.timestamp.toInstant()),t.total)));
+                p.sendMessage(Chat.cottonCandy(String.format("Transaktion: %s -> %s am %s (%s)",t.user,t.amount,Chat.prettyInstant(t.instant),t.total)));
             }
         }
         return true;
