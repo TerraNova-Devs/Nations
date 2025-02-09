@@ -1,8 +1,11 @@
-package de.terranova.nations.regions.bank;
+package de.terranova.nations.command;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.access.Access;
+import de.terranova.nations.regions.bank.BankHolder;
+import de.terranova.nations.regions.bank.InstantGenerator;
+import de.terranova.nations.regions.bank.Transaction;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.access.AccessLevel;
 import org.bukkit.entity.Player;

@@ -1,6 +1,7 @@
 package de.terranova.nations.regions.access;
 
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.database.dao.AccessDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionListener;
 import org.bukkit.Bukkit;
@@ -10,16 +11,14 @@ import java.util.stream.Collectors;
 
 public class Access implements RegionListener {
 
-    private Region regionType;
+    private Region region;
     private HashMap<UUID, AccessLevel> accessLevel;
-    AccessDatabase accessDatabase;
 
-    public Access(Region regionType) {
-        if(!(regionType instanceof AccessControlled)) throw new IllegalArgumentException();
-        this.regionType = regionType;
-        this.accessDatabase = new AccessDatabase(regionType.getId());
-        this.accessLevel = accessDatabase.getMembersAccess();
-        regionType.addListener(this);
+    public Access(Region region) {
+        if (!(region instanceof AccessControlled)) throw new IllegalArgumentException();
+        this.region = region;
+        this.accessLevel = new HashMap<>(AccessDAO.getMembersAccess(region.getId()));
+        region.addListener(this);
     }
 
     public void setAccessLevels(HashMap<UUID, AccessLevel> accessLevels) {
@@ -30,32 +29,30 @@ public class Access implements RegionListener {
         return this.accessLevel;
     }
 
-    public void setAccessLevel(UUID uuid, AccessLevel accessLevel){
+    public void setAccessLevel(UUID uuid, AccessLevel accessLevel) {
         HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
-        if(getAccessLevels().containsKey(uuid)) {
+        if (getAccessLevels().containsKey(uuid)) {
             accessLevels.replace(uuid, accessLevel);
         } else {
             accessLevels.put(uuid, accessLevel);
         }
-        accessDatabase.changeMemberAccess(uuid, accessLevel);
+        AccessDAO.changeMemberAccess(region.getId(), uuid, accessLevel);
         setAccessLevels(accessLevels);
     }
 
     public AccessLevel getAccessLevel(UUID uuid) {
-        if(getAccessLevels().containsKey(uuid)) return getAccessLevels().get(uuid);
-        return null;
+        return getAccessLevels().get(uuid);
     }
 
     public void removeAccess(UUID uuid) {
         HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
         accessLevels.remove(uuid);
-        accessDatabase.changeMemberAccess(uuid, null);
+        AccessDAO.changeMemberAccess(region.getId(), uuid, null);
         setAccessLevels(accessLevels);
-    };
+    }
 
-    public static boolean hasAccess(AccessLevel access, AccessLevel neededAcess) {
-        if (access == null) return false;
-        return access.getWeight() >= neededAcess.getWeight();
+    public static boolean hasAccess(AccessLevel access, AccessLevel neededAccess) {
+        return access != null && access.getWeight() >= neededAccess.getWeight();
     }
 
     public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevel access) {
@@ -95,12 +92,10 @@ public class Access implements RegionListener {
 
     @Override
     public void onRegionRenamed(String newRegionName) {
-
     }
 
     @Override
-    public void onRegionRemoved(){
-        accessDatabase.removeEveryAccess();
+    public void onRegionRemoved() {
+        AccessDAO.removeEveryAccess(region.getId());
     }
-
 }

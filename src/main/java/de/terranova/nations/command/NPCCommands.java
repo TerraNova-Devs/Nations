@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.npc;
+package de.terranova.nations.command;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
