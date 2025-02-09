@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.base;
+package de.terranova.nations.command;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -10,6 +10,9 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;

@@ -1,10 +1,12 @@
-package de.terranova.nations.regions.access;
+package de.terranova.nations.command;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.regions.access.Access;
+import de.terranova.nations.regions.access.AccessControlled;
+import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -111,7 +113,7 @@ public class AccessCommands {
             return false;
         }
 
-        if(access.getAccess().getAccessLevel(target.getUniqueId()).weight >= access.getAccess().getAccessLevel(p.getUniqueId()).weight){
+        if(access.getAccess().getAccessLevel(target.getUniqueId()).getWeight() >= access.getAccess().getAccessLevel(p.getUniqueId()).getWeight()){
             p.sendMessage(Chat.errorFade("Du kannst keinen Spieler entfernen der höher gleich du im Rang ist."));
             return false;
         }
@@ -194,7 +196,7 @@ public class AccessCommands {
             return false;
         }
 
-        if(access.getAccess().getAccessLevel(target.getUniqueId()).weight >= access.getAccess().getAccessLevel(p.getUniqueId()).weight){
+        if(access.getAccess().getAccessLevel(target.getUniqueId()).getWeight() >= access.getAccess().getAccessLevel(p.getUniqueId()).getWeight()){
             p.sendMessage(Chat.errorFade("Du kannst nicht den Rang eines Spielers ändern der höher oder gleich ist als deiner selbst."));
             return false;
         }

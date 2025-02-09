@@ -1,7 +1,9 @@
-package de.terranova.nations.regions.base;
+package de.terranova.nations.command;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import org.bukkit.entity.Player;

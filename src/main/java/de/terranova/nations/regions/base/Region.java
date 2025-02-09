@@ -104,7 +104,7 @@ public abstract class Region {
     }
 
     // Method to rename the region
-    protected void rename(String name) {
+    public void rename(String name) {
         renameRegion(name);
         eventBus.publishRename(name);
         onRename(name);
