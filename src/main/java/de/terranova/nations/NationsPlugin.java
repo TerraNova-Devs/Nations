@@ -6,12 +6,12 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.TerraCommand;
 import de.terranova.nations.database.HikariCP;
+import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeDatabase;
-import de.terranova.nations.regions.grid.SettleRegionType;
-import de.terranova.nations.regions.grid.SettleRegionTypeFactory;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
@@ -77,11 +77,11 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
-        RegionManager.cacheRegions("settle", RegionTypeDatabase.fetchRegions("settle"));
+        RegionManager.cacheRegions("settle", GridRegionDAO.fetchRegionsByType("settle"));
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionType.registerRegionType(SettleRegionType.REGION_TYPE, new SettleRegionTypeFactory());
+        Region.registerRegion(SettleRegion.REGION_TYPE, new SettleRegionFactory());
     }
 
     @Override

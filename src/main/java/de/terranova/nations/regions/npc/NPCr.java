@@ -1,10 +1,9 @@
 package de.terranova.nations.regions.npc;
 
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.regions.bank.BankHolder;
-import de.terranova.nations.regions.base.GridRegionType;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionListener;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.npc.NPC;
 import net.citizensnpcs.trait.HologramTrait;
@@ -14,18 +13,16 @@ import org.bukkit.Location;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import java.util.UUID;
+public class NPCr implements RegionListener {
 
-public class NPCr implements RegionTypeListener {
-
-    RegionType regionType;
+    Region regionType;
     private NPC npc;
 
-    public NPCr(RegionType regionType) {
+    public NPCr(Region regionType) {
         if(!(regionType instanceof NPCHolder)) throw new IllegalArgumentException();
         this.regionType = regionType;
         if(!verifyNPC()){
-            if(regionType instanceof GridRegionType gridRegionType){
+            if(regionType instanceof GridRegion gridRegionType){
                 this.npc = createNPC(regionType.getName(), gridRegionType.getLocation().asLocation());
             }
         }
@@ -114,12 +111,12 @@ public class NPCr implements RegionTypeListener {
     }
 
     @Override
-    public void onRegionTypeRenamed(String newRegionName) {
+    public void onRegionRenamed(String newRegionName) {
         renameNPC(newRegionName);
     }
 
     @Override
-    public void onRegionTypeRemoved(){
+    public void onRegionRemoved(){
         remove();
     }
 

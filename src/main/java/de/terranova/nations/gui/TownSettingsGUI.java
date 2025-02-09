@@ -7,7 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -18,9 +18,9 @@ import java.util.*;
 public class TownSettingsGUI extends RoseGUI {
 
     ProtectedRegion region;
-    SettleRegionType settle;
+    SettleRegion settle;
 
-    public TownSettingsGUI(Player player, SettleRegionType settle) {
+    public TownSettingsGUI(Player player, SettleRegion settle) {
         super(player, "town-settings-gui", Chat.blueFade("<b>Town Settings"), 6);
         this.settle = settle;
         this.region = settle.getWorldguardRegion();

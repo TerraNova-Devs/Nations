@@ -6,8 +6,7 @@ import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
-import de.terranova.nations.regions.grid.SettleRegionType;
-import org.bukkit.Material;
+import de.terranova.nations.regions.grid.SettleRegion;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
@@ -29,7 +28,7 @@ public class NPCCommands {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
 
-        Optional<SettleRegionType> settle = RegionManager.retrieveRegion("settle", p.getLocation());
+        Optional<SettleRegion> settle = RegionManager.retrieveRegion("settle", p.getLocation());
         if(settle.isEmpty()) {
             p.sendMessage(Chat.errorFade("Bitte gehe sicher dass du innerhalb von deiner Stadt geclaimten bereich stehst."));
             return false;

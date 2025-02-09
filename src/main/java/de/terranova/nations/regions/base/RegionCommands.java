@@ -10,7 +10,7 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -34,12 +34,12 @@ public class RegionCommands {
         String type = args[2].toLowerCase();
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 3, args.length)));
 
-        if(!RegionType.registry.containsKey(type)){
-            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionType.registry.keySet())));
+        if(!Region.registry.containsKey(type)){
+            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", Region.registry.keySet())));
             return false;
         }
 
-        Optional<RegionType> regionTypeOpt = RegionType.createRegionType(type, name ,p);
+        Optional<Region> regionTypeOpt = Region.createRegion(type, name ,p);
         if (regionTypeOpt.isPresent()) {
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
         } else {
@@ -58,7 +58,7 @@ public class RegionCommands {
     public static boolean removeRegion(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
-        RegionType region = cache.getRegion();
+        Region region = cache.getRegion();
         AccessLevel playerAccess = cache.getAccess();
 
         if (region == null) {
@@ -87,7 +87,7 @@ public class RegionCommands {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
 
-        if(!(cache.getRegion() instanceof GridRegionType region)){
+        if(!(cache.getRegion() instanceof GridRegion region)){
             p.sendMessage(Chat.errorFade("Du kannst die ausgewählte region nicht durch claimen erweitern"));
             return false;
         }
@@ -99,7 +99,7 @@ public class RegionCommands {
 
 
         double abstand = Integer.MAX_VALUE;
-        for (Vectore2 location : GridRegionType.locationCache) {
+        for (Vectore2 location : GridRegion.locationCache) {
             if (region.getLocation().equals(location)) continue;
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
@@ -129,7 +129,7 @@ public class RegionCommands {
         RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
 
         region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
-        if(cache.getRegion() instanceof SettleRegionType settle){
+        if(cache.getRegion() instanceof SettleRegion settle){
             RegionLayer.updateRegion(settle);
         }
         p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
@@ -156,7 +156,7 @@ public class RegionCommands {
             return false;
         }
 
-        if (RegionType.getNameCache().contains(name)) {
+        if (Region.getNameCache().contains(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return false;
         }

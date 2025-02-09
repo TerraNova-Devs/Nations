@@ -1,9 +1,8 @@
 package de.terranova.nations.regions.grid;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.base.GridRegionType;
-import de.terranova.nations.regions.base.RegionType;
+import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -11,23 +10,22 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.Optional;
 import java.util.UUID;
 
-public class OutpostRegionType extends RegionType {
+public class OutpostRegion extends Region {
 
     public static final String type = "outpost";
 
     //Beim neu erstellen
-    public OutpostRegionType(Player p, String name) {
+    public OutpostRegion(Player p, String name) {
         super(name, UUID.randomUUID(), type);
 
     }
 
-    public static OutpostRegionType conditionCheck(Player p, String[] args) {
+    public static OutpostRegion conditionCheck(Player p, String[] args) {
 
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 1, args.length)));
-        if (!RegionType.isNameCached(name)) {
+        if (!Region.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }
@@ -37,7 +35,7 @@ public class OutpostRegionType extends RegionType {
         }
 
         double abstand = Integer.MAX_VALUE;
-        for (Vectore2 location : GridRegionType.locationCache) {
+        for (Vectore2 location : GridRegion.locationCache) {
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand == Integer.MAX_VALUE || abstand > abstandneu) {
                 abstand = abstandneu;
@@ -50,7 +48,7 @@ public class OutpostRegionType extends RegionType {
         }
 
         double abstand2 = Integer.MAX_VALUE;
-        for (Vectore2 location : GridRegionType.locationCache) {
+        for (Vectore2 location : GridRegion.locationCache) {
             double abstandneu = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (abstand2 == Integer.MAX_VALUE || abstand2 > abstandneu) {
                 abstand2 = abstandneu;
@@ -62,7 +60,7 @@ public class OutpostRegionType extends RegionType {
             return null;
         }
 
-        return new OutpostRegionType(p, name);
+        return new OutpostRegion(p, name);
     }
 
     @Override

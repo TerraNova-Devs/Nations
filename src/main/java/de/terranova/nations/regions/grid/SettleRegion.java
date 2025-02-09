@@ -9,8 +9,8 @@ import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.bank.BankHolder;
-import de.terranova.nations.regions.base.GridRegionType;
 import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.npc.NPCHolder;
 import de.terranova.nations.regions.npc.NPCr;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -23,7 +23,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SettleRegionType extends GridRegionType implements BankHolder, AccessControlled, NPCHolder, RankedRegion {
+public class SettleRegion extends GridRegion implements BankHolder, AccessControlled, NPCHolder, RankedRegion {
 
     public static final String REGION_TYPE = "settle";
     public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5));
@@ -34,7 +34,7 @@ public class SettleRegionType extends GridRegionType implements BankHolder, Acce
 
 
 
-    public SettleRegionType(String name, UUID ruuid, Vectore2 loc) {
+    public SettleRegion(String name, UUID ruuid, Vectore2 loc) {
         super(name, ruuid, REGION_TYPE, loc);
         addNameToCache(this.name);
         this.rank = new Rank(this);

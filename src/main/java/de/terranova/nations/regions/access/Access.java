@@ -1,23 +1,20 @@
 package de.terranova.nations.regions.access;
 
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionListener;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Access implements RegionTypeListener {
+public class Access implements RegionListener {
 
-    private RegionType regionType;
+    private Region regionType;
     private HashMap<UUID, AccessLevel> accessLevel;
     AccessDatabase accessDatabase;
 
-    public Access(RegionType regionType) {
+    public Access(Region regionType) {
         if(!(regionType instanceof AccessControlled)) throw new IllegalArgumentException();
         this.regionType = regionType;
         this.accessDatabase = new AccessDatabase(regionType.getId());
@@ -97,7 +94,12 @@ public class Access implements RegionTypeListener {
     }
 
     @Override
-    public void onRegionTypeRemoved(){
+    public void onRegionRenamed(String newRegionName) {
+
+    }
+
+    @Override
+    public void onRegionRemoved(){
         accessDatabase.removeEveryAccess();
     }
 
