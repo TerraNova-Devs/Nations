@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public interface RegionTypeFactory {
-    RegionType create(String name, Player p);
-    RegionType retrieve(String name, UUID ruuid, Vectore2 loc);
+public interface RegionFactory {
+    Region create(String name, Player p);
+    Region retrieve(String name, UUID ruuid, Vectore2 loc);
 }

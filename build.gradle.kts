@@ -17,12 +17,6 @@ java {
   toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
 
-val envProperties = Properties()
-val envPropertiesFile = file("private.env")
-envPropertiesFile.bufferedReader(Charsets.UTF_8).use { reader ->
-  envProperties.load(reader)
-}
-
 repositories {
   mavenCentral()
   gradlePluginPortal()

@@ -14,9 +14,9 @@ import java.util.UUID;
 public class TerraSelectCache {
     public static Map<UUID, TerraSelectCache> selectCache = new HashMap<>();
 
-    private RegionType region;
+    private Region region;
     private AccessLevel access;
-    public TerraSelectCache(RegionType region, Player p) {
+    public TerraSelectCache(Region region, Player p) {
         this.region = region;
         if(region instanceof AccessControlled access){
             if(p.isOp()) this.access = AccessLevel.ADMIN;
@@ -26,7 +26,7 @@ public class TerraSelectCache {
         }
     }
 
-    public RegionType getRegion() {
+    public Region getRegion() {
         return region;
     }
 
@@ -44,7 +44,7 @@ public class TerraSelectCache {
         if(selectCache.containsKey(p.getUniqueId())){
             TerraSelectCache oldCache = selectCache.get(p.getUniqueId());
             selectCache.remove(p.getUniqueId());
-            Optional<RegionType> updatedRegion = RegionManager.retrieveRegion(oldCache.region.type,oldCache.region.id);
+            Optional<Region> updatedRegion = RegionManager.retrieveRegion(oldCache.region.type,oldCache.region.id);
             updatedRegion.ifPresent(regionType -> selectCache.put(p.getUniqueId(), new TerraSelectCache(regionType, p)));
         }
         return null;

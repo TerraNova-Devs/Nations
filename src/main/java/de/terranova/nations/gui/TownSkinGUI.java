@@ -6,9 +6,8 @@ import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.npc.NPCSkins;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -22,9 +21,9 @@ public class TownSkinGUI extends RoseGUI {
 
     private static Method metaSetProfileMethod;
     private final RosePagination pagination = new RosePagination(this);
-    SettleRegionType settle;
+    SettleRegion settle;
 
-    public TownSkinGUI(Player player, int townskins, SettleRegionType settle) {
+    public TownSkinGUI(Player player, int townskins, SettleRegion settle) {
         super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
         this.pagination.registerPageSlotsBetween(10, 44);
         this.settle = settle;

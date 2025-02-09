@@ -2,19 +2,19 @@ package de.terranova.nations.regions.rank;
 
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.base.GridRegionType;
-import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.base.RegionListener;
 import org.bukkit.entity.Player;
 
-public class Rank implements RegionTypeListener {
+public class Rank implements RegionListener {
 
     RankDatabase rankDatabase;
-    GridRegionType regionType;
+    GridRegion regionType;
     private int level;
     private RankObjective rankObjective;
     private final RankedRegion rankedRegion;
 
-    public Rank(GridRegionType regionType) {
+    public Rank(GridRegion regionType) {
         if (!(regionType instanceof RankedRegion rankedRegionn)) throw new IllegalArgumentException();
         this.rankedRegion = rankedRegionn;
         this.rankDatabase = new RankDatabase(regionType.getId());
@@ -97,7 +97,12 @@ public class Rank implements RegionTypeListener {
     }
 
     @Override
-    public void onRegionTypeRemoved() {
+    public void onRegionRenamed(String newRegionName) {
+
+    }
+
+    @Override
+    public void onRegionRemoved() {
         rankDatabase.removeRank();
     }
 }

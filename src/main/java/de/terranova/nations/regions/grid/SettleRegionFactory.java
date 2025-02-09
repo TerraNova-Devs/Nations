@@ -2,9 +2,9 @@ package de.terranova.nations.regions.grid;
 
 import de.mcterranova.terranovaLib.utils.BiomeUtil;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.base.GridRegionType;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeFactory;
+import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionFactory;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class SettleRegionTypeFactory implements RegionTypeFactory {
+public class SettleRegionFactory implements RegionFactory {
 
     private static boolean isTooCloseToAnotherSettlement(Player p) {
         return getClosestSettlementDistance(p) < 2000;
@@ -22,7 +22,7 @@ public class SettleRegionTypeFactory implements RegionTypeFactory {
 
     private static double getClosestSettlementDistance(Player p) {
         double minDistance = Integer.MAX_VALUE;
-        for (Vectore2 location : GridRegionType.locationCache) {
+        for (Vectore2 location : GridRegion.locationCache) {
             double distance = claimCalc.abstand(location, new Vectore2(p.getLocation()));
             if (distance < minDistance) {
                 minDistance = distance;
@@ -48,7 +48,7 @@ public class SettleRegionTypeFactory implements RegionTypeFactory {
     }
 
     @Override
-    public RegionType create(String name, Player p) {
+    public Region create(String name, Player p) {
         // Perform all necessary validations before creation
         if (!isValidName(name, p)) {
             p.sendMessage(Chat.errorFade("Invalid name for settlement." + name));
@@ -60,7 +60,7 @@ public class SettleRegionTypeFactory implements RegionTypeFactory {
             return null;
         }
 
-        if (RegionType.isNameCached(name)) {
+        if (Region.isNameCached(name)) {
             p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
             return null;
         }
@@ -77,12 +77,12 @@ public class SettleRegionTypeFactory implements RegionTypeFactory {
         }
 
         // If all conditions are met, create the new SettleRegionType instance
-        return new SettleRegionType(name, UUID.randomUUID(), RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
+        return new SettleRegion(name, UUID.randomUUID(), RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
     }
 
     @Override
-    public RegionType retrieve(String name, UUID ruuid, Vectore2 loc) {
-        return new SettleRegionType(name, ruuid, loc);
+    public Region retrieve(String name, UUID ruuid, Vectore2 loc) {
+        return new SettleRegion(name, ruuid, loc);
     }
 
     private boolean isValidName(String name, Player p) {

@@ -1,5 +1,6 @@
 package de.terranova.nations.regions.base;
 
+import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
@@ -8,13 +9,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public abstract class GridRegionType extends RegionType {
+public abstract class GridRegion extends Region {
 
     public static List<Vectore2> locationCache = new ArrayList<>();
     protected final Vectore2 location;
     protected int claims;
 
-    public GridRegionType(String name, UUID id, String type, Vectore2 location) {
+    public GridRegion(String name, UUID id, String type, Vectore2 location) {
         super(name, id, type);
         this.location = location;
         this.claims = RegionClaimFunctions.getClaimAnzahl(this.id);
@@ -35,16 +36,14 @@ public abstract class GridRegionType extends RegionType {
 
     @Override
     public final void onRemove() {
-        GridRegionType.locationCache.remove(this.location);
-        RegionTypeDatabase database = new RegionTypeDatabase(getId());
-        database.removeGridRegion();
+        GridRegion.locationCache.remove(this.location);
+        GridRegionDAO.removeGridRegion(getId());
         onGridRemove();
     }
 
     @Override
     public void onRename(String name) {
-        RegionTypeDatabase database = new RegionTypeDatabase(getId());
-        database.updateGridRegionName(name);
+        GridRegionDAO.updateGridRegionName(getId(), name);
     }
 
     public void onGridRemove() {
@@ -53,8 +52,7 @@ public abstract class GridRegionType extends RegionType {
 
     @Override
     public final void dataBaseCall() {
-        RegionTypeDatabase database = new RegionTypeDatabase(getId());
-        database.insertGridRegion(this);
+        GridRegionDAO.insertGridRegion(this);
     }
 
     public Vectore2 getLocation() {

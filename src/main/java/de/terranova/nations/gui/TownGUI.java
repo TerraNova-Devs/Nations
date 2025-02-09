@@ -4,25 +4,21 @@ package de.terranova.nations.gui;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.access.Access;
 import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.npc.NPCSkins;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 
-import java.util.Objects;
-import java.util.Optional;
-
 public class TownGUI extends RoseGUI {
 
-    private SettleRegionType settle;
+    private SettleRegion settle;
 
-    public TownGUI(Player player, SettleRegionType settleRegionType) {
+    public TownGUI(Player player, SettleRegion settleRegionType) {
         super(player, "town-gui", Chat.blueFade("<b>Town Menu"), 5);
         this.settle = settleRegionType;
     }

@@ -7,8 +7,8 @@ import de.terranova.nations.regions.access.AccessCommands;
 import de.terranova.nations.regions.access.AccessControlled;
 import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.bank.BankCommands;
+import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionCommands;
-import de.terranova.nations.regions.base.RegionType;
 import de.terranova.nations.regions.base.SelectCommands;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.npc.NPCCommands;
@@ -31,8 +31,8 @@ public class TerraCommand extends AbstractCommand {
                 10000
         ));
 
-        addPlaceholder("$REGION_NAMES", RegionType::getNameCache);
-        addPlaceholder("$REGISTERED_REGION_TYPES", RegionType::getRegionTypes);
+        addPlaceholder("$REGION_NAMES", Region::getNameCache);
+        addPlaceholder("$REGISTERED_REGION_TYPES", Region::getRegionTypes);
         addPlaceholder("$RANKS", () ->
                 Arrays.stream(AccessLevel.values())
                         .filter(level -> level != AccessLevel.ADMIN)

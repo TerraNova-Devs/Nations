@@ -2,7 +2,7 @@ package de.terranova.nations.regions.base;
 
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import org.bukkit.entity.Player;
 
@@ -45,13 +45,13 @@ public class SelectCommands {
         }
 
         String regionName = args[1].toLowerCase();
-        if (!RegionType.isNameCached(regionName)) {
+        if (!Region.isNameCached(regionName)) {
             p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
             return false;
         }
 
 
-        Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", regionName);
+        Optional<SettleRegion> osettle = RegionManager.retrieveRegion("settle", regionName);
         if (osettle.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die angegebene Stadt " + regionName + " gibt es leider nicht."));
             return false;

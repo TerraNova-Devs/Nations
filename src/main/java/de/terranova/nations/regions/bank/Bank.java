@@ -3,24 +3,24 @@ package de.terranova.nations.regions.bank;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionListener;
 import org.bukkit.entity.Player;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 
-public class Bank implements RegionTypeListener {
+public class Bank implements RegionListener {
 
     private final List<Transaction> transactions;
     private int credit;
     private boolean transactionInProgress = false;
     private final BankDatabase bankDatabase;
-    private final RegionType regionType;
+    private final Region regionType;
     private final BankHolder bankHolder;
 
-    public Bank(RegionType regionType) {
+    public Bank(Region regionType) {
         if(!(regionType instanceof BankHolder bankHolderr)) throw new IllegalArgumentException();
         this.bankDatabase = new BankDatabase(regionType.getId());
         this.transactions = bankDatabase.getLatestTransactions();
@@ -106,7 +106,12 @@ public class Bank implements RegionTypeListener {
     }
 
     @Override
-    public void onRegionTypeRemoved(){
+    public void onRegionRenamed(String newRegionName) {
+
+    }
+
+    @Override
+    public void onRegionRemoved(){
         bankDatabase.deleteAllEntries();
     }
 }

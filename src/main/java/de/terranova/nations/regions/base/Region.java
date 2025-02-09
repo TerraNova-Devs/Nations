@@ -15,25 +15,23 @@ import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public abstract class RegionType {
+public abstract class Region {
 
-
-    // Registry for dynamically adding RegionType
-    public static final Map<String, RegionTypeFactory> registry = new HashMap<>();
+    // Registry for dynamically adding Region
+    public static final Map<String, RegionFactory> registry = new HashMap<>();
     protected final UUID id;
     protected final String type;
-    private final RegionTypeEventBus eventBus = new RegionTypeEventBus();
+    private final RegionEventBus eventBus = new RegionEventBus();
     protected String name;
     protected ProtectedRegion region;
     private static final List<String> nameCache = new ArrayList<>();
 
-
-    public RegionType(String name, UUID id, String type) {
+    public Region(String name, UUID id, String type) {
         this.id = id;
         this.type = type.toLowerCase();
         if (name == null) return;
         this.name = name;
-        de.terranova.nations.regions.RegionManager.addRegion(getType(),getId(), this);
+        de.terranova.nations.regions.RegionManager.addRegion(getType(), getId(), this);
     }
 
     public static List<String> getNameCache() {
@@ -48,45 +46,45 @@ public abstract class RegionType {
         nameCache.add(name.toLowerCase());
     }
 
-    // Method to register new RegionType creators
-    public static void registerRegionType(String type, RegionTypeFactory factory) {
+    // Method to register new Region creators
+    public static void registerRegion(String type, RegionFactory factory) {
         registry.put(type.toLowerCase(), factory);
     }
 
-    // Method to deregister an RegionType
-    public static void deregisterRegionType(String type) {
+    // Method to deregister a Region
+    public static void deregisterRegion(String type) {
         registry.remove(type.toLowerCase());
     }
 
-    // Factory method to create RegionTypes
-    public static Optional<RegionType> createRegionType(String type, String name, Player p) {
-        RegionTypeFactory factory = registry.get(type.toLowerCase());
+    // Factory method to create Regions
+    public static Optional<Region> createRegion(String type, String name, Player p) {
+        RegionFactory factory = registry.get(type.toLowerCase());
         if (factory == null) {
             p.sendMessage(Chat.errorFade("No such region type registered: " + type));
             return Optional.empty();
         }
 
-        RegionType regionType = factory.create(name, p);
-        if (regionType == null) {
+        Region region = factory.create(name, p);
+        if (region == null) {
             return Optional.empty();  // Creation failed due to validation issues.
         }
-        regionType.onCreation(p);
-        regionType.dataBaseCall();
-        return Optional.of(regionType);
+        region.onCreation(p);
+        region.dataBaseCall();
+        return Optional.of(region);
     }
 
-    // Factory method to retrieve RegionTypes
-    public static Optional<RegionType> retrieveRegionType(String type, String name, UUID ruuid, Vectore2 loc) {
-        RegionTypeFactory factory = registry.get(type.toLowerCase());
+    // Factory method to retrieve Regions
+    public static Optional<Region> retrieveRegion(String type, String name, UUID ruuid, Vectore2 loc) {
+        RegionFactory factory = registry.get(type.toLowerCase());
         if (factory == null) {
             return Optional.empty();
         }
 
-        RegionType regionType = factory.retrieve(name, ruuid, loc);
-        if (regionType == null) {
+        Region region = factory.retrieve(name, ruuid, loc);
+        if (region == null) {
             return Optional.empty();  // Creation failed due to validation issues.
         }
-        return Optional.of(regionType);
+        return Optional.of(region);
     }
 
     // Abstract method to enforce implementation in subclasses
@@ -98,7 +96,6 @@ public abstract class RegionType {
     }
 
     public void onRemove() {
-
     }
 
     public abstract void dataBaseCall();
@@ -114,10 +111,9 @@ public abstract class RegionType {
     }
 
     public void onRename(String name) {
-
     }
 
-    public void addListener(RegionTypeListener listener) {
+    public void addListener(RegionListener listener) {
         eventBus.subscribe(listener); // Dynamically add listeners
     }
 
@@ -137,7 +133,6 @@ public abstract class RegionType {
 
             // Update the region reference
             this.region = newRegion;
-
             this.name = name;
         } catch (Exception e) {
             Bukkit.getLogger().severe("Failed to rename region: " + e.getMessage());
@@ -211,4 +206,3 @@ public abstract class RegionType {
         return new ArrayList<>(registry.keySet());
     }
 }
-
