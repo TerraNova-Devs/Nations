@@ -4,7 +4,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.command.TerraCommand;
+import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
@@ -122,13 +122,20 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
-        TerraCommand terraCommand = new TerraCommand();
-        if (this.getCommand("terra") == null) {
-            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
+//        PropertyCommand terraCommand = new PropertyCommand();
+//        if (this.getCommand("terra") == null) {
+//            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
+//            return;
+//        }
+//        this.getCommand("terra").setExecutor(terraCommand);
+//        this.getCommand("terra").setTabCompleter(terraCommand);
+        TownCommands townCommand = new TownCommands();
+        if (this.getCommand("town") == null) {
+            getLogger().severe("Failed to get command 'town' from plugin.yml. Please check your plugin.yml!");
             return;
         }
-        Objects.requireNonNull(this.getCommand("terra")).setExecutor(terraCommand);
-        Objects.requireNonNull(this.getCommand("terra")).setTabCompleter(terraCommand);
+        this.getCommand("town").setExecutor(townCommand);
+        this.getCommand("town").setTabCompleter(townCommand);
     }
 
     public void listenerRegistry() {

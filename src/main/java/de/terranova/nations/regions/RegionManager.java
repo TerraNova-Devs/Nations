@@ -6,14 +6,17 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import de.terranova.nations.regions.access.Access;
+import de.terranova.nations.regions.access.AccessControlled;
+import de.terranova.nations.regions.access.AccessLevel;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 //TODO get regions from DB
 public class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
@@ -26,6 +29,17 @@ public class RegionManager {
     @SuppressWarnings("unchecked")
     public static <T extends Region> Map<UUID, T> retrieveAllCachedRegions(String type) {
         return (Map<UUID, T>) regionCache.get(type);
+    }
+
+    public static Optional<SettleRegion> retrievePlayersSettlement(UUID player) {
+
+        for (Region region : retrieveAllCachedRegions("settle").values()) {
+            SettleRegion settle = (SettleRegion) region;
+            if (Access.hasAccess(settle.getAccess().getAccessLevel(player), AccessLevel.CITIZEN)) {
+                return Optional.of(settle);
+            }
+        }
+        return Optional.empty();
     }
 
     public static <T extends Region> void addRegion(String type, UUID uuid, T region) {

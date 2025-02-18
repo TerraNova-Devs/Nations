@@ -7,8 +7,8 @@ prefix: Nations
 website: mcterranova.de
 description: Nations Plugin tailored & written by & for TerraNova.
 commands:
-  terra:
-    description: The main command for TerraNova Nations.
+  town:
+    description: The main command for TerraNova Towns.
     aliases: [t]
     permission: nations.use
     permission-message: You do not have permission to use this command.
