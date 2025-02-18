@@ -582,6 +582,38 @@ public class TownCommands extends AbstractCommand {
         return true;
     }
 
+    @CommandAnnotation(
+            domain = "trust.$ONLINEPLAYERS",
+            permission = "nations.town.trust",
+            description = "Trusts a player to your town",
+            usage = "/town trust <player>"
+    )
+    public boolean trustPlayer(Player p, String[] args){
+        Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
+        if (settleOpt.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Du bist in keiner Stadt."));
+            return false;
+        }
+        SettleRegion settle = settleOpt.get();
+        Access access = settle.getAccess();
+        if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+            p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung, um jemanden in dieser Stadt zu trusten."));
+            return false;
+        }
+
+        Player target = getTargetPlayer(p, args, 1);
+        if (target == null) return false;
+
+        if(Access.hasAccess(access.getAccessLevel(target.getUniqueId()), AccessLevel.TRUSTED)){
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits getrusted in dieser Stadt.", target.getName())));
+            return false;
+        }
+
+        settle.addMember(p.getUniqueId());
+        access.setAccessLevel(target.getUniqueId(), AccessLevel.TRUSTED);
+        return true;
+    }
+
 
     private Player getTargetPlayer(Player p, String[] args, int index) {
         if (args.length <= index) {
