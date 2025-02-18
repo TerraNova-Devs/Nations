@@ -5,8 +5,8 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.npc.NPCSkins;
 import org.apache.commons.lang.WordUtils;
@@ -63,7 +63,7 @@ public class TownSkinGUI extends RoseGUI {
                         .build();
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
-                    if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()),AccessLevel.VICE)){
+                    if (!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)){
                         player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können"));
                         return;
                     }

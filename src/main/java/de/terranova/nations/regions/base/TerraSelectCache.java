@@ -2,8 +2,8 @@ package de.terranova.nations.regions.base;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.access.AccessControlled;
+import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.access.TownAccessControlled;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -15,12 +15,12 @@ public class TerraSelectCache {
     public static Map<UUID, TerraSelectCache> selectCache = new HashMap<>();
 
     private Region region;
-    private AccessLevel access;
+    private TownAccessLevel access;
     public TerraSelectCache(Region region, Player p) {
         this.region = region;
         if(region instanceof Selectable){
-            AccessControlled access = (AccessControlled) region;
-            if(p.isOp()) this.access = AccessLevel.ADMIN;
+            TownAccessControlled access = (TownAccessControlled) region;
+            if(p.isOp()) this.access = TownAccessLevel.ADMIN;
             else this.access = access.getAccess().getAccessLevel(p.getUniqueId());
         } else {
             this.access = null;
@@ -31,7 +31,7 @@ public class TerraSelectCache {
         return region;
     }
 
-    public AccessLevel getAccess() {
+    public TownAccessLevel getAccess() {
         return access;
     }
 

@@ -4,9 +4,9 @@ package de.terranova.nations.gui;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessControlled;
-import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessControlled;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.npc.NPCSkins;
 import org.bukkit.Material;
@@ -25,7 +25,7 @@ public class TownGUI extends RoseGUI {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        if(!(settle instanceof AccessControlled access)) {
+        if(!(settle instanceof TownAccessControlled access)) {
             return;
         }
 
@@ -81,14 +81,14 @@ public class TownGUI extends RoseGUI {
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
-            if(Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL)  || player.isOp()){
+            if(TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.COUNCIL)  || player.isOp()){
                 new TownUpgradeGUI(player, settle).open();
             } else player.sendMessage(Chat.errorFade("Dein Rang in der Stadt ist leider nicht hoch genug um hierauf zuzugreifen."));
         });
 
         settings.onClick(e -> {
             if (!player.hasPermission("nations.menu.settings")) return;
-            if (Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL) || player.isOp()) {
+            if (TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.COUNCIL) || player.isOp()) {
                 new TownSettingsGUI(player, settle).open();
             } else {
                 player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));

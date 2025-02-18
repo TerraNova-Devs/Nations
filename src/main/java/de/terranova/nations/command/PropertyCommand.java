@@ -3,8 +3,8 @@ package de.terranova.nations.command;
 import de.mcterranova.terranovaLib.commands.AbstractCommand;
 import de.mcterranova.terranovaLib.commands.CachedSupplier;
 import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
-import de.terranova.nations.regions.access.AccessControlled;
-import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.TownAccessControlled;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import org.bukkit.Bukkit;
@@ -28,9 +28,9 @@ public class PropertyCommand extends AbstractCommand {
         addPlaceholder("$REGION_NAMES", Region::getNameCache);
         addPlaceholder("$REGISTERED_REGION_TYPES", Region::getRegionTypes);
         addPlaceholder("$RANKS", () ->
-                Arrays.stream(AccessLevel.values())
-                        .filter(level -> level != AccessLevel.ADMIN)
-                        .filter(level -> level != AccessLevel.MAJOR)
+                Arrays.stream(TownAccessLevel.values())
+                        .filter(level -> level != TownAccessLevel.ADMIN)
+                        .filter(level -> level != TownAccessLevel.MAJOR)
                         .map(Enum::name)
                         .collect(Collectors.toList()));
         addPlaceholder("$REGION_ACCESS_USERS",
@@ -38,7 +38,7 @@ public class PropertyCommand extends AbstractCommand {
                         (UUID uuid) -> {
                             return TerraSelectCache.getSelect(uuid)
                                     .map(cache -> {
-                                        if (cache.getRegion() instanceof AccessControlled access) {
+                                        if (cache.getRegion() instanceof TownAccessControlled access) {
                                             return access.getAccess().getAccessLevels()
                                                     .keySet()
                                                     .stream()
@@ -56,10 +56,8 @@ public class PropertyCommand extends AbstractCommand {
         );
 
         registerSubCommand(RegionCommands.class, "region");
-        registerSubCommand(new BankCommands(), "bank");
         registerSubCommand(new SelectCommands(), "select");
         registerSubCommand(new AccessCommands(), "access");
-        registerSubCommand(new NPCCommands(), "npc");
 
         setupHelpCommand();
         initialize();
