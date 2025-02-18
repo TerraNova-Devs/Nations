@@ -1,6 +1,6 @@
 package de.terranova.nations.pl3xmap;
 
-import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.pl3x.map.core.Pl3xMap;
@@ -61,11 +61,11 @@ public class RegionLayer extends WorldLayer {
             markerPoints.add(v.asPoint());
         Polygon polygonMarker = new Polygon("polygon" + region.getId(), new Polyline("line" + region.getId(), markerPoints));
 
-        Collection<String> vices = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.VICE);
-        Collection<String> councils = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.COUNCIL);
+        Collection<String> vices = region.getAccess().getEveryMemberNameWithCertainAccessLevel(TownAccessLevel.VICE);
+        Collection<String> councils = region.getAccess().getEveryMemberNameWithCertainAccessLevel(TownAccessLevel.COUNCIL);
         String owner = "error";
-        if(region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().isPresent()){
-            owner = Bukkit.getOfflinePlayer(region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).stream().findFirst().get()).getName();
+        if(region.getAccess().getEveryUUIDWithCertainAccessLevel(TownAccessLevel.MAJOR).stream().findFirst().isPresent()){
+            owner = Bukkit.getOfflinePlayer(region.getAccess().getEveryUUIDWithCertainAccessLevel(TownAccessLevel.MAJOR).stream().findFirst().get()).getName();
         }
 
         String tooltip = String.format(

@@ -6,14 +6,12 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessControlled;
-import de.terranova.nations.regions.access.AccessLevel;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
@@ -35,7 +33,7 @@ public class RegionManager {
 
         for (Region region : retrieveAllCachedRegions("settle").values()) {
             SettleRegion settle = (SettleRegion) region;
-            if (Access.hasAccess(settle.getAccess().getAccessLevel(player), AccessLevel.CITIZEN)) {
+            if (TownAccess.hasAccess(settle.getAccess().getAccessLevel(player), TownAccessLevel.CITIZEN)) {
                 return Optional.of(settle);
             }
         }

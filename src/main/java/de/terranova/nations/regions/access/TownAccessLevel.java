@@ -1,6 +1,6 @@
 package de.terranova.nations.regions.access;
 
-public enum AccessLevel {
+public enum TownAccessLevel {
     ADMIN(1000000),
     MAJOR(10000),
     VICE(1000),
@@ -10,7 +10,7 @@ public enum AccessLevel {
 
     int weight;
 
-    AccessLevel(int weight) {
+    TownAccessLevel(int weight) {
         this.weight = weight;
     }
 
