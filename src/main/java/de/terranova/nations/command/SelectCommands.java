@@ -18,9 +18,9 @@ public class SelectCommands {
 
     @CommandAnnotation(
             domain = "select",
-            permission = "property.select",
+            permission = "nations.select",
             description = "Print out selected region",
-            usage = "/p select"
+            usage = "/t select"
     )
     public boolean select(Player p, String[] args) {
         if (TerraSelectCache.selectCache.containsKey(p.getUniqueId())) {
