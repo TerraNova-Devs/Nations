@@ -10,10 +10,12 @@ import org.bukkit.entity.Player;
 import java.util.*;
 
 public class PropertyRegion extends Region implements PropertyAccessControlled {
+    public static final String REGION_TYPE = "property";
+
     private PropertyAccess access;
 
-    public PropertyRegion(String name, UUID id, UUID owner, Vectore2 location) {
-        super(name, id, "property");
+    public PropertyRegion(String name, UUID ruuid, UUID owner, Vectore2 location) {
+        super(name, ruuid, REGION_TYPE);
         this.access = new PropertyAccess(this);
         this.setOwner(owner);
         this.addNameToCache(name);
