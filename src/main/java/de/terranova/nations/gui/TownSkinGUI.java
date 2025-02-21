@@ -24,7 +24,7 @@ public class TownSkinGUI extends RoseGUI {
     SettleRegion settle;
 
     public TownSkinGUI(Player player, int townskins, SettleRegion settle) {
-        super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
+        super(player, "town-skin-gui", Chat.blueFade("<b>Skins"), townskins);
         this.pagination.registerPageSlotsBetween(10, 44);
         this.settle = settle;
     }
@@ -42,7 +42,7 @@ public class TownSkinGUI extends RoseGUI {
 
         RoseItem back = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
-                .displayName(Chat.redFade("<b>Go Back</b>"))
+                .displayName(Chat.yellowFade("<b>Zurück</b>"))
                 .build();
         back.onClick(e -> {
             new TownGUI(player, settle).open();
@@ -64,7 +64,7 @@ public class TownSkinGUI extends RoseGUI {
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
                     if (!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)){
-                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können"));
+                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
                         return;
                     }
                     if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
