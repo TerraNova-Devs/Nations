@@ -172,6 +172,11 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
+        if(RegionManager.retrievePlayersSettlement(p.getUniqueId()).isPresent()){
+            p.sendMessage(Chat.errorFade(String.format("Du bist bereits Mitglied der Stadt %s.", settle.getName())));
+            return false;
+        }
+
         access.broadcast(p.getName() + " ist erfolgreich der Stadt " + settle.getName() + " beigetreten.");
         settle.addMember(p.getUniqueId());
         access.setAccessLevel(p.getUniqueId(), TownAccessLevel.CITIZEN);
@@ -264,6 +269,11 @@ public class TownCommands extends AbstractCommand {
 
         if (access.getAccessLevel(target.getUniqueId()) == null) {
             p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", target.getName())));
+            return false;
+        }
+
+        if (!TownAccess.hasAccess(access.getAccessLevel(target.getUniqueId()), TownAccessLevel.CITIZEN)) {
+            p.sendMessage(Chat.errorFade("Der Spieler ist getrusted. Lade ihn ein um ihn zum Bewohner zu machen."));
             return false;
         }
 
