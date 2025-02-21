@@ -382,7 +382,7 @@ public class TownCommands extends AbstractCommand {
         }
         SettleRegion settle = settleOpt.get();
 
-        p.sendMessage(Chat.greenFade(String.format("Die balance der Stadt beträgt: %s Silber",settle.getBank().getCredit())));
+        p.sendMessage(Chat.greenFade(String.format("In der Bank der Stadt liegt: %s Silber",settle.getBank().getCredit())));
         return true;
     }
 

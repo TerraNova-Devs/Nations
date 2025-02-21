@@ -111,7 +111,7 @@ public class TownGUI extends RoseGUI {
 
         players.onClick(e -> {
             if (!player.hasPermission("nations.menu.players")) return;
-            new TownPlayersGUI(player, settle).open();
+            new TownPlayersGUI(player, settle, access).open();
         });
 
         farm.onClick(e -> {
