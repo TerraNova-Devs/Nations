@@ -1,9 +1,12 @@
 package de.terranova.nations.gui;
 
 
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -116,6 +119,7 @@ public class TownGUI extends RoseGUI {
 
         farm.onClick(e -> {
             if (!player.hasPermission("nations.menu.farm")) return;
+            sendToServer(player, "farmwelt");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "send " + player.getName() + " farmwelt");
         });
     }
@@ -123,6 +127,17 @@ public class TownGUI extends RoseGUI {
     @Override
     public void onClose(InventoryCloseEvent event) {
 
+    }
+
+    private void sendToServer(Player player, String serverName) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+
+        // "Connect" tells the proxy (Velocity in your case) to move the player
+        out.writeUTF("Connect");
+        out.writeUTF(serverName);  // must match the server name in velocity.toml
+
+        // Send the plugin message over the "BungeeCord" channel
+        player.sendPluginMessage(NationsPlugin.plugin, "BungeeCord", out.toByteArray());
     }
 
 }
