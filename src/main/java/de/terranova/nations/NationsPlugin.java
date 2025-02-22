@@ -4,14 +4,14 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
-import de.terranova.nations.command.TerraCommand;
+import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
+import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeDatabase;
-import de.terranova.nations.regions.grid.SettleRegionType;
-import de.terranova.nations.regions.grid.SettleRegionTypeFactory;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
@@ -73,15 +73,16 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         serilizationRegistry();
         nationsRegionTypeRegistry();
         loadConfigs();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
-        RegionManager.cacheRegions("settle", RegionTypeDatabase.fetchRegions("settle"));
+        RegionManager.cacheRegions("settle", GridRegionDAO.fetchRegionsByType("settle"));
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionType.registerRegionType(SettleRegionType.REGION_TYPE, new SettleRegionTypeFactory());
+        Region.registerRegion(SettleRegion.REGION_TYPE, new SettleRegionFactory());
     }
 
     @Override
@@ -122,13 +123,20 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
-        TerraCommand terraCommand = new TerraCommand();
-        if (this.getCommand("terra") == null) {
-            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
+//        PropertyCommand terraCommand = new PropertyCommand();
+//        if (this.getCommand("terra") == null) {
+//            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
+//            return;
+//        }
+//        this.getCommand("terra").setExecutor(terraCommand);
+//        this.getCommand("terra").setTabCompleter(terraCommand);
+        TownCommands townCommand = new TownCommands();
+        if (this.getCommand("town") == null) {
+            getLogger().severe("Failed to get command 'town' from plugin.yml. Please check your plugin.yml!");
             return;
         }
-        Objects.requireNonNull(this.getCommand("terra")).setExecutor(terraCommand);
-        Objects.requireNonNull(this.getCommand("terra")).setTabCompleter(terraCommand);
+        this.getCommand("town").setExecutor(townCommand);
+        this.getCommand("town").setTabCompleter(townCommand);
     }
 
     public void listenerRegistry() {

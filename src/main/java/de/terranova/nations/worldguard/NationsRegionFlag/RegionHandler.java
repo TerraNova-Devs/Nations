@@ -10,7 +10,7 @@ import com.sk89q.worldguard.session.Session;
 import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import com.sk89q.worldguard.session.handler.Handler;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import org.bukkit.craftbukkit.entity.CraftPlayer;
 
@@ -62,9 +62,9 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : exited) {
                 String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
                 if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
-                Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+                Optional<SettleRegion> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
                 if (osettle.isEmpty()) return true;
-                SettleRegionType settle = osettle.get();
+                SettleRegion settle = osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s verlassen.", settle.getName().replaceAll("_", " "))));
             }
 
@@ -72,9 +72,9 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
             for (ProtectedRegion region : entered) {
                 String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
                 if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
-                Optional<SettleRegionType> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+                Optional<SettleRegion> osettle = RegionManager.retrieveRegion("settle", UUID.fromString(flag));
                 if (osettle.isEmpty()) return true;
-                SettleRegionType settle = osettle.get();
+                SettleRegion settle = osettle.get();
                 p.sendActionBar(Chat.greenFade(String.format("Du hast %s betreten.", settle.getName().replaceAll("_", " "))));
             }
         }

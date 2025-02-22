@@ -6,31 +6,43 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import de.terranova.nations.regions.base.RegionType;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Location;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
+
 //TODO get regions from DB
 public class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
-    private final static Map<String, Map<UUID, ? extends RegionType>> regionCache = new HashMap<>();
+    private final static Map<String, Map<UUID, ? extends Region>> regionCache = new HashMap<>();
 
-    public static <T extends RegionType> void cacheRegions(String type, Map<UUID, T> regions) {
+    public static <T extends Region> void cacheRegions(String type, Map<UUID, T> regions) {
         regionCache.put(type, regions);
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends RegionType> Map<UUID, T> retrieveAllCachedTypes(String type) {
+    public static <T extends Region> Map<UUID, T> retrieveAllCachedRegions(String type) {
         return (Map<UUID, T>) regionCache.get(type);
     }
 
-    public static <T extends RegionType> void addRegion(String type, UUID uuid, T region) {
+    public static Optional<SettleRegion> retrievePlayersSettlement(UUID player) {
+
+        for (Region region : retrieveAllCachedRegions("settle").values()) {
+            SettleRegion settle = (SettleRegion) region;
+            if (TownAccess.hasAccess(settle.getAccess().getAccessLevel(player), TownAccessLevel.CITIZEN)) {
+                return Optional.of(settle);
+            }
+        }
+        return Optional.empty();
+    }
+
+    public static <T extends Region> void addRegion(String type, UUID uuid, T region) {
         // Retrieve the map for the specified type, or create a new one if it doesn't exist
-        Map<UUID, T> regions = retrieveAllCachedTypes(type);
+        Map<UUID, T> regions = retrieveAllCachedRegions(type);
         if (regions == null) {
             regions = new HashMap<>();
             cacheRegions(type, regions);
@@ -38,9 +50,9 @@ public class RegionManager {
         regions.put(uuid, region);
     }
 
-    public static <T extends RegionType> boolean removeRegion(String type, UUID uuid) {
+    public static <T extends Region> boolean removeRegion(String type, UUID uuid) {
         // Retrieve the map for the specified type
-        Map<UUID, T> regions = retrieveAllCachedTypes(type);
+        Map<UUID, T> regions = retrieveAllCachedRegions(type);
         if (regions == null) {
             return false; // Type not found
         }
@@ -48,7 +60,7 @@ public class RegionManager {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends RegionType> Optional<T> retrieveRegion(String type, UUID uuid) {
+    public static <T extends Region> Optional<T> retrieveRegion(String type, UUID uuid) {
         Map<UUID, T> typeMap = (Map<UUID, T>) regionCache.get(type);
         if (typeMap == null) {
             return Optional.empty(); // Type not found
@@ -59,22 +71,22 @@ public class RegionManager {
         return Optional.empty();
     }
 
-    public static <T extends RegionType> Optional<T> retrieveRegion(String type, String name) {
-        Map<UUID, T> regions = retrieveAllCachedTypes(type);
+    public static <T extends Region> Optional<T> retrieveRegion(String type, String name) {
+        Map<UUID, T> regions = retrieveAllCachedRegions(type);
         for (T region : regions.values()) {
             if(name.equalsIgnoreCase(region.getName())) return Optional.of(region);
         }
         return Optional.empty();
     }
 
-    public static <T extends RegionType> Optional<T> retrieveRegion(String type, Location location) {
+    public static <T extends Region> Optional<T> retrieveRegion(String type, Location location) {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
-        Map<UUID, T> regions = retrieveAllCachedTypes(type);
+        Map<UUID, T> regions = retrieveAllCachedRegions(type);
 
         for (ProtectedRegion region : set) {
-            for (RegionType regionType : regions.values()) {
+            for (Region regionType : regions.values()) {
                 String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
                 if(regionUUIDString == null) continue;
                 if(regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) continue;
