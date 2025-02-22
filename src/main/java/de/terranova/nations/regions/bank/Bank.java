@@ -3,55 +3,53 @@ package de.terranova.nations.regions.bank;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.base.RegionType;
-import de.terranova.nations.regions.base.RegionTypeListener;
+import de.terranova.nations.database.dao.BankDAO;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionListener;
 import org.bukkit.entity.Player;
 
-import java.sql.Timestamp;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-public class Bank implements RegionTypeListener {
+public class Bank implements RegionListener {
 
     private final List<Transaction> transactions;
     private int credit;
     private boolean transactionInProgress = false;
-    private final BankDatabase bankDatabase;
-    private final RegionType regionType;
+    private final BankDAO bankDAO;
+    private final Region region;
     private final BankHolder bankHolder;
 
-    public Bank(RegionType regionType) {
-        if(!(regionType instanceof BankHolder bankHolderr)) throw new IllegalArgumentException();
-        this.bankDatabase = new BankDatabase(regionType.getId());
-        this.transactions = bankDatabase.getLatestTransactions();
-        Optional<Transaction> latestTransaction = bankDatabase.getLatestBankStatus();
+    public Bank(Region region) {
+        if (!(region instanceof BankHolder bankHolder)) throw new IllegalArgumentException();
+        this.bankDAO = new BankDAO();
+        this.transactions = new LinkedList<>(bankDAO.getLatestTransactions(region.getId()));
+        Optional<Transaction> latestTransaction = bankDAO.getBankCredit(region.getId());
         latestTransaction.ifPresent(transaction -> this.credit = transaction.total);
-        this.regionType = regionType;
-        this.bankHolder = bankHolderr;
-        regionType.addListener(this);
+        this.region = region;
+        this.bankHolder = bankHolder;
+        region.addListener(this);
     }
 
     public Integer cashInFromInv(Player p, int amount) {
         if (!startCashTransaction(p)) return null;
         int charged;
-
         try {
             charged = ItemTransfer.charge(p, "terranova_silver", amount, false);
             updateBankBalance(p.getName(), charged);
-
         } finally {
             transactionInProgress = false;
-
         }
         return charged;
     }
-    
+
     public Integer cashOutFromInv(Player p, int amount) {
         if (!startCashTransaction(p)) return null;
         int credited;
         try {
             credited = ItemTransfer.credit(p, "terranova_silver", Math.min(amount, credit), false);
-            updateBankBalance(p.getName(),  -credited);
+            updateBankBalance(p.getName(), -credited);
         } finally {
             transactionInProgress = false;
         }
@@ -60,7 +58,6 @@ public class Bank implements RegionTypeListener {
 
     public void cashTransfer(String record, int amount) {
         if (!startCashTransaction()) return;
-
         try {
             updateBankBalance(record, amount);
         } finally {
@@ -84,12 +81,11 @@ public class Bank implements RegionTypeListener {
     }
 
     private void updateBankBalance(String record, int amount) {
-        if (transactions.size() >= 50) transactions.removeFirst();
-        Transaction transaction = new Transaction(record, amount, InstantGenerator.generateInstant(regionType.getId()), credit += amount);
-
-        bankDatabase.insertTransaction(transaction);
+        if (transactions.size() >= 50) transactions.remove(0);
+        Transaction transaction = new Transaction(record, amount, InstantGenerator.generateInstant(region.getId()), credit += amount);
+        bankDAO.insertTransaction(region.getId(), transaction);
         transactions.add(transaction);
-        NationsPlugin.nationsLogger.logInfo("(Transfer) Type: " + regionType.getType() + ", ID: " + regionType.getId() + ", Name: " + regionType.getName() + ", User: " + record + ", Amount: " + amount + ", BankCredit: " + credit);
+        NationsPlugin.nationsLogger.logInfo("(Transfer) Type: " + region.getType() + ", ID: " + region.getId() + ", Name: " + region.getName() + ", User: " + record + ", Amount: " + amount + ", BankCredit: " + credit);
         bankHolder.onTransaction(record, amount);
     }
 
@@ -101,12 +97,12 @@ public class Bank implements RegionTypeListener {
         return credit;
     }
 
-    public Bank getBank() {
-        return this;
+    @Override
+    public void onRegionRenamed(String newRegionName) {
     }
 
     @Override
-    public void onRegionTypeRemoved(){
-        bankDatabase.deleteAllEntries();
+    public void onRegionRemoved() {
+        bankDAO.deleteAllEntries(region.getId());
     }
 }

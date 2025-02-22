@@ -37,11 +37,15 @@ public class HikariCP {
 
         HikariConfig config = getHikariConfig();
         dataSource = new HikariDataSource(config);
-        DatabaseMetaData metaData = dataSource.getConnection().getMetaData();
-        System.out.println("Driver Name: " + metaData.getDriverName());
-        System.out.println("Driver Version: " + metaData.getDriverVersion());
-        System.out.println("Database Product Name: " + metaData.getDatabaseProductName());
-        System.out.println("Database Product Version: " + metaData.getDatabaseProductVersion());
+
+        try (Connection connection = dataSource.getConnection()) {
+            DatabaseMetaData metaData = connection.getMetaData();
+            System.out.println("Driver Name: " + metaData.getDriverName());
+            System.out.println("Driver Version: " + metaData.getDriverVersion());
+            System.out.println("Database Product Name: " + metaData.getDatabaseProductName());
+            System.out.println("Database Product Version: " + metaData.getDatabaseProductVersion());
+        }
+
         prepareTables();
     }
 

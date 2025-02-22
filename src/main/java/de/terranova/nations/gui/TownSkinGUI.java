@@ -5,10 +5,9 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
-import de.terranova.nations.regions.access.Access;
-import de.terranova.nations.regions.access.AccessControlled;
-import de.terranova.nations.regions.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegionType;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.npc.NPCSkins;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
@@ -22,10 +21,10 @@ public class TownSkinGUI extends RoseGUI {
 
     private static Method metaSetProfileMethod;
     private final RosePagination pagination = new RosePagination(this);
-    SettleRegionType settle;
+    SettleRegion settle;
 
-    public TownSkinGUI(Player player, int townskins, SettleRegionType settle) {
-        super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
+    public TownSkinGUI(Player player, int townskins, SettleRegion settle) {
+        super(player, "town-skin-gui", Chat.blueFade("<b>Skins"), townskins);
         this.pagination.registerPageSlotsBetween(10, 44);
         this.settle = settle;
     }
@@ -43,7 +42,7 @@ public class TownSkinGUI extends RoseGUI {
 
         RoseItem back = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
-                .displayName(Chat.redFade("<b>Go Back</b>"))
+                .displayName(Chat.yellowFade("<b>Zurück</b>"))
                 .build();
         back.onClick(e -> {
             new TownGUI(player, settle).open();
@@ -64,8 +63,8 @@ public class TownSkinGUI extends RoseGUI {
                         .build();
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
-                    if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()),AccessLevel.VICE)){
-                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können"));
+                    if (!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)){
+                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
                         return;
                     }
                     if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
