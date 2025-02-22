@@ -73,6 +73,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         serilizationRegistry();
         nationsRegionTypeRegistry();
         loadConfigs();
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
     @EventHandler

@@ -94,7 +94,7 @@ public class TownCommands extends AbstractCommand {
         registerSubCommand(this,"balance");
         registerSubCommand(this,"history");
         registerSubCommand(this,"leave");
-        registerSubCommand(this,"npc.movehere");
+        registerSubCommand(this,"npc");
 
         setupHelpCommand();
         initialize();
@@ -564,10 +564,10 @@ public class TownCommands extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "npc.movehere",
+            domain = "npc",
             permission = "nations.npc.movehere",
             description = "Moves the npc to your location",
-            usage = "/town npc movehere"
+            usage = "/town npc"
     )
     public boolean moveNPC(Player p, String[] args) {
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
@@ -580,13 +580,17 @@ public class TownCommands extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Bitte gehe sicher dass du innerhalb von deiner Stadt geclaimten bereich stehst."));
             return false;
         }
+        if(settle.get().getId() != settleOpt.get().getId()) {
+            p.sendMessage(Chat.errorFade("Du bist nicht in deiner Stadt."));
+            return false;
+        }
 
-        if(!TownAccess.hasAccess(settle.get().getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)){
+        if(!TownAccess.hasAccess(settleOpt.get().getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)){
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung den NPC zu verschieben."));
             return false;
         }
 
-        settle.get().getNPC().tpNPC(p.getLocation());
+        settleOpt.get().getNPC().tpNPC(p.getLocation());
         return true;
     }
 
