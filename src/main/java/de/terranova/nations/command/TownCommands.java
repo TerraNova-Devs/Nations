@@ -366,7 +366,7 @@ public class TownCommands extends AbstractCommand {
         }
         int amount;
         try {
-            amount = Integer.parseInt(args[2]);
+            amount = Integer.parseInt(args[1]);
             if(amount <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
             p.sendMessage(Chat.errorFade("Bitte nutze /t bank (<withdraw|deposit>) (<value>)"));
