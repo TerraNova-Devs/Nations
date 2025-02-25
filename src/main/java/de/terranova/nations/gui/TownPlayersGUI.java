@@ -1,9 +1,11 @@
 package de.terranova.nations.gui;
 
+import com.destroystokyo.paper.profile.PlayerProfile;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -15,6 +17,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 import org.jetbrains.annotations.NotNull;
 
@@ -47,41 +50,67 @@ public class TownPlayersGUI extends RoseGUI {
 
     private void registerPlayerSlots() {
         pagination.getItems().clear();
-        HashMap<UUID, TownAccessLevel> accessLevels = access.getAccess().getAccessLevels();
-        LinkedHashMap<UUID, TownAccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
-            .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getWeight(), entry1.getValue().getWeight()))
-            .collect(LinkedHashMap::new, (m, e) -> m.put(e.getKey(), e.getValue()), LinkedHashMap::putAll);
 
+        HashMap<UUID, TownAccessLevel> accessLevels = access.getAccess().getAccessLevels();
+        // Sort them by weight descending:
+        LinkedHashMap<UUID, TownAccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
+                .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getWeight(), entry1.getValue().getWeight()))
+                .collect(LinkedHashMap::new, (map, e) -> map.put(e.getKey(), e.getValue()), LinkedHashMap::putAll);
+
+        // For each UUID -> build a placeholder head, then fetch real skin asynchronously
         sortedAccessLevels.forEach((uuid, level) -> {
-            try {
-                OfflinePlayer member = Bukkit.getOfflinePlayer(uuid);
-                RoseItem playerItem = new RoseItem.Builder()
-                        .material(Material.PLAYER_HEAD)
-                        .displayName(Component.text("§e" + Bukkit.getOfflinePlayer(uuid).getName()))
-                        .addLore(Component.text("§7" + level.name()))
-                        .build();
-                SkullMeta skullMeta = (SkullMeta) playerItem.stack.getItemMeta();
-                skullMeta.setOwningPlayer(member);
-                playerItem.stack.setItemMeta(skullMeta);
-                playerItem.onClick(e -> {
-                    handlePlayerClick(e, player, access, level, uuid);
+            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(uuid);
+
+            // 1) Create a placeholder head item immediately (so we can show something in the GUI)
+            ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+            SkullMeta meta = (SkullMeta) skull.getItemMeta();
+
+            // Display either the player's known name or their UUID if name is null
+            String displayName = offlinePlayer.getName() != null ? offlinePlayer.getName() : uuid.toString();
+            meta.displayName(Component.text("§e" + displayName));
+            meta.lore(List.of(Component.text("§7" + level.name()), Component.text("§8Loading skin...")));
+            skull.setItemMeta(meta);
+
+            // Wrap in your RoseItem
+            RoseItem playerItem = new RoseItem.Builder().copyStack(skull).build()
+                    .onClick(event -> handlePlayerClick(event, player, access, level, uuid));
+
+            // Add the placeholder item to pagination right away
+            pagination.addItem(playerItem);
+
+            // 2) Fetch correct skin data ASYNCHRONOUSLY
+            Bukkit.getScheduler().runTaskAsynchronously(NationsPlugin.plugin, () -> {
+                // Attempt to complete the player's profile with Mojang
+                PlayerProfile profile = offlinePlayer.getPlayerProfile();
+                profile.complete(true); // Contacts Mojang for the texture if needed
+
+                // 3) Once the skin is fetched, update the item on the main thread
+                Bukkit.getScheduler().runTask(NationsPlugin.plugin, () -> {
+                    // If the GUI is still open for this player, proceed
+                    if (!player.getOpenInventory().getTopInventory().equals(getInventory())) {
+                        return; // The GUI was closed; no need to update
+                    }
+
+                    // Update the same ItemStack with the newly fetched profile
+                    ItemStack updatedSkull = playerItem.stack; // The same stack we used
+                    SkullMeta updatedMeta = (SkullMeta) updatedSkull.getItemMeta();
+                    updatedMeta.setPlayerProfile(profile);
+
+                    // Re-set name & lore with the final data
+                    updatedMeta.displayName(Component.text("§e" + displayName));
+                    updatedMeta.lore(List.of(Component.text("§7" + level.name())));
+                    updatedSkull.setItemMeta(updatedMeta);
+
+                    // Finally, refresh pagination so the updated item shows in the GUI
+                    pagination.update();
                 });
-                pagination.addItem(playerItem);
-            } catch (Exception ex) {
-                RoseItem playerItem = new RoseItem.Builder()
-                        .material(Material.PLAYER_HEAD)
-                        .displayName(Component.text("§e" + uuid))
-                        .addLore(Component.text("§7" + level.name()))
-                        .build();
-                playerItem.onClick(e -> {
-                    handlePlayerClick(e, player, access, level, uuid);
-                });
-                pagination.addItem(playerItem);
-            }
+            });
         });
 
+        // Initial pagination refresh to show the placeholders
         pagination.update();
     }
+
 
     private void handlePlayerClick(InventoryClickEvent e, Player player, TownAccessControlled access, TownAccessLevel level, UUID uuid) {
         if(!TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)) {

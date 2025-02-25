@@ -58,25 +58,38 @@ public class TownCommands extends AbstractCommand {
                         .filter(level -> level != TownAccessLevel.MAJOR)
                         .map(Enum::name)
                         .collect(Collectors.toList()));
+        addPlaceholder("$REGION_CITIZENS",
+                PlayerAwarePlaceholder.ofCachedPlayerFunction(
+                        (UUID uuid) -> {
+                            return RegionManager.retrievePlayersSettlement(uuid).map(settle -> {
+                                return settle.getAccess().getAccessLevels()
+                                        .entrySet()
+                                        .stream()
+                                        .filter(entry -> TownAccess.hasAccess(entry.getValue(), TownAccessLevel.CITIZEN))
+                                        .map(Map.Entry::getKey)
+                                        .map(Bukkit::getOfflinePlayer)
+                                        .map(OfflinePlayer::getName)
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toList());
+                            }).orElseGet(Collections::emptyList);
+                        },
+                        3000
+                )
+        );
         addPlaceholder("$REGION_ACCESS_USERS",
                 PlayerAwarePlaceholder.ofCachedPlayerFunction(
                         (UUID uuid) -> {
-                            return TerraSelectCache.getSelect(uuid)
-                                    .map(cache -> {
-                                        if (cache.getRegion() instanceof TownAccessControlled access) {
-                                            return access.getAccess().getAccessLevels()
-                                                    .entrySet()
-                                                    .stream()
-                                                    .filter(entry -> TownAccess.hasAccess(entry.getValue(), TownAccessLevel.CITIZEN))
-                                                    .map(Map.Entry::getKey)
-                                                    .map(Bukkit::getOfflinePlayer)
-                                                    .map(OfflinePlayer::getName)
-                                                    .filter(Objects::nonNull)
-                                                    .collect(Collectors.toList());
-                                        }
-                                        return Collections.<String>emptyList();
-                                    })
-                                    .orElseGet(Collections::emptyList);
+                            return RegionManager.retrievePlayersSettlement(uuid).map(settle -> {
+                                return settle.getAccess().getAccessLevels()
+                                        .entrySet()
+                                        .stream()
+                                        .filter(entry -> TownAccess.hasAccess(entry.getValue(), TownAccessLevel.TRUSTED))
+                                        .map(Map.Entry::getKey)
+                                        .map(Bukkit::getOfflinePlayer)
+                                        .map(OfflinePlayer::getName)
+                                        .filter(Objects::nonNull)
+                                        .collect(Collectors.toList());
+                            }).orElseGet(Collections::emptyList);
                         },
                         3000
                 )
@@ -95,6 +108,7 @@ public class TownCommands extends AbstractCommand {
         registerSubCommand(this,"history");
         registerSubCommand(this,"leave");
         registerSubCommand(this,"npc");
+        registerSubCommand(this, "trust");
 
         setupHelpCommand();
         initialize();
@@ -206,7 +220,7 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Player target = getTargetPlayer(p, args, 2);
+        Player target = getTargetPlayer(p, args, 1);
         if (target == null) return false;
 
         if (access.getAccessLevel(target.getUniqueId()) == null) {
@@ -226,7 +240,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "rank.$REGION_ACCESS_USERS.$RANKS",
+            domain = "rank.$REGION_CITIZENS.$RANKS",
             permission = "nations.town.rank",
             description = "Sets the rank of a player in your town",
             usage = "/town rank <player> <rank>"
@@ -636,6 +650,7 @@ public class TownCommands extends AbstractCommand {
 
         if (target == null) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[index]);
+            return offlinePlayer.getPlayer();
         }
         return target;
     }
