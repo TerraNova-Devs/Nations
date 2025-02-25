@@ -4,10 +4,12 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
+import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
+import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -50,6 +52,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     static public Plugin plugin;
     public static FileLogger nationsLogger;
     public static FileLogger nationsDebugger;
+    public static NationManager nationManager;
     private Registry<Layer> layerRegistry;
 
     @Override
@@ -68,6 +71,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         pl3xmapMarkerRegistry();
         layerRegistry.register("settlement-layer",new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
         saveDefaultConfig();
+        nationManager = new NationManager();
         commandRegistry();
         listenerRegistry();
         serilizationRegistry();
@@ -137,6 +141,13 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         }
         this.getCommand("town").setExecutor(townCommand);
         this.getCommand("town").setTabCompleter(townCommand);
+        NationCommands nationCommand = new NationCommands();
+        this.getCommand("nation").setExecutor(nationCommand);
+        this.getCommand("nation").setTabCompleter(nationCommand);
+        if (this.getCommand("nation") == null) {
+            getLogger().severe("Failed to get command 'nation' from plugin.yml. Please check your plugin.yml!");
+            return;
+        }
     }
 
     public void listenerRegistry() {

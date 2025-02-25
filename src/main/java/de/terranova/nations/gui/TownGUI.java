@@ -7,6 +7,7 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.gui.nations.NationGUI;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -76,12 +77,19 @@ public class TownGUI extends RoseGUI {
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
                 .build();
 
+        RoseItem nations = new RoseItem.Builder()
+                .material(Material.NETHER_STAR)
+                .displayName(Chat.yellowFade("<b>Nations"))
+                .addLore(Chat.cottonCandy("<i>Hier kannst du die Nation verwalten."))
+                .build();
+
         addItem(13, level);
         addItem(19, skins);
         addItem(21, players);
         addItem(23, upgrades);
         addItem(25, farm);
-        addItem(31, settings);
+        addItem(28, settings);
+        addItem(31, nations);
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
@@ -121,6 +129,11 @@ public class TownGUI extends RoseGUI {
             if (!player.hasPermission("nations.menu.farm")) return;
             sendToServer(player, "farmwelt");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "send " + player.getName() + " farmwelt");
+        });
+
+        nations.onClick(e -> {
+            if(!player.hasPermission("nations.menu.nations")) return;
+            new NationGUI(player, NationsPlugin.nationManager.getNationBySettlement(settle.getId())).open();
         });
     }
 
