@@ -1,33 +1,43 @@
 package de.terranova.nations.nations;
 
+import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
+import org.bukkit.Bukkit;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Nation {
     private UUID id;
     private String name;
-    private UUID leader; // UUID of the nation's leader
-    private Set<UUID> settlements; // UUIDs of settlements in the nation
+    private Map<UUID, SettlementRank> settlements; // UUIDs of settlements in the nation
     private Map<UUID, NationRelationType> relations; // Relations with other nations
+    private Map<UUID, NationPlayerRank> playerRanks; // Player ranks in the nation
 
     // Constructor for creating a new nation
     public Nation(String name, UUID leaderId) {
         this.id = UUID.randomUUID();
         this.name = name;
-        this.leader = leaderId;
-        this.settlements = new HashSet<>();
+        this.settlements = new HashMap<>();
         this.relations = new HashMap<>();
+        NationsPlugin.nationManager.getNations().forEach((id, nation) -> {
+            nation.setRelation(this.id, NationRelationType.NEUTRAL);
+            NationsPlugin.nationManager.saveNation(nation);
+            setRelation(nation.getId(), NationRelationType.NEUTRAL);
+        });
+        this.playerRanks = new HashMap<>();
+        this.playerRanks.put(leaderId, NationPlayerRank.LEADER);
     }
 
     // Constructor for loading a nation from the database with existing data
-    public Nation(UUID id, String name, UUID leaderId, Set<UUID> settlements, Map<UUID, NationRelationType> relations) {
+    public Nation(UUID id, String name, Map<UUID, SettlementRank> settlements, Map<UUID, NationRelationType> relations, Map<UUID, NationPlayerRank> playerRanks) {
         this.id = id;
         this.name = name;
-        this.leader = leaderId;
-        this.settlements = settlements != null ? settlements : new HashSet<>();
+        this.settlements = settlements != null ? settlements : new HashMap<>();
         this.relations = relations != null ? relations : new HashMap<>();
+        this.playerRanks = playerRanks != null ? playerRanks : new HashMap<>();
     }
 
     // Getters and setters
@@ -53,24 +63,43 @@ public class Nation {
 
     // Leader
     public UUID getLeader() {
-        return leader;
+        return playerRanks.entrySet().stream()
+                .filter(entry -> entry.getValue() == NationPlayerRank.LEADER)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
+    }
+
+    public Set<UUID> getViceLeaders() {
+        return playerRanks.entrySet().stream()
+                .filter(entry -> entry.getValue() == NationPlayerRank.VICE_LEADER)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<UUID> getCouncil() {
+        return playerRanks.entrySet().stream()
+                .filter(entry -> entry.getValue() == NationPlayerRank.COUNCIL)
+                .map(Map.Entry::getKey)
+                .collect(Collectors.toSet());
     }
 
     public void setLeader(UUID leader) {
-        this.leader = leader;
+        this.playerRanks.values().remove(NationPlayerRank.LEADER);
+        this.playerRanks.put(leader, NationPlayerRank.LEADER);
     }
 
     // Settlements
-    public Set<UUID> getSettlements() {
+    public Map<UUID, SettlementRank> getSettlements() {
         return settlements;
     }
 
-    public void setSettlements(Set<UUID> settlements) {
+    public void setSettlements(Map<UUID, SettlementRank> settlements) {
         this.settlements = settlements;
     }
 
-    public void addSettlement(UUID settlementId) {
-        settlements.add(settlementId);
+    public void addSettlement(UUID settlementId, SettlementRank rank) {
+        settlements.put(settlementId, rank);
     }
 
     public void removeSettlement(UUID settlementId) {
@@ -94,19 +123,48 @@ public class Nation {
         return relations.getOrDefault(nationId, NationRelationType.NEUTRAL);
     }
 
+    public void broadcast(String message) {
+        settlements.forEach((settlementId, rank) -> {
+            Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settlementId);
+            if (settleOpt.isEmpty()) return;
+            SettleRegion settle = settleOpt.get();
+            settle.getAccess().broadcast(message);
+        });
+    }
+
     // Additional methods
 
     // Check if a settlement is part of the nation
     public boolean hasSettlement(UUID settlementId) {
-        return settlements.contains(settlementId);
+        return settlements.containsKey(settlementId);
     }
 
     public boolean isMember(UUID playerId) {
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(playerId);
         if(settleOpt.isPresent()){
             SettleRegion settle = settleOpt.get();
-            return settlements.contains(settle.getId());
+            return settlements.containsKey(settle.getId());
         }
         return false;
+    }
+
+    public boolean isLeader(UUID playerId) {
+        return playerRanks.get(playerId) == NationPlayerRank.LEADER;
+    }
+
+    public void setPlayerRank(UUID playerId, NationPlayerRank rank) {
+        playerRanks.put(playerId, rank);
+    }
+
+    public Map<UUID, NationPlayerRank> getPlayerRanks() {
+        return playerRanks;
+    }
+
+    public void setPlayerRanks(Map<UUID, NationPlayerRank> playerRanks) {
+        this.playerRanks = playerRanks;
+    }
+
+    public NationPlayerRank getPlayerRank(UUID playerId) {
+        return playerRanks.getOrDefault(playerId, NationPlayerRank.MEMBER);
     }
 }

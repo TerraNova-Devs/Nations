@@ -133,6 +133,10 @@ public class TownGUI extends RoseGUI {
 
         nations.onClick(e -> {
             if(!player.hasPermission("nations.menu.nations")) return;
+            if(NationsPlugin.nationManager.getNationBySettlement(settle.getId()) == null) {
+                player.sendMessage(Chat.errorFade("Diese Stadt gehört keiner Nation an."));
+                return;
+            }
             new NationGUI(player, NationsPlugin.nationManager.getNationBySettlement(settle.getId())).open();
         });
     }
