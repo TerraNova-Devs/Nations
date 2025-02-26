@@ -9,6 +9,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.codehaus.plexus.util.StringUtils;
 
 import java.util.UUID;
 
@@ -28,30 +29,30 @@ public class NationGUI extends RoseGUI {
         RoseItem nationInfo = new RoseItem.Builder()
                 .material(Material.PAPER)
                 .displayName(Chat.greenFade("<b>Nation Information"))
-                .addLore(Chat.cottonCandy("<i>Name: " + nation.getName()))
-                .addLore(Chat.cottonCandy("<i>Leader: " + getPlayerName(nation.getLeader())))
-                .addLore(Chat.cottonCandy("<i>Settlements: " + nation.getSettlements().size()))
+                .addLore(Chat.cottonCandy("<i>Name: " + StringUtils.capitalise(nation.getName())))
+                .addLore(Chat.cottonCandy("<i>Anführer: " + getPlayerName(nation.getLeader())))
+                .addLore(Chat.cottonCandy("<i>Städte: " + nation.getSettlements().size()))
                 .build();
 
         // Members Item
         RoseItem membersItem = new RoseItem.Builder()
                 .material(Material.PLAYER_HEAD)
-                .displayName(Chat.yellowFade("<b>Nation Members"))
-                .addLore(Chat.cottonCandy("<i>Click to view members"))
+                .displayName(Chat.yellowFade("<b>Nationsmitglieder"))
+                .addLore(Chat.cottonCandy("<i>Klicke um Mitglieder zu sehen"))
                 .build();
 
         // Settlements Item
         RoseItem settlementsItem = new RoseItem.Builder()
                 .material(Material.OAK_DOOR)
-                .displayName(Chat.yellowFade("<b>Settlements"))
-                .addLore(Chat.cottonCandy("<i>Click to view settlements"))
+                .displayName(Chat.yellowFade("<b>Städte"))
+                .addLore(Chat.cottonCandy("<i>Klicke um die Städte zu sehen"))
                 .build();
 
         // Relations Item
         RoseItem relationsItem = new RoseItem.Builder()
                 .material(Material.PAPER)
-                .displayName(Chat.yellowFade("<b>Relations"))
-                .addLore(Chat.cottonCandy("<i>Click to manage relations"))
+                .displayName(Chat.yellowFade("<b>Beziehungen"))
+                .addLore(Chat.cottonCandy("<i>Klicke um Beziehung zu ändern"))
                 .build();
 
         // Invite Settlement Item (only for leaders)
@@ -59,8 +60,8 @@ public class NationGUI extends RoseGUI {
         if (nation.getLeader().equals(player.getUniqueId())) {
             inviteSettlementItem = new RoseItem.Builder()
                     .material(Material.WRITABLE_BOOK)
-                    .displayName(Chat.yellowFade("<b>Invite Settlement"))
-                    .addLore(Chat.cottonCandy("<i>Click to invite a settlement"))
+                    .displayName(Chat.yellowFade("<b>Siedlung einladen"))
+                    .addLore(Chat.cottonCandy("<i>Klicke um eine Siedlung einzuladen"))
                     .build();
         }
 
@@ -74,7 +75,7 @@ public class NationGUI extends RoseGUI {
             addItem(22, inviteSettlementItem);
             inviteSettlementItem.onClick(e -> {
                 player.closeInventory();
-                player.sendMessage(Chat.cottonCandy("Type '/nation invite <settlementName>' to invite a settlement."));
+                player.sendMessage(Chat.cottonCandy("Schreib '/nation invite <Stadt-Name>' um eine Stadt zur Nation einzuladen."));
             });
         }
 

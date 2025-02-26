@@ -46,6 +46,7 @@ import java.util.Objects;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
+    private int NATION_CREATION_COST;
     public static boolean debug = false;
     public static HikariCP hikari;
     public static Map<Integer, RankObjective> levelObjectives;

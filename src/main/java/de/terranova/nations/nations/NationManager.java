@@ -1,16 +1,14 @@
 package de.terranova.nations.nations;
 
-import de.terranova.nations.database.dao.NationsAccessDAO;
+import de.terranova.nations.database.dao.NationsDAO;
 
 import java.util.*;
 
 public class NationManager {
     private Map<UUID, Nation> nations;
-    private Map<UUID, UUID> pendingInvitations; // Key: Settlement UUID, Value: Nation UUID
 
     public NationManager() {
         this.nations = new HashMap<>();
-        this.pendingInvitations = new HashMap<>();
         loadNationsFromDatabase();
     }
 
@@ -21,17 +19,15 @@ public class NationManager {
 
     // Add a nation to the manager and database
     public void addNation(Nation nation, UUID suuid) {
-        nation.addSettlement(suuid);
+        nation.addSettlement(suuid, SettlementRank.CAPITAL);
         nations.put(nation.getId(), nation);
         saveNation(nation);
-        SettlementNationRelation relation = new SettlementNationRelation(suuid, nation.getId(), SettlementRank.CAPITAL);
-        NationsAccessDAO.addSettlementToNation(relation);
     }
 
     // Remove a nation from the manager and database
     public void removeNation(UUID nationId) {
         nations.remove(nationId);
-        NationsAccessDAO.deleteNation(nationId);
+        NationsDAO.deleteNation(nationId);
     }
 
     // Get a nation by UUID
@@ -49,6 +45,15 @@ public class NationManager {
         return null;
     }
 
+    public Nation getNationByMember(UUID memberId) {
+        for (Nation nation : nations.values()) {
+            if (nation.isMember(memberId)) {
+                return nation;
+            }
+        }
+        return null;
+    }
+
     // Get the nation a settlement belongs to
     public Nation getNationBySettlement(UUID settlementId) {
         for (Nation nation : nations.values()) {
@@ -60,12 +65,12 @@ public class NationManager {
     }
 
     // Get nation's settlements
-    public Set<UUID> getNationSettlements(UUID nationId) {
+    public Map<UUID, SettlementRank> getNationSettlements(UUID nationId) {
         Nation nation = nations.get(nationId);
         if (nation != null) {
             return nation.getSettlements();
         }
-        return Collections.emptySet();
+        return Collections.emptyMap();
     }
 
     public Nation getNationByLeader(UUID leaderId) {
@@ -88,7 +93,7 @@ public class NationManager {
 
     // Load nations from the database
     private void loadNationsFromDatabase() {
-        List<Nation> loadedNations = NationsAccessDAO.getAllNations();
+        List<Nation> loadedNations = NationsDAO.getAllNations();
         for (Nation nation : loadedNations) {
             nations.put(nation.getId(), nation);
         }
@@ -96,23 +101,19 @@ public class NationManager {
 
     // Save a nation to the database
     public void saveNation(Nation nation) {
-        NationsAccessDAO.saveNation(nation);
+        NationsDAO.saveNation(nation);
+        nations.put(nation.getId(), nation);
     }
 
-    // Invitation methods
-    public void inviteSettlement(UUID settlementId, UUID nationId) {
-        pendingInvitations.put(settlementId, nationId);
+    public void addSettlementToNation(UUID nationId, UUID settlementId) {
+        NationsDAO.addSettlementToNation(new SettlementNationRelation(settlementId, nationId, SettlementRank.CITY));
+        Nation nation = getNation(nationId);
+        nation.addSettlement(settlementId, SettlementRank.CITY);
     }
 
-    public boolean hasInvitation(UUID settlementId) {
-        return pendingInvitations.containsKey(settlementId);
-    }
-
-    public UUID getInvitation(UUID settlementId) {
-        return pendingInvitations.get(settlementId);
-    }
-
-    public void removeInvitation(UUID settlementId) {
-        pendingInvitations.remove(settlementId);
+    public void removeSettlementFromNation(UUID nationId, UUID settlementId) {
+        NationsDAO.removeSettlementFromNation(settlementId);
+        Nation nation = getNation(nationId);
+        nation.removeSettlement(settlementId);
     }
 }
