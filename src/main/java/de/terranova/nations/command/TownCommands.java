@@ -12,23 +12,23 @@ import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.bank.Transaction;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
-import java.io.Console;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -153,8 +153,13 @@ public class TownCommands extends AbstractCommand {
         p.sendMessage(Chat.greenFade("Du hast " + args[1] + " erfolgreich in die Stadt " + settle.getName() + " eigeladen."));
 
         Player targetPlayer = Bukkit.getPlayer(target);
-        if (targetPlayer != null)
-            targetPlayer.sendMessage(Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + settle.getName() + " eigeladen."));
+        if (targetPlayer != null) {
+            Component message = Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + settle.getName() + " eingeladen.")
+                    .hoverEvent(HoverEvent.showText(Chat.cottonCandy("Klicke, um die Einladung anzunehmen!")))
+                    .clickEvent(ClickEvent.runCommand("/town accept " + settle.getName()));
+
+            targetPlayer.sendMessage(message);
+        }
         return true;
     }
 

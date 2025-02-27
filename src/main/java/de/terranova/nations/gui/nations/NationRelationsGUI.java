@@ -13,6 +13,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.ArrayList;
@@ -43,8 +44,18 @@ public class NationRelationsGUI extends RoseGUI {
 
             Nation otherNation = NationsPlugin.nationManager.getNation(otherNationId);
             if (otherNation != null) {
+
+                ItemStack nationItem;
+
+                ItemStack customBanner = otherNation.getBanner();
+                if (customBanner != null) {
+                    nationItem = customBanner.clone(); // safer to clone so we don't accidentally modify reference
+                } else {
+                    nationItem = new ItemStack(Material.WHITE_BANNER);
+                }
+
                 RoseItem relationItem = new RoseItem.Builder()
-                        .material(Material.PAPER)
+                        .copyStack(nationItem)
                         .displayName(Chat.blueFade(StringUtils.capitalise(otherNation.getName())))
                         .addLore(getRelationLore(true, relationType))
                         .addLore(getRelationLore(false, otherNation.getRelation(nation.getId())))

@@ -52,9 +52,45 @@ public class NationCommands extends AbstractCommand  {
         registerSubCommand(this,"delete.confirm");
         registerSubCommand(this,"invite");
         registerSubCommand(this,"accept");
+        registerSubCommand(this,"rename");
 
         setupHelpCommand();
         initialize();
+    }
+
+    @CommandAnnotation(
+            domain = "rename.`$0",
+            permission = "nations.nation.rename",
+            description = "Renames a nation",
+            usage = "/nation rename <name>"
+    )
+    public boolean renameNation(Player p, String[] args) {
+        if (args.length < 2) {
+            p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
+            return false;
+        }
+
+        String nationName = args[1];
+        Nation nation = nationManager.getNationByMember(p.getUniqueId());
+        if (nation == null) {
+            p.sendMessage(Chat.errorFade("Du bist in keiner Nation."));
+            return false;
+        }
+
+        if (nation.getPlayerRank(p.getUniqueId()).getWeight() < NationPlayerRank.VICE_LEADER.getWeight()) {
+            p.sendMessage(Chat.errorFade("Du musst mindestens Vize-Anführer der Nation sein um sie umzubenennen."));
+            return false;
+        }
+
+        if (nationManager.getNationByName(nationName) != null) {
+            p.sendMessage(Chat.errorFade("Der Name ist bereits vergeben."));
+            return false;
+        }
+
+        nation.setName(nationName);
+        nationManager.saveNation(nation);
+        p.sendMessage(Chat.greenFade("Die Nation wurde erfolgreich in " + StringUtils.capitalise(nationName) + " umbenannt."));
+        return true;
     }
 
     @CommandAnnotation(
@@ -97,12 +133,12 @@ public class NationCommands extends AbstractCommand  {
         }
 
         if(settle.getBank().getCredit() < NationsPlugin.plugin.getConfig().getInt("nation.cost")) {
-            p.sendMessage(Chat.errorFade("Deine Stadt hat nicht genügend Geld um eine Nation zu gründen."));
+            p.sendMessage(Chat.errorFade("Deine Stadt hat nicht genügend Geld um eine Nation zu gründen. (" + NationsPlugin.plugin.getConfig().getInt("nation.cost") + " Silber)"));
             return false;
         }
 
-        Nation nation = new Nation(nationName, p.getUniqueId());
-        nationManager.addNation(nation, settle.getId());
+        Nation nation = new Nation(nationName, p.getUniqueId(), settle.getId());
+        nationManager.addNation(nation);
         settle.getBank().cashTransfer("Nationsgründung",-NationsPlugin.plugin.getConfig().getInt("nation.cost"));
 
         p.sendMessage(Chat.greenFade("Die Nation " + StringUtils.capitalise(nationName) + " wurde erfolgreich gegründet."));

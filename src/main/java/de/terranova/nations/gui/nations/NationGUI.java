@@ -3,12 +3,15 @@ package de.terranova.nations.gui.nations;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
+import de.terranova.nations.nations.NationPlayerRank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 import org.codehaus.plexus.util.StringUtils;
 
 import java.util.UUID;
@@ -52,7 +55,7 @@ public class NationGUI extends RoseGUI {
         RoseItem relationsItem = new RoseItem.Builder()
                 .material(Material.PAPER)
                 .displayName(Chat.yellowFade("<b>Beziehungen"))
-                .addLore(Chat.cottonCandy("<i>Klicke um Beziehung zu ändern"))
+                .addLore(Chat.cottonCandy("<i>Klicke um Beziehungen zu sehen"))
                 .build();
 
         // Invite Settlement Item (only for leaders)
@@ -83,6 +86,43 @@ public class NationGUI extends RoseGUI {
         membersItem.onClick(e -> new NationMembersGUI(player, nation).open());
         settlementsItem.onClick(e -> new NationSettlementsGUI(player, nation).open());
         relationsItem.onClick(e -> new NationRelationsGUI(player, nation).open());
+
+
+        //Banner change
+        boolean canEditBanner = (nation.getPlayerRank(player.getUniqueId()).getWeight() >= NationPlayerRank.VICE_LEADER.getWeight());
+
+        if (canEditBanner) {
+            ItemStack customBanner = nation.getBanner();
+            if (customBanner == null) {
+                customBanner = new ItemStack(Material.WHITE_BANNER);
+            }
+
+            RoseItem changeBanner = new RoseItem.Builder()
+                    .copyStack(customBanner)
+                    .displayName(Chat.yellowFade("<b>Banner ändern"))
+                    .addLore(Chat.cottonCandy("<i>Klicke, während du das gewünschte Banner in der Hand hast."))
+                    .build();
+
+            addItem(28, changeBanner);
+
+            changeBanner.onClick(e -> {
+                // 1) Check if player is holding a banner
+                ItemStack handItem = e.getCursor();
+                if (handItem == null || !handItem.getType().toString().endsWith("BANNER")) {
+                    player.sendMessage(Chat.errorFade("Du musst ein Banner in der Hand halten, um es zu setzen!"));
+                    return;
+                }
+
+                // 2) Set the nation's banner
+                nation.setBanner(handItem);
+                // 3) Persist changes
+                NationsPlugin.nationManager.saveNation(nation);
+
+                new NationGUI(player, nation).open();
+                // 4) Confirm
+                player.sendMessage(Chat.greenFade("Nationsbanner aktualisiert!"));
+            });
+        }
     }
 
     @Override
