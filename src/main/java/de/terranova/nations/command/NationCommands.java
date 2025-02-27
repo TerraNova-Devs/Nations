@@ -59,7 +59,7 @@ public class NationCommands extends AbstractCommand  {
     }
 
     @CommandAnnotation(
-            domain = "rename.`$0",
+            domain = "rename.$0",
             permission = "nations.nation.rename",
             description = "Renames a nation",
             usage = "/nation rename <name>"
