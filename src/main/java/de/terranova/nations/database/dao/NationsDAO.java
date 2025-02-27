@@ -20,8 +20,16 @@ public class NationsDAO {
             while (rs.next()) {
                 UUID nationId = UUID.fromString(rs.getString("NUUID"));
                 String name = rs.getString("name");
+                String bannerBase64 = rs.getString("banner_base64");
 
-                Nation nation = new Nation(nationId, name, null, null, null);
+                Nation nation = new Nation(
+                        nationId,
+                        name,
+                        null,
+                        null,
+                        null,
+                        bannerBase64
+                );
 
                 loadNationSettlements(nation);
                 loadNationRelations(nation);
@@ -39,19 +47,20 @@ public class NationsDAO {
 
     // Save a nation to the database
     public static void saveNation(Nation nation) {
-        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name) VALUES (?, ?) " +
-                "ON DUPLICATE KEY UPDATE name = VALUES(name)";
+        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
 
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(sqlInsertNation)) {
 
             ps.setString(1, nation.getId().toString());
             ps.setString(2, nation.getName());
+            ps.setString(3, nation.getBannerBase64());
             ps.executeUpdate();
 
             // Save other nation data
             // Settlements are saved when added/removed, so no need to save here
-            addSettlementToNation(new SettlementNationRelation(nation.getSettlements().keySet().iterator().next(), nation.getId(), SettlementRank.CAPITAL));
+            addSettlementToNation(new SettlementNationRelation(nation.getCapital(), nation.getId(), SettlementRank.CAPITAL));
             saveNationRelations(nation);
             nation.getPlayerRanks().forEach((playerId, rank) ->
                     RegionManager.retrievePlayersSettlement(playerId).ifPresent(settleId ->

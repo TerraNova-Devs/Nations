@@ -4,7 +4,9 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.utils.ItemStackSerializer;
 import org.bukkit.Bukkit;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -16,11 +18,14 @@ public class Nation {
     private Map<UUID, NationRelationType> relations; // Relations with other nations
     private Map<UUID, NationPlayerRank> playerRanks; // Player ranks in the nation
 
+    private String bannerBase64;
+
     // Constructor for creating a new nation
-    public Nation(String name, UUID leaderId) {
+    public Nation(String name, UUID leaderId, UUID settleId) {
         this.id = UUID.randomUUID();
         this.name = name;
         this.settlements = new HashMap<>();
+        this.settlements.put(settleId, SettlementRank.CAPITAL);
         this.relations = new HashMap<>();
         NationsPlugin.nationManager.getNations().forEach((id, nation) -> {
             nation.setRelation(this.id, NationRelationType.NEUTRAL);
@@ -29,15 +34,17 @@ public class Nation {
         });
         this.playerRanks = new HashMap<>();
         this.playerRanks.put(leaderId, NationPlayerRank.LEADER);
+        this.bannerBase64 = null;
     }
 
     // Constructor for loading a nation from the database with existing data
-    public Nation(UUID id, String name, Map<UUID, SettlementRank> settlements, Map<UUID, NationRelationType> relations, Map<UUID, NationPlayerRank> playerRanks) {
+    public Nation(UUID id, String name, Map<UUID, SettlementRank> settlements, Map<UUID, NationRelationType> relations, Map<UUID, NationPlayerRank> playerRanks, String bannerBase64) {
         this.id = id;
         this.name = name;
         this.settlements = settlements != null ? settlements : new HashMap<>();
         this.relations = relations != null ? relations : new HashMap<>();
         this.playerRanks = playerRanks != null ? playerRanks : new HashMap<>();
+        this.bannerBase64 = bannerBase64;
     }
 
     // Getters and setters
@@ -92,6 +99,13 @@ public class Nation {
     // Settlements
     public Map<UUID, SettlementRank> getSettlements() {
         return settlements;
+    }
+    public UUID getCapital() {
+        return settlements.entrySet().stream()
+                .filter(entry -> entry.getValue() == SettlementRank.CAPITAL)
+                .map(Map.Entry::getKey)
+                .findFirst()
+                .orElse(null);
     }
 
     public void setSettlements(Map<UUID, SettlementRank> settlements) {
@@ -166,5 +180,21 @@ public class Nation {
 
     public NationPlayerRank getPlayerRank(UUID playerId) {
         return playerRanks.getOrDefault(playerId, NationPlayerRank.MEMBER);
+    }
+
+    public ItemStack getBanner() {
+        return ItemStackSerializer.getItemStackFromBase64String(bannerBase64);
+    }
+
+    public void setBanner(ItemStack banner) {
+        this.bannerBase64 =  ItemStackSerializer.getBase64StringFromItemStack(banner);
+    }
+
+    public String getBannerBase64() {
+        return bannerBase64;
+    }
+
+    public void setBannerBase64(String bannerBase64) {
+        this.bannerBase64 = bannerBase64;
     }
 }

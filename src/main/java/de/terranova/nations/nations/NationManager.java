@@ -18,8 +18,7 @@ public class NationManager {
     }
 
     // Add a nation to the manager and database
-    public void addNation(Nation nation, UUID suuid) {
-        nation.addSettlement(suuid, SettlementRank.CAPITAL);
+    public void addNation(Nation nation) {
         nations.put(nation.getId(), nation);
         saveNation(nation);
     }

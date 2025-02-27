@@ -53,6 +53,7 @@ CREATE TABLE IF NOT EXISTS `rank` (
 CREATE TABLE IF NOT EXISTS `nations_table` (
       `NUUID` VARCHAR(36) NOT NULL,
       `name` VARCHAR(20) NOT NULL,
+      `banner_base64` TEXT NULL,
       PRIMARY KEY (`NUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
