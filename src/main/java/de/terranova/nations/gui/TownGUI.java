@@ -7,6 +7,8 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.gui.nations.NationGUI;
+import de.terranova.nations.nations.Nation;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -17,6 +19,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
+import org.bukkit.inventory.ItemStack;
 
 public class TownGUI extends RoseGUI {
 
@@ -33,6 +36,7 @@ public class TownGUI extends RoseGUI {
             return;
         }
 
+        Nation nation = NationsPlugin.nationManager.getNationBySettlement(settle.getId());
 
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
@@ -76,12 +80,33 @@ public class TownGUI extends RoseGUI {
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
                 .build();
 
+        ItemStack nationItem;
+        if (nation == null) {
+            // No nation => default item or maybe a gray banner
+            nationItem = new ItemStack(Material.GRAY_BANNER);
+        } else {
+            // If the nation has a custom banner, use that. Else default banner
+            ItemStack customBanner = nation.getBanner();
+            if (customBanner != null) {
+                nationItem = customBanner.clone(); // safer to clone so we don't accidentally modify reference
+            } else {
+                nationItem = new ItemStack(Material.WHITE_BANNER);
+            }
+        }
+
+        RoseItem nations = new RoseItem.Builder()
+                .copyStack(nationItem)
+                .displayName(Chat.yellowFade("<b>Nationen"))
+                .addLore(Chat.cottonCandy("<i>Hier kannst du die Nation verwalten."))
+                .build();
+
         addItem(13, level);
         addItem(19, skins);
         addItem(21, players);
         addItem(23, upgrades);
         addItem(25, farm);
-        addItem(31, settings);
+        addItem(28, settings);
+        addItem(31, nations);
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
@@ -121,6 +146,15 @@ public class TownGUI extends RoseGUI {
             if (!player.hasPermission("nations.menu.farm")) return;
             sendToServer(player, "farmwelt");
             Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "send " + player.getName() + " farmwelt");
+        });
+
+        nations.onClick(e -> {
+            if(!player.hasPermission("nations.menu.nations")) return;
+            if(nation == null) {
+                player.sendMessage(Chat.errorFade("Diese Stadt gehört keiner Nation an."));
+                return;
+            }
+            new NationGUI(player, nation).open();
         });
     }
 

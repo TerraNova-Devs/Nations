@@ -12,6 +12,11 @@ commands:
     aliases: [t]
     permission: nations.use
     permission-message: You do not have permission to use this command.
+  nation:
+    description: The main command for TerraNova Nations.
+    aliases: [n]
+    permission: nations.use
+    permission-message: You do not have permission to use this command.
 depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Oraxen]
 
 

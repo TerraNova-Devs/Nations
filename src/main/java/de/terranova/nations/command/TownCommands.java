@@ -12,17 +12,18 @@ import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.bank.Transaction;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
@@ -133,24 +134,32 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Player target = getTargetPlayer(p, args, 1);
+        UUID target = getTargetPlayerUUID(p, args, 1);
         if (target == null) return false;
 
-        if(RegionManager.retrievePlayersSettlement(target.getUniqueId()).isPresent()){
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits Mitglied einer Stadt.", target.getName())));
+        if(RegionManager.retrievePlayersSettlement(target).isPresent()){
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits Mitglied einer Stadt.", args[1])));
             return false;
         }
 
-        if(pendingInvites.containsKey(target.getUniqueId())){
-            if(pendingInvites.get(target.getUniqueId()).equals(settle.getId())){
-                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits eingeladen.", target.getName())));
+        if(pendingInvites.containsKey(target)){
+            if(pendingInvites.get(target).equals(settle.getId())){
+                p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits eingeladen.", args[1])));
                 return false;
             }
         }
 
-        pendingInvites.put(target.getUniqueId(), settle.getId());
-        p.sendMessage(Chat.greenFade("Du hast " + target.getName() + " erfolgreich in die Stadt " + settle.getName() + " eigeladen."));
-        target.sendMessage(Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + settle.getName() + " eigeladen."));
+        pendingInvites.put(target, settle.getId());
+        p.sendMessage(Chat.greenFade("Du hast " + args[1] + " erfolgreich in die Stadt " + settle.getName() + " eigeladen."));
+
+        Player targetPlayer = Bukkit.getPlayer(target);
+        if (targetPlayer != null) {
+            Component message = Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + settle.getName() + " eingeladen.")
+                    .hoverEvent(HoverEvent.showText(Chat.cottonCandy("Klicke, um die Einladung anzunehmen!")))
+                    .clickEvent(ClickEvent.runCommand("/town accept " + settle.getName()));
+
+            targetPlayer.sendMessage(message);
+        }
         return true;
     }
 
@@ -220,22 +229,22 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Player target = getTargetPlayer(p, args, 1);
+        UUID target = getTargetPlayerUUID(p, args, 1);
         if (target == null) return false;
 
-        if (access.getAccessLevel(target.getUniqueId()) == null) {
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", target.getName())));
+        if (!TownAccess.hasAccess(access.getAccessLevel(target), TownAccessLevel.TRUSTED)) {
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", args[1])));
             return false;
         }
 
-        if(access.getAccessLevel(target.getUniqueId()).getWeight() >= access.getAccessLevel(p.getUniqueId()).getWeight()){
+        if(access.getAccessLevel(target).getWeight() >= access.getAccessLevel(p.getUniqueId()).getWeight()){
             p.sendMessage(Chat.errorFade("Du kannst keinen Spieler entfernen der einen höheren oder den gleichen Rang hat."));
             return false;
         }
 
-        settle.removeMember(target.getUniqueId());
-        access.removeAccess(target.getUniqueId());
-        access.broadcast(target.getName() + " wurde von " + p.getName() + " der Stadt " + settle.getName() + " verwiesen.");
+        settle.removeMember(target);
+        access.removeAccess(target);
+        access.broadcast(args[1] + " wurde von " + p.getName() + " der Stadt " + settle.getName() + " verwiesen.");
         return true;
     }
 
@@ -260,13 +269,13 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Player target = getTargetPlayer(p, args, 1);
+        UUID target = getTargetPlayerUUID(p, args, 1);
         if (target == null) return false;
 
         TownAccessLevel newAccess = getAccessLevelFromArgs(p, args, 2);
         if (newAccess == null) return false;
 
-        if(target.getUniqueId() == p.getUniqueId() && TownAccess.hasAccess(access.getAccessLevel(p.getUniqueId()), TownAccessLevel.MAJOR)){
+        if(target == p.getUniqueId() && TownAccess.hasAccess(access.getAccessLevel(p.getUniqueId()), TownAccessLevel.MAJOR)){
             p.sendMessage(Chat.errorFade("Du kannst deinen eigenen Rang nicht ändern!"));
             return false;
         }
@@ -281,28 +290,28 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        if (access.getAccessLevel(target.getUniqueId()) == null) {
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", target.getName())));
+        if (access.getAccessLevel(target) == null) {
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist kein Mitglied deiner Stadt.", args[1])));
             return false;
         }
 
-        if (!TownAccess.hasAccess(access.getAccessLevel(target.getUniqueId()), TownAccessLevel.CITIZEN)) {
+        if (!TownAccess.hasAccess(access.getAccessLevel(target), TownAccessLevel.CITIZEN)) {
             p.sendMessage(Chat.errorFade("Der Spieler ist getrusted. Lade ihn ein um ihn zum Bewohner zu machen."));
             return false;
         }
 
-        if(access.getAccessLevel(target.getUniqueId()) == newAccess) {
-            p.sendMessage(Chat.errorFade("Der Spieler " + target.getName() + " ist bereits auf dem Rang " + newAccess.name() +"."));
+        if(access.getAccessLevel(target) == newAccess) {
+            p.sendMessage(Chat.errorFade("Der Spieler " + args[1] + " ist bereits auf dem Rang " + newAccess.name() +"."));
             return false;
         }
 
-        if(access.getAccessLevel(target.getUniqueId()).getWeight() >= access.getAccessLevel(p.getUniqueId()).getWeight()){
+        if(access.getAccessLevel(target).getWeight() >= access.getAccessLevel(p.getUniqueId()).getWeight()){
             p.sendMessage(Chat.errorFade("Du kannst nicht den Rang eines Spielers ändern der höher oder gleich ist als deiner selbst."));
             return false;
         }
 
-        access.setAccessLevel(target.getUniqueId(), newAccess);
-        p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", target.getName(), newAccess.name())));
+        access.setAccessLevel(target, newAccess);
+        p.sendMessage(Chat.greenFade(String.format("Du hast %s erfolgreich auf den Rang %s gestuft.", args[1], newAccess.name())));
         return true;
     }
 
@@ -609,7 +618,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "trust.$ONLINEPLAYERS",
+            domain = "trust.$0",
             permission = "nations.town.trust",
             description = "Trusts a player to your town",
             usage = "/town trust <player>"
@@ -627,21 +636,22 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Player target = getTargetPlayer(p, args, 1);
+        UUID target = getTargetPlayerUUID(p, args, 1);
         if (target == null) return false;
 
-        if(TownAccess.hasAccess(access.getAccessLevel(target.getUniqueId()), TownAccessLevel.TRUSTED)){
-            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits getrusted in dieser Stadt.", target.getName())));
+        if(TownAccess.hasAccess(access.getAccessLevel(target), TownAccessLevel.TRUSTED)){
+            p.sendMessage(Chat.errorFade(String.format("Der Spieler %s ist bereits getrusted in dieser Stadt.", args[1])));
             return false;
         }
 
         settle.addMember(p.getUniqueId());
-        access.setAccessLevel(target.getUniqueId(), TownAccessLevel.TRUSTED);
+        access.setAccessLevel(target, TownAccessLevel.TRUSTED);
+        access.broadcast(args[1] + " wurde von " + p.getName() + " in die Stadt getrusted.");
         return true;
     }
 
 
-    private Player getTargetPlayer(Player p, String[] args, int index) {
+    private UUID getTargetPlayerUUID(Player p, String[] args, int index) {
         if (args.length <= index) {
             p.sendMessage(Chat.errorFade("Bitte gib den Spielernamen an."));
             return null;
@@ -650,9 +660,9 @@ public class TownCommands extends AbstractCommand {
 
         if (target == null) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(args[index]);
-            return offlinePlayer.getPlayer();
+            return offlinePlayer.getUniqueId();
         }
-        return target;
+        return target.getUniqueId();
     }
 
     private TownAccessLevel getAccessLevelFromArgs(Player p, String[] args, int index) {
