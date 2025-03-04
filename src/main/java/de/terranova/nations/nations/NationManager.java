@@ -7,8 +7,6 @@ import de.terranova.nations.regions.grid.SettleRegion;
 
 import java.util.*;
 
-import static de.terranova.nations.database.dao.NationsDAO.saveNation;
-
 public class NationManager {
     private Map<UUID, Nation> nations;
 
@@ -25,13 +23,11 @@ public class NationManager {
     // Add a nation to the manager and database
     public void addNation(Nation nation) {
         nations.put(nation.getId(), nation);
-        saveNation(nation);
+        NationsDAO.createNation(nation);
         for (UUID settlementId : nation.getSettlements().keySet()) {
-            NationsDAO.addSettlementToNation(new SettlementNationRelation(settlementId, nation.getId(), nation.getSettlements().get(settlementId)));
             Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
             RegionLayer.updateRegion(settleRegion.get());
         }
-
     }
 
     // Remove a nation from the manager and database
@@ -117,6 +113,7 @@ public class NationManager {
 
     // Save a nation to the database
     public void saveNation(Nation nation) {
+        NationsDAO.saveNation(nation);
         nations.put(nation.getId(), nation);
         for (UUID settlementId : nation.getSettlements().keySet()) {
             Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
