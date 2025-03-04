@@ -25,7 +25,8 @@ CREATE TABLE IF NOT EXISTS `access` (
     `RUUID` varchar(36) NOT NULL,
     `PUUID` varchar(36) NOT NULL,
     `access` varchar(36) NOT NULL,
-        PRIMARY KEY (`RUUID`, `PUUID`)
+        PRIMARY KEY (`RUUID`, `PUUID`),
+    KEY `idx_puuid` (`PUUID`)
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
 --
@@ -46,5 +47,43 @@ CREATE TABLE IF NOT EXISTS `rank` (
       `obj_b` mediumint(11) NOT NULL DEFAULT 0,
       `obj_c` mediumint(11) NOT NULL DEFAULT 0,
       PRIMARY KEY (`RUUID`)
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `nations_table` (
+      `NUUID` VARCHAR(36) NOT NULL,
+      `name` VARCHAR(20) NOT NULL,
+      `banner_base64` TEXT NULL,
+      PRIMARY KEY (`NUUID`)
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `settlement_nation_relations` (
+      `SUUID` VARCHAR(36) NOT NULL,
+      `NUUID` VARCHAR(36) NOT NULL,
+      `rank` VARCHAR(20) NOT NULL,
+      PRIMARY KEY (`SUUID`),
+      FOREIGN KEY (`SUUID`) REFERENCES `grid_regions`(`RUUID`) ON DELETE CASCADE,
+      FOREIGN KEY (`NUUID`) REFERENCES `nations_table`(`NUUID`) ON DELETE CASCADE
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `nation_relations` (
+      `NUUID1` VARCHAR(36) NOT NULL,
+      `NUUID2` VARCHAR(36) NOT NULL,
+      `relation` VARCHAR(20) NOT NULL,
+      PRIMARY KEY (`NUUID1`, `NUUID2`)
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `nation_ranks` (
+    `NUUID` VARCHAR(36) NOT NULL,
+    `SUUID` VARCHAR(36) NOT NULL,
+    `PUUID` VARCHAR(36) NOT NULL,
+    `rank` VARCHAR(20) NOT NULL,
+    PRIMARY KEY (`PUUID`),
+    FOREIGN KEY (`NUUID`) REFERENCES `nations_table`(`NUUID`) ON DELETE CASCADE,
+    FOREIGN KEY (`PUUID`) REFERENCES `access`(`PUUID`) ON DELETE CASCADE,
+    FOREIGN KEY (`SUUID`) REFERENCES `settlement_nation_relations`(`SUUID`) ON DELETE CASCADE
 ) DEFAULT CHARSET=utf8
   COLLATE=utf8_unicode_ci;
