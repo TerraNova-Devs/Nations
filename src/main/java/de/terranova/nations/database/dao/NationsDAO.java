@@ -45,6 +45,49 @@ public class NationsDAO {
         return nations;
     }
 
+    public static void createNation(Nation nation) {
+        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?)" +
+                " ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
+        String sqlInsertSettlement = "INSERT INTO settlement_nation_relations (`SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?)" +
+                " ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
+        String sqlInsertLeader = "INSERT INTO nation_ranks (`PUUID`, `SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?, ?) " +
+                "ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
+
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection()) {
+            con.setAutoCommit(false);
+            try (PreparedStatement psNation = con.prepareStatement(sqlInsertNation)) {
+                psNation.setString(1, nation.getId().toString());
+                psNation.setString(2, nation.getName());
+                psNation.setString(3, nation.getBannerBase64());
+                psNation.executeUpdate();
+            }
+
+            // Insert settlement relations
+            try (PreparedStatement psSettlement = con.prepareStatement(sqlInsertSettlement)) {
+                for (Map.Entry<UUID, SettlementRank> entry : nation.getSettlements().entrySet()) {
+                    psSettlement.setString(1, entry.getKey().toString());
+                    psSettlement.setString(2, nation.getId().toString());
+                    psSettlement.setString(3, entry.getValue().name());
+                    psSettlement.addBatch();
+                }
+                psSettlement.executeBatch();
+            }
+            try (PreparedStatement psLeader = con.prepareStatement(sqlInsertLeader)) {
+
+                psLeader.setString(1, nation.getLeader().toString());
+                psLeader.setString(2, nation.getCapital().toString());
+                psLeader.setString(3, nation.getId().toString());
+                psLeader.setString(4, NationPlayerRank.LEADER.name());
+                psLeader.executeUpdate();
+
+            }
+            con.commit();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     // Save a nation to the database
     public static void saveNation(Nation nation) {
         String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?) " +
@@ -59,8 +102,6 @@ public class NationsDAO {
             ps.executeUpdate();
 
             // Save other nation data
-            // Settlements are saved when added/removed, so no need to save here
-            addSettlementToNation(new SettlementNationRelation(nation.getCapital(), nation.getId(), SettlementRank.CAPITAL));
             saveNationRelations(nation);
             nation.getPlayerRanks().forEach((playerId, rank) ->
                     RegionManager.retrievePlayersSettlement(playerId).ifPresent(settleId ->
