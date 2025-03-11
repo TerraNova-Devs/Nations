@@ -44,6 +44,7 @@ public class Rank implements RegionListener {
         this.rankObjective = new RankObjective(this.rankObjective.getScore(), 0, 0, 0, 0, null, null, null);
         NationsPlugin.nationsLogger.logInfo("(LevelUp) Type: " + regionType.getType() + ", ID: " + regionType.getId() + ", Name: " + regionType.getName() + ", Level: " + (level - 1) + " -> " + level);
         rankedRegion.onLevelUP();
+        rankDatabase.levelUp();
     }
 
     public void contributeObjective(Player p, String objective) {
