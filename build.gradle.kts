@@ -2,8 +2,8 @@ import java.util.*
 
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "1.7.2"
-  id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
+  id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+  id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("io.github.goooler.shadow") version "8.1.8"
 }
@@ -33,8 +33,8 @@ repositories {
     url = uri("https://maven.enginehub.org/repo/")
   }
   maven {
-    name = "Oraxen"
-    url = uri("https://repo.oraxen.com/releases")
+    name = "Nexo"
+    url = uri("https://repo.nexomc.com/releases")
   }
   exclusiveContent {
     forRepository {
@@ -72,17 +72,17 @@ repositories {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-  paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
   implementation("com.zaxxer:HikariCP:6.2.1")
-  compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT"){
+  compileOnly("net.citizensnpcs:citizens-main:2.0.37-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
   compileOnly("maven.modrinth:pl3xmap:1.21-500")
-  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
+  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.13")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("io.th0rgal:oraxen:1.184.0")
-  implementation("de.mcterranova:terranova-lib:0.8.13")
+  compileOnly("com.nexomc:nexo:1.1.0")
+  implementation("de.mcterranova:terranova-lib:1.0.0")
 }
 
 tasks {
