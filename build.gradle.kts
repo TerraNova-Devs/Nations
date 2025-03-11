@@ -77,7 +77,7 @@ dependencies {
   compileOnly("net.citizensnpcs:citizens-main:2.0.37-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  compileOnly("maven.modrinth:pl3xmap:1.21-500")
+  compileOnly("maven.modrinth:pl3xmap:1.21.4-522")
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.13")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
