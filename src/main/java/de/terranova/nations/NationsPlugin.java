@@ -10,6 +10,7 @@ import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
+import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -78,6 +79,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         serilizationRegistry();
         nationsRegionTypeRegistry();
         loadConfigs();
+        ProfessionManager.loadAll();
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     }
 
