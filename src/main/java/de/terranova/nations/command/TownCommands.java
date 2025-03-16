@@ -644,7 +644,7 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        settle.addMember(p.getUniqueId());
+        settle.addMember(target);
         access.setAccessLevel(target, TownAccessLevel.TRUSTED);
         access.broadcast(args[1] + " wurde von " + p.getName() + " in die Stadt getrusted.");
         return true;
