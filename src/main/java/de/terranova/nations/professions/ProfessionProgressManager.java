@@ -1,6 +1,7 @@
 package de.terranova.nations.professions;
 
 import de.terranova.nations.database.dao.*;
+import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
 
 import java.util.*;
@@ -12,11 +13,11 @@ import java.util.*;
 public class ProfessionProgressManager {
 
     private final UUID settlementId;
-    private final Map<Integer, ProfessionStatus> professionStatuses = new HashMap<>();
+    private final HashMap<Integer, ProfessionStatus> professionStatuses = new HashMap<>();
     private final Map<Integer, Long> objectiveProgress = new HashMap<>();
     private final Set<Integer> builtBuildings = new HashSet<>();
 
-    private Integer activeProfessionId = null;
+    public Integer activeProfessionId = null;
 
     private ProfessionProgressManager(UUID settlementId) {
         this.settlementId = settlementId;
@@ -37,8 +38,9 @@ public class ProfessionProgressManager {
         Set<Integer> built = SettlementBuildingsDAO.getBuiltBuildings(settlementId.toString());
         mgr.builtBuildings.addAll(built);
 
-        // 4) Option: Aus grid_regions oder einer Extra-Spalte "ActiveProfession" auslesen
-        // mgr.activeProfessionId = ...;
+        mgr.activeProfessionId = SettlementProfessionRelationDAO.getActiveProfessionID(settlementId.toString());
+        System.out.println(mgr.activeProfessionId);
+
 
         return mgr;
     }
@@ -83,6 +85,7 @@ public class ProfessionProgressManager {
         // Falls "ACTIVE" in DB => check, ob wir es auch wirklich active haben
         if (base == ProfessionStatus.ACTIVE) {
             if (!professionIdEquals(activeProfessionId, professionId)) {
+
                 base = ProfessionStatus.PAUSED;
             }
         }
@@ -118,6 +121,36 @@ public class ProfessionProgressManager {
         SettlementBuildingsDAO.setBuilt(settlementId.toString(), buildingId, built);
     }
 
+    public boolean completeProfession(int professionId) {
+        Profession prof = ProfessionManager.getProfessionById(professionId);
+        List<ProfessionObjective> objectives = ProfessionManager.getObjectivesForProfession(professionId);
+        for (ProfessionObjective obj : objectives) {
+            if(obj.getAmount() > getObjectiveProgress(obj.getObjectiveId())) {
+                return false;
+            }
+        }
+        List<Building> buildings = ProfessionManager.getBuildingsForProfession(professionId);
+        for (Building b : buildings) {
+            if (!hasBuilding(b.getBuildingId())) {
+                return false;
+            }
+        }
+        Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settlementId);
+
+        if (settleOpt.isEmpty()) {
+            return false;
+        }
+
+        SettleRegion settle = settleOpt.get();
+
+        if(settle.getBank().getCredit() < prof.getPrice()){
+            return false;
+        }
+
+        setProfessionStatus(professionId, ProfessionStatus.COMPLETED);
+        return true;
+    }
+
     /**
      * Wenn wir eine Profession aktivieren,
      * wollen wir evtl. alle anderen, die "ACTIVE" sind, auf "PAUSED" setzen.
@@ -129,6 +162,16 @@ public class ProfessionProgressManager {
                 setProfessionStatus(e.getKey(), ProfessionStatus.PAUSED);
             }
         }
+    }
+
+    public int getScore() {
+        int score = 0;
+        for (Map.Entry<Integer, ProfessionStatus> e : professionStatuses.entrySet()) {
+            if (e.getValue() == ProfessionStatus.COMPLETED) {
+                score += ProfessionManager.getProfessionById(e.getKey()).getScore();
+            }
+        }
+        return score;
     }
 
     private Profession findProfession(String type, int level) {

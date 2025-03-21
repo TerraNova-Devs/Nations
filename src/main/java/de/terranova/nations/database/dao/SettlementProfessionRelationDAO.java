@@ -30,6 +30,11 @@ public class SettlementProfessionRelationDAO {
        ON DUPLICATE KEY UPDATE Status=VALUES(Status)
     """;
 
+    private static final String SELECT_ACTIVE_STATUS = """
+       SELECT ProfessionID FROM settlement_profession_relation
+       WHERE RUUID=? AND Status='ACTIVE'
+    """;
+
     /**
      * Liefert den Status einer konkreten Profession in einer Stadt.
      * Falls nichts in DB steht, interpretieren wir das als LOCKED.
@@ -85,5 +90,22 @@ public class SettlementProfessionRelationDAO {
             e.printStackTrace();
         }
         return map;
+    }
+
+    /**
+     * Liefert die ID der aktiven Profession einer Stadt.
+     */
+    public static Integer getActiveProfessionID(String ruuid) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement ps = con.prepareStatement(SELECT_ACTIVE_STATUS)) {
+            ps.setString(1, ruuid);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("ProfessionID");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

@@ -34,4 +34,16 @@ public class Profession {
     public int getPrice() {
         return price;
     }
+
+    public static String prettyName(String type) {
+        return switch (type) {
+            case "FISHERY" -> "Fischerei";
+            case "FARMING" -> "Landwirtschaft";
+            case "MINING" -> "Bergbau";
+            case "WOODCUTTING" -> "Holzfällerei";
+            case "TRADING" -> "Handel";
+            case "FIGHTING" -> "Kampf";
+            default -> type;
+        };
+    }
 }
