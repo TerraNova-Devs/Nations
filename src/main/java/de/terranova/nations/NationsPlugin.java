@@ -10,6 +10,7 @@ import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
+import de.terranova.nations.professions.GrindListener;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
@@ -156,6 +157,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
         Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new GrindListener(), this);
     }
 
     public void serilizationRegistry() {
