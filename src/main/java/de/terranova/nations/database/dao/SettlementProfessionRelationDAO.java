@@ -39,12 +39,12 @@ public class SettlementProfessionRelationDAO {
      * Liefert den Status einer konkreten Profession in einer Stadt.
      * Falls nichts in DB steht, interpretieren wir das als LOCKED.
      */
-    public static ProfessionStatus getStatus(String ruuid, int professionID) {
+    public static ProfessionStatus getStatus(String ruuid, String professionID) {
         ProfessionStatus status = ProfessionStatus.LOCKED; // default
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_STATUS)) {
             ps.setString(1, ruuid);
-            ps.setInt(2, professionID);
+            ps.setString(2, professionID);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 status = ProfessionStatus.valueOf(rs.getString("Status"));
@@ -59,11 +59,11 @@ public class SettlementProfessionRelationDAO {
      * Setzt den Status in der DB.
      * Falls kein Eintrag existiert, wird er angelegt.
      */
-    public static void setStatus(String ruuid, int professionID, ProfessionStatus newStatus) {
+    public static void setStatus(String ruuid, String professionID, ProfessionStatus newStatus) {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(UPSERT_RELATION)) {
             ps.setString(1, ruuid);
-            ps.setInt(2, professionID);
+            ps.setString(2, professionID);
             ps.setString(3, newStatus.name());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -74,14 +74,14 @@ public class SettlementProfessionRelationDAO {
     /**
      * Lädt alle ProfessionID->Status für eine bestimmte Stadt.
      */
-    public static Map<Integer, ProfessionStatus> getAllStatuses(String ruuid) {
-        Map<Integer, ProfessionStatus> map = new HashMap<>();
+    public static Map<String, ProfessionStatus> getAllStatuses(String ruuid) {
+        Map<String, ProfessionStatus> map = new HashMap<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_ALL_STATUSES)) {
             ps.setString(1, ruuid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                int pid = rs.getInt("ProfessionID");
+                String pid = rs.getString("ProfessionID");
                 String st = rs.getString("Status");
                 ProfessionStatus stat = ProfessionStatus.valueOf(st);
                 map.put(pid, stat);
@@ -95,13 +95,13 @@ public class SettlementProfessionRelationDAO {
     /**
      * Liefert die ID der aktiven Profession einer Stadt.
      */
-    public static Integer getActiveProfessionID(String ruuid) {
+    public static String getActiveProfessionID(String ruuid) {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_ACTIVE_STATUS)) {
             ps.setString(1, ruuid);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt("ProfessionID");
+                return rs.getString("ProfessionID");
             }
         } catch (SQLException e) {
             e.printStackTrace();

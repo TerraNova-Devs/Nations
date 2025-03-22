@@ -23,11 +23,11 @@ public class SettlementBuildingsDAO {
        WHERE RUUID=? AND BuildingID=?;
     """;
 
-    public static boolean isBuilt(String ruuid, int buildingId) {
+    public static boolean isBuilt(String ruuid, String buildingId) {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_IS_BUILT)) {
             ps.setString(1, ruuid);
-            ps.setInt(2, buildingId);
+            ps.setString(2, buildingId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getBoolean("IsBuilt");
@@ -41,14 +41,14 @@ public class SettlementBuildingsDAO {
     /**
      * Gibt alle BuildingIDs zurück, die "IsBuilt=1" für diese Stadt haben.
      */
-    public static Set<Integer> getBuiltBuildings(String ruuid) {
-        Set<Integer> result = new HashSet<>();
+    public static Set<String> getBuiltBuildings(String ruuid) {
+        Set<String> result = new HashSet<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(SELECT_BUILT)) {
             ps.setString(1, ruuid);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                result.add(rs.getInt("BuildingID"));
+                result.add(rs.getString("BuildingID"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -56,11 +56,11 @@ public class SettlementBuildingsDAO {
         return result;
     }
 
-    public static void setBuilt(String ruuid, int buildingId, boolean built) {
+    public static void setBuilt(String ruuid, String buildingId, boolean built) {
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = con.prepareStatement(INSERT_OR_UPDATE)) {
             ps.setString(1, ruuid);
-            ps.setInt(2, buildingId);
+            ps.setString(2, buildingId);
             ps.setBoolean(3, built);
             ps.executeUpdate();
         } catch (SQLException e) {

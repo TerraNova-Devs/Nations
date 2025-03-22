@@ -5,6 +5,9 @@ import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.professions.*;
+import de.terranova.nations.professions.pojo.BuildingConfig;
+import de.terranova.nations.professions.pojo.ObjectiveConfig;
+import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.regions.grid.SettleRegion;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -46,13 +49,13 @@ public class TownProfessionGUI extends RoseGUI {
         // Für jeden Professionstyp (z. B. FISHERY) zeigen wir **eine** Stufe an:
         for (String type : professionTypes) {
             // Alle Stufen 1..4 zur jeweiligen Profession, sortieren
-            List<Profession> profs = ProfessionManager.getProfessionsByType(type);
-            profs.sort(Comparator.comparingInt(Profession::getLevel));
+            List<ProfessionConfig> profs = ProfessionManager.getProfessionsByType(type);
+            profs.sort(Comparator.comparingInt(ProfessionConfig::getLevel));
 
             // Finde die erste Stufe, die NICHT completed ist
-            Profession nextProf = null;
-            for (Profession p : profs) {
-                ProfessionStatus st = mgr.getProfessionStatus(p.getProfessionId());
+            ProfessionConfig nextProf = null;
+            for (ProfessionConfig p : profs) {
+                ProfessionStatus st = mgr.getProfessionStatus(p.professionId);
                 if (st != ProfessionStatus.COMPLETED) {
                     nextProf = p;
                     break;
@@ -88,8 +91,8 @@ public class TownProfessionGUI extends RoseGUI {
      * Erzeugt ein hübsches Item für die gegebene Profession,
      * inklusive Status, benötigte Gebäude, Objectives usw.
      */
-    private RoseItem createProfessionItem(Profession prof, ProfessionProgressManager mgr) {
-        ProfessionStatus status = mgr.getProfessionStatus(prof.getProfessionId());
+    private RoseItem createProfessionItem(ProfessionConfig prof, ProfessionProgressManager mgr) {
+        ProfessionStatus status = mgr.getProfessionStatus(prof.professionId);
 
         // Passendes Item (Angel / Spitzhacke / etc.)
         ItemStack icon = getIconForProfession(prof);
@@ -99,34 +102,34 @@ public class TownProfessionGUI extends RoseGUI {
         List<Component> lore = new ArrayList<>();
         lore.add(Component.text("§8§m                                     "));
 
-        meta.displayName(Component.text(String.format("§b%s §7| Stufe: §b%d", Profession.prettyName(prof.getType()), prof.getLevel())));
+        meta.displayName(Component.text(String.format("§b%s §7| Stufe: §b%d", prof.prettyName, prof.getLevel())));
         // Status
         lore.add(Component.text("§7Status: " + (status == ProfessionStatus.ACTIVE ? "§a" : "§f") + status.name()));
 
         // Kosten & Score
-        String costLine = String.format("§7Kosten: §e%d §7Silber  §8|  §7Score-Bonus: §e%d", prof.getPrice(), prof.getScore());
+        String costLine = String.format("§7Kosten: §e%d §7Silber  §8|  §7Score-Bonus: §e%d", prof.price, prof.score);
         lore.add(Component.text(costLine));
 
         // Buildings
-        List<Building> requiredBuildings = ProfessionManager.getBuildingsForProfession(prof.getProfessionId());
+        List<BuildingConfig> requiredBuildings = ProfessionManager.getBuildingsForProfession(prof.professionId);
         if (!requiredBuildings.isEmpty()) {
             lore.add(Component.text("§6Benötigte Gebäude:"));
-            for (Building b : requiredBuildings) {
-                boolean isBuilt = mgr.hasBuilding(b.getBuildingId());
-                String bLine = (isBuilt ? "§a✔ " : "§c✖ ") + "§7" + b.getName();
+            for (BuildingConfig b : requiredBuildings) {
+                boolean isBuilt = mgr.hasBuilding(b.buildingId);
+                String bLine = (isBuilt ? "§a✔ " : "§c✖ ") + "§7" + b.name;
                 lore.add(Component.text("   " + bLine));
             }
         }
 
         // Objectives
-        List<ProfessionObjective> objectives = ProfessionManager.getObjectivesForProfession(prof.getProfessionId());
+        List<ObjectiveConfig> objectives = ProfessionManager.getObjectivesForProfession(prof.professionId);
         if (!objectives.isEmpty()) {
             lore.add(Component.text("§6Ziel / Objective(s):"));
-            for (ProfessionObjective obj : objectives) {
-                long current = mgr.getObjectiveProgress(obj.getObjectiveId());
+            for (ObjectiveConfig obj : objectives) {
+                long current = mgr.getObjectiveProgress(obj.objectiveId);
                 lore.add(Component.text(String.format("   §7- %s §f%s: %d/%d %s",
-                        obj.getAction(), obj.getObject(), current, obj.getAmount(),
-                        buildProgressBar(current, obj.getAmount(), 8))));
+                        obj.action, obj.object, current, obj.amount,
+                        buildProgressBar(current, obj.amount, 8))));
             }
         }
 
@@ -160,7 +163,7 @@ public class TownProfessionGUI extends RoseGUI {
         return item;
     }
 
-    private void handleProfessionClick(InventoryClickEvent e, Profession prof, ProfessionStatus status, ProfessionProgressManager mgr) {
+    private void handleProfessionClick(InventoryClickEvent e, ProfessionConfig prof, ProfessionStatus status, ProfessionProgressManager mgr) {
         e.setCancelled(true);
 
         switch (status) {
@@ -168,22 +171,22 @@ public class TownProfessionGUI extends RoseGUI {
                 player.sendMessage(Chat.errorFade("Dieser Beruf ist noch gesperrt!"));
             }
             case AVAILABLE -> {
-                mgr.setProfessionStatus(prof.getProfessionId(), ProfessionStatus.ACTIVE);
-                player.sendMessage(Chat.greenFade("Du hast nun " + prof.getType() + " (Stufe " + prof.getLevel() + ") aktiviert!"));
+                mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
+                player.sendMessage(Chat.greenFade("Du hast nun " + prof.type + " (Stufe " + prof.getLevel() + ") aktiviert!"));
                 new TownProfessionGUI(player, settle).open();
             }
             case ACTIVE -> {
-                if(mgr.completeProfession(prof.getProfessionId())) {
-                    player.sendMessage(Chat.greenFade("Glückwunsch! Du hast " + Profession.prettyName(prof.getType()) + " (Stufe " + prof.getLevel() + ") abgeschlossen!"));
+                if(mgr.completeProfession(prof.professionId)) {
+                    player.sendMessage(Chat.greenFade("Glückwunsch! Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") abgeschlossen!"));
                 } else {
-                    mgr.setProfessionStatus(prof.getProfessionId(), ProfessionStatus.PAUSED);
-                    player.sendMessage(Chat.greenFade("Du hast " + Profession.prettyName(prof.getType()) + " (Stufe " + prof.getLevel() + ") pausiert."));
+                    mgr.setProfessionStatus(prof.professionId, ProfessionStatus.PAUSED);
+                    player.sendMessage(Chat.greenFade("Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") pausiert."));
                 }
                 new TownProfessionGUI(player, settle).open();
             }
             case PAUSED -> {
-                mgr.setProfessionStatus(prof.getProfessionId(), ProfessionStatus.ACTIVE);
-                player.sendMessage(Chat.greenFade("Du arbeitest wieder an " + prof.getType() + " (Stufe " + prof.getLevel() + ")."));
+                mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
+                player.sendMessage(Chat.greenFade("Du arbeitest wieder an " + prof.type + " (Stufe " + prof.getLevel() + ")."));
                 new TownProfessionGUI(player, settle).open();
             }
             case COMPLETED -> {
@@ -243,9 +246,9 @@ public class TownProfessionGUI extends RoseGUI {
         return sb.toString();
     }
 
-    private ItemStack getIconForProfession(Profession prof) {
+    private ItemStack getIconForProfession(ProfessionConfig prof) {
         Material mat;
-        switch (prof.getType().toUpperCase()) {
+        switch (prof.type.toUpperCase()) {
             case "FISHERY" -> mat = Material.FISHING_ROD;
             case "MINING" -> mat = Material.IRON_PICKAXE;
             case "FARMING" -> mat = Material.IRON_HOE;

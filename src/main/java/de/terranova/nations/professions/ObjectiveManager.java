@@ -1,5 +1,6 @@
 package de.terranova.nations.professions;
 
+import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
 import org.bukkit.entity.Player;
@@ -21,12 +22,12 @@ public class ObjectiveManager {
         System.out.println(settle.getId());
 
         ProfessionProgressManager mgr = ProfessionProgressManager.loadForSettlement(settle.getId());
-        List<ProfessionObjective> objectives= ProfessionManager.getObjectivesForProfession(mgr.activeProfessionId);
+        List<ObjectiveConfig> objectives= ProfessionManager.getObjectivesForProfession(mgr.activeProfessionId);
         objectives.stream()
-                .filter(o -> o.getAction().equalsIgnoreCase(action))
-                .filter(o -> o.getObject().equalsIgnoreCase(object))
+                .filter(o -> o.action.equalsIgnoreCase(action))
+                .filter(o -> o.object.equalsIgnoreCase(object))
                 .forEach(o -> {
-                    mgr.setObjectiveProgress(o.getObjectiveId(), mgr.getObjectiveProgress(o.getObjectiveId()) + amount);
+                    mgr.setObjectiveProgress(o.objectiveId, mgr.getObjectiveProgress(o.objectiveId) + amount);
                 });
     }
 }

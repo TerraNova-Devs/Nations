@@ -28,9 +28,9 @@ public class BuildingCommands {
             return false;
         }
 
-        int buildingId;
+        String buildingId;
         try {
-            buildingId = Integer.parseInt(args[3]);
+            buildingId = args[3];
         } catch (NumberFormatException e) {
             p.sendMessage("Ungültige BuildingID!");
             return false;
@@ -66,9 +66,9 @@ public class BuildingCommands {
             return false;
         }
 
-        int buildingId;
+        String buildingId;
         try {
-            buildingId = Integer.parseInt(args[3]);
+            buildingId = args[3];
         } catch (NumberFormatException e) {
             p.sendMessage(Chat.errorFade("Ungültige BuildingID!"));
             return false;

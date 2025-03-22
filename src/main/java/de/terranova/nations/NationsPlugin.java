@@ -12,6 +12,9 @@ import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.professions.GrindListener;
 import de.terranova.nations.professions.ProfessionManager;
+import de.terranova.nations.professions.pojo.ProfessionConfig;
+import de.terranova.nations.professions.pojo.ProfessionConfigLoader;
+import de.terranova.nations.professions.pojo.ProfessionsYaml;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -43,6 +46,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -52,6 +56,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public static boolean debug = false;
     public static HikariCP hikari;
     public static Map<Integer, RankObjective> levelObjectives;
+    public static List<ProfessionConfig> professionConfigs;
     static public Plugin plugin;
     public static FileLogger nationsLogger;
     public static FileLogger nationsDebugger;
@@ -164,7 +169,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     public void loadConfigs() {
+        File professionsFile = new File(this.getDataFolder(), "professions.yml");
+        if (!professionsFile.exists()) {
+            saveResource("professions.yml", false);
+        }
         try {
+            ProfessionsYaml data = ProfessionConfigLoader.load(professionsFile);
+            professionConfigs = data.professions;
+
             File file = new File(this.getDataFolder(), "level.yml");
 
             LoaderOptions loaderOptions = new LoaderOptions();
@@ -185,8 +197,8 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
             if (file.createNewFile()) {
                 HashMap<Integer, RankObjective> exampleObj = new HashMap<>();
-                exampleObj.put(1, new RankObjective(1, 1, 1, 1, 1, "Test", "Test", "Test"));
-                exampleObj.put(2, new RankObjective(2, 2, 1, 2, 2, "Test2", "Test2", "Test2"));
+                exampleObj.put(1, new RankObjective(1, 1));
+                exampleObj.put(2, new RankObjective(2, 2));
                 FileWriter writer = new FileWriter(file);
                 yaml.dump(exampleObj, writer);
             }
