@@ -1,0 +1,87 @@
+professions:
+  - professionId: "fishery_1"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    level: 1
+    score: 30
+    price: 200
+
+    buildings:
+      - buildingId: "fishery_1_1"
+        name: "Kleines Fischerhaus"
+        description: "Ein kleiner Fischerhaus mit einem Boot, trocknenden Netzen und mehr."
+
+    objectives:
+      - objectiveId: "fishery_1_1"
+        action: "FISH"
+        object: "COD"
+        amount: 5000
+
+  - professionId: "fishery_2"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "fishery_2_1"
+        name: "5 Fischerhäuser"
+        description: "5 Fischerhäuser, etwas Städtischer mit Wohnraum drüber, unten ein Lagerbereich, mit Boot, Fischernetzen und mehr."
+      - buildingId: "fishery_2_2"
+        name: "Kleiner Fischerhafen"
+        description: "Ein kleiner Fischerhafen mit ein paar Anlegern für die örtlichen Fischer."
+
+    objectives:
+      - objectiveId: "fishery_2_1"
+        action: "FISH"
+        object: "COD"
+        amount: 12000
+
+  - professionId: "mining_1"
+    type: "MINING"
+    prettyName: "Bergbau"
+    level: 1
+    score: 30
+    price: 200
+
+    buildings:
+      - buildingId: "mining_1_1"
+        name: "Kleiner Minenschacht"
+        description: "1 Bergwerkeingang mit Minenschacht und grundlegender Infrastruktur (Beleuchtung, Kisten...)."
+
+    objectives:
+      - objectiveId: "mining_1_1"
+        action: "DESTROY"
+        object: "STONE"
+        amount: 8000
+      - objectiveId: "mining_1_2"
+        action: "DESTROY"
+        object: "COAL_ORE"
+        amount: 1000
+
+  - professionId: "mining_2"
+    type: "MINING"
+    prettyName: "Bergbau"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "mining_2_1"
+        name: "Ausgebautes Bergwerk"
+        description: "Ausgebautes Bergwerk mit Schienen, 2. Eingang + zentralen Lagerraum."
+
+    objectives:
+      - objectiveId: "mining_2_1"
+        action: "DESTROY"
+        object: "IRON_ORE"
+        amount: 5000
+      - objectiveId: "mining_2_2"
+        action: "DESTROY"
+        object: "REDSTONE_ORE"
+        amount: 2500
+      - objectiveId: "mining_2_3"
+        action: "DESTROY"
+        object: "LAPIS_ORE"
+        amount: 2500

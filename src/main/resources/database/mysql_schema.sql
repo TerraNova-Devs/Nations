@@ -48,9 +48,6 @@ CREATE TABLE IF NOT EXISTS `rank`
 (
     `RUUID` varchar(36)   NOT NULL,
     `Level` smallint      NOT NULL DEFAULT 1,
-    `obj_a` mediumint(11) NOT NULL DEFAULT 0,
-    `obj_b` mediumint(11) NOT NULL DEFAULT 0,
-    `obj_c` mediumint(11) NOT NULL DEFAULT 0,
     PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
@@ -105,39 +102,13 @@ CREATE TABLE IF NOT EXISTS `nation_ranks`
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
-CREATE TABLE IF NOT EXISTS `professions`
-(
-    `ProfessionID` INT         NOT NULL AUTO_INCREMENT,
-    `Type`         VARCHAR(50) NOT NULL,
-    `Level`        TINYINT     NOT NULL,
-    `Score`        INT         NOT NULL,
-    `Price`        INT         NOT NULL,
-    PRIMARY KEY (`ProfessionID`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
---
-CREATE TABLE IF NOT EXISTS `profession_objectives`
-(
-    `ObjectiveID`  INT         NOT NULL AUTO_INCREMENT,
-    `ProfessionID` INT         NOT NULL,
-    `Action`       VARCHAR(50) NOT NULL,
-    `Object`       VARCHAR(50) NOT NULL,
-    `Amount`       BIGINT      NOT NULL,
-    PRIMARY KEY (`ObjectiveID`),
-    FOREIGN KEY (`ProfessionID`) REFERENCES `professions` (`ProfessionID`) ON DELETE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
---
 CREATE TABLE IF NOT EXISTS `settlement_profession_relation`
 (
     `RUUID`        VARCHAR(36) NOT NULL,
-    `ProfessionID` INT         NOT NULL,
+    `ProfessionID` VARCHAR(36) NOT NULL,
     `Status` VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     PRIMARY KEY (`RUUID`, `ProfessionID`),
-    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE,
-    FOREIGN KEY (`ProfessionID`) REFERENCES `professions` (`ProfessionID`) ON DELETE CASCADE
+    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
@@ -145,23 +116,10 @@ CREATE TABLE IF NOT EXISTS `settlement_profession_relation`
 CREATE TABLE IF NOT EXISTS `settlement_objective_progress`
 (
     `RUUID`       VARCHAR(36) NOT NULL,
-    `ObjectiveID` INT         NOT NULL,
+    `ObjectiveID` VARCHAR(36) NOT NULL,
     `Progress`    BIGINT      NOT NULL DEFAULT 0,
     PRIMARY KEY (`RUUID`, `ObjectiveID`),
-    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE,
-    FOREIGN KEY (`ObjectiveID`) REFERENCES `profession_objectives` (`ObjectiveID`) ON DELETE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
---
-CREATE TABLE IF NOT EXISTS `buildings`
-(
-    `BuildingID`   INT         NOT NULL AUTO_INCREMENT,
-    `ProfessionID` INT         NOT NULL,
-    `Name`         VARCHAR(50) NOT NULL,
-    `Description`  TEXT        NULL,
-    PRIMARY KEY (`BuildingID`),
-    FOREIGN KEY (`ProfessionID`) REFERENCES `professions` (`ProfessionID`) ON DELETE CASCADE
+    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
@@ -169,11 +127,10 @@ CREATE TABLE IF NOT EXISTS `buildings`
 CREATE TABLE IF NOT EXISTS `settlement_buildings`
 (
     `RUUID`      VARCHAR(36) NOT NULL,
-    `BuildingID` INT         NOT NULL,
+    `BuildingID` VARCHAR(36) NOT NULL,
     `IsBuilt`    TINYINT(1)  NOT NULL DEFAULT 0,
     PRIMARY KEY (`RUUID`, `BuildingID`),
-    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE,
-    FOREIGN KEY (`BuildingID`) REFERENCES `buildings` (`BuildingID`) ON DELETE CASCADE
+    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;

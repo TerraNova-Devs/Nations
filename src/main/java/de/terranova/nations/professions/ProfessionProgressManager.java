@@ -1,6 +1,9 @@
 package de.terranova.nations.professions;
 
 import de.terranova.nations.database.dao.*;
+import de.terranova.nations.professions.pojo.BuildingConfig;
+import de.terranova.nations.professions.pojo.ObjectiveConfig;
+import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
 
@@ -13,11 +16,11 @@ import java.util.*;
 public class ProfessionProgressManager {
 
     private final UUID settlementId;
-    private final HashMap<Integer, ProfessionStatus> professionStatuses = new HashMap<>();
-    private final Map<Integer, Long> objectiveProgress = new HashMap<>();
-    private final Set<Integer> builtBuildings = new HashSet<>();
+    private final HashMap<String, ProfessionStatus> professionStatuses = new HashMap<>();
+    private final Map<String, Long> objectiveProgress = new HashMap<>();
+    private final Set<String> builtBuildings = new HashSet<>();
 
-    public Integer activeProfessionId = null;
+    public String activeProfessionId = null;
 
     private ProfessionProgressManager(UUID settlementId) {
         this.settlementId = settlementId;
@@ -27,15 +30,15 @@ public class ProfessionProgressManager {
         ProfessionProgressManager mgr = new ProfessionProgressManager(settlementId);
 
         // 1) Lade professionStatuses
-        Map<Integer, ProfessionStatus> map = SettlementProfessionRelationDAO.getAllStatuses(settlementId.toString());
+        Map<String, ProfessionStatus> map = SettlementProfessionRelationDAO.getAllStatuses(settlementId.toString());
         mgr.professionStatuses.putAll(map);
 
         // 2) Lade objective progress
-        Map<Integer, Long> progressMap = SettlementObjectiveProgressDAO.getAllProgress(settlementId.toString());
+        Map<String, Long> progressMap = SettlementObjectiveProgressDAO.getAllProgress(settlementId.toString());
         mgr.objectiveProgress.putAll(progressMap);
 
         // 3) Lade gebaute Gebäude
-        Set<Integer> built = SettlementBuildingsDAO.getBuiltBuildings(settlementId.toString());
+        Set<String> built = SettlementBuildingsDAO.getBuiltBuildings(settlementId.toString());
         mgr.builtBuildings.addAll(built);
 
         mgr.activeProfessionId = SettlementProfessionRelationDAO.getActiveProfessionID(settlementId.toString());
@@ -53,7 +56,7 @@ public class ProfessionProgressManager {
      * Gibt den "echten" Status einer Profession zurück, ggf.
      * dynamisch berechnet (LOCKED -> AVAILABLE), etc.
      */
-    public ProfessionStatus getProfessionStatus(int professionId) {
+    public ProfessionStatus getProfessionStatus(String professionId) {
         // Basisstatus aus DB
         ProfessionStatus base = professionStatuses.getOrDefault(professionId, ProfessionStatus.LOCKED);
 
@@ -61,15 +64,15 @@ public class ProfessionProgressManager {
         if (base == ProfessionStatus.COMPLETED) return ProfessionStatus.COMPLETED;
 
         // Checke, ob Vorstufe bereits COMPLETED => wenn ja, kann es AVAILABLE sein
-        Profession p = ProfessionManager.getProfessionById(professionId);
+        ProfessionConfig p = ProfessionManager.getProfessionById(professionId);
         if (p == null) {
             return ProfessionStatus.LOCKED; // fallback
         }
         if (p.getLevel() > 1) {
             // Vorherige Stufe suchen
-            Profession prev = findProfession(p.getType(), p.getLevel() - 1);
+            ProfessionConfig prev = findProfession(p.type, p.getLevel() - 1);
             if (prev != null) {
-                ProfessionStatus prevStat = professionStatuses.getOrDefault(prev.getProfessionId(), ProfessionStatus.LOCKED);
+                ProfessionStatus prevStat = professionStatuses.getOrDefault(prev.professionId, ProfessionStatus.LOCKED);
                 if (prevStat != ProfessionStatus.COMPLETED) {
                     // Vorstufe ist NICHT fertig => LOCKED
                     return ProfessionStatus.LOCKED;
@@ -93,7 +96,7 @@ public class ProfessionProgressManager {
         return base;
     }
 
-    public void setProfessionStatus(int professionId, ProfessionStatus newStatus) {
+    public void setProfessionStatus(String professionId, ProfessionStatus newStatus) {
         professionStatuses.put(professionId, newStatus);
         SettlementProfessionRelationDAO.setStatus(settlementId.toString(), professionId, newStatus);
         if (newStatus == ProfessionStatus.ACTIVE) {
@@ -102,36 +105,36 @@ public class ProfessionProgressManager {
         }
     }
 
-    public long getObjectiveProgress(int objectiveId) {
+    public long getObjectiveProgress(String objectiveId) {
         return objectiveProgress.getOrDefault(objectiveId, 0L);
     }
 
-    public void setObjectiveProgress(int objectiveId, long newValue) {
+    public void setObjectiveProgress(String objectiveId, long newValue) {
         objectiveProgress.put(objectiveId, newValue);
         SettlementObjectiveProgressDAO.setProgress(settlementId.toString(), objectiveId, newValue);
     }
 
-    public boolean hasBuilding(int buildingId) {
+    public boolean hasBuilding(String buildingId) {
         return builtBuildings.contains(buildingId);
     }
 
-    public void setBuildingBuilt(int buildingId, boolean built) {
+    public void setBuildingBuilt(String buildingId, boolean built) {
         if (built) builtBuildings.add(buildingId);
         else builtBuildings.remove(buildingId);
         SettlementBuildingsDAO.setBuilt(settlementId.toString(), buildingId, built);
     }
 
-    public boolean completeProfession(int professionId) {
-        Profession prof = ProfessionManager.getProfessionById(professionId);
-        List<ProfessionObjective> objectives = ProfessionManager.getObjectivesForProfession(professionId);
-        for (ProfessionObjective obj : objectives) {
-            if(obj.getAmount() > getObjectiveProgress(obj.getObjectiveId())) {
+    public boolean completeProfession(String professionId) {
+        ProfessionConfig prof = ProfessionManager.getProfessionById(professionId);
+        List<ObjectiveConfig> objectives = ProfessionManager.getObjectivesForProfession(professionId);
+        for (ObjectiveConfig obj : objectives) {
+            if(obj.amount > getObjectiveProgress(obj.objectiveId)) {
                 return false;
             }
         }
-        List<Building> buildings = ProfessionManager.getBuildingsForProfession(professionId);
-        for (Building b : buildings) {
-            if (!hasBuilding(b.getBuildingId())) {
+        List<BuildingConfig> buildings = ProfessionManager.getBuildingsForProfession(professionId);
+        for (BuildingConfig b : buildings) {
+            if (!hasBuilding(b.buildingId)) {
                 return false;
             }
         }
@@ -143,7 +146,7 @@ public class ProfessionProgressManager {
 
         SettleRegion settle = settleOpt.get();
 
-        if(settle.getBank().getCredit() < prof.getPrice()){
+        if(settle.getBank().getCredit() < prof.price){
             return false;
         }
 
@@ -155,9 +158,9 @@ public class ProfessionProgressManager {
      * Wenn wir eine Profession aktivieren,
      * wollen wir evtl. alle anderen, die "ACTIVE" sind, auf "PAUSED" setzen.
      */
-    public void pauseAllOtherActive(int exceptProfessionId) {
-        for (Map.Entry<Integer, ProfessionStatus> e : professionStatuses.entrySet()) {
-            if (e.getKey() == exceptProfessionId) continue;
+    public void pauseAllOtherActive(String exceptProfessionId) {
+        for (Map.Entry<String, ProfessionStatus> e : professionStatuses.entrySet()) {
+            if (e.getKey().equals(exceptProfessionId)) continue;
             if (e.getValue() == ProfessionStatus.ACTIVE) {
                 setProfessionStatus(e.getKey(), ProfessionStatus.PAUSED);
             }
@@ -166,22 +169,22 @@ public class ProfessionProgressManager {
 
     public int getScore() {
         int score = 0;
-        for (Map.Entry<Integer, ProfessionStatus> e : professionStatuses.entrySet()) {
+        for (Map.Entry<String, ProfessionStatus> e : professionStatuses.entrySet()) {
             if (e.getValue() == ProfessionStatus.COMPLETED) {
-                score += ProfessionManager.getProfessionById(e.getKey()).getScore();
+                score += ProfessionManager.getProfessionById(e.getKey()).score;
             }
         }
         return score;
     }
 
-    private Profession findProfession(String type, int level) {
-        for (Profession pr : ProfessionManager.getProfessionsByType(type)) {
+    private ProfessionConfig findProfession(String type, int level) {
+        for (ProfessionConfig pr : ProfessionManager.getProfessionsByType(type)) {
             if (pr.getLevel() == level) return pr;
         }
         return null;
     }
 
-    private boolean professionIdEquals(Integer a, int b) {
-        return (a != null && a == b);
+    private boolean professionIdEquals(String a, String b) {
+        return (a != null && a.equals(b));
     }
 }
