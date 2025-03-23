@@ -62,4 +62,12 @@ public class ProfessionManager {
         }
         return result;
     }
+
+    public static List<String> getProfessionTypes() {
+        Set<String> result = new HashSet<>();
+        for (ProfessionConfig p : professionMap.values()) {
+            result.add(p.type);
+        }
+        return new ArrayList<>(result);
+    }
 }

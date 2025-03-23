@@ -22,7 +22,6 @@ import java.util.*;
 
 public class TownProfessionGUI extends RoseGUI {
     private final SettleRegion settle;
-    private final List<String> professionTypes = Arrays.asList("FISHERY", "MINING", "FARMING");
     private final RosePagination pagination;
 
     public TownProfessionGUI(Player player, SettleRegion settle) {
@@ -47,7 +46,7 @@ public class TownProfessionGUI extends RoseGUI {
         ProfessionProgressManager mgr = ProfessionProgressManager.loadForSettlement(settle.getId());
 
         // Für jeden Professionstyp (z. B. FISHERY) zeigen wir **eine** Stufe an:
-        for (String type : professionTypes) {
+        for (String type : ProfessionManager.getProfessionTypes()) {
             // Alle Stufen 1..4 zur jeweiligen Profession, sortieren
             List<ProfessionConfig> profs = ProfessionManager.getProfessionsByType(type);
             profs.sort(Comparator.comparingInt(ProfessionConfig::getLevel));
@@ -95,7 +94,7 @@ public class TownProfessionGUI extends RoseGUI {
         ProfessionStatus status = mgr.getProfessionStatus(prof.professionId);
 
         // Passendes Item (Angel / Spitzhacke / etc.)
-        ItemStack icon = getIconForProfession(prof);
+        ItemStack icon = ItemStack.of(Material.getMaterial(prof.icon));
         ItemMeta meta = icon.getItemMeta();
 
         // Lore
@@ -106,39 +105,41 @@ public class TownProfessionGUI extends RoseGUI {
         // Status
         lore.add(Component.text("§7Status: " + (status == ProfessionStatus.ACTIVE ? "§a" : "§f") + status.name()));
 
-        // Kosten & Score
-        String costLine = String.format("§7Kosten: §e%d §7Silber  §8|  §7Score-Bonus: §e%d", prof.price, prof.score);
-        lore.add(Component.text(costLine));
+        if(!(status == ProfessionStatus.COMPLETED)) {
+            // Kosten & Score
+            String costLine = String.format("§7Kosten: §e%d §7Silber  §8|  §7Score-Bonus: §e%d", prof.price, prof.score);
+            lore.add(Component.text(costLine));
 
-        // Buildings
-        List<BuildingConfig> requiredBuildings = ProfessionManager.getBuildingsForProfession(prof.professionId);
-        if (!requiredBuildings.isEmpty()) {
-            lore.add(Component.text("§6Benötigte Gebäude:"));
-            for (BuildingConfig b : requiredBuildings) {
-                boolean isBuilt = mgr.hasBuilding(b.buildingId);
-                String bLine = (isBuilt ? "§a✔ " : "§c✖ ") + "§7" + b.name;
-                lore.add(Component.text("   " + bLine));
+            // Buildings
+            List<BuildingConfig> requiredBuildings = ProfessionManager.getBuildingsForProfession(prof.professionId);
+            if (!requiredBuildings.isEmpty()) {
+                lore.add(Component.text("§6Benötigte Gebäude:"));
+                for (BuildingConfig b : requiredBuildings) {
+                    boolean isBuilt = mgr.hasBuilding(b.buildingId);
+                    String bLine = (isBuilt ? "§a✔ " : "§c✖ ") + "§7" + b.name;
+                    lore.add(Component.text("   " + bLine));
+                }
             }
-        }
 
-        // Objectives
-        List<ObjectiveConfig> objectives = ProfessionManager.getObjectivesForProfession(prof.professionId);
-        if (!objectives.isEmpty()) {
-            lore.add(Component.text("§6Ziel / Objective(s):"));
-            for (ObjectiveConfig obj : objectives) {
-                long current = mgr.getObjectiveProgress(obj.objectiveId);
-                lore.add(Component.text(String.format("   §7- %s §f%s: %d/%d %s",
-                        obj.action, obj.object, current, obj.amount,
-                        buildProgressBar(current, obj.amount, 8))));
+            // Objectives
+            List<ObjectiveConfig> objectives = ProfessionManager.getObjectivesForProfession(prof.professionId);
+            if (!objectives.isEmpty()) {
+                lore.add(Component.text("§6Ziel / Objective(s):"));
+                for (ObjectiveConfig obj : objectives) {
+                    long current = mgr.getObjectiveProgress(obj.objectiveId);
+                    lore.add(Component.text(String.format("   §7- %s §f%s: %d/%d %s",
+                            obj.action, obj.object, current, obj.amount,
+                            buildProgressBar(current, obj.amount, 8))));
+                }
             }
         }
 
         // Status-spezifische Info
         switch (status) {
             case LOCKED -> lore.add(Component.text("§cNoch gesperrt! Vorstufe nicht abgeschlossen."));
-            case AVAILABLE -> lore.add(Component.text("§eKlicke, um diesen Beruf zu aktivieren."));
-            case ACTIVE -> lore.add(Component.text("§aAktiv! Klicke, um diesen Beruf zu pausieren."));
-            case PAUSED -> lore.add(Component.text("§7Pausiert! Klicke, um weiterzugrinden."));
+            case AVAILABLE -> lore.add(Component.text("§eKlicke, um an dieser Profession zu arbeiten."));
+            case ACTIVE -> lore.add(Component.text("§aAktiv! Klicke, um die Arbeit an dieser Profession zu pausieren."));
+            case PAUSED -> lore.add(Component.text("§7Pausiert! Klicke, um weiter an dieser Profession zu arbeiten."));
             case COMPLETED -> lore.add(Component.text("§aAbgeschlossen!"));
         }
 
@@ -166,32 +167,37 @@ public class TownProfessionGUI extends RoseGUI {
     private void handleProfessionClick(InventoryClickEvent e, ProfessionConfig prof, ProfessionStatus status, ProfessionProgressManager mgr) {
         e.setCancelled(true);
 
-        switch (status) {
-            case LOCKED -> {
-                player.sendMessage(Chat.errorFade("Dieser Beruf ist noch gesperrt!"));
-            }
-            case AVAILABLE -> {
-                mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
-                player.sendMessage(Chat.greenFade("Du hast nun " + prof.type + " (Stufe " + prof.getLevel() + ") aktiviert!"));
-                new TownProfessionGUI(player, settle).open();
-            }
-            case ACTIVE -> {
-                if(mgr.completeProfession(prof.professionId)) {
-                    player.sendMessage(Chat.greenFade("Glückwunsch! Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") abgeschlossen!"));
-                } else {
+        if(e.isLeftClick()) {
+
+            switch (status) {
+                case LOCKED -> {
+                    player.sendMessage(Chat.errorFade("Dieser Beruf ist noch gesperrt!"));
+                }
+                case AVAILABLE -> {
+                    mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
+                    player.sendMessage(Chat.greenFade("Du hast nun " + prof.type + " (Stufe " + prof.getLevel() + ") aktiviert!"));
+                    new TownProfessionGUI(player, settle).open();
+                }
+                case ACTIVE -> {
                     mgr.setProfessionStatus(prof.professionId, ProfessionStatus.PAUSED);
                     player.sendMessage(Chat.greenFade("Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") pausiert."));
+
+                    new TownProfessionGUI(player, settle).open();
                 }
-                new TownProfessionGUI(player, settle).open();
+                case PAUSED -> {
+                    mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
+                    player.sendMessage(Chat.greenFade("Du arbeitest wieder an " + prof.type + " (Stufe " + prof.getLevel() + ")."));
+                    new TownProfessionGUI(player, settle).open();
+                }
+                case COMPLETED -> {
+                    player.sendMessage(Chat.errorFade("Dieser Beruf ist bereits komplett abgeschlossen!"));
+                }
             }
-            case PAUSED -> {
-                mgr.setProfessionStatus(prof.professionId, ProfessionStatus.ACTIVE);
-                player.sendMessage(Chat.greenFade("Du arbeitest wieder an " + prof.type + " (Stufe " + prof.getLevel() + ")."));
-                new TownProfessionGUI(player, settle).open();
+        } else if(e.isRightClick()){
+            if (mgr.completeProfession(prof.professionId)) {
+                player.sendMessage(Chat.greenFade("Glückwunsch! Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") abgeschlossen!"));
             }
-            case COMPLETED -> {
-                player.sendMessage(Chat.errorFade("Dieser Beruf ist bereits komplett abgeschlossen!"));
-            }
+            new TownProfessionGUI(player, settle).open();
         }
     }
 
@@ -244,22 +250,5 @@ public class TownProfessionGUI extends RoseGUI {
         }
         sb.append("§7]");
         return sb.toString();
-    }
-
-    private ItemStack getIconForProfession(ProfessionConfig prof) {
-        Material mat;
-        switch (prof.type.toUpperCase()) {
-            case "FISHERY" -> mat = Material.FISHING_ROD;
-            case "MINING" -> mat = Material.IRON_PICKAXE;
-            case "FARMING" -> mat = Material.IRON_HOE;
-            default -> mat = Material.PAPER;
-        }
-        ItemStack stack = new ItemStack(mat);
-
-        // Ggf. Stack-Amount = Level
-        if (prof.getLevel() >= 1 && prof.getLevel() <= 64) {
-            stack.setAmount(prof.getLevel());
-        }
-        return stack;
     }
 }
