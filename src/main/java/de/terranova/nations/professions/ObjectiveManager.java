@@ -19,8 +19,6 @@ public class ObjectiveManager {
         }
         SettleRegion settle = settleOpt.get();
 
-        System.out.println(settle.getId());
-
         ProfessionProgressManager mgr = ProfessionProgressManager.loadForSettlement(settle.getId());
         List<ObjectiveConfig> objectives= ProfessionManager.getObjectivesForProfession(mgr.activeProfessionId);
         objectives.stream()

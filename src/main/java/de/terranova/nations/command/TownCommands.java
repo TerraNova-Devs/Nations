@@ -97,6 +97,7 @@ public class TownCommands extends AbstractCommand {
                         3000
                 )
         );
+        addPlaceholder("$BUILDINGS", ProfessionManager::getBuildingIds);
 
         registerSubCommand(this,"create");
         registerSubCommand(this,"claim");

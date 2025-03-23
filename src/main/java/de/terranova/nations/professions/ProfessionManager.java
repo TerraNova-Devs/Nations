@@ -52,4 +52,14 @@ public class ProfessionManager {
         result.sort(Comparator.comparingInt(ProfessionConfig::getLevel));
         return result;
     }
+
+    public static List<String> getBuildingIds() {
+        ArrayList<String> result = new ArrayList<>();
+        for (List<BuildingConfig> b : buildingsMap.values()) {
+            for (BuildingConfig bc : b) {
+                result.add(bc.buildingId);
+            }
+        }
+        return result;
+    }
 }
