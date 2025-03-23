@@ -2,32 +2,77 @@
   score: 0
   silver: 0
 1: !<Stadtlevel>
-  score: 0
-  silver: 192
+  score: 20
+  silver: 50
 2: !<Stadtlevel>
-  score: 0
-  silver: 256
+  score: 50
+  silver: 50
 3: !<Stadtlevel>
-  score: 0
-  silver: 320
+  score: 80
+  silver: 50
 4: !<Stadtlevel>
-  score: 0
-  silver: 384
+  score: 120
+  silver: 50
 5: !<Stadtlevel>
-  score: 0
-  silver: 448
+  score: 160
+  silver: 100
 6: !<Stadtlevel>
-  score: 0
-  silver: 512
+  score: 200
+  silver: 100
 7: !<Stadtlevel>
-  score: 0
-  silver: 576
+  score: 250
+  silver: 100
 8: !<Stadtlevel>
-  score: 0
-  silver: 640
+  score: 310
+  silver: 100
 9: !<Stadtlevel>
-  score: 0
-  silver: 704
+  score: 400
+  silver: 100
 10: !<Stadtlevel>
-  score: 0
-  silver: 768
+  score: 500
+  silver: 100
+11: !<Stadtlevel>
+  score: 600
+  silver: 100
+12: !<Stadtlevel>
+  score: 700
+  silver: 100
+13: !<Stadtlevel>
+  score: 800
+  silver: 100
+14: !<Stadtlevel>
+  score: 900
+  silver: 100
+15: !<Stadtlevel>
+  score: 1000
+  silver: 100
+16: !<Stadtlevel>
+  score: 1200
+  silver: 150
+17: !<Stadtlevel>
+  score: 1400
+  silver: 150
+18: !<Stadtlevel>
+  score: 1600
+  silver: 200
+19: !<Stadtlevel>
+  score: 1800
+  silver: 200
+20: !<Stadtlevel>
+  score: 2000
+  silver: 200
+21: !<Stadtlevel>
+  score: 2300
+  silver: 250
+22: !<Stadtlevel>
+  score: 2600
+  silver: 300
+23: !<Stadtlevel>
+  score: 3000
+  silver: 300
+24: !<Stadtlevel>
+  score: 3400
+  silver: 350
+25: !<Stadtlevel>
+  score: 3800
+  silver: 350

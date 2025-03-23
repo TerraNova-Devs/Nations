@@ -42,8 +42,6 @@ public class ProfessionProgressManager {
         mgr.builtBuildings.addAll(built);
 
         mgr.activeProfessionId = SettlementProfessionRelationDAO.getActiveProfessionID(settlementId.toString());
-        System.out.println(mgr.activeProfessionId);
-
 
         return mgr;
     }
@@ -150,6 +148,7 @@ public class ProfessionProgressManager {
             return false;
         }
 
+        settle.getBank().cashTransfer("Profession " + prof.professionId, -prof.price);
         setProfessionStatus(professionId, ProfessionStatus.COMPLETED);
         return true;
     }

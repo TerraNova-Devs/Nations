@@ -72,8 +72,16 @@ public class TownUpgradeGUI extends RoseGUI {
                 .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
                 .build();
 
+        RoseItem objective_score = new RoseItem.Builder()
+                .material(Material.NETHER_STAR)
+                .displayName(Chat.blueFade("<b>" + "Score"))
+                .addLore(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore() ? Chat.greenFade(String.format(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() + " / " + goalRankObjective.getScore())) : Chat.yellowFade(String.format(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() + " / " + goalRankObjective.getScore())))
+                .isEnchanted(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore())
+                .build();
+
         addItem(40, submit);
-        addItem(19, objective_bank);
+        addItem(21, objective_bank);
+        addItem(23, objective_score);
         addItem(45, back);
     }
 
