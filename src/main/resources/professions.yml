@@ -2,6 +2,7 @@ professions:
   - professionId: "fishery_1"
     type: "FISHERY"
     prettyName: "Fischerei"
+    icon: "FISHING_ROD"
     level: 1
     score: 30
     price: 200
@@ -20,6 +21,7 @@ professions:
   - professionId: "fishery_2"
     type: "FISHERY"
     prettyName: "Fischerei"
+    icon: "FISHING_ROD"
     level: 2
     score: 50
     price: 500
@@ -41,6 +43,7 @@ professions:
   - professionId: "mining_1"
     type: "MINING"
     prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
     level: 1
     score: 30
     price: 200
@@ -63,6 +66,7 @@ professions:
   - professionId: "mining_2"
     type: "MINING"
     prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
     level: 2
     score: 50
     price: 500
