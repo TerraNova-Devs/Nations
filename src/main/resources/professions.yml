@@ -902,7 +902,7 @@ professions:
     objectives:
       - objectiveId: "stonework_1_stone"
         action: "DESTROY"
-        object: "STONE"
+        object: "ANY_STONES"
         amount: 10000
 
   - professionId: "stonework_2"
@@ -924,7 +924,7 @@ professions:
     objectives:
       - objectiveId: "stonework_2_stone"
         action: "DESTROY"
-        object: "STONE"
+        object: "ANY_STONES"
         amount: 25000
 
   - professionId: "stonework_3"
@@ -949,7 +949,7 @@ professions:
     objectives:
       - objectiveId: "stonework_3_stone"
         action: "DESTROY"
-        object: "STONE"
+        object: "ANY_STONES"
         amount: 50000
 
   - professionId: "stonework_4"
@@ -974,5 +974,5 @@ professions:
     objectives:
       - objectiveId: "stonework_4_stone"
         action: "DESTROY"
-        object: "STONE"
+        object: "ANY_STONES"
         amount: 200000

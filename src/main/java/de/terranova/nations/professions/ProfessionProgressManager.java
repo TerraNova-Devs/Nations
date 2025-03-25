@@ -17,7 +17,6 @@ public class ProfessionProgressManager {
 
     private final UUID settlementId;
     private final HashMap<String, ProfessionStatus> professionStatuses = new HashMap<>();
-    private final Map<String, Long> objectiveProgress = new HashMap<>();
     private final Set<String> builtBuildings = new HashSet<>();
 
     public String activeProfessionId = null;
@@ -32,10 +31,6 @@ public class ProfessionProgressManager {
         // 1) Lade professionStatuses
         Map<String, ProfessionStatus> map = SettlementProfessionRelationDAO.getAllStatuses(settlementId.toString());
         mgr.professionStatuses.putAll(map);
-
-        // 2) Lade objective progress
-        Map<String, Long> progressMap = SettlementObjectiveProgressDAO.getAllProgress(settlementId.toString());
-        mgr.objectiveProgress.putAll(progressMap);
 
         // 3) Lade gebaute Gebäude
         Set<String> built = SettlementBuildingsDAO.getBuiltBuildings(settlementId.toString());
@@ -104,12 +99,7 @@ public class ProfessionProgressManager {
     }
 
     public long getObjectiveProgress(String objectiveId) {
-        return objectiveProgress.getOrDefault(objectiveId, 0L);
-    }
-
-    public void setObjectiveProgress(String objectiveId, long newValue) {
-        objectiveProgress.put(objectiveId, newValue);
-        SettlementObjectiveProgressDAO.setProgress(settlementId.toString(), objectiveId, newValue);
+        return SettlementObjectiveProgressDAO.getProgress(settlementId.toString(),objectiveId);
     }
 
     public boolean hasBuilding(String buildingId) {
