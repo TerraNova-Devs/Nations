@@ -32,8 +32,8 @@ public class TownProfessionGUI extends RoseGUI {
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        // Welche Slots für die Pagination? (max 16 Items pro Seite)
-        pagination.registerPageSlots(10, 12, 14, 16, 19, 21, 23, 25, 28, 30, 32, 34, 37, 39, 41, 43);
+        // Welche Slots für die Pagination? (max 12 Items pro Seite)
+        pagination.registerPageSlots(10, 12, 14, 16, 19, 21, 23, 25, 28, 30, 32, 34);
 
         // Hintergrund füllen
         RoseItem filler = new RoseItem.Builder()
