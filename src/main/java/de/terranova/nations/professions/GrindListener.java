@@ -1,8 +1,5 @@
 package de.terranova.nations.professions;
 
-import de.terranova.nations.database.dao.SettlementObjectiveProgressDAO;
-import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.grid.SettleRegion;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.Ageable;
@@ -20,9 +17,6 @@ import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Optional;
-import java.util.UUID;
-
 public class GrindListener implements Listener {
 
     // ------------------------------------------------------------------------
@@ -31,18 +25,20 @@ public class GrindListener implements Listener {
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event) {
         Player player = event.getPlayer();
-
         Block block = event.getBlock();
         Material mat = block.getType();
 
+        // Falls eine Feldfrucht nicht ausgewachsen ist -> keine Ernte
         if (isCrop(mat) && !isFullyGrown(block)) {
             return;
         }
 
-        ObjectiveManager.handleEvent(player,"DESTROY", mat.name(), 1);
+        // Beispiel: immer "DESTROY" auslösen
+        ObjectiveManager.handleEvent(player, "DESTROY", mat.name(), 1);
 
+        // Falls es eine Erntepflanze ist, zusätzlich "HARVEST"
         if (isCrop(mat)) {
-            ObjectiveManager.handleEvent(player,"HARVEST", mat.name(), 1);
+            ObjectiveManager.handleEvent(player, "HARVEST", mat.name(), 1);
         }
     }
 
@@ -62,7 +58,7 @@ public class GrindListener implements Listener {
     }
 
     // ------------------------------------------------------------------------
-    // 2) CRAFTING (including SHIFT-click)
+    // 2) CRAFTING
     // ------------------------------------------------------------------------
     @EventHandler
     public void onCraftItem(CraftItemEvent event) {
@@ -70,10 +66,12 @@ public class GrindListener implements Listener {
 
         Material mat = event.getRecipe().getResult().getType();
         int amountCrafted = event.getRecipe().getResult().getAmount();
+
         if (event.isShiftClick()) {
             amountCrafted = computeShiftClickAmount(event);
         }
-        ObjectiveManager.handleEvent(player,"CRAFT", mat.name(), amountCrafted);
+
+        ObjectiveManager.handleEvent(player, "CRAFT", mat.name(), amountCrafted);
     }
 
     private int computeShiftClickAmount(CraftItemEvent event) {
@@ -84,9 +82,8 @@ public class GrindListener implements Listener {
         for (ItemStack slot : matrix) {
             if (slot == null || slot.getType().isAir()) continue;
             int slotCount = slot.getAmount();
-            // You might need something more advanced if your recipes vary
-            int usesPerCraft = 1;
-            int craftsFromSlot = slotCount / usesPerCraft;
+            // Hier ggf. genauer berechnen, wie viel vom Slot pro Craft verbraucht wird
+            int craftsFromSlot = slotCount / 1;
             if (craftsFromSlot < maxCrafts) {
                 maxCrafts = craftsFromSlot;
             }
@@ -101,11 +98,10 @@ public class GrindListener implements Listener {
     @EventHandler
     public void onFurnaceExtract(FurnaceExtractEvent event) {
         Player player = event.getPlayer();
-
         Material mat = event.getItemType();
         int amount = event.getItemAmount();
 
-        ObjectiveManager.handleEvent(player,"SMELT", mat.name(), amount);
+        ObjectiveManager.handleEvent(player, "SMELT", mat.name(), amount);
     }
 
     // ------------------------------------------------------------------------
@@ -117,16 +113,15 @@ public class GrindListener implements Listener {
 
         switch (event.getState()) {
             case CAUGHT_FISH, CAUGHT_ENTITY -> {
-
                 Entity caught = event.getCaught();
                 if (caught instanceof Item itemEntity) {
                     ItemStack caughtStack = itemEntity.getItemStack();
                     Material caughtMat = caughtStack.getType();
                     int amount = caughtStack.getAmount();
-                    ObjectiveManager.handleEvent(player,"FISH", caughtMat.name(), amount);
+                    ObjectiveManager.handleEvent(player, "FISH", caughtMat.name(), amount);
                 }
             }
-            default -> { }
+            default -> {}
         }
     }
 
@@ -140,6 +135,8 @@ public class GrindListener implements Listener {
 
         EntityType type = event.getEntityType();
 
-        ObjectiveManager.handleEvent(player,"ENTITY_KILL", type.name(), 1);
+        // "KILL" => in config: z. B. "action: KILL" und "object: ZOMBIE"
+        // oder "object: HOSTILE_MOB"
+        ObjectiveManager.handleEvent(player, "KILL", type.name(), 1);
     }
 }
