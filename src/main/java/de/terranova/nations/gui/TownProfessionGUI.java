@@ -8,6 +8,9 @@ import de.terranova.nations.professions.*;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
+import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
@@ -166,6 +169,20 @@ public class TownProfessionGUI extends RoseGUI {
 
     private void handleProfessionClick(InventoryClickEvent e, ProfessionConfig prof, ProfessionStatus status, ProfessionProgressManager mgr) {
         e.setCancelled(true);
+
+
+
+        Player player = (Player) e.getWhoClicked();
+
+        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.CITIZEN)) {
+            player.sendMessage(Chat.errorFade("Du bist kein Mitglied dieser Stadt!"));
+            return;
+        }
+
+        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)) {
+            player.sendMessage(Chat.errorFade("Du hast nicht die nötigen Rechte, um Professions zu bearbeiten!"));
+            return;
+        }
 
         if(e.isLeftClick()) {
 
