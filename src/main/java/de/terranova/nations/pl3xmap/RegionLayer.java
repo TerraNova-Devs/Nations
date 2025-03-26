@@ -185,7 +185,7 @@ public class RegionLayer extends WorldLayer {
                   </div>
                 </div>
                 
-                <!-- Put the profession dots here, in a separate block so they appear BELOW everything else -->
+                <!-- Profession Dots -->
                 <div class="professions-block">
                   <img src="images/banner/Statistiken.png" height="50" width="200" />
                   %s
