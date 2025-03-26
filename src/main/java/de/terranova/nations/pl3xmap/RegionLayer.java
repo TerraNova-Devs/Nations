@@ -177,7 +177,6 @@ public class RegionLayer extends WorldLayer {
                   </div>
                 </div>
                 
-                <!-- Middle row with the “Mitglieder” image, owner, vize, council -->
                 <div class="row-bottom">
                   <div>
                     <img src="images/banner/Mitglieder.png" height="50" width="200" />
@@ -185,7 +184,6 @@ public class RegionLayer extends WorldLayer {
                   </div>
                 </div>
                 
-                <!-- NEW: Put the profession dots here, in a separate block so they appear BELOW everything else -->
                 <div class="professions-block">
                   <img src="images/banner/Statistiken.png" height="50" width="200" />
                   %s
