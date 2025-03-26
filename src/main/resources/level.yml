@@ -54,25 +54,25 @@
   silver: 150
 18: !<Stadtlevel>
   score: 1600
-  silver: 200
+  silver: 150
 19: !<Stadtlevel>
   score: 1800
-  silver: 200
+  silver: 150
 20: !<Stadtlevel>
   score: 2000
-  silver: 200
+  silver: 150
 21: !<Stadtlevel>
   score: 2300
-  silver: 250
+  silver: 200
 22: !<Stadtlevel>
   score: 2600
-  silver: 300
+  silver: 200
 23: !<Stadtlevel>
   score: 3000
-  silver: 300
+  silver: 200
 24: !<Stadtlevel>
   score: 3400
-  silver: 350
+  silver: 200
 25: !<Stadtlevel>
   score: 3800
-  silver: 350
+  silver: 200
