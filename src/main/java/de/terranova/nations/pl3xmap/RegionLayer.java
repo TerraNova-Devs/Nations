@@ -4,7 +4,9 @@ import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.professions.ProfessionStatus;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
+import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.base.RegionListener;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.BannerRenderer;
 import de.terranova.nations.utils.ColorUtils;
@@ -31,7 +33,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.util.*;
 
-public class RegionLayer extends WorldLayer {
+public class RegionLayer extends WorldLayer implements RegionListener {
 
     public RegionLayer(@NotNull World world) {
         super("settlement-layer", world, () -> "St\u00E4dte");
@@ -321,4 +323,19 @@ public class RegionLayer extends WorldLayer {
         return markers.values();
     }
 
+    @Override
+    public void onRegionRenamed(String newRegionName) {
+        Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", newRegionName);
+
+        if(settleOpt.isEmpty()){
+            return;
+        }
+
+        updateRegion(settleOpt.get());
+    }
+
+    @Override
+    public void onRegionRemoved() {
+
+    }
 }

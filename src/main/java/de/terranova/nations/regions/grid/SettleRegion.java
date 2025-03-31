@@ -103,6 +103,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
 
     @Override
     public void onLevelUP() {
+        RegionLayer.updateRegion(this);
         npc.hologramNPC(new String[]{String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
     }
 }
