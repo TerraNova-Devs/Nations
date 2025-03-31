@@ -256,7 +256,7 @@ public class RegionLayer extends WorldLayer implements RegionListener {
             }
 
             // Use the first config's prettyName
-            String prettyName = confs.get(0).prettyName;
+            String prettyName = replaceGermanLetters(confs.get(0).prettyName);
 
             // A row for this profession
             sb.append("<div class=\"profession-line\">");
@@ -289,6 +289,15 @@ public class RegionLayer extends WorldLayer implements RegionListener {
         return sb.toString();
     }
 
+    private static String replaceGermanLetters(String s) {
+        return s.replace("ä", "ae")
+                .replace("ö", "oe")
+                .replace("ü", "ue")
+                .replace("Ä", "Ae")
+                .replace("Ö", "Oe")
+                .replace("Ü", "Ue")
+                .replace("ß", "ss");
+    }
 
     /**
      * Returns a hex color (e.g. "#E91E63") to use for completed circles
