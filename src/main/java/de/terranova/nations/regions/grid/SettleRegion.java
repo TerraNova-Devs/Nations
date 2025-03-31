@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion {
 
     public static final String REGION_TYPE = "settle";
-    public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5));
+    public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5,4,4,4,4,7,4,4,4,4,10,5,5,5,5,10));
     private final Rank rank;
     private final NPCr npc;
     private final TownAccess access;

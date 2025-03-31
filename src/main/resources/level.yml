@@ -1,99 +1,78 @@
 0: !<Stadtlevel>
-  material_a: BEDROCK
-  material_b: BEDROCK
-  material_c: BEDROCK
-  objective_a: 0
-  objective_b: 0
-  objective_c: 0
   score: 0
   silver: 0
 1: !<Stadtlevel>
-  material_a: OAK_LOG
-  material_b: WHITE_WOOL
-  material_c: ANDESITE
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 192
+  score: 20
+  silver: 50
 2: !<Stadtlevel>
-  material_a: SPRUCE_LOG
-  material_b: YELLOW_WOOL
-  material_c: GRANITE
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 256
+  score: 50
+  silver: 50
 3: !<Stadtlevel>
-  material_a: BIRCH_LOG
-  material_b: ORANGE_WOOL
-  material_c: DIORITE
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 320
+  score: 80
+  silver: 50
 4: !<Stadtlevel>
-  material_a: DARK_OAK_LOG
-  material_b: RED_WOOL
-  material_c: CALCITE
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 384
+  score: 120
+  silver: 50
 5: !<Stadtlevel>
-  material_a: JUNGLE_LOG
-  material_b: CYAN_WOOL
-  material_c: DIAMOND
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 320
-  score: 0
-  silver: 448
+  score: 160
+  silver: 100
 6: !<Stadtlevel>
-  material_a: ACACIA_LOG
-  material_b: LIGHT_BLUE_WOOL
-  material_c: AMETHYST_BLOCK
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 512
+  score: 200
+  silver: 100
 7: !<Stadtlevel>
-  material_a: MANGROVE_LOG
-  material_b: BLUE_WOOL
-  material_c: MOSS_BLOCK
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 1728
-  score: 0
-  silver: 576
+  score: 250
+  silver: 100
 8: !<Stadtlevel>
-  material_a: CHERRY_LOG
-  material_b: PURPLE_WOOL
-  material_c: BLOCK_OF_COPPER
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 320
-  score: 0
-  silver: 640
+  score: 310
+  silver: 100
 9: !<Stadtlevel>
-  material_a: WARPED_STEM
-  material_b: MAGENTA_WOOL
-  material_c: MAGMA_BLOCK
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 576
-  score: 0
-  silver: 704
+  score: 400
+  silver: 100
 10: !<Stadtlevel>
-  material_a: CRIMSON_STEM
-  material_b: PINK_WOOL
-  material_c: NETHERITE_SCRAP
-  objective_a: 3456
-  objective_b: 320
-  objective_c: 64
-  score: 0
-  silver: 768
+  score: 500
+  silver: 100
+11: !<Stadtlevel>
+  score: 600
+  silver: 100
+12: !<Stadtlevel>
+  score: 700
+  silver: 100
+13: !<Stadtlevel>
+  score: 800
+  silver: 100
+14: !<Stadtlevel>
+  score: 900
+  silver: 100
+15: !<Stadtlevel>
+  score: 1000
+  silver: 100
+16: !<Stadtlevel>
+  score: 1200
+  silver: 150
+17: !<Stadtlevel>
+  score: 1400
+  silver: 150
+18: !<Stadtlevel>
+  score: 1600
+  silver: 150
+19: !<Stadtlevel>
+  score: 1800
+  silver: 150
+20: !<Stadtlevel>
+  score: 2000
+  silver: 150
+21: !<Stadtlevel>
+  score: 2300
+  silver: 200
+22: !<Stadtlevel>
+  score: 2600
+  silver: 200
+23: !<Stadtlevel>
+  score: 3000
+  silver: 200
+24: !<Stadtlevel>
+  score: 3400
+  silver: 200
+25: !<Stadtlevel>
+  score: 3800
+  silver: 200

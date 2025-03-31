@@ -80,6 +80,12 @@ public class TownGUI extends RoseGUI {
                 .addLore(Chat.cottonCandy("<i>Hier kannst du deine Stadt einstellen."))
                 .build();
 
+        RoseItem professionsButton = new RoseItem.Builder()
+                .material(Material.BOOK)
+                .displayName(Chat.yellowFade("<b>Professionen"))
+                .addLore(Chat.cottonCandy("Öffnet das Professionen-Menü"))
+                .build();
+
         ItemStack nationItem;
         if (nation == null) {
             // No nation => default item or maybe a gray banner
@@ -107,6 +113,7 @@ public class TownGUI extends RoseGUI {
         addItem(25, farm);
         addItem(28, settings);
         addItem(31, nations);
+        addItem(33, professionsButton);
 
         upgrades.onClick(e -> {
             if (!player.hasPermission("nations.menu.upgrades")) return;
@@ -155,6 +162,10 @@ public class TownGUI extends RoseGUI {
                 return;
             }
             new NationGUI(player, nation).open();
+        });
+
+        professionsButton.onClick(e -> {
+            new TownProfessionGUI(player, settle).open();
         });
     }
 

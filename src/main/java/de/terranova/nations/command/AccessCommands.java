@@ -52,9 +52,7 @@ public class AccessCommands {
                 return false;
             }
         }
-        System.out.println(target.getUniqueId());
         invites.put(target.getUniqueId(), cache.getRegion().getId());
-        System.out.println(invites);
         p.sendMessage(Chat.greenFade("Du hast " + target.getName() + " erfolgreich in die Stadt " + cache.getRegion().getName() + " eigeladen."));
         target.sendMessage(Chat.cottonCandy("Du wurdest von " + p.getName() + " in die Stadt " + cache.getRegion().getName() + " eigeladen."));
         return true;

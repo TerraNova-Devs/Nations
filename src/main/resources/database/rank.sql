@@ -6,20 +6,12 @@ WHERE NOT EXISTS (
 );
 
 -- fetches the data
-SELECT `Level`, `obj_a`, `obj_b`, `obj_c` FROM `rank` WHERE `RUUID` = ?;
+SELECT `Level` FROM `rank` WHERE `RUUID` = ?;
 
 -- remove a rank
 DELETE FROM `rank` WHERE `RUUID` = ?;
 
 -- level up
 UPDATE `rank`
-SET `Level` = `Level` + 1,
-    `obj_a` = 0,
-    `obj_b` = 0,
-    `obj_c` = 0
-WHERE `RUUID` = ?;
-
--- update objective
-UPDATE `rank`
-SET %s = ?
+SET `Level` = `Level` + 1
 WHERE `RUUID` = ?;

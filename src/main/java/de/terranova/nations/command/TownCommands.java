@@ -10,7 +10,9 @@ import de.mcterranova.terranovaLib.commands.CachedSupplier;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.database.dao.SettlementBuildingsDAO;
 import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.bank.Transaction;
@@ -95,6 +97,7 @@ public class TownCommands extends AbstractCommand {
                         3000
                 )
         );
+        addPlaceholder("$BUILDINGS", ProfessionManager::getBuildingIds);
 
         registerSubCommand(this,"create");
         registerSubCommand(this,"claim");
@@ -110,6 +113,7 @@ public class TownCommands extends AbstractCommand {
         registerSubCommand(this,"leave");
         registerSubCommand(this,"npc");
         registerSubCommand(this, "trust");
+        registerSubCommand(new BuildingCommands(),"building");
 
         setupHelpCommand();
         initialize();
@@ -647,6 +651,17 @@ public class TownCommands extends AbstractCommand {
         settle.addMember(target);
         access.setAccessLevel(target, TownAccessLevel.TRUSTED);
         access.broadcast(args[1] + " wurde von " + p.getName() + " in die Stadt getrusted.");
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "professions.reload",
+            permission = "nations.professions.reload",
+            description = "Reloads the professions",
+            usage = "/town professions reload"
+    )
+    public boolean reloadProfessions(Player p, String[] args) {
+        ProfessionManager.loadAll();
         return true;
     }
 
