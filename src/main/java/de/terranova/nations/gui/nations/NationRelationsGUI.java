@@ -67,7 +67,9 @@ public class NationRelationsGUI extends RoseGUI {
                 // Set click action to change relation
                 relationItem.onClick(e -> {
                     // Open a GUI or prompt to change relation
-                    new NationChangeRelationGUI(player, nation, otherNation).open();
+                    if(nation.getPlayerRank(player.getUniqueId()).getWeight() >= 100) {
+                        new NationChangeRelationGUI(player, nation, otherNation).open();
+                    }
                 });
             }
         }
