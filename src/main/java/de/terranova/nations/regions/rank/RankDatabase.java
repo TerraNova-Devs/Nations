@@ -46,7 +46,7 @@ public class RankDatabase {
         }
     }
 
-    public int[] fetchRank() {
+    public int fetchRank() {
 
         String sql = queries.get("fetches the data");
         if (sql == null) throw new IllegalArgumentException("Query not found!");
@@ -58,16 +58,13 @@ public class RankDatabase {
                 while (rs.next()) {
                     // Retrieve the data from the result set
                     int level = rs.getInt("Level");
-                    int objA = rs.getInt("obj_a");
-                    int objB = rs.getInt("obj_b");
-                    int objC = rs.getInt("obj_c");
-                    return new int[]{level, objA, objB, objC};
+                    return level;
                 }
             }
         } catch (SQLException e) {
             throw new IllegalStateException("Failed to establish a connection to the MySQL database. Please check the supplied database credentials in the config file", e);
         }
-        return null;
+        return 0;
     }
 
     public void removeRank() {

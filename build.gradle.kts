@@ -83,6 +83,7 @@ dependencies {
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("com.nexomc:nexo:1.1.0")
   implementation("de.mcterranova:terranova-lib:1.0.0")
+  implementation("org.yaml:snakeyaml:2.2")
 }
 
 tasks {
@@ -97,6 +98,7 @@ tasks {
   shadowJar{
     destinationDirectory.set(file("./testserver/plugins"))
     //relocate("kotlin.", "your.mod.package.kotlin.")
+    relocate("org.yaml.snakeyaml", "de.terranova.nations.libs.yaml")
   }
 
 }
