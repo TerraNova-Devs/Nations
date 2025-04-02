@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
+import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.commands.AbstractCommand;
 import de.mcterranova.terranovaLib.commands.CachedSupplier;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
@@ -524,8 +525,14 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
+        if(ItemTransfer.charge(p,"terranova_silver", 128, true) == -1) {
+            p.sendMessage(Chat.errorFade("Du hast nicht genug Silber(128) um eine Stadt zu gründen."));
+            return false;
+        }
+
         Optional<Region> osettle = Region.createRegion("settle", name ,p);
         if (osettle.isPresent()) {
+
             p.sendMessage(Chat.greenFade("Stadt " + name + " wurde erfolgreich gegründet."));
             return true;
         } else {
