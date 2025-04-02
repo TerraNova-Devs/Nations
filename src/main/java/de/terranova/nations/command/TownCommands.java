@@ -514,6 +514,11 @@ public class TownCommands extends AbstractCommand {
             usage = "/town create <name>"
     )
     public boolean createTown(Player p, String[] args) {
+        if(RegionManager.retrievePlayersSettlement(p.getUniqueId()).isPresent()) {
+            p.sendMessage(Chat.errorFade("Du bist bereits in einer Stadt."));
+            return false;
+        }
+
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Stadt an."));
             return false;
