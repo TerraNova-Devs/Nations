@@ -537,10 +537,10 @@ public class TownCommands extends AbstractCommand {
 
         Optional<Region> osettle = Region.createRegion("settle", name ,p);
         if (osettle.isPresent()) {
-
             p.sendMessage(Chat.greenFade("Stadt " + name + " wurde erfolgreich gegründet."));
             return true;
         } else {
+            ItemTransfer.credit(p,"terranova_silver", 128, true);
             p.sendMessage(Chat.errorFade("Die Erstellung der Stadt wurde abgebrochen."));
             return false;
         }
