@@ -166,6 +166,7 @@ public abstract class Region {
     }
 
     public void addMember(UUID uuid) {
+        getWorldguardRegion().getMembers().addPlayer(uuid);
         this.region.getMembers().addPlayer(uuid);
     }
 
