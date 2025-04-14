@@ -1,10 +1,20 @@
 package de.terranova.nations.regions.poly;
 
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.managers.RegionManager;
+import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.regions.access.PropertyAccess;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
 import de.terranova.nations.regions.base.PolyRegion;
+import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.util.Objects;
 import java.util.UUID;
 
 /**
@@ -18,6 +28,8 @@ public class PropertyRegion extends PolyRegion implements PropertyAccessControll
     private UUID parent; // The UUID of the parent property if this is a subproperty
 
     private int price; // The property’s sale price (0 means not for sale)
+
+    private PropertyState state;
 
     /**
      * Basic constructor for top-level property region.
@@ -51,6 +63,29 @@ public class PropertyRegion extends PolyRegion implements PropertyAccessControll
         return this.access;
     }
 
+    @Override
+    public ProtectedRegion getWorldguardRegion() {
+        World world = Bukkit.getWorld("world");
+        if (world == null) {
+            Bukkit.getLogger().severe("World 'world' not found.");
+            return null;
+        }
+
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        RegionManager rm = container.get(BukkitAdapter.adapt(world));
+
+        if (rm == null) return null;
+        for (ProtectedRegion r : rm.getRegions().values()) {
+            String propertyIdStr = r.getId();
+            if (propertyIdStr != null && propertyIdStr.equals(name)) {
+                if (r instanceof ProtectedPolygonalRegion ppr) {
+                    return ppr;
+                }
+            }
+        }
+        return null;
+    }
+
     public UUID getParent() {
         return parent;
     }
@@ -65,5 +100,13 @@ public class PropertyRegion extends PolyRegion implements PropertyAccessControll
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public PropertyState getState() {
+        return state;
+    }
+
+    public void setState(PropertyState state) {
+        this.state = state;
     }
 }

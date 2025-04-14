@@ -19,6 +19,7 @@ import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.poly.PropertyRegion;
+import de.terranova.nations.regions.poly.PropertyState;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -33,18 +34,18 @@ public class TownPropertyCommands extends AbstractCommand {
     }
 
     /**
-     * /town property create <name> <price>
+     * /town property create
      * For Council+ in the user's settlement. Uses WorldEdit selection.
      */
     @CommandAnnotation(
-            domain = "property.create.$0.$0",
+            domain = "property.create",
             permission = "nations.town.property.create",
             description = "Create a property region from your current WorldEdit selection.",
-            usage = "/town property create <name> <price>"
+            usage = "/town property create"
     )
     public boolean createTownProperty(Player p, String[] args) {
-        if (args.length < 4) {
-            p.sendMessage(Chat.errorFade("Usage: /town property create <name> <price>"));
+        if (args.length < 2) {
+            p.sendMessage(Chat.errorFade("Usage: /town property create"));
             return true;
         }
 
@@ -57,15 +58,6 @@ public class TownPropertyCommands extends AbstractCommand {
         SettleRegion sr = srOpt.get();
         if (!TownAccess.hasAccess(sr.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.COUNCIL)) {
             p.sendMessage(Chat.errorFade("You must be at least Council to create a property."));
-            return true;
-        }
-
-        String propName = args[2];
-        int price;
-        try {
-            price = Integer.parseInt(args[3]);
-        } catch (NumberFormatException e) {
-            p.sendMessage(Chat.errorFade("Invalid price number!"));
             return true;
         }
 
@@ -92,11 +84,15 @@ public class TownPropertyCommands extends AbstractCommand {
 
         // Link the property to the plugin's property ID (for future lookups)
         UUID propertyUUID = UUID.randomUUID();
-        wgProperty.setFlag(RegionFlag.REGION_UUID_FLAG, propertyUUID.toString());
 
-        // (Optional) set parent = the city region in WG if you want
-        // ProtectedRegion cityRegion = ...
-        // wgProperty.setParent(cityRegion);
+        // set parent = the settle region in WG
+        ProtectedRegion settleRegion = sr.getWorldguardRegion();
+        try {
+            wgProperty.setParent(settleRegion);
+        } catch (ProtectedRegion.CircularInheritanceException e) {
+            p.sendMessage(Chat.errorFade("Circular inheritance detected!"));
+            return true;
+        }
 
         // 5) Insert into WG region manager
         com.sk89q.worldguard.protection.managers.RegionManager rm = getRegionManager(p.getWorld().getName());
@@ -107,8 +103,9 @@ public class TownPropertyCommands extends AbstractCommand {
         rm.addRegion(wgProperty);
 
         // 6) Create our plugin's property object and store it
-        PropertyRegion prop = new PropertyRegion(propName, propertyUUID);
-        prop.setPrice(price);
+        PropertyRegion prop = new PropertyRegion(wgRegionId, propertyUUID);
+        prop.setPrice(0);
+        prop.setState(PropertyState.NONE);
         prop.setParent(sr.getId());
 
         // Set the owner in the property (maybe you do that via property.getAccess().setAccessLevel(...) or so)
@@ -117,7 +114,7 @@ public class TownPropertyCommands extends AbstractCommand {
         // 7) Save in DB
         PropertyRegionDAO.saveProperty(prop, p.getWorld().getName());
 
-        p.sendMessage(Chat.greenFade("Property '" + propName + "' created at price " + price + "."));
+        p.sendMessage(Chat.greenFade("Property '" + wgRegionId + "' created."));
         return true;
     }
 
@@ -158,6 +155,14 @@ public class TownPropertyCommands extends AbstractCommand {
             return true;
         }
         String propName = args[2];
+
+        ProtectedRegion wgRegion = getWgRegionByName(propName);
+        if (wgRegion == null) {
+            p.sendMessage(Chat.errorFade("No property found by that name."));
+            return true;
+        }
+
+
 
         // find property by name
         Optional<PropertyRegion> propOpt = findPropertyByName(propName);
@@ -219,8 +224,7 @@ public class TownPropertyCommands extends AbstractCommand {
             p.sendMessage(Chat.errorFade("You have no pending removal requests."));
             return true;
         }
-        UUID propId = pendingRemovals.get(p.getUniqueId());
-        Optional<PropertyRegion> propOpt = findPropertyById(propId);
+        Optional<PropertyRegion> propOpt = findPropertyByName(name);
         if (propOpt.isEmpty()) {
             p.sendMessage(Chat.errorFade("That property no longer exists."));
             pendingRemovals.remove(p.getUniqueId());
@@ -239,15 +243,7 @@ public class TownPropertyCommands extends AbstractCommand {
     }
 
     private Optional<PropertyRegion> findPropertyByName(String name) {
-        // If you keep a regionCache for property, or you can do a DB search by name
-        // For example:
-        //   - load all from DB and compare the name
-        //   - or store them in a map
-        return Optional.empty();
-    }
-
-    private Optional<PropertyRegion> findPropertyById(UUID id) {
-        return PropertyRegionDAO.loadProperty(id);
+        return PropertyRegionDAO.loadProperty(name);
     }
 
     private void doRemoveProperty(PropertyRegion prop) {
@@ -276,5 +272,19 @@ public class TownPropertyCommands extends AbstractCommand {
                 }
             }
         }
+    }
+
+    private ProtectedRegion getWgRegionByName(String propertyName) {
+        for (org.bukkit.World bw : Bukkit.getWorlds()) {
+            com.sk89q.worldguard.protection.managers.RegionManager rm = getRegionManager(bw.getName());
+            if (rm == null) continue;
+            for (String regionId : rm.getRegions().keySet()) {
+                ProtectedRegion r = rm.getRegion(regionId);
+                if (r != null && r.getId().equalsIgnoreCase(propertyName)) {
+                    return r;
+                }
+            }
+        }
+        return null;
     }
 }

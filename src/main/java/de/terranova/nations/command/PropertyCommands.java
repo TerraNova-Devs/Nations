@@ -11,16 +11,19 @@ import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.mcterranova.terranovaLib.commands.AbstractCommand;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.database.dao.PropertyIncomeDAO;
 import de.terranova.nations.database.dao.PropertyRegionDAO;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.poly.PropertyIncome;
 import de.terranova.nations.regions.poly.PropertyRegion;
-import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import de.terranova.nations.regions.poly.PropertyState;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -43,6 +46,7 @@ public class PropertyCommands extends AbstractCommand {
         registerSubCommand(this, "buy");
         registerSubCommand(this, "trust");
         registerSubCommand(this, "kick");
+        registerSubCommand(this, "sell");
         // etc.
         setupHelpCommand();
         initialize();
@@ -54,25 +58,16 @@ public class PropertyCommands extends AbstractCommand {
      * Exactly the same approach but we set WG's parent region to the parent's WG region.
      */
     @CommandAnnotation(
-            domain = "create.$0.$0",
+            domain = "create",
             permission = "nations.property.create",
             description = "Create a subproperty region inside the property you own, from your WorldEdit selection.",
-            usage = "/property create <name> <price>"
+            usage = "/property create"
     )
     public boolean createSubProperty(Player p, String[] args) {
-        if (args.length < 3) {
-            p.sendMessage(Chat.errorFade("Usage: /property create <name> <price>"));
+        if (args.length < 1) {
+            p.sendMessage(Chat.errorFade("Usage: /property create"));
             return true;
         }
-        String propName = args[1];
-        int price;
-        try {
-            price = Integer.parseInt(args[2]);
-        } catch (NumberFormatException e) {
-            p.sendMessage(Chat.errorFade("Invalid price number!"));
-            return true;
-        }
-
         // 1) Check if player is standing in a property they own
         Optional<PropertyRegion> parentOpt = getPropertyRegionAtPlayer(p);
         if (parentOpt.isEmpty()) {
@@ -106,7 +101,6 @@ public class PropertyCommands extends AbstractCommand {
 
         // Link to plugin's property ID
         UUID subPropUuid = UUID.randomUUID();
-        subRegion.setFlag(RegionFlag.REGION_UUID_FLAG, subPropUuid.toString());
 
         // 4) find the parent's WG region and set as parent
         com.sk89q.worldguard.protection.managers.RegionManager rm = getRegionManager(p.getWorld().getName());
@@ -114,7 +108,7 @@ public class PropertyCommands extends AbstractCommand {
             p.sendMessage(Chat.errorFade("No region manager for world??"));
             return true;
         }
-        ProtectedPolygonalRegion parentWg = findWgRegionFor(parentProp.getId(), rm);
+        ProtectedPolygonalRegion parentWg = findWgRegionFor(parentProp.getName(), rm);
         if (parentWg == null) {
             p.sendMessage(Chat.errorFade("Failed to find parent property in WG!"));
             return true;
@@ -128,15 +122,14 @@ public class PropertyCommands extends AbstractCommand {
         rm.addRegion(subRegion);
 
         // 5) create plugin sub property
-        PropertyRegion subProp = new PropertyRegion(propName, subPropUuid);
-        subProp.setPrice(price);
+        PropertyRegion subProp = new PropertyRegion(wgRegionId, subPropUuid);
         subProp.setParent(parentProp.getId());
         // set owner
         subProp.getAccess().setAccessLevel(p.getUniqueId(), de.terranova.nations.regions.access.PropertyAccessLevel.OWNER);
 
         PropertyRegionDAO.saveProperty(subProp, p.getWorld().getName());
 
-        p.sendMessage(Chat.greenFade("Subproperty '" + propName + "' created with parent '" + parentProp.getName() + "'."));
+        p.sendMessage(Chat.greenFade("Subproperty '" + wgRegionId + "' created with parent '" + parentProp.getName() + "'."));
         return true;
     }
 
@@ -158,7 +151,7 @@ public class PropertyCommands extends AbstractCommand {
             return true;
         }
         PropertyRegion prop = propOpt.get();
-        if (prop.getPrice() <= 0) {
+        if (!prop.getState().equals(PropertyState.FORSALE)) {
             p.sendMessage(Chat.errorFade("This property is not for sale."));
             return true;
         }
@@ -167,25 +160,47 @@ public class PropertyCommands extends AbstractCommand {
             return true;
         }
         int price = prop.getPrice();
-        // check economy
-        if (!hasEnoughMoney(p, price)) {
-            p.sendMessage(Chat.errorFade("You do not have enough money to buy it."));
+
+        // do the transaction
+        if(ItemTransfer.charge(p,"terranova_silver", price, true) == -1) {
+            p.sendMessage(Chat.errorFade("Du hast nicht genug Silber(" + price + ") um dieses Grundstück zu kaufen."));
             return true;
         }
-        // do the transaction
-        withdrawFromPlayer(p, price);
 
         UUID oldOwner = prop.getAccess().getOwner();
         if (oldOwner != null) {
-            depositToPlayer(oldOwner, price);
+            PropertyRegion currentProp = prop;
+            while(RegionManager.retrieveRegion("settle", currentProp.getParent()).isEmpty()){
+                Optional<PropertyRegion> parentProperty = RegionManager.retrieveRegion("property", prop.getParent());
+                if(parentProperty.isPresent()){
+                    currentProp = parentProperty.get();
+                } else {
+                    break;
+                }
+            }
+
+            Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", currentProp.getParent());
+            if (settleOpt.isEmpty()) {
+                p.sendMessage(Chat.errorFade("Could not find the settlement of the property."));
+                return true;
+            }
+
+            SettleRegion settle = settleOpt.get();
+
+            PropertyIncome income = new PropertyIncome(settle.getId().toString(), oldOwner.toString(), prop.getName(), price);
+            PropertyIncomeDAO.insertIncome(income);
         }
         // set new owner
         prop.getAccess().removeAccess(oldOwner); // remove old owner's access if you want
         prop.getAccess().setAccessLevel(p.getUniqueId(), de.terranova.nations.regions.access.PropertyAccessLevel.OWNER);
         prop.setPrice(0); // no longer for sale
+        prop.setState(PropertyState.SOLD);
 
         // save
         PropertyRegionDAO.saveProperty(prop, p.getWorld().getName());
+        DefaultDomain owners = new DefaultDomain();
+        owners.addPlayer(WorldGuardPlugin.inst().wrapPlayer(p));
+        prop.getWorldguardRegion().setOwners(owners);
         p.sendMessage(Chat.greenFade("You bought the property for " + price + "! You are now the owner."));
         return true;
     }
@@ -263,6 +278,42 @@ public class PropertyCommands extends AbstractCommand {
         return true;
     }
 
+    @CommandAnnotation(
+            domain = "sell.$0",
+            permission = "nations.property.sell",
+            description = "Sells a property region for the given price.",
+            usage = "/property sell <price>"
+    )
+    public boolean sellProperty(Player p, String[] args) {
+        if (args.length < 2) {
+            p.sendMessage(Chat.errorFade("Usage: /property sell <price>"));
+            return true;
+        }
+        int price;
+        try {
+            price = Integer.parseInt(args[1]);
+        } catch (NumberFormatException e) {
+            p.sendMessage(Chat.errorFade("Invalid price number!"));
+            return true;
+        }
+
+        Optional<PropertyRegion> propOpt = getPropertyRegionAtPlayer(p);
+        if (propOpt.isEmpty()) {
+            p.sendMessage(Chat.errorFade("You are not inside a property region."));
+            return true;
+        }
+        PropertyRegion prop = propOpt.get();
+        if (!prop.getAccess().isOwner(p.getUniqueId())) {
+            p.sendMessage(Chat.errorFade("You are not the owner of this property."));
+            return true;
+        }
+        prop.setPrice(price);
+        prop.setState(PropertyState.FORSALE);
+        PropertyRegionDAO.saveProperty(prop, p.getWorld().getName());
+        p.sendMessage(Chat.greenFade("You set the property for sale for " + price + "!"));
+        return true;
+    }
+
     // ----------------------------------------------------------------------
     // Internal Helpers
 
@@ -285,11 +336,11 @@ public class PropertyCommands extends AbstractCommand {
         return WorldGuard.getInstance().getPlatform().getRegionContainer().get(weWorld);
     }
 
-    private ProtectedPolygonalRegion findWgRegionFor(UUID propertyId, com.sk89q.worldguard.protection.managers.RegionManager rm) {
+    private ProtectedPolygonalRegion findWgRegionFor(String propertyName, com.sk89q.worldguard.protection.managers.RegionManager rm) {
         if (rm == null) return null;
         for (ProtectedRegion r : rm.getRegions().values()) {
-            String flagVal = r.getFlag(RegionFlag.REGION_UUID_FLAG);
-            if (flagVal != null && flagVal.equals(propertyId.toString())) {
+            String propertyIdStr = r.getId();
+            if (propertyIdStr != null && propertyIdStr.equals(propertyName)) {
                 if (r instanceof ProtectedPolygonalRegion ppr) {
                     return ppr;
                 }
@@ -299,9 +350,6 @@ public class PropertyCommands extends AbstractCommand {
     }
 
     private Optional<PropertyRegion> getPropertyRegionAtPlayer(Player p) {
-        // do a WorldGuard region query at the player's location
-        // find a region that has the RegionFlag.REGION_UUID_FLAG set
-        // then load that from DB
         org.bukkit.World bw = p.getWorld();
         com.sk89q.worldguard.protection.managers.RegionManager rm = getRegionManager(bw.getName());
         if (rm == null) return Optional.empty();
@@ -311,24 +359,8 @@ public class PropertyCommands extends AbstractCommand {
                 WorldGuard.getInstance().getPlatform().getRegionContainer().createQuery().getApplicableRegions(weLoc);
 
         for (ProtectedRegion pr : set.getRegions()) {
-            String flagVal = pr.getFlag(RegionFlag.REGION_UUID_FLAG);
-            if (flagVal != null) {
-                UUID propId = UUID.fromString(flagVal);
-                return PropertyRegionDAO.loadProperty(propId);
-            }
+            return PropertyRegionDAO.loadProperty(pr.getId());
         }
         return Optional.empty();
-    }
-
-    // Example stubs for economy or money
-    private boolean hasEnoughMoney(Player p, int amount) {
-        // your economy check
-        return true;
-    }
-    private void withdrawFromPlayer(Player p, int amount) {
-        // remove money
-    }
-    private void depositToPlayer(UUID playerId, int amount) {
-        // deposit money to that player
     }
 }

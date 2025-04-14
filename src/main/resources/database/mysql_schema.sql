@@ -20,9 +20,23 @@ CREATE TABLE IF NOT EXISTS `poly_regions`
     `name`  varchar(36) NOT NULL,
     `type`  varchar(36) NOT NULL,
     `price` int NOT NULL DEFAULT 0,
+    `state` varchar(36) NOT NULL DEFAULT 'NONE',
     `parent` varchar(36) NOT NULL,
     `world` varchar(36) NOT NULL DEFAULT 'world',
     PRIMARY KEY (`RUUID`)
+) DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `property_incomes`
+(
+    `RUUID`     varchar(36) NOT NULL,
+    `PUUID`     varchar(36) NOT NULL,
+    `PropertyID` varchar(36) NOT NULL,
+    `income`    int NOT NULL DEFAULT 0,
+    `timestamp` timestamp(6) NOT NULL,
+    `collected`    TINYINT(1)  NOT NULL DEFAULT 0,
+    PRIMARY KEY (`RUUID`, `PUUID`, `timestamp`),
+    FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --

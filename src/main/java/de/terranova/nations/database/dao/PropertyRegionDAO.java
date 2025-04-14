@@ -2,6 +2,7 @@ package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.poly.PropertyRegion;
+import de.terranova.nations.regions.poly.PropertyState;
 
 import java.sql.*;
 import java.util.Optional;
@@ -13,19 +14,20 @@ import java.util.UUID;
  */
 public class PropertyRegionDAO {
     private static final String INSERT_OR_UPDATE = """
-       INSERT INTO poly_regions (RUUID, name, type, price, parent, world)
-       VALUES (?, ?, ?, ?, ?, ?)
+       INSERT INTO poly_regions (RUUID, name, type, price, state, parent, world)
+       VALUES (?, ?, ?, ?, ?, ?, ?)
        ON DUPLICATE KEY UPDATE
          name=VALUES(name),
          price=VALUES(price),
+         state=VALUES(state),
          parent=VALUES(parent),
          world=VALUES(world);
     """;
 
     private static final String SELECT_PROP = """
-       SELECT name, type, price, parent, world
+       SELECT ruuid, name, type, price, state, parent, world
          FROM poly_regions
-        WHERE RUUID=?;
+        WHERE name=?;
     """;
 
     private static final String DELETE_PROP = """
@@ -42,10 +44,11 @@ public class PropertyRegionDAO {
              PreparedStatement ps = conn.prepareStatement(INSERT_OR_UPDATE)) {
             ps.setString(1, prop.getId().toString());
             ps.setString(2, prop.getName());
-            ps.setString(3, prop.getType()); // "property"
+            ps.setString(3, prop.getState().name());
             ps.setInt(4, prop.getPrice());
-            ps.setString(5, prop.getParent() == null ? null : prop.getParent().toString());
-            ps.setString(6, worldName);
+            ps.setString(5, prop.getState().name());
+            ps.setString(6, prop.getParent() == null ? null : prop.getParent().toString());
+            ps.setString(7, worldName);
             ps.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
@@ -55,20 +58,21 @@ public class PropertyRegionDAO {
     /**
      * Load property region by UUID from DB.
      */
-    public static Optional<PropertyRegion> loadProperty(UUID ruuid) {
+    public static Optional<PropertyRegion> loadProperty(String propertyName) {
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(SELECT_PROP)) {
-            ps.setString(1, ruuid.toString());
+            ps.setString(1, propertyName);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                String name  = rs.getString("name");
+                String uuid  = rs.getString("ruuid");
                 int price    = rs.getInt("price");
+                PropertyState state = PropertyState.valueOf(rs.getString("state"));
                 String parentStr = rs.getString("parent");
                 UUID parentUuid = (parentStr == null) ? null : UUID.fromString(parentStr);
-                // ignoring type & world here or storing them in the object if you want
-                PropertyRegion prop = new PropertyRegion(name, ruuid);
+                PropertyRegion prop = new PropertyRegion(propertyName, UUID.fromString(uuid));
                 prop.setPrice(price);
                 prop.setParent(parentUuid);
+                prop.setState(state);
                 return Optional.of(prop);
             }
         } catch (SQLException e) {
