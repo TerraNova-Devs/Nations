@@ -19,6 +19,9 @@ CREATE TABLE IF NOT EXISTS `poly_regions`
     `RUUID` varchar(36) NOT NULL,
     `name`  varchar(36) NOT NULL,
     `type`  varchar(36) NOT NULL,
+    `price` int NOT NULL DEFAULT 0,
+    `parent` varchar(36) NOT NULL,
+    `world` varchar(36) NOT NULL DEFAULT 'world',
     PRIMARY KEY (`RUUID`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
@@ -32,6 +35,14 @@ CREATE TABLE IF NOT EXISTS `access`
     KEY `idx_puuid` (`PUUID`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `property_access` (
+    `RUUID`  VARCHAR(36) NOT NULL,
+    `PUUID`  VARCHAR(36) NOT NULL,
+    `access` VARCHAR(36) NOT NULL,
+    PRIMARY KEY (`RUUID`, `PUUID`)
+) DEFAULT CHARSET=utf8
+  COLLATE=utf8_unicode_ci;
 --
 CREATE TABLE IF NOT EXISTS `bank`
 (

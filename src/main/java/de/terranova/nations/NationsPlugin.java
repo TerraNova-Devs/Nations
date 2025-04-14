@@ -5,6 +5,7 @@ import com.sk89q.worldguard.session.SessionManager;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
+import de.terranova.nations.command.PropertyCommands;
 import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
@@ -154,6 +155,13 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         this.getCommand("nation").setTabCompleter(nationCommand);
         if (this.getCommand("nation") == null) {
             getLogger().severe("Failed to get command 'nation' from plugin.yml. Please check your plugin.yml!");
+            return;
+        }
+        PropertyCommands propertyCommand = new PropertyCommands();
+        this.getCommand("property").setExecutor(propertyCommand);
+        this.getCommand("property").setTabCompleter(propertyCommand);
+        if (this.getCommand("property") == null) {
+            getLogger().severe("Failed to get command 'property' from plugin.yml. Please check your plugin.yml!");
             return;
         }
     }

@@ -17,6 +17,11 @@ commands:
     aliases: [n]
     permission: nations.use
     permission-message: You do not have permission to use this command.
+  property:
+    description: Manage property subcommands
+    usage: /property <create|remove|buy|...>
+    permission: nations.use
+    permission-message: You do not have permission to use this command.
 depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Nexo]
 
 

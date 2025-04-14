@@ -7,6 +7,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.regions.poly.PropertyRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;
@@ -25,6 +26,7 @@ public abstract class Region {
     protected String name;
     protected ProtectedRegion region;
     private static final List<String> nameCache = new ArrayList<>();
+    private final List<PropertyRegion> subRegions = new ArrayList<>();
 
     public Region(String name, UUID id, String type) {
         this.id = id;
@@ -89,6 +91,9 @@ public abstract class Region {
 
     // Abstract method to enforce implementation in subclasses
     public final void remove() {
+        for (Region subRegion : subRegions) {
+            subRegion.remove();
+        }
         eventBus.publishRemoval();
         removeWGRegion();
         nameCache.remove(name);
@@ -188,6 +193,18 @@ public abstract class Region {
         } else {
             Bukkit.getLogger().severe("Failed to access RegionManager while removing a region.");
         }
+    }
+
+    public List<PropertyRegion> getSubRegions() {
+        return Collections.unmodifiableList(subRegions);
+    }
+
+    public void addSubRegion(PropertyRegion region) {
+        subRegions.add(region);
+    }
+
+    public void removeSubRegion(PropertyRegion region) {
+        subRegions.remove(region);
     }
 
     // Getters

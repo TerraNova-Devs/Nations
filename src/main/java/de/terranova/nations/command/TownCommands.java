@@ -1,8 +1,12 @@
 package de.terranova.nations.command;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
@@ -11,6 +15,7 @@ import de.mcterranova.terranovaLib.commands.CachedSupplier;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.database.dao.PropertyRegionDAO;
 import de.terranova.nations.database.dao.SettlementBuildingsDAO;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
@@ -21,6 +26,8 @@ import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.poly.PropertyRegion;
+import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -114,6 +121,7 @@ public class TownCommands extends AbstractCommand {
         registerSubCommand(this,"leave");
         registerSubCommand(this,"npc");
         registerSubCommand(this, "trust");
+        registerSubCommand(new TownPropertyCommands(),"property");
         registerSubCommand(new BuildingCommands(),"building");
 
         setupHelpCommand();

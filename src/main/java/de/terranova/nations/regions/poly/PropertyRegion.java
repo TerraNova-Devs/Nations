@@ -2,69 +2,68 @@ package de.terranova.nations.regions.poly;
 
 import de.terranova.nations.regions.access.PropertyAccess;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
-import de.terranova.nations.regions.access.PropertyAccessLevel;
-import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.worldguard.math.Vectore2;
+import de.terranova.nations.regions.base.PolyRegion;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.UUID;
 
-public class PropertyRegion extends Region implements PropertyAccessControlled {
+/**
+ * Represents a property region that depends on WorldGuard to store the polygon shape.
+ * We only store basic info: ID, name, price, optional parent property, plus Access.
+ */
+public class PropertyRegion extends PolyRegion implements PropertyAccessControlled {
     public static final String REGION_TYPE = "property";
 
-    private PropertyAccess access;
+    private final PropertyAccess access;
+    private UUID parent; // The UUID of the parent property if this is a subproperty
 
-    public PropertyRegion(String name, UUID ruuid, UUID owner, Vectore2 location) {
+    private int price; // The property’s sale price (0 means not for sale)
+
+    /**
+     * Basic constructor for top-level property region.
+     */
+    public PropertyRegion(String name, UUID ruuid) {
         super(name, ruuid, REGION_TYPE);
         this.access = new PropertyAccess(this);
-        this.setOwner(owner);
-        this.addNameToCache(name);
-    }
-
-    public UUID getOwner() {
-        return this.access.getOwner();
-    }
-
-    public void setOwner(UUID owner) {
-        this.access.setAccessLevel(owner, PropertyAccessLevel.OWNER);
-    }
-
-    public Collection<UUID> getTrusted() {
-        return this.access.getEveryUUIDWithCertainAccessLevel(PropertyAccessLevel.MEMBER);
-    }
-
-    public void addTrusted(UUID uuid) {
-        this.access.setAccessLevel(uuid, PropertyAccessLevel.MEMBER);
-    }
-
-    public void removeTrusted(UUID uuid) {
-        this.access.removeAccess(uuid);
-    }
-
-    @Override
-    public void dataBaseCall() {
-        // Implement database call to save the property region
+        this.price = 0;
     }
 
     @Override
     public void onCreation(Player p) {
-        // Implement actions to be taken when the property region is created
-        this.access.setAccessLevel(p.getUniqueId(), PropertyAccessLevel.OWNER);
+        // Called after you create the region in WG.
+        // Could do any post-creation logic, e.g. "broadcast property created."
     }
 
     @Override
     public void onRemove() {
-        // Implement actions to be taken when the property region is removed
+        // Called when removing the property from the plugin.
+        // We call "onRegionRemoved()" in the PropertyAccess to clear DB rows, etc.
         this.access.onRegionRemoved();
     }
 
     @Override
-    public void onRename(String name) {
-        // Implement actions to be taken when the property region is renamed
+    public void onRename(String newName) {
+        addNameToCache(newName);
     }
 
     @Override
     public PropertyAccess getAccess() {
-        return null;
+        return this.access;
+    }
+
+    public UUID getParent() {
+        return parent;
+    }
+
+    public void setParent(UUID parent) {
+        this.parent = parent;
+    }
+
+    public int getPrice() {
+        return price;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

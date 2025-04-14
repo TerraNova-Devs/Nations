@@ -14,6 +14,7 @@ import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.npc.NPCHolder;
 import de.terranova.nations.regions.npc.NPCr;
 import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.regions.poly.PropertyRegion;
 import de.terranova.nations.regions.rank.Rank;
 import de.terranova.nations.regions.rank.RankedRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -31,8 +32,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
     private final NPCr npc;
     private final TownAccess access;
     private final Bank bank;
-
-
+    private final List<PropertyRegion> properties = new ArrayList<>();
 
     public SettleRegion(String name, UUID ruuid, Vectore2 loc) {
         super(name, ruuid, REGION_TYPE, loc);
@@ -73,8 +73,23 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
 
     @Override
     public void onGridRemove() {
+        for (PropertyRegion property : properties) {
+            property.onRemove();
+        }
         RegionManager.removeRegion(type,id);
         RegionLayer.removeRegion(this.id);
+    }
+
+    public List<PropertyRegion> getProperties() {
+        return Collections.unmodifiableList(properties);
+    }
+
+    public void addProperty(PropertyRegion property) {
+        properties.add(property);
+    }
+
+    public void removeProperty(PropertyRegion property) {
+        properties.remove(property);
     }
 
     //Bank

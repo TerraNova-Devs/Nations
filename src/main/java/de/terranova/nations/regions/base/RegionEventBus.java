@@ -23,4 +23,22 @@ public class RegionEventBus {
             listener.onRegionRemoved();
         }
     }
+
+    // Notify all listeners of a property addition
+    public void publishPropertyAdded(Region property) {
+        for (RegionListener listener : listeners) {
+            if (listener instanceof PropertyRegionListener) {
+                ((PropertyRegionListener) listener).onPropertyAdded(property);
+            }
+        }
+    }
+
+    // Notify all listeners of a property removal
+    public void publishPropertyRemoved(Region property) {
+        for (RegionListener listener : listeners) {
+            if (listener instanceof PropertyRegionListener) {
+                ((PropertyRegionListener) listener).onPropertyRemoved(property);
+            }
+        }
+    }
 }

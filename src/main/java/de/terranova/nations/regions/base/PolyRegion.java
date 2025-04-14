@@ -1,5 +1,7 @@
 package de.terranova.nations.regions.base;
 
+import de.terranova.nations.regions.poly.PropertyRegion;
+
 import java.util.UUID;
 
 public abstract class PolyRegion extends Region {
@@ -8,6 +10,8 @@ public abstract class PolyRegion extends Region {
     }
     @Override
     public final void dataBaseCall(){
-
+        for (PropertyRegion subProperty : getSubRegions()) {
+            subProperty.dataBaseCall();
+        }
     }
 }
