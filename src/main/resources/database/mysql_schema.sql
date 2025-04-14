@@ -97,7 +97,6 @@ CREATE TABLE IF NOT EXISTS `nation_ranks`
     `rank`  VARCHAR(20) NOT NULL,
     PRIMARY KEY (`PUUID`),
     FOREIGN KEY (`NUUID`) REFERENCES `nations_table` (`NUUID`) ON DELETE CASCADE,
-    FOREIGN KEY (`PUUID`) REFERENCES `access` (`PUUID`) ON DELETE CASCADE,
     FOREIGN KEY (`SUUID`) REFERENCES `settlement_nation_relations` (`SUUID`) ON DELETE CASCADE
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;

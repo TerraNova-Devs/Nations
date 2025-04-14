@@ -11,7 +11,10 @@ import de.mcterranova.terranovaLib.commands.CachedSupplier;
 import de.mcterranova.terranovaLib.commands.CommandAnnotation;
 import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.SettlementBuildingsDAO;
+import de.terranova.nations.nations.Nation;
+import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.access.TownAccess;
@@ -249,6 +252,12 @@ public class TownCommands extends AbstractCommand {
 
         settle.removeMember(target);
         access.removeAccess(target);
+        if(TownAccess.hasAccess(access.getAccessLevel(target), TownAccessLevel.CITIZEN)){
+            Nation nation = NationsPlugin.nationManager.getNationBySettlement(settle.getId());
+            if (nation != null) {
+                NationsPlugin.nationManager.getNation(nation.getId()).removePlayerRank(target);
+            }
+        }
         access.broadcast(args[1] + " wurde von " + p.getName() + " der Stadt " + settle.getName() + " verwiesen.");
         return true;
     }
@@ -464,6 +473,10 @@ public class TownCommands extends AbstractCommand {
         access.broadcast(p.getName() + " hat die Stadt verlassen.");
         settle.removeMember(p.getUniqueId());
         access.removeAccess(p.getUniqueId());
+        Nation nation = NationsPlugin.nationManager.getNationBySettlement(settle.getId());
+        if (nation != null) {
+            NationsPlugin.nationManager.getNation(nation.getId()).removePlayerRank(p.getUniqueId());
+        }
         p.sendMessage(Chat.greenFade("Du hast die Stadt erfolgreich verlassen."));
         return true;
     }

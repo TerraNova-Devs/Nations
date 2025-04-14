@@ -2,6 +2,7 @@ package de.terranova.nations.nations;
 
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.database.dao.NationsDAO;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.ItemStackSerializer;
@@ -172,6 +173,11 @@ public class Nation {
 
     public Map<UUID, NationPlayerRank> getPlayerRanks() {
         return playerRanks;
+    }
+
+    public void removePlayerRank(UUID playerId) {
+        playerRanks.remove(playerId);
+        NationsDAO.removePlayerRankFromNation(playerId);
     }
 
     public void setPlayerRanks(Map<UUID, NationPlayerRank> playerRanks) {
