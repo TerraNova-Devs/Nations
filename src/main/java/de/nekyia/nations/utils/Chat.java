@@ -12,8 +12,10 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
-public class Chat {
-    public Chat() {
+public final class Chat {
+
+    private Chat() {
+        throw new AssertionError("Cannot instantiate utility class");
     }
 
     public static void sendMessage(Player p, String message) {
