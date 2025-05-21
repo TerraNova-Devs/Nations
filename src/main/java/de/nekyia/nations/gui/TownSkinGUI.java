@@ -1,0 +1,83 @@
+package de.nekyia.nations.gui;
+
+
+
+import de.nekyia.nations.regions.access.Access;
+import de.nekyia.nations.regions.access.AccessLevel;
+import de.nekyia.nations.regions.grid.SettleRegionType;
+import de.nekyia.nations.regions.npc.NPCSkins;
+import de.nekyia.nations.utils.Chat;
+import de.nekyia.nations.utils.roseGUI.RoseGUI;
+import de.nekyia.nations.utils.roseGUI.RoseItem;
+import de.nekyia.nations.utils.roseGUI.RosePagination;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
+
+import java.lang.reflect.Method;
+
+public class TownSkinGUI extends RoseGUI {
+
+    private static Method metaSetProfileMethod;
+    private final RosePagination pagination = new RosePagination(this);
+    SettleRegionType settle;
+
+    public TownSkinGUI(Player player, int townskins, SettleRegionType settle) {
+        super(player, "town-skin-gui", Chat.blueFade("<b>Town Skins"), townskins);
+        this.pagination.registerPageSlotsBetween(10, 44);
+        this.settle = settle;
+    }
+
+    @Override
+    public void onOpen(InventoryOpenEvent event) {
+
+
+
+        RoseItem filler = new RoseItem.Builder()
+                .material(Material.BLACK_STAINED_GLASS_PANE)
+                .displayName("")
+                .build();
+        fillGui(filler);
+
+        RoseItem back = new RoseItem.Builder()
+                .material(Material.SPECTRAL_ARROW)
+                .displayName(Chat.redFade("<b>Go Back</b>"))
+                .build();
+        back.onClick(e -> {
+            new TownGUI(player, settle).open();
+        });
+
+        addItem(18, back);
+
+        int index = 0;
+
+        for (NPCSkins skin : NPCSkins.values()) {
+
+            // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
+
+                RoseItem skull = new RoseItem.Builder()
+                        .setSkull(skin.getSkinTexture())
+                        .displayName(Chat.yellowFade("<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
+                        .addLore(settle.getRank().getLevel() >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
+                        .build();
+                addItem(index + 10, skull);
+                skull.onClick(e -> {
+                    if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()),AccessLevel.VICE)){
+                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können"));
+                        return;
+                    }
+                    if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
+                });
+                index++;
+
+        }
+    }
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
+
+    }
+
+}

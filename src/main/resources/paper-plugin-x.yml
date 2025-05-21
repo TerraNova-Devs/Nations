@@ -1,11 +1,11 @@
 name: Nations
 version: 1.0.0-SNAPSHOT
-main: de.terranova.nations.NationsPlugin
-api-version: '1.21.4'
-authors: [gerryxn, bastizeit]
+main: de.nekyia.nations.NationsPlugin
+api-version: '1.21'
+authors: [gerryxn]
 prefix: Nations
 website: mcterranova.de
-description: Nations Plugin tailored & written by & for TerraNova.
+description: Nations Plugin tailored & written by Nekyia.
 bootstrapper: de.terranova.nations.paper.NationsPluginBootstrapper
 loader: de.terranova.nations.paper.NationsPluginLoader
 dependencies:
@@ -25,6 +25,6 @@ dependencies:
     WorldGuardExtraFlags:
       load: BEFORE
       required: true
-    Nexo:
+    Oraxen:
       load: BEFORE
       required: true

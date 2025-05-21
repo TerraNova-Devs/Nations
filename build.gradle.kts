@@ -2,13 +2,13 @@ import java.util.*
 
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
-  id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
+  id("io.papermc.paperweight.userdev") version "1.7.2"
+  id("xyz.jpenilla.run-paper") version "2.3.0" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("io.github.goooler.shadow") version "8.1.8"
 }
 
-group = "de.terranova.nations"
+group = "de.nekyia.nations"
 version = "1.0.0-SNAPSHOT"
 description = "Nations Plugin tailored & written by & for TerraNova."
 
@@ -16,6 +16,7 @@ java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
   toolchain.languageVersion = JavaLanguageVersion.of(21)
 }
+
 
 repositories {
   mavenCentral()
@@ -33,8 +34,8 @@ repositories {
     url = uri("https://maven.enginehub.org/repo/")
   }
   maven {
-    name = "Nexo"
-    url = uri("https://repo.nexomc.com/releases")
+    name = "Oraxen"
+    url = uri("https://repo.oraxen.com/releases")
   }
   exclusiveContent {
     forRepository {
@@ -43,24 +44,6 @@ repositories {
     filter { includeGroup("maven.modrinth") }
   }
 
-  maven {
-    name = "GitHubPackages"
-    url = uri("https://maven.pkg.github.com/TerraNova-Devs/TerranovaLib")
-
-    credentials {
-      val githubUser: String? = findProperty("gpr.user") as String?
-        ?: System.getenv("GPR_USER")
-      val githubToken: String? = findProperty("gpr.token") as String?
-        ?: System.getenv("GPR_TOKEN")
-
-      if (githubUser == null || githubToken == null) {
-        throw GradleException("GitHub credentials not found. Please set 'gpr.user' and 'gpr.token' in gradle.properties or as environment variables.")
-      }
-
-      username = githubUser
-      password = githubToken
-    }
-  }
   maven {
     name = "Hikari&Shadow"
     url = uri("https://jitpack.io")
@@ -72,18 +55,16 @@ repositories {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-  paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("1.21-R0.1-SNAPSHOT")
   implementation("com.zaxxer:HikariCP:6.2.1")
-  compileOnly("net.citizensnpcs:citizens-main:2.0.37-SNAPSHOT"){
+  compileOnly("net.citizensnpcs:citizens-main:2.0.35-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  compileOnly("maven.modrinth:pl3xmap:1.21.4-522")
-  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.13")
+  compileOnly("maven.modrinth:pl3xmap:1.21-500")
+  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.12")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("com.nexomc:nexo:1.1.0")
-  implementation("de.mcterranova:terranova-lib:1.0.1")
-  implementation("org.yaml:snakeyaml:2.2")
+  compileOnly("io.th0rgal:oraxen:1.184.0")
 }
 
 tasks {
@@ -98,7 +79,6 @@ tasks {
   shadowJar{
     destinationDirectory.set(file("./testserver/plugins"))
     //relocate("kotlin.", "your.mod.package.kotlin.")
-    relocate("org.yaml.snakeyaml", "de.terranova.nations.libs.yaml")
   }
 
 }

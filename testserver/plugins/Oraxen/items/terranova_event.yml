@@ -1,0 +1,9 @@
+terranova_playerhead_roling:
+  itemname: <gradient:#646DF0:#9C35F0><bold>unskinned Playerhead</bold></gradient>
+  Mechanics:
+    misc:
+      breaks_from_cactus: false
+      burns_in_fire: false
+      burns_in_lava: false
+      allow_in_vanilla_recipes: false
+  material: PLAYER_HEAD
