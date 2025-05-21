@@ -1,17 +1,13 @@
-package de.nekyia.nations.command;
+package de.nekyia.nations.command.TerraCommand;
 
-import de.nekyia.nations.regions.access.AccessCommands;
+import de.nekyia.nations.command.AbstractCommand;
+import de.nekyia.nations.command.PlayerAwarePlaceholder;
 import de.nekyia.nations.regions.access.AccessControlled;
 import de.nekyia.nations.regions.access.AccessLevel;
-import de.nekyia.nations.regions.bank.BankCommands;
-import de.nekyia.nations.regions.base.RegionCommands;
 import de.nekyia.nations.regions.base.RegionType;
 import de.nekyia.nations.regions.base.SelectCommands;
 import de.nekyia.nations.regions.base.TerraSelectCache;
-import de.nekyia.nations.regions.npc.NPCCommands;
-import de.nekyia.nations.utils.commands.AbstractCommand;
-import de.nekyia.nations.utils.commands.CachedSupplier;
-import de.nekyia.nations.utils.commands.PlayerAwarePlaceholder;
+import de.nekyia.nations.command.util.CachedSupplier;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;

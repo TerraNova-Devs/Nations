@@ -1,9 +1,8 @@
-package de.nekyia.nations.utils.commands;
+package de.nekyia.nations.command;
 
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * The DomainTabCompletionResolver class processes a list of domain strings

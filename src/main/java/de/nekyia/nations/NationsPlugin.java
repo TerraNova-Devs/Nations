@@ -3,7 +3,7 @@ package de.nekyia.nations;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.nekyia.nations.citizens.SettleTrait;
-import de.nekyia.nations.command.TerraCommand;
+import de.nekyia.nations.command.TerraCommand.TerraCommand;
 import de.nekyia.nations.database.HikariCP;
 import de.nekyia.nations.logging.FileLogger;
 import de.nekyia.nations.regions.RegionManager;

@@ -1,4 +1,4 @@
-package de.nekyia.nations.utils.commands;
+package de.nekyia.nations.command;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

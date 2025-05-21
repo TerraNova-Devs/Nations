@@ -1,4 +1,4 @@
-package de.nekyia.nations.utils.commands;
+package de.nekyia.nations.command;
 
 import de.nekyia.nations.utils.Chat;
 import net.kyori.adventure.text.format.TextDecoration;

@@ -1,10 +1,13 @@
-package de.nekyia.nations.regions.bank;
+package de.nekyia.nations.command.TerraCommand;
 
 import de.nekyia.nations.regions.access.Access;
+import de.nekyia.nations.regions.bank.BankHolder;
+import de.nekyia.nations.regions.bank.InstantGenerator;
+import de.nekyia.nations.regions.bank.Transaction;
 import de.nekyia.nations.regions.base.TerraSelectCache;
 import de.nekyia.nations.regions.access.AccessLevel;
 import de.nekyia.nations.utils.Chat;
-import de.nekyia.nations.utils.commands.CommandAnnotation;
+import de.nekyia.nations.command.CommandAnnotation;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;

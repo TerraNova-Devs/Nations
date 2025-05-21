@@ -1,4 +1,4 @@
-package de.nekyia.nations.regions.base;
+package de.nekyia.nations.command.TerraCommand;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldguard.WorldGuard;
@@ -8,9 +8,12 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.nekyia.nations.pl3xmap.RegionLayer;
 import de.nekyia.nations.regions.access.Access;
 import de.nekyia.nations.regions.access.AccessLevel;
+import de.nekyia.nations.regions.base.GridRegionType;
+import de.nekyia.nations.regions.base.RegionType;
+import de.nekyia.nations.regions.base.TerraSelectCache;
 import de.nekyia.nations.regions.grid.SettleRegionType;
 import de.nekyia.nations.utils.Chat;
-import de.nekyia.nations.utils.commands.CommandAnnotation;
+import de.nekyia.nations.command.CommandAnnotation;
 import de.nekyia.nations.worldguard.RegionClaimFunctions;
 import de.nekyia.nations.worldguard.math.Vectore2;
 import de.nekyia.nations.worldguard.math.claimCalc;

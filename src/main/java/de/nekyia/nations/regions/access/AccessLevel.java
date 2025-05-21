@@ -7,7 +7,7 @@ public enum AccessLevel {
     COUNCIL(10),
     CITIZEN(1);
 
-    int weight;
+    public int weight;
 
     AccessLevel(int weight) {
         this.weight = weight;

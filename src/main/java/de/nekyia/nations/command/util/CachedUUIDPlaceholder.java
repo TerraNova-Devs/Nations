@@ -1,5 +1,6 @@
-package de.nekyia.nations.utils.commands;
+package de.nekyia.nations.command.util;
 
+import de.nekyia.nations.command.PlayerAwarePlaceholder;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

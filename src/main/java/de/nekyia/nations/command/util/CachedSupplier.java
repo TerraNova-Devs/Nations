@@ -1,4 +1,4 @@
-package de.nekyia.nations.utils.commands;
+package de.nekyia.nations.command.util;
 
 import java.util.concurrent.TimeUnit;
 import java.util.function.Supplier;

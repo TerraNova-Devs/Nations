@@ -3,7 +3,7 @@ package de.nekyia.nations.regions.base;
 import de.nekyia.nations.regions.grid.SettleRegionType;
 import de.nekyia.nations.regions.RegionManager;
 import de.nekyia.nations.utils.Chat;
-import de.nekyia.nations.utils.commands.CommandAnnotation;
+import de.nekyia.nations.command.CommandAnnotation;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;

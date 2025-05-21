@@ -1,4 +1,4 @@
-package de.nekyia.nations.regions.npc;
+package de.nekyia.nations.command.TerraCommand;
 
 import de.nekyia.nations.regions.RegionManager;
 import de.nekyia.nations.regions.access.Access;
@@ -6,7 +6,7 @@ import de.nekyia.nations.regions.access.AccessLevel;
 import de.nekyia.nations.regions.base.TerraSelectCache;
 import de.nekyia.nations.regions.grid.SettleRegionType;
 import de.nekyia.nations.utils.Chat;
-import de.nekyia.nations.utils.commands.CommandAnnotation;
+import de.nekyia.nations.command.CommandAnnotation;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
