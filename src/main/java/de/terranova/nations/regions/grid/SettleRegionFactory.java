@@ -1,8 +1,6 @@
 package de.terranova.nations.regions.grid;
 
-import de.terranova.nations.regions.base.GridRegion;
-import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.RegionFactory;
+import de.terranova.nations.regions.base.*;
 import de.terranova.nations.utils.BiomeUtil;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
@@ -16,39 +14,15 @@ import java.util.UUID;
 
 public class SettleRegionFactory implements RegionFactory {
 
-    private static boolean isTooCloseToAnotherSettlement(Player p) {
-        return getClosestSettlementDistance(p) < 2000;
-    }
-
-    private static double getClosestSettlementDistance(Player p) {
-        double minDistance = Integer.MAX_VALUE;
-        for (Vectore2 location : GridRegion.locationCache) {
-            double distance = claimCalc.abstand(location, new Vectore2(p.getLocation()));
-            if (distance < minDistance) {
-                minDistance = distance;
-            }
-        }
-        return minDistance;
-    }
-
-    public static boolean isInBlacklistedBiome(Player player) {
-        List<String> biomeTranslationKeys = List.of(
-                //Minecraft biomes
-                "minecraft:deep_ocean", "minecraft:ocean", "minecraft:warm_ocean",
-                "minecraft:frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:cold_ocean",
-                "minecraft:deep_frozen_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:deep_cold_ocean",
-                "minecraft:river", "minecraft:beach", "minecraft:snowy_beach",
-                //Terralith biomes
-                "terralith:gravel_beach", "terralith:snowy_beach", "terralith:oceanic_plateau",
-                "terralith:tropical_bay", "terralith:rocky_coast", "terralith:white_cliffs",
-                "terralith:sandstone_valley"
-        );
-
-        return BiomeUtil.isBiomeInList(player.getLocation(), biomeTranslationKeys);
+    @Override
+    public String getType() {
+        return SettleRegion.REGION_TYPE;
     }
 
     @Override
-    public Region create(String name, Player p) {
+    public Region createWithContext(RegionContext ctx) {
+        Player p = ctx.player;
+        String name = ctx.extra.get("name");
         // Perform all necessary validations before creation
         if (!isValidName(name, p)) {
             p.sendMessage(Chat.errorFade("Invalid name for settlement." + name));
@@ -81,8 +55,12 @@ public class SettleRegionFactory implements RegionFactory {
     }
 
     @Override
-    public Region retrieve(String name, UUID ruuid) {
-        return new SettleRegion(name, ruuid);
+    public Region createFromArgs(List<String> args) {
+        return new SettleRegion(
+                args.getFirst(),
+                UUID.fromString(args.get(1)),
+                new Vectore2(args.get(2))
+        );
     }
 
     private static boolean isValidName(String name, Player p) {
@@ -95,6 +73,39 @@ public class SettleRegionFactory implements RegionFactory {
         }
         p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
         return false;
+    }
+
+
+
+    private static boolean isTooCloseToAnotherSettlement(Player p) {
+        return getClosestSettlementDistance(p) < 2000;
+    }
+
+    private static double getClosestSettlementDistance(Player p) {
+        double minDistance = Integer.MAX_VALUE;
+        for (Vectore2 location : GridRegion.locationCache) {
+            double distance = claimCalc.abstand(location, new Vectore2(p.getLocation()));
+            if (distance < minDistance) {
+                minDistance = distance;
+            }
+        }
+        return minDistance;
+    }
+
+    public static boolean isInBlacklistedBiome(Player player) {
+        List<String> biomeTranslationKeys = List.of(
+                //Minecraft biomes
+                "minecraft:deep_ocean", "minecraft:ocean", "minecraft:warm_ocean",
+                "minecraft:frozen_ocean", "minecraft:lukewarm_ocean", "minecraft:cold_ocean",
+                "minecraft:deep_frozen_ocean", "minecraft:deep_lukewarm_ocean", "minecraft:deep_cold_ocean",
+                "minecraft:river", "minecraft:beach", "minecraft:snowy_beach",
+                //Terralith biomes
+                "terralith:gravel_beach", "terralith:snowy_beach", "terralith:oceanic_plateau",
+                "terralith:tropical_bay", "terralith:rocky_coast", "terralith:white_cliffs",
+                "terralith:sandstone_valley"
+        );
+
+        return BiomeUtil.isBiomeInList(player.getLocation(), biomeTranslationKeys);
     }
 
 }

@@ -2,8 +2,10 @@ package de.terranova.nations.regions.base;
 
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
+import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
 import java.util.UUID;
 //Supports Poly & Squared Regions
 public abstract class BoundaryRegion extends Region {
@@ -39,4 +41,5 @@ public abstract class BoundaryRegion extends Region {
     public final void dataBaseCall() {
         //Boundary Region Insert
     }
+
 }

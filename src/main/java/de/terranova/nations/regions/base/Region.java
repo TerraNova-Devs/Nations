@@ -18,7 +18,6 @@ import java.util.*;
 public abstract class Region {
 
     // Registry for dynamically adding Region
-    public static final Map<String, RegionFactory> registry = new HashMap<>();
     protected final UUID id;
     protected final String type;
     private final RegionEventBus eventBus = new RegionEventBus();
@@ -46,46 +45,7 @@ public abstract class Region {
         nameCache.add(name.toLowerCase());
     }
 
-    // Method to register new Region creators
-    public static void registerRegion(String type, RegionFactory factory) {
-        registry.put(type.toLowerCase(), factory);
-    }
 
-    // Method to deregister a Region
-    public static void deregisterRegion(String type) {
-        registry.remove(type.toLowerCase());
-    }
-
-    // Factory method to create Regions
-    public static Optional<Region> createRegion(String type, String name, Player p) {
-        RegionFactory factory = registry.get(type.toLowerCase());
-        if (factory == null) {
-            p.sendMessage(Chat.errorFade("No such region type registered: " + type));
-            return Optional.empty();
-        }
-
-        Region region = factory.create(name, p);
-        if (region == null) {
-            return Optional.empty();  // Creation failed due to validation issues.
-        }
-        region.onCreation(p);
-        region.dataBaseCall();
-        return Optional.of(region);
-    }
-
-    // Factory method to retrieve Regions
-    public static Optional<Region> retrieveRegion(String type, String name, UUID ruuid, Vectore2 loc) {
-        RegionFactory factory = registry.get(type.toLowerCase());
-        if (factory == null) {
-            return Optional.empty();
-        }
-
-        Region region = factory.retrieve(name, ruuid);
-        if (region == null) {
-            return Optional.empty();  // Creation failed due to validation issues.
-        }
-        return Optional.of(region);
-    }
 
     // Abstract method to enforce implementation in subclasses
     public final void remove() {
@@ -203,7 +163,4 @@ public abstract class Region {
         return type;
     }
 
-    public static List<String> getRegionTypes() {
-        return new ArrayList<>(registry.keySet());
-    }
 }

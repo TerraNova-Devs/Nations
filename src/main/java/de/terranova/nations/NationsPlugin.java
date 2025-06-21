@@ -15,6 +15,7 @@ import de.terranova.nations.professions.pojo.ProfessionConfigLoader;
 import de.terranova.nations.professions.pojo.ProfessionsYaml;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -22,6 +23,7 @@ import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
+import de.terranova.nations.worldguard.math.Vectore2;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
@@ -44,10 +46,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
@@ -94,7 +93,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     private void nationsRegionTypeRegistry() {
-        Region.registerRegion(SettleRegion.REGION_TYPE, new SettleRegionFactory());
+        RegionRegistry.register(new SettleRegionFactory());
     }
 
     @Override

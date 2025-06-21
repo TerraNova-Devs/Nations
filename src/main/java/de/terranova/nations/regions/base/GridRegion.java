@@ -7,6 +7,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public abstract class GridRegion extends Region {
@@ -68,4 +69,5 @@ public abstract class GridRegion extends Region {
             throw new IllegalArgumentException("Claims cannot exceed maximum allowed claims: " + getMaxClaims());
         }
     }
+
 }

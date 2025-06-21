@@ -1,11 +1,14 @@
 package de.terranova.nations.regions.base;
 
-import de.terranova.nations.worldguard.math.Vectore2;
-import org.bukkit.entity.Player;
-
-import java.util.UUID;
+import java.util.List;
 
 public interface RegionFactory {
-    Region create(String name, Player p);
-    Region retrieve(String name, UUID ruuid);
+
+    String getType();
+
+    //For new Creations facilitates more information
+    Region createWithContext(RegionContext ctx);
+
+    //Too load least neccesairy from saved data
+    Region createFromArgs(List<String> args);
 }

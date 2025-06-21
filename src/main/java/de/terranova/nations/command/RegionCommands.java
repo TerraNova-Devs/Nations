@@ -9,9 +9,7 @@ import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
-import de.terranova.nations.regions.base.GridRegion;
-import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.TerraSelectCache;
+import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
@@ -21,6 +19,8 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 
@@ -37,12 +37,11 @@ public class RegionCommands {
         String type = args[2].toLowerCase();
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 3, args.length)));
 
-        if(!Region.registry.containsKey(type)){
-            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", Region.registry.keySet())));
+        if(!RegionRegistry.registry.containsKey(type)){
+            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionRegistry.registry.keySet())));
             return false;
         }
-
-        Optional<Region> regionTypeOpt = Region.createRegion(type, name ,p);
+        Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p,Map.of("name", name)));
         if (regionTypeOpt.isPresent()) {
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
         } else {

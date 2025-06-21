@@ -3,6 +3,7 @@ package de.terranova.nations.database.dao;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.sql.Connection;
@@ -10,6 +11,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -69,8 +71,8 @@ public class GridRegionDAO {
             ps.setString(1, type);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                UUID id = UUID.fromString(rs.getString("RUUID"));
-                gridRegions.put(id, Region.retrieveRegion(rs.getString("type"), rs.getString("name"), id, new Vectore2(rs.getString("location"))).get());
+                String id = rs.getString("RUUID");
+                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"),id,new Vectore2(rs.getString("location")).asString())));
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);

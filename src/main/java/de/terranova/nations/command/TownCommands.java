@@ -20,6 +20,8 @@ import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.bank.Transaction;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionContext;
+import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.utils.Chat;
@@ -548,7 +550,7 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Optional<Region> osettle = Region.createRegion("settle", name ,p);
+        Optional<Region> osettle = RegionRegistry.createWithContext("settle", new RegionContext(p, Map.of("name", name)));
         if (osettle.isPresent()) {
             p.sendMessage(Chat.greenFade("Stadt " + name + " wurde erfolgreich gegründet."));
             return true;
