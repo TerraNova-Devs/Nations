@@ -120,6 +120,7 @@ public class TownCommands extends AbstractCommand {
         registerSubCommand(this,"npc");
         registerSubCommand(this, "trust");
         registerSubCommand(new BuildingCommands(),"building");
+        registerSubCommand(RegionCommands.class,"admin");
 
         setupHelpCommand();
         initialize();

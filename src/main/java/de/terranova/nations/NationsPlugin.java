@@ -16,6 +16,7 @@ import de.terranova.nations.professions.pojo.ProfessionsYaml;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionRegistry;
+import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -94,6 +95,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     private void nationsRegionTypeRegistry() {
         RegionRegistry.register(new SettleRegionFactory());
+        RegionRegistry.register(new PropertyRegionFactory());
     }
 
     @Override
