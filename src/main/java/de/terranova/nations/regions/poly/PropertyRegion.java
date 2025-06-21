@@ -16,7 +16,7 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
     private PropertyAccess access;
     private Bank bank;
 
-    public PropertyRegion(String name, UUID ruuid, UUID owner, Vectore2 location) {
+    public PropertyRegion(String name, UUID ruuid, UUID owner) {
         super(name, ruuid, REGION_TYPE);
         this.access = new PropertyAccess(this);
         this.setOwner(owner);

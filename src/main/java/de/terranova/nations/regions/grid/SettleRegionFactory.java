@@ -81,11 +81,11 @@ public class SettleRegionFactory implements RegionFactory {
     }
 
     @Override
-    public Region retrieve(String name, UUID ruuid, Vectore2 loc) {
-        return new SettleRegion(name, ruuid, loc);
+    public Region retrieve(String name, UUID ruuid) {
+        return new SettleRegion(name, ruuid);
     }
 
-    private boolean isValidName(String name, Player p) {
+    private static boolean isValidName(String name, Player p) {
         if (name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
             return true;
         }

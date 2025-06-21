@@ -80,7 +80,7 @@ public abstract class Region {
             return Optional.empty();
         }
 
-        Region region = factory.retrieve(name, ruuid, loc);
+        Region region = factory.retrieve(name, ruuid);
         if (region == null) {
             return Optional.empty();  // Creation failed due to validation issues.
         }

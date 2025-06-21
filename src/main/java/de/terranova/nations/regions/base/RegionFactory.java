@@ -7,5 +7,5 @@ import java.util.UUID;
 
 public interface RegionFactory {
     Region create(String name, Player p);
-    Region retrieve(String name, UUID ruuid, Vectore2 loc);
+    Region retrieve(String name, UUID ruuid);
 }
