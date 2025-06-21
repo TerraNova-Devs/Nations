@@ -1,6 +1,7 @@
 package de.terranova.nations.utils.InventoryUtil;
 
 import com.nexomc.nexo.api.NexoItems;
+import org.apache.commons.lang3.EnumUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -71,8 +72,10 @@ public class ItemTransfer {
     private static ItemStack resolveItem(String itemString) {
         if (NexoItems.exists(itemString)) {
             return NexoItems.itemFromId(itemString).build();
-        } else {
+        } else if(EnumUtils.isValidEnum(Material.class, itemString)) {
             return new ItemStack(Material.valueOf(itemString));
+        } else {
+            throw new IllegalArgumentException("Folgendes Item konnte nicht gefunden werden:" + itemString);
         }
     }
 

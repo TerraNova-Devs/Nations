@@ -1,0 +1,1138 @@
+professions:
+
+  ############################################################################
+  # Fischerei (FISHERY)
+  ############################################################################
+  - professionId: "fishery_1"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    icon: "FISHING_ROD"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "fishery_1_1"
+        name: "Kleines Fischerhaus"
+        description: "Ein kleines Fischerhaus mit Boot, trocknenden Netzen und grundlegender Einrichtung."
+
+    objectives:
+      - objectiveId: "fishery_1_1"
+        action: "FISH"
+        object: "ANY_FISH"
+        amount: 5000
+
+  - professionId: "fishery_2"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    icon: "FISHING_ROD"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "fishery_2_1"
+        name: "5 Fischerhäuser"
+        description: "Fünf Fischerhäuser mit Wohnraum oben und Lagerflächen unten."
+      - buildingId: "fishery_2_2"
+        name: "Kleiner Fischerhafen"
+        description: "Ein kleiner Hafen mit Anlegestellen für die örtlichen Fischerboote."
+
+    objectives:
+      - objectiveId: "fishery_2_1"
+        action: "FISH"
+        object: "ANY_FISH"
+        amount: 12000
+
+  - professionId: "fishery_3"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    icon: "FISHING_ROD"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "fishery_3_1"
+        name: "Großer Fischerhafen"
+        description: "Ein größerer Hafenbereich mit umfangreicher Infrastruktur."
+      - buildingId: "fishery_3_2"
+        name: "8 Fischerhäuser"
+        description: "Mehrere Fischerhäuser rund um den Hafen."
+      - buildingId: "fishery_3_3"
+        name: "Mehrere Fischerboote"
+        description: "Boote auf dem Wasser, angelegt am Hafen."
+
+    objectives:
+      - objectiveId: "fishery_3_1"
+        action: "FISH"
+        object: "ANY_FISH"
+        amount: 30000
+
+  - professionId: "fishery_4"
+    type: "FISHERY"
+    prettyName: "Fischerei"
+    icon: "FISHING_ROD"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "fishery_4_1"
+        name: "Großer Fischermarkt"
+        description: "Offen oder überdacht mit ~10 Ständen, Verkaufsfläche für Meereserzeugnisse."
+      - buildingId: "fishery_4_2"
+        name: "Zusätzliche Boote / Kutter"
+        description: "Mehrere Fischerboote am Steg oder auf dem Wasser."
+
+    objectives:
+      - objectiveId: "fishery_4_1"
+        action: "FISH"
+        object: "ANY_FISH"
+        amount: 80000
+
+
+  ############################################################################
+  # Bergbau (MINING)
+  ############################################################################
+  - professionId: "mining_1"
+    type: "MINING"
+    prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "mining_1_1"
+        name: "Kleiner Minenschacht"
+        description: "Ein Bergwerkeingang mit Minenschacht und grundlegender Infrastruktur (Kisten, Beleuchtung)."
+
+    objectives:
+      - objectiveId: "mining_1_stone"
+        action: "DESTROY"
+        object: "ANY_STONE"
+        amount: 8000
+      - objectiveId: "mining_1_coal"
+        action: "DESTROY"
+        object: "COAL_ORE"
+        amount: 1000
+
+  - professionId: "mining_2"
+    type: "MINING"
+    prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "mining_2_1"
+        name: "Hauptstollen mit Schienen"
+        description: "Ein ausgebauter Hauptstollen, ausgerüstet mit Schienen für Materialtransport."
+      - buildingId: "mining_2_2"
+        name: "Zweiter Eingang"
+        description: "Alternative Zufahrt oder Einstieg ins Bergwerk."
+      - buildingId: "mining_2_3"
+        name: "Zentraler Lagerraum"
+        description: "Eine zentrale Lagerstätte für gefördertes Erz und Gestein."
+
+    objectives:
+      - objectiveId: "mining_2_iron"
+        action: "DESTROY"
+        object: "IRON_ORE"
+        amount: 5000
+      - objectiveId: "mining_2_redstone"
+        action: "DESTROY"
+        object: "REDSTONE_ORE"
+        amount: 2500
+      - objectiveId: "mining_2_lapis"
+        action: "DESTROY"
+        object: "LAPIS_ORE"
+        amount: 2500
+
+  - professionId: "mining_3"
+    type: "MINING"
+    prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "mining_3_1"
+        name: "Fortgeschrittenes Minennetz"
+        description: "Erweitertes Schienennetz mit mehreren Verzweigungen."
+      - buildingId: "mining_3_2"
+        name: "Schmelzstation oder Gießerei"
+        description: "Ein Bereich zum Verarbeiten der geförderten Erze."
+
+    objectives:
+      - objectiveId: "mining_3_diamond"
+        action: "DESTROY"
+        object: "DIAMOND_ORE"
+        amount: 2500
+      - objectiveId: "mining_3_gold"
+        action: "DESTROY"
+        object: "GOLD_ORE"
+        amount: 8000
+      - objectiveId: "mining_3_iron"
+        action: "DESTROY"
+        object: "IRON_ORE"
+        amount: 12000
+      - objectiveId: "mining_3_coal"
+        action: "DESTROY"
+        object: "COAL_ORE"
+        amount: 10000
+
+  - professionId: "mining_4"
+    type: "MINING"
+    prettyName: "Bergbau"
+    icon: "IRON_PICKAXE"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "mining_4_1"
+        name: "Großes Minen- und Logistiksystem"
+        description: "Mehrere Stollen, verzweigtes Schienennetz und Förderbänder."
+      - buildingId: "mining_4_2"
+        name: "Aufzug in tiefere Stollen"
+        description: "Lift oder Seilwinde, um in große Tiefen zu gelangen."
+
+    objectives:
+      - objectiveId: "mining_4_diamond"
+        action: "DESTROY"
+        object: "DIAMOND_ORE"
+        amount: 5000
+      - objectiveId: "mining_4_gold"
+        action: "DESTROY"
+        object: "GOLD_ORE"
+        amount: 20000
+      - objectiveId: "mining_4_iron"
+        action: "DESTROY"
+        object: "IRON_ORE"
+        amount: 30000
+      - objectiveId: "mining_4_ancient_debris"
+        action: "DESTROY"
+        object: "ANCIENT_DEBRIS"
+        amount: 1000
+
+
+  ############################################################################
+  # Landwirtschaft (FARMING)
+  ############################################################################
+  - professionId: "farming_1"
+    type: "FARMING"
+    prettyName: "Landwirtschaft"
+    icon: "IRON_HOE"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "farming_1_1"
+        name: "Kleiner Bauernhof"
+        description: "Mindestens 2 Felder (z. B. Weizen, Karotten, Kartoffeln)."
+
+    objectives:
+      - objectiveId: "farming_1_crops"
+        action: "HARVEST"
+        object: "ANY_CROP"
+        amount: 10000
+
+  - professionId: "farming_2"
+    type: "FARMING"
+    prettyName: "Landwirtschaft"
+    icon: "IRON_HOE"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "farming_2_1"
+        name: "Mehrere Felder (mind. 5)"
+        description: "Größere Anbaufläche für verschiedene Pflanzen."
+      - buildingId: "farming_2_2"
+        name: "Scheune oder Silo"
+        description: "Lagerung für Saatgut und geerntete Pflanzen."
+
+    objectives:
+      - objectiveId: "farming_2_crops"
+        action: "HARVEST"
+        object: "ANY_CROP"
+        amount: 25000
+
+  - professionId: "farming_3"
+    type: "FARMING"
+    prettyName: "Landwirtschaft"
+    icon: "IRON_HOE"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "farming_3_1"
+        name: "Mühle"
+        description: "Eine funktionsfähige (Deko-)Mühle zur Getreideverarbeitung."
+      - buildingId: "farming_3_2"
+        name: "Größere Scheune"
+        description: "Platz für Erntegüter und ggf. Tiere."
+      - buildingId: "farming_3_3"
+        name: "Felder unterschiedlicher Arten"
+        description: "Mind. 5 Sorten: Weizen, Karotten, Kartoffeln, usw."
+
+    objectives:
+      - objectiveId: "farming_3_crops"
+        action: "HARVEST"
+        object: "ANY_CROP"
+        amount: 60000
+
+  - professionId: "farming_4"
+    type: "FARMING"
+    prettyName: "Landwirtschaft"
+    icon: "IRON_HOE"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "farming_4_1"
+        name: "Großer landwirtschaftlicher Komplex"
+        description: "Großes Anwesen mit Mühle und mehreren Silos."
+      - buildingId: "farming_4_2"
+        name: "Zahlreiche Felder & Obstgärten"
+        description: "Verschiedenste Pflanzenarten auf weitläufigen Feldern."
+      - buildingId: "farming_4_3"
+        name: "Kleine Viehhaltung"
+        description: "Optionale Stallungen für Hühner, Kühe o.ä.."
+
+    objectives:
+      - objectiveId: "farming_4_crops"
+        action: "HARVEST"
+        object: "ANY_CROP"
+        amount: 150000
+
+
+  ############################################################################
+  # Tierzucht (RANCHING)
+  ############################################################################
+  - professionId: "ranching_1"
+    type: "RANCHING"
+    prettyName: "Tierzucht"
+    icon: "WHEAT"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "ranching_1_1"
+        name: "Kleiner Stall oder Gehege"
+        description: "Für mind. 2 Tierarten (z. B. Kühe und Schafe)."
+
+    objectives:
+      - objectiveId: "ranching_1_breed"
+        action: "BREED"
+        object: "ANY_ANIMAL"
+        amount: 5000
+      - objectiveId: "ranching_1_kill"
+        action: "KILL"
+        object: "ANY_ANIMAL"
+        amount: 4500
+
+  - professionId: "ranching_2"
+    type: "RANCHING"
+    prettyName: "Tierzucht"
+    icon: "WHEAT"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "ranching_2_1"
+        name: "3 große Gehege"
+        description: "Große Ställe, Futterlager (Weizen, Karotten etc.)."
+
+    objectives:
+      - objectiveId: "ranching_2_breed"
+        action: "BREED"
+        object: "ANY_ANIMAL"
+        amount: 10000
+      - objectiveId: "ranching_2_kill"
+        action: "KILL"
+        object: "ANY_ANIMAL"
+        amount: 9500
+
+  - professionId: "ranching_3"
+    type: "RANCHING"
+    prettyName: "Tierzucht"
+    icon: "WHEAT"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "ranching_3_1"
+        name: "Ausgedehnte Weideflächen"
+        description: "Große Weiden für diverse Zuchttiere."
+      - buildingId: "ranching_3_2"
+        name: "Viehmarkt oder Handelsplatz"
+        description: "Für An- und Verkauf von Zuchttieren."
+
+    objectives:
+      - objectiveId: "ranching_3_breed"
+        action: "BREED"
+        object: "ANY_ANIMAL"
+        amount: 24000
+      - objectiveId: "ranching_3_kill"
+        action: "KILL"
+        object: "ANY_ANIMAL"
+        amount: 23500
+
+  - professionId: "ranching_4"
+    type: "RANCHING"
+    prettyName: "Tierzucht"
+    icon: "WHEAT"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "ranching_4_1"
+        name: "Großer Zuchtbetrieb"
+        description: "Umfasst Stallungen, Weideflächen und Trainingsbereiche."
+      - buildingId: "ranching_4_2"
+        name: "Turnier- oder Rennbahn"
+        description: "Für Pferde- oder Tierrennen."
+
+    objectives:
+      - objectiveId: "ranching_4_breed"
+        action: "BREED"
+        object: "ANY_ANIMAL"
+        amount: 60000
+      - objectiveId: "ranching_4_kill"
+        action: "KILL"
+        object: "ANY_ANIMAL"
+        amount: 59500
+
+
+  ############################################################################
+  # Braukunst (BREWING)
+  ############################################################################
+  - professionId: "brewing_1"
+    type: "BREWING"
+    prettyName: "Braukunst"
+    icon: "BREWING_STAND"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "brewing_1_1"
+        name: "Kleines Brauhaus"
+        description: "Mit Braustand, Kessel und ein paar Lagerkisten."
+
+    objectives:
+      - objectiveId: "brewing_1_potions"
+        action: "BREW"
+        object: "ANY_POTION"
+        amount: 5000
+
+  - professionId: "brewing_2"
+    type: "BREWING"
+    prettyName: "Braukunst"
+    icon: "BREWING_STAND"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "brewing_2_1"
+        name: "Taverne oder Wirtshaus"
+        description: "Mehrere Braustände, Sitzgelegenheiten, ggf. kleine Küche."
+      - buildingId: "brewing_2_2"
+        name: "Zusätzlicher Braubereich"
+        description: "Erweiterter Bereich mit mehreren Kesseln oder Brauständen."
+
+    objectives:
+      - objectiveId: "brewing_2_potions"
+        action: "BREW"
+        object: "ANY_POTION"
+        amount: 10000
+
+  - professionId: "brewing_3"
+    type: "BREWING"
+    prettyName: "Braukunst"
+    icon: "BREWING_STAND"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "brewing_3_1"
+        name: "Großes Gasthaus/Restaurant"
+        description: "Mit Großküche und ausgebautem Braubereich."
+      - buildingId: "brewing_3_2"
+        name: "Mehrere Braustationen"
+        description: "Separate Räume fürs Brauen unterschiedlicher Trankarten."
+
+    objectives:
+      - objectiveId: "brewing_3_potions"
+        action: "BREW"
+        object: "ANY_POTION"
+        amount: 25000
+
+  - professionId: "brewing_4"
+    type: "BREWING"
+    prettyName: "Braukunst"
+    icon: "BREWING_STAND"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "brewing_4_1"
+        name: "Großer Hotel- oder Gastronomiebetrieb"
+        description: "Mehrere Zimmer, großer Braukeller oder Brausaal."
+      - buildingId: "brewing_4_2"
+        name: "Eigene Brauerei"
+        description: "Komplette Brauanlage in separatem Gebäude."
+
+    objectives:
+      - objectiveId: "brewing_4_potions"
+        action: "BREW"
+        object: "ANY_POTION"
+        amount: 60000
+
+
+  ############################################################################
+  # Schmiedekunst (SMITHING)
+  ############################################################################
+  - professionId: "smithing_1"
+    type: "SMITHING"
+    prettyName: "Schmiedekunst"
+    icon: "ANVIL"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "smithing_1_1"
+        name: "Kleine Schmiede"
+        description: "Mit Amboss und Hochofen."
+
+    objectives:
+      - objectiveId: "smithing_1_tools"
+        action: "CRAFT"
+        object: "IRON_TOOL"
+        amount: 5000
+
+  - professionId: "smithing_2"
+    type: "SMITHING"
+    prettyName: "Schmiedekunst"
+    icon: "ANVIL"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "smithing_2_1"
+        name: "Erweiterte Schmiede(n)"
+        description: "Mindestens 2 Arbeitsbereiche oder eine zweite Schmiede in der Stadt."
+      - buildingId: "smithing_2_2"
+        name: "Zusätzliche Lagermöglichkeiten"
+        description: "Getrennte Lager für Metalle, Kohle und fertige Werkstücke."
+
+    objectives:
+      - objectiveId: "smithing_2_diamond"
+        action: "CRAFT"
+        object: "DIAMOND_TOOL"
+        amount: 10000
+
+  - professionId: "smithing_3"
+    type: "SMITHING"
+    prettyName: "Schmiedekunst"
+    icon: "ANVIL"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "smithing_3_1"
+        name: "Gießerei"
+        description: "Großes Gebäude mit Schmelzöfen, Lagerraum. Kooperation mit Bergbau naheliegend."
+      - buildingId: "smithing_3_2"
+        name: "Werkstatt für besondere Legierungen"
+        description: "z.B. Stahlveredelung, Netherite-Verarbeitung."
+
+    objectives:
+      - objectiveId: "smithing_3_tools"
+        action: "CRAFT"
+        object: "NETHERITE_TOOL"
+        amount: 500
+      - objectiveId: "smithing_3_diamond"
+        action: "CRAFT"
+        object: "DIAMOND_TOOL"
+        amount: 20000
+
+  - professionId: "smithing_4"
+    type: "SMITHING"
+    prettyName: "Schmiedekunst"
+    icon: "ANVIL"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "smithing_4_1"
+        name: "Große Schmiede-Meisterhalle"
+        description: "Repräsentatives Hauptgebäude für die örtliche Schmiedegilde."
+      - buildingId: "smithing_4_2"
+        name: "Mehrere Schmelz- und Reparaturstationen"
+        description: "Umfangreiche Infrastruktur für Massenproduktion und -reparatur."
+
+    objectives:
+      - objectiveId: "smithing_4_tools"
+        action: "CRAFT"
+        object: "NETHERITE_TOOL"
+        amount: 2000
+      - objectiveId: "smithing_4_diamond"
+        action: "CRAFT"
+        object: "DIAMOND_TOOL"
+        amount: 40000
+
+
+  ############################################################################
+  # Magie & Verzauberung (MAGIC)
+  ############################################################################
+  - professionId: "magic_1"
+    type: "MAGIC"
+    prettyName: "Magie & Verzauberung"
+    icon: "ENCHANTING_TABLE"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "magic_1_1"
+        name: "Kleiner Zauberraum"
+        description: "Mind. 10 Bücherregale + Zaubertisch."
+
+    objectives:
+      - objectiveId: "magic_1_enchants"
+        action: "ENCHANT"
+        object: "ANY_ITEM"
+        amount: 2500
+
+  - professionId: "magic_2"
+    type: "MAGIC"
+    prettyName: "Magie & Verzauberung"
+    icon: "ENCHANTING_TABLE"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "magic_2_1"
+        name: "Ausgebauter Zauberraum"
+        description: "Mind. 15 Bücherregale + kleine Bibliothek."
+      - buildingId: "magic_2_2"
+        name: "Verzauberungslabor"
+        description: "Bereich für Experimente und höherstufige Verzauberungen."
+
+    objectives:
+      - objectiveId: "magic_2_enchants"
+        action: "ENCHANT"
+        object: "ANY_ITEM"
+        amount: 6000
+
+  - professionId: "magic_3"
+    type: "MAGIC"
+    prettyName: "Magie & Verzauberung"
+    icon: "ENCHANTING_TABLE"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "magic_3_1"
+        name: "Große Bibliothek oder Zauber-Archiv"
+        description: "Mit Turm oder Magierschule, umfangreiche Büchersammlung."
+      - buildingId: "magic_3_2"
+        name: "Ritualraum für höhere Verzauberungen"
+        description: "Großer Raum für mächtige Verzauberungen und Zauberrituale."
+
+    objectives:
+      - objectiveId: "magic_3_enchants"
+        action: "ENCHANT"
+        object: "ANY_ITEM"
+        amount: 12000
+
+  - professionId: "magic_4"
+    type: "MAGIC"
+    prettyName: "Magie & Verzauberung"
+    icon: "ENCHANTING_TABLE"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "magic_4_1"
+        name: "Akademie"
+        description: "Großes Gebäude mit Ritualsälen und mächtigen Zauberstationen."
+      - buildingId: "magic_4_2"
+        name: "Große Bibliothek oder Zauber-Archiv"
+        description: "Umfangreiche Büchersammlung."
+
+    objectives:
+      - objectiveId: "magic_4_enchants"
+        action: "ENCHANT"
+        object: "ANY_ITEM"
+        amount: 25000
+
+
+  ############################################################################
+  # Holzverarbeitung & Forstwirtschaft (WOODCUTTING)
+  ############################################################################
+  - professionId: "woodcutting_1"
+    type: "WOODCUTTING"
+    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    icon: "IRON_AXE"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "woodcutting_1_1"
+        name: "Kleines Sägewerk"
+        description: "Deko-Sägen, Lagerhaus für Holz."
+
+    objectives:
+      - objectiveId: "woodcutting_1_logs"
+        action: "DESTROY"
+        object: "ANY_LOG"
+        amount: 7500
+
+  - professionId: "woodcutting_2"
+    type: "WOODCUTTING"
+    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    icon: "IRON_AXE"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "woodcutting_2_1"
+        name: "Forsthaus oder Waldhütte"
+        description: "Mind. 2 Sägewerks-Bereiche für Weiterverarbeitung."
+      - buildingId: "woodcutting_2_2"
+        name: "Aufforstungszone"
+        description: "Junge Bäume zum nachhaltigen Holzanbau."
+
+    objectives:
+      - objectiveId: "woodcutting_2_logs"
+        action: "DESTROY"
+        object: "ANY_LOG"
+        amount: 15000
+
+  - professionId: "woodcutting_3"
+    type: "WOODCUTTING"
+    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    icon: "IRON_AXE"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "woodcutting_3_1"
+        name: "Großes Holzlager"
+        description: "Mehrstöckig, Platz für große Mengen an Baumstämmen."
+      - buildingId: "woodcutting_3_2"
+        name: "Zweite Sägewerkseinheit"
+        description: "Erweiterte Kapazität zur Holzverarbeitung (z. B. Bretter, Stufen)."
+
+    objectives:
+      - objectiveId: "woodcutting_3_logs"
+        action: "DESTROY"
+        object: "ANY_LOG"
+        amount: 40000
+
+  - professionId: "woodcutting_4"
+    type: "WOODCUTTING"
+    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    icon: "IRON_AXE"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "woodcutting_4_1"
+        name: "Riesiges Forstgebiet mit abgeholzten Flächen, jungen Bäumen und mehr."
+        description: "Großflächiges Waldgebiet mit Aufforstungs- und Abholzungszonen."
+      - buildingId: "woodcutting_4_2"
+        name: "Großes Sägewerk mit erweiterter Logistik"
+        description: "Mehrere Sägen, Lager, Anbindung an ein Transportsystem (Karren, Fluss, Schiene)."
+
+    objectives:
+      - objectiveId: "woodcutting_4_logs"
+        action: "DESTROY"
+        object: "ANY_LOG"
+        amount: 90000
+
+
+  ############################################################################
+  # Militär / Verteidigung (MILITARY)
+  ############################################################################
+  - professionId: "military_1"
+    type: "MILITARY"
+    prettyName: "Militär / Verteidigung"
+    icon: "IRON_SWORD"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "military_1_1"
+        name: "Kleine Kaserne oder Wachtmauer"
+        description: "Erste Mauern/Befestigungen ums Stadtgebiet. Alternativ eine Kaserne."
+
+    objectives:
+      - objectiveId: "military_1_mobs"
+        action: "KILL"
+        object: "HOSTILE_MOB"
+        amount: 5000
+
+  - professionId: "military_2"
+    type: "MILITARY"
+    prettyName: "Militär / Verteidigung"
+    icon: "IRON_SWORD"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "military_2_1"
+        name: "Ausgebautes Befestigungssystem"
+        description: "Höhere Mauern, Gräben oder ähnliche Verteidigungsanlagen."
+      - buildingId: "military_2_2"
+        name: "Wachtürme"
+        description: "Mehrere Türme zur Übersicht, z. B. an Stadteingängen."
+      - buildingId: "military_2_3"
+        name: "Trainingsplatz"
+        description: "Übungsplatz für Soldaten, evtl. mit Schießstand."
+
+    objectives:
+      - objectiveId: "military_2_mobs"
+        action: "KILL"
+        object: "HOSTILE_MOB"
+        amount: 10000
+
+  - professionId: "military_3"
+    type: "MILITARY"
+    prettyName: "Militär / Verteidigung"
+    icon: "IRON_SWORD"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "military_3_1"
+        name: "Rüstkammer"
+        description: "Großes Lager für Waffen & Rüstungen, mehrere Wachräume, Torhaus oder Zugbrücke."
+
+    objectives:
+      - objectiveId: "military_3_mobs"
+        action: "KILL"
+        object: "HOSTILE_MOB"
+        amount: 25000
+
+  - professionId: "military_4"
+    type: "MILITARY"
+    prettyName: "Militär / Verteidigung"
+    icon: "IRON_SWORD"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "military_4_1"
+        name: "Vollausgebaute Festung"
+        description: "Mehrere Verteidigungsringe, Fallgruben, starke Mauern."
+
+    objectives:
+      - objectiveId: "military_4_mobs"
+        action: "KILL"
+        object: "HOSTILE_MOB"
+        amount: 60000
+
+
+  ############################################################################
+  # Steinbruch / Abbaugebiet / Steinmetz (STONEWORK)
+  ############################################################################
+  - professionId: "stonework_1"
+    type: "STONEWORK"
+    prettyName: "Steinbruch / Steinmetz"
+    icon: "STONE_PICKAXE"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "stonework_1_1"
+        name: "Kleines Abbaugebiet für Stein"
+        description: "Abbaugebiet mit z. B. einem Fuhrwerk und etwas gebrochenem Material."
+
+    objectives:
+      - objectiveId: "stonework_1_stone"
+        action: "DESTROY"
+        object: "ANY_STONE"
+        amount: 10000
+
+  - professionId: "stonework_2"
+    type: "STONEWORK"
+    prettyName: "Steinbruch / Steinmetz"
+    icon: "STONE_PICKAXE"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "stonework_2_1"
+        name: "Größeres Abbaugebiet oder 2 kleinere"
+        description: "Mit einfachen Transportwegen, z. B. Schienen oder Karren."
+      - buildingId: "stonework_2_2"
+        name: "Steinmetz in der Stadt"
+        description: "Werkstatt zum Verarbeiten von Steinblöcken zu Stufen, Platten etc."
+
+    objectives:
+      - objectiveId: "stonework_2_stone"
+        action: "DESTROY"
+        object: "ANY_STONE"
+        amount: 25000
+
+  - professionId: "stonework_3"
+    type: "STONEWORK"
+    prettyName: "Steinbruch / Steinmetz"
+    icon: "STONE_PICKAXE"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "stonework_3_1"
+        name: "2 Abbaugebiete für Stein"
+        description: "Mit jeweils eigenem Lagerbereich oder Fuhrwerk."
+      - buildingId: "stonework_3_2"
+        name: "2 Steinmetze"
+        description: "Mehrere Werkstätten für verschiedene Steinverarbeitungen."
+      - buildingId: "stonework_3_3"
+        name: "Statuen und Kunstobjekte"
+        description: "Z. B. zentrale Skulpturen aus Stein oder ein Brunnen."
+
+    objectives:
+      - objectiveId: "stonework_3_stone"
+        action: "DESTROY"
+        object: "ANY_STONE"
+        amount: 50000
+
+  - professionId: "stonework_4"
+    type: "STONEWORK"
+    prettyName: "Steinbruch / Steinmetz"
+    icon: "STONE_PICKAXE"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "stonework_4_1"
+        name: "3 Abbaugebiete für Stein"
+        description: "Reichlich Platz für großangelegte Steinförderung."
+      - buildingId: "stonework_4_2"
+        name: "4 Steinmetze"
+        description: "Großflächige Verarbeitungsstätten, diverse Spezialisierungen."
+      - buildingId: "stonework_4_3"
+        name: "Großer Umschlagplatz für Stein"
+        description: "Zentrale Lagerstätte, Handel oder Verkaufsmöglichkeit."
+
+    objectives:
+      - objectiveId: "stonework_4_stone"
+        action: "DESTROY"
+        object: "ANY_STONE"
+        amount: 200000
+
+  ############################################################################
+  # Handel (TRADE)
+  ############################################################################
+  - professionId: "trade_1"
+    type: "TRADE"
+    prettyName: "Handel"
+    icon: "EMERALD"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "trade_1_1"
+        name: "Kleiner Marktplatz"
+        description: "Ein kleiner Marktplatz mit 1–2 provisorischen Ständen."
+
+    objectives:
+      - objectiveId: "trade_1_villager"
+        action: "TRADE"
+        object: "VILLAGER"
+        amount: 4000
+
+  - professionId: "trade_2"
+    type: "TRADE"
+    prettyName: "Handel"
+    icon: "EMERALD"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "trade_2_1"
+        name: "Ausgebauter Marktplatz"
+        description: "Mehrere Stände und ein kleines Lager."
+      - buildingId: "trade_2_2"
+        name: "Güterlager"
+        description: "Separater Lagerraum für Handelswaren."
+
+    objectives:
+      - objectiveId: "trade_2_villager"
+        action: "TRADE"
+        object: "VILLAGER"
+        amount: 10000
+
+  - professionId: "trade_3"
+    type: "TRADE"
+    prettyName: "Handel"
+    icon: "EMERALD"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "trade_3_1"
+        name: "Große Markthalle"
+        description: "Überdachter Handelsplatz mit vielen Ständen oder Verkaufsräumen."
+      - buildingId: "trade_3_2"
+        name: "Handelsgilde"
+        description: "Ein repräsentatives Gebäude für Händler und Gildenmitglieder."
+
+    objectives:
+      - objectiveId: "trade_3_villager"
+        action: "TRADE"
+        object: "VILLAGER"
+        amount: 24000
+
+  - professionId: "trade_4"
+    type: "TRADE"
+    prettyName: "Handel"
+    icon: "EMERALD"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "trade_4_1"
+        name: "Handelsmetropole"
+        description: "Ein weitläufiger Marktbezirk mit unzähligen Händlern."
+      - buildingId: "trade_4_2"
+        name: "Großer Umschlagplatz"
+        description: "Dient als Knotenpunkt für Warentransporte und Lagerung."
+
+    objectives:
+      - objectiveId: "trade_4_villager"
+        action: "TRADE"
+        object: "VILLAGER"
+        amount: 50000
+
+  ############################################################################
+  # Glauben (FAITH)
+  ############################################################################
+  - professionId: "faith_1"
+    type: "FAITH"
+    prettyName: "Glauben"
+    icon: "BELL"
+    level: 1
+    score: 20
+    price: 200
+
+    buildings:
+      - buildingId: "faith_1_1"
+        name: "Kleine Kapelle"
+        description: "Ein simpler Andachtsraum mit wenigen Sitzplätzen."
+
+    objectives:
+      - objectiveId: "faith_1_witches"
+        action: "KILL"
+        object: "WITCH"
+        amount: 500
+
+  - professionId: "faith_2"
+    type: "FAITH"
+    prettyName: "Glauben"
+    icon: "BELL"
+    level: 2
+    score: 50
+    price: 500
+
+    buildings:
+      - buildingId: "faith_2_1"
+        name: "Dorfkirche"
+        description: "Eine größere Kirche mit Turm und mehreren Bänken."
+      - buildingId: "faith_2_2"
+        name: "Kleiner Friedhof"
+        description: "Ein passender Außenbereich für Grabsteine oder Gedenkstätten."
+
+    objectives:
+      - objectiveId: "faith_2_witches"
+        action: "KILL"
+        object: "WITCH"
+        amount: 2000
+
+  - professionId: "faith_3"
+    type: "FAITH"
+    prettyName: "Glauben"
+    icon: "BELL"
+    level: 3
+    score: 100
+    price: 1000
+
+    buildings:
+      - buildingId: "faith_3_1"
+        name: "Kloster"
+        description: "Ein weitläufiger Klosterkomplex mit Schlafräumen und Bibliothek."
+      - buildingId: "faith_3_2"
+        name: "Große Kirchenglocke"
+        description: "Ein imposanter Glockenturm oder separater Glockenstuhl."
+
+    objectives:
+      - objectiveId: "faith_3_witches"
+        action: "KILL"
+        object: "WITCH"
+        amount: 5000
+
+  - professionId: "faith_4"
+    type: "FAITH"
+    prettyName: "Glauben"
+    icon: "BELL"
+    level: 4
+    score: 250
+    price: 2500
+
+    buildings:
+      - buildingId: "faith_4_1"
+        name: "Große Kathedrale"
+        description: "Imposantes Bauwerk mit hoher Decke, Altar und aufwändiger Deko."
+      - buildingId: "faith_4_2"
+        name: "Pilgerstätte"
+        description: "Ein wichtiger Wallfahrtsort mit Gästezimmern und Ritualbereich."
+
+    objectives:
+      - objectiveId: "faith_4_witches"
+        action: "KILL"
+        object: "WITCH"
+        amount: 15000
