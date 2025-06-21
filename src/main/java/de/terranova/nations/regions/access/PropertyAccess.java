@@ -1,10 +1,10 @@
 package de.terranova.nations.regions.access;
 
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.database.dao.AccessDAO;
 import de.terranova.nations.database.dao.PropertyAccessDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionListener;
+import de.terranova.nations.utils.Chat;
 import org.bukkit.Bukkit;
 
 import java.util.*;

@@ -3,7 +3,6 @@ package de.terranova.nations.regions.grid;
 import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -16,6 +15,7 @@ import de.terranova.nations.regions.npc.NPCr;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.Rank;
 import de.terranova.nations.regions.rank.RankedRegion;
+import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
 

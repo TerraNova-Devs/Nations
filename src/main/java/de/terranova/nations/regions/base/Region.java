@@ -6,7 +6,7 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;

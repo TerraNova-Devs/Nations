@@ -1,10 +1,8 @@
 package de.terranova.nations.regions.rank;
 
-import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.RegionListener;
-import org.bukkit.entity.Player;
 
 public class Rank implements RegionListener {
 

@@ -42,25 +42,6 @@ repositories {
     }
     filter { includeGroup("maven.modrinth") }
   }
-
-  maven {
-    name = "GitHubPackages"
-    url = uri("https://maven.pkg.github.com/TerraNova-Devs/TerranovaLib")
-
-    credentials {
-      val githubUser: String? = findProperty("gpr.user") as String?
-        ?: System.getenv("GPR_USER")
-      val githubToken: String? = findProperty("gpr.token") as String?
-        ?: System.getenv("GPR_TOKEN")
-
-      if (githubUser == null || githubToken == null) {
-        throw GradleException("GitHub credentials not found. Please set 'gpr.user' and 'gpr.token' in gradle.properties or as environment variables.")
-      }
-
-      username = githubUser
-      password = githubToken
-    }
-  }
   maven {
     name = "Hikari&Shadow"
     url = uri("https://jitpack.io")
@@ -82,7 +63,6 @@ dependencies {
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
   compileOnly("com.nexomc:nexo:1.1.0")
-  implementation("de.mcterranova:terranova-lib:1.0.1")
   implementation("org.yaml:snakeyaml:2.2")
 }
 

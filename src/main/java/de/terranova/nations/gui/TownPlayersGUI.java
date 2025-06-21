@@ -1,15 +1,15 @@
 package de.terranova.nations.gui;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
-import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
-import de.mcterranova.terranovaLib.roseGUI.RoseItem;
-import de.mcterranova.terranovaLib.roseGUI.RosePagination;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessControlled;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.utils.Chat;
+import de.terranova.nations.utils.roseGUI.RoseGUI;
+import de.terranova.nations.utils.roseGUI.RoseItem;
+import de.terranova.nations.utils.roseGUI.RosePagination;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

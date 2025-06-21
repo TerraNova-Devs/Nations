@@ -1,11 +1,9 @@
 package de.terranova.nations.command;
 
-import de.mcterranova.terranovaLib.commands.AbstractCommand;
-import de.mcterranova.terranovaLib.commands.CachedSupplier;
-import de.mcterranova.terranovaLib.commands.CommandAnnotation;
-import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.command.commands.AbstractCommand;
+import de.terranova.nations.command.commands.CommandAnnotation;
+import de.terranova.nations.command.commands.PlayerAwarePlaceholder;
 import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.nations.NationPlayerRank;
@@ -15,6 +13,7 @@ import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.utils.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 
 import static de.terranova.nations.NationsPlugin.nationManager;
 
-public class NationCommands extends AbstractCommand  {
+public class NationCommands extends AbstractCommand {
 
     static Map<UUID, UUID> pendingInvites = new HashMap<>();
 

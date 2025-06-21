@@ -1,9 +1,9 @@
 package de.terranova.nations.regions.base;
 
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.access.TownAccessControlled;
+import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

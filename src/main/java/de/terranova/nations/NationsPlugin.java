@@ -2,7 +2,6 @@ package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
-import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
@@ -20,6 +19,7 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.rank.RankObjective;
+import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
@@ -133,7 +133,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
     }
 
-    @SuppressWarnings("UnstableApiUsage")
     public void commandRegistry() {
 //        PropertyCommand terraCommand = new PropertyCommand();
 //        if (this.getCommand("terra") == null) {

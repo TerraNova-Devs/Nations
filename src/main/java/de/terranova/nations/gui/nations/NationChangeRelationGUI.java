@@ -1,12 +1,12 @@
 package de.terranova.nations.gui.nations;
 
-import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
-import de.mcterranova.terranovaLib.roseGUI.RoseItem;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.nations.NationRelationType;
+import de.terranova.nations.utils.Chat;
+import de.terranova.nations.utils.roseGUI.RoseGUI;
+import de.terranova.nations.utils.roseGUI.RoseItem;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;

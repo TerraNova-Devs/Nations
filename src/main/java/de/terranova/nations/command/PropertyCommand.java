@@ -1,8 +1,8 @@
 package de.terranova.nations.command;
 
-import de.mcterranova.terranovaLib.commands.AbstractCommand;
-import de.mcterranova.terranovaLib.commands.CachedSupplier;
-import de.mcterranova.terranovaLib.commands.PlayerAwarePlaceholder;
+import de.terranova.nations.command.commands.AbstractCommand;
+import de.terranova.nations.command.commands.CachedSupplier;
+import de.terranova.nations.command.commands.PlayerAwarePlaceholder;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
 import de.terranova.nations.regions.access.PropertyAccessLevel;
 import de.terranova.nations.regions.access.TownAccessControlled;

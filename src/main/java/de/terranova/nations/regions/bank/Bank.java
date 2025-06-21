@@ -1,11 +1,11 @@
 package de.terranova.nations.regions.bank;
 
-import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.BankDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionListener;
+import de.terranova.nations.utils.Chat;
+import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import org.bukkit.entity.Player;
 
 import java.util.LinkedList;

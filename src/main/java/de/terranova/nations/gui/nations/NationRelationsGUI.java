@@ -1,12 +1,12 @@
 package de.terranova.nations.gui.nations;
 
-import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
-import de.mcterranova.terranovaLib.roseGUI.RoseItem;
-import de.mcterranova.terranovaLib.roseGUI.RosePagination;
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationRelationType;
+import de.terranova.nations.utils.Chat;
+import de.terranova.nations.utils.roseGUI.RoseGUI;
+import de.terranova.nations.utils.roseGUI.RoseItem;
+import de.terranova.nations.utils.roseGUI.RosePagination;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,8 +16,6 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Map;
 import java.util.UUID;
 

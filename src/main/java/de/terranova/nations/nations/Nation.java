@@ -1,12 +1,10 @@
 package de.terranova.nations.nations;
 
-import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.NationsDAO;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.ItemStackSerializer;
-import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
