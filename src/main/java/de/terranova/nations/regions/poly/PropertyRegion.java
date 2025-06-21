@@ -3,15 +3,18 @@ package de.terranova.nations.regions.poly;
 import de.terranova.nations.regions.access.PropertyAccess;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
 import de.terranova.nations.regions.access.PropertyAccessLevel;
+import de.terranova.nations.regions.bank.Bank;
+import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.util.*;
 
-public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled {
+public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled , BankHolder {
     public static final String REGION_TYPE = "property";
 
     private PropertyAccess access;
+    private Bank bank;
 
     public PropertyRegion(String name, UUID ruuid, UUID owner, Vectore2 location) {
         super(name, ruuid, REGION_TYPE);
@@ -40,9 +43,13 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
         this.access.removeAccess(uuid);
     }
 
-
     @Override
     public PropertyAccess getAccess() {
         return null;
+    }
+
+    @Override
+    public Bank getBank() {
+        return bank;
     }
 }
