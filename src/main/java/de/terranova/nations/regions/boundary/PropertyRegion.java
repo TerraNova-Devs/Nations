@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.poly;
+package de.terranova.nations.regions.boundary;
 
 import de.terranova.nations.regions.access.PropertyAccess;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
@@ -6,7 +6,6 @@ import de.terranova.nations.regions.access.PropertyAccessLevel;
 import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
-import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.util.*;
 

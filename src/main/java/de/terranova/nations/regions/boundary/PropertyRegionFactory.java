@@ -1,11 +1,8 @@
-package de.terranova.nations.regions.poly;
+package de.terranova.nations.regions.boundary;
 
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionContext;
 import de.terranova.nations.regions.base.RegionFactory;
-import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.worldguard.math.Vectore2;
-import org.bukkit.entity.Player;
 
 import java.util.List;
 import java.util.UUID;

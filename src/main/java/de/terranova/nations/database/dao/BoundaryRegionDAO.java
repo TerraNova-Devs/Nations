@@ -1,6 +1,7 @@
 package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionRegistry;
@@ -15,28 +16,26 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-public class GridRegionDAO {
-
+public class BoundaryRegionDAO {
     private static final Map<String, String> queries = new HashMap<>();
 
     static {
-        queries.put("insert", "INSERT INTO `grid_regions` (`RUUID`, `name`, `type`, `location`) VALUES (?, ?, ?, ?);");
-        queries.put("remove", "DELETE FROM `grid_regions` WHERE `RUUID` = ?;");
-        queries.put("updateName", "UPDATE `grid_regions` SET `name` = ? WHERE `RUUID` = ?;");
-        queries.put("fetchByType", "SELECT * FROM `grid_regions` WHERE `type` = ?;");
+        queries.put("insert", "INSERT INTO `poly_regions` (`RUUID`, `name`, `type`) VALUES (?, ?, ?);");
+        queries.put("remove", "DELETE FROM `poly_regions` WHERE `RUUID` = ?;");
+        queries.put("updateName", "UPDATE `poly_regions` SET `name` = ? WHERE `RUUID` = ?;");
+        queries.put("fetchByType", "SELECT * FROM `poly_regions` WHERE `type` = ?;");
     }
 
-    public static void insertRegion(GridRegion gridRegion) {
+    public static void insertRegion(BoundaryRegion region) {
         String sql = queries.get("insert");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, gridRegion.getId().toString());
-            ps.setString(2, gridRegion.getName());
-            ps.setString(3, gridRegion.getType());
-            ps.setString(4, gridRegion.getLocation().asString());
+            ps.setString(1, region.getId().toString());
+            ps.setString(2, region.getName());
+            ps.setString(3, region.getType());
             ps.executeUpdate();
         } catch (SQLException e) {
-            NationsPlugin.plugin.getLogger().severe("Failed to insert grid region: " + gridRegion.getName());
+            NationsPlugin.plugin.getLogger().severe("Failed to insert grid region: " + region.getName());
         }
     }
 
@@ -72,7 +71,7 @@ public class GridRegionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("RUUID");
-                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"),id,new Vectore2(rs.getString("location")).asString())));
+                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"),id)));
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);

@@ -7,7 +7,6 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 public abstract class GridRegion extends Region {
@@ -51,7 +50,7 @@ public abstract class GridRegion extends Region {
     }
     @Override
     public final void dataBaseCall() {
-        GridRegionDAO.insertGridRegion(this);
+        GridRegionDAO.insertRegion(this);
     }
 
     public Vectore2 getLocation() {

@@ -1,12 +1,10 @@
 package de.terranova.nations.regions.base;
 
-import de.terranova.nations.database.dao.GridRegionDAO;
+import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
-import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.entity.Player;
-
-import java.util.Optional;
 import java.util.UUID;
+
 //Supports Poly & Squared Regions
 public abstract class BoundaryRegion extends Region {
     public BoundaryRegion(String name, UUID id, String type) {
@@ -26,7 +24,7 @@ public abstract class BoundaryRegion extends Region {
 
     @Override
     public final void onRemove() {
-        //BoundaryRegionDAO.removeRegion
+        BoundaryRegionDAO.removeRegion(this.id);
         onBoundaryRemove();
     }
 
@@ -35,11 +33,11 @@ public abstract class BoundaryRegion extends Region {
     }
     @Override
     public void onRename(String name) {
-        //BoundaryRegionDAO.updateRegionName
+        BoundaryRegionDAO.updateRegionName(this.id, name);
     }
     @Override
     public final void dataBaseCall() {
-        //Boundary Region Insert
+        BoundaryRegionDAO.insertRegion(this);
     }
 
 }
