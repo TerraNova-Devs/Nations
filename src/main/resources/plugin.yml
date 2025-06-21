@@ -1,17 +1,22 @@
 name: Nations
 version: 1.0.0-SNAPSHOT
-main: de.nekyia.nations.NationsPlugin
-api-version: '1.21'
-authors: [gerryxn]
+main: de.terranova.nations.NationsPlugin
+api-version: '1.21.4'
+authors: [gerryxn, bastizeit]
 prefix: Nations
-#website: noWebsiteCurrently.de
-description: Nations Plugin tailored & written by Nekyia.
+website: mcterranova.de
+description: Nations Plugin tailored & written by & for TerraNova.
 commands:
-  terra:
-    description: The main command for Nekyia's Nations.
+  town:
+    description: The main command for TerraNova Towns.
     aliases: [t]
     permission: nations.use
     permission-message: You do not have permission to use this command.
-depend: [WorldGuard, Citizens, Pl3xMap, WorldGuardExtraFlags, Oraxen]
+  nation:
+    description: The main command for TerraNova Nations.
+    aliases: [n]
+    permission: nations.use
+    permission-message: You do not have permission to use this command.
+depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Nexo]
 
 

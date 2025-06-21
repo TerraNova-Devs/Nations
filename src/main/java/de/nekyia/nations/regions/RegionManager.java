@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 //TODO get regions from DB
-public class RegionManager {
+public final class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
     private final static Map<String, Map<UUID, ? extends RegionType>> regionCache = new HashMap<>();
 

@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-public class TerraSelectCache {
+public final class TerraSelectCache {
     public static Map<UUID, TerraSelectCache> selectCache = new HashMap<>();
 
     private RegionType region;

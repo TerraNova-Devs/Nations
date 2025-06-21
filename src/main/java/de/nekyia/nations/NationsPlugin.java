@@ -23,6 +23,8 @@ import net.pl3x.map.core.registry.Registry;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.inventory.meta.BlockDataMeta;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.yaml.snakeyaml.DumperOptions;
@@ -38,9 +40,7 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
@@ -51,6 +51,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public static FileLogger nationsLogger;
     public static FileLogger nationsDebugger;
     private Registry<Layer> layerRegistry;
+
 
     @Override
     public void onLoad() {

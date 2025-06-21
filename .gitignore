@@ -2,6 +2,7 @@
 /.gradle/
 /.idea/
 /build/
+.idea
 
 #testserver
 /testserver/*
