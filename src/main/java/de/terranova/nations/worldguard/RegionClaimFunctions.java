@@ -2,8 +2,6 @@ package de.terranova.nations.worldguard;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
-import com.sk89q.worldedit.math.BlockVector3;
-import com.sk89q.worldedit.math.Vector2;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -30,7 +28,7 @@ import java.util.*;
 
 public class RegionClaimFunctions {
 
-    public static ProtectedRegion createClaim(String name, Player p, UUID uuid) {
+    public static ProtectedRegion createGridClaim(String name, Player p, UUID uuid) {
 
         int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
         int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
@@ -60,6 +58,10 @@ public class RegionClaimFunctions {
         assert regions != null;
         regions.addRegion(region);
         return regions.getRegion(region.getId());
+    }
+
+    public static ProtectedRegion createBoundaryClaim() {
+        return null;
     }
 
     public static void changeFlag(Player p, UUID settlementID, Flag flag) {

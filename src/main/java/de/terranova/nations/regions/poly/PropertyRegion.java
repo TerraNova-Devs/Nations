@@ -3,13 +3,12 @@ package de.terranova.nations.regions.poly;
 import de.terranova.nations.regions.access.PropertyAccess;
 import de.terranova.nations.regions.access.PropertyAccessControlled;
 import de.terranova.nations.regions.access.PropertyAccessLevel;
-import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.worldguard.math.Vectore2;
-import org.bukkit.entity.Player;
 
 import java.util.*;
 
-public class PropertyRegion extends Region implements PropertyAccessControlled {
+public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled {
     public static final String REGION_TYPE = "property";
 
     private PropertyAccess access;
@@ -41,27 +40,6 @@ public class PropertyRegion extends Region implements PropertyAccessControlled {
         this.access.removeAccess(uuid);
     }
 
-    @Override
-    public void dataBaseCall() {
-        // Implement database call to save the property region
-    }
-
-    @Override
-    public void onCreation(Player p) {
-        // Implement actions to be taken when the property region is created
-        this.access.setAccessLevel(p.getUniqueId(), PropertyAccessLevel.OWNER);
-    }
-
-    @Override
-    public void onRemove() {
-        // Implement actions to be taken when the property region is removed
-        this.access.onRegionRemoved();
-    }
-
-    @Override
-    public void onRename(String name) {
-        // Implement actions to be taken when the property region is renamed
-    }
 
     @Override
     public PropertyAccess getAccess() {

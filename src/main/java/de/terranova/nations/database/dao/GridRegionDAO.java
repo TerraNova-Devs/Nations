@@ -38,7 +38,7 @@ public class GridRegionDAO {
         }
     }
 
-    public static void removeGridRegion(UUID ruuid) {
+    public static void removeRegion(UUID ruuid) {
         String sql = queries.get("remove");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -49,7 +49,7 @@ public class GridRegionDAO {
         }
     }
 
-    public static void updateGridRegionName(UUID ruuid, String name) {
+    public static void updateRegionName(UUID ruuid, String name) {
         String sql = queries.get("updateName");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
