@@ -14,48 +14,57 @@ import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class PropertyValidationFunctions {
-    public static boolean isValidSelection(Player player) throws IncompleteRegionException {
+public class BoundaryClaimFunctions {
+    public static boolean isValidSelection(Player player) {
         com.sk89q.worldedit.entity.Player wePlayer = BukkitAdapter.adapt(player);
         LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
         RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
 
         if (!selector.isDefined()) return false;
+        try {
+            Region region = selector.getRegion();
+            BlockVector3 min = region.getMinimumPoint();
+            BlockVector3 max = region.getMaximumPoint();
 
-        Region region = selector.getRegion();
-        BlockVector3 min = region.getMinimumPoint();
-        BlockVector3 max = region.getMaximumPoint();
+            BlockVector2 point1 = BlockVector2.at(min.x(), min.z());
+            BlockVector2 point2 = BlockVector2.at(max.x(), max.z());
 
-        BlockVector2 point1 = BlockVector2.at(min.x(), min.z());
-        BlockVector2 point2 = BlockVector2.at(max.x(), max.z());
+            // 🔍 Get region manager
+            RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
+            if (regionManager == null) return false;
 
-        // 🔍 Get region manager
-        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
-        if (regionManager == null) return false;
-
-        // 🔍 Find region with flag "settle"
-        ProtectedRegion parentRegion = null;
-        for (ProtectedRegion r : regionManager.getRegions().values()) {
-            String type = r.getFlag(TypeFlag.NATIONS_TYPE);
-            if ("settle".equalsIgnoreCase(type)) {
-                parentRegion = r;
-                break;
+            // 🔍 Find region with flag "settle"
+            ProtectedRegion parentRegion = null;
+            for (ProtectedRegion r : regionManager.getRegions().values()) {
+                String type = r.getFlag(TypeFlag.NATIONS_TYPE);
+                if ("settle".equalsIgnoreCase(type)) {
+                    parentRegion = r;
+                    break;
+                }
             }
+
+            if (parentRegion == null) return false;
+
+            boolean inside1 = isInsideRegion(point1, parentRegion);
+            boolean inside2 = isInsideRegion(point2, parentRegion);
+
+            if (!inside1 || !inside2) return false;
+
+            return !lineCrossesRegionBorder(point1, point2, parentRegion);
+        } catch (IncompleteRegionException e) {
+            return false;
         }
-
-        if (parentRegion == null) return false;
-
-        boolean inside1 = isInsideRegion(point1, parentRegion);
-        boolean inside2 = isInsideRegion(point2, parentRegion);
-
-        if (!inside1 || !inside2) return false;
-
-        return !lineCrossesRegionBorder(point1, point2, parentRegion);
     }
 
     private static boolean isInsideRegion(BlockVector2 point, ProtectedRegion region) {
@@ -97,6 +106,8 @@ public class PropertyValidationFunctions {
         return false;
     }
 
+
+
     private static boolean isInsidePolygon(BlockVector2 point, List<BlockVector2> polygon) {
         int intersections = 0;
         for (int i = 0; i < polygon.size(); i++) {
@@ -117,5 +128,37 @@ public class PropertyValidationFunctions {
 
     private static boolean ccw(BlockVector2 a, BlockVector2 b, BlockVector2 c) {
         return (c.z() - a.z()) * (b.x() - a.x()) > (b.z() - a.z()) * (c.x() - a.x());
+    }
+    public static int getNextFreeRegionNumber(String baseName) {
+        Set<Integer> usedNumbers = new HashSet<>();
+        Pattern pattern = Pattern.compile("^" + Pattern.quote(baseName.toLowerCase()) + "_(\\d+)$");
+
+        for (World world : Bukkit.getWorlds()) {
+            RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+            if (regionManager == null) continue;
+
+            for (ProtectedRegion region : regionManager.getRegions().values()) {
+                String id = region.getId().toLowerCase();
+
+                if (id.equals(baseName)) {
+                    usedNumbers.add(0); // reserved without suffix
+                    continue;
+                }
+
+                Matcher matcher = pattern.matcher(id);
+                if (matcher.matches()) {
+                    int number = Integer.parseInt(matcher.group(1));
+                    usedNumbers.add(number);
+                }
+            }
+        }
+
+        // Find the smallest free number starting from 1
+        int nextFree = 1;
+        while (usedNumbers.contains(nextFree)) {
+            nextFree++;
+        }
+
+        return nextFree;
     }
 }

@@ -36,14 +36,6 @@ public class TownSettingsGUI extends RoseGUI {
                 .build();
         fillGui(filler);
 
-        RoseItem back = new RoseItem.Builder()
-                .material(Material.SPECTRAL_ARROW)
-                .displayName(Chat.yellowFade("<b>Zurück</b>"))
-                .build();
-        back.onClick(e -> {
-            new TownGUI(player, settle).open();
-        });
-
         addStateFlag(Flags.SNOW_FALL, 10, Material.SNOW, "Soll Schnee in deiner Stadt bleiben?");
         addStateFlag(Flags.PVP, 11, Material.NETHERITE_SWORD, "Soll PvP in deiner Stadt erlaubt sein?");
         addStateFlag(Flags.LEAF_DECAY, 12, Material.OAK_LEAVES, "Sollen Blätter in deiner Stadt verschwinden?");
@@ -59,34 +51,13 @@ public class TownSettingsGUI extends RoseGUI {
                         EntityType.REGISTRY.get("minecraft:witch"), EntityType.REGISTRY.get("minecraft:pillager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
                         EntityType.REGISTRY.get("minecraft:creeper"))));
 
-        /*
-        Set<EntityType> mobs = region.getFlag(Flags.DENY_SPAWN);
-        boolean isenbaled;
-        isenbaled = mobs != null && !mobs.contains(EntityType.REGISTRY.get("minecraft:phantom"));
-        RoseItem flag = new RoseItem.Builder()
-                .material(Material.ZOMBIE_HEAD)
-                .displayName(Chat.blueFade("Flag: " + Flags.DENY_SPAWN.getName()))
-                .addLore(Chat.cottonCandy("<i>Sollen Monster in deiner Stadt spawnen?"))
-                .addLore(isenbaled ? Chat.greenFade(String.format("<i>Derzeit: %s", "enabled")) : Chat.redFade(String.format("<i>Derzeit: %s", "disabled")))
+        RoseItem back = new RoseItem.Builder()
+                .material(Material.SPECTRAL_ARROW)
+                .displayName(Chat.yellowFade("<b>Zurück</b>"))
                 .build();
-        flag.onClick(e -> {
-            if (isenbaled) {
-                Set<EntityType> set = new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"), EntityType.REGISTRY.get("minecraft:spider"),
-                        EntityType.REGISTRY.get("minecraft:skeleton"), EntityType.REGISTRY.get("minecraft:enderman"), EntityType.REGISTRY.get("minecraft:phantom"), EntityType.REGISTRY.get("minecraft:drowned"),
-                        EntityType.REGISTRY.get("minecraft:witch"), EntityType.REGISTRY.get("minecraft:pillager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
-                        EntityType.REGISTRY.get("minecraft:creeper")
-                ));
-                region.setFlag(Flags.DENY_SPAWN, set);
-                open();
-            } else {
-                Set<EntityType> set = new HashSet<>(Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager")));
-                region.setFlag(Flags.DENY_SPAWN, set);
-                open();
-            }
+        back.onClick(e -> {
+            new TownGUI(player, settle).open();
         });
-        addItem(19, flag);
-
-         */
         addItem(45, back);
 
     }

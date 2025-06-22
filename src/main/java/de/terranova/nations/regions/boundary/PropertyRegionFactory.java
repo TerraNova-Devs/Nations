@@ -1,15 +1,18 @@
 package de.terranova.nations.regions.boundary;
 
+import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.access.TownAccess;
+import de.terranova.nations.regions.access.TownAccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionContext;
 import de.terranova.nations.regions.base.RegionFactory;
 import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.utils.Chat;
+import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Set;
+import java.util.Optional;
 import java.util.UUID;
 
 public class PropertyRegionFactory implements RegionFactory {
@@ -25,13 +28,34 @@ public class PropertyRegionFactory implements RegionFactory {
         Player p = ctx.player;
         String name = ctx.extra.get("name");
 
+        Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
+        if (settleOpt.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Du bist in keiner Stadt."));
+            return null;
+        }
+        SettleRegion settle = settleOpt.get();
+        TownAccess access = settle.getAccess();
+        if (!TownAccess.hasAccess(access.getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)) {
+            p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung, um Grundstücke zu erstellen."));
+            return null;
+        }
+
+        if(!BoundaryClaimFunctions.isValidSelection(p)) {
+            p.sendMessage(Chat.errorFade("Deine Auswahl befindet sich ausserhalb der Stadtgrenzen"));
+            return null;
+        }
+
         // Perform all necessary validations before creation
         if (!isValidName(name, p)) {
-            p.sendMessage(Chat.errorFade("Invalid name for settlement." + name));
+            p.sendMessage(Chat.errorFade("Invalid name for Property." + name));
             return null;  // Return null to indicate creation failure.
         }
 
-        return new PropertyRegion(ctx.extra.get("name"), UUID.randomUUID(),ctx.player.getUniqueId());
+        return new PropertyRegion(
+                ctx.extra.get("name").toLowerCase() + "_" + BoundaryClaimFunctions.getNextFreeRegionNumber(ctx.extra.get("name").toLowerCase()),
+                UUID.randomUUID(),
+                ctx.player.getUniqueId()
+        );
     }
 
     @Override
