@@ -7,6 +7,7 @@ import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.GridRegionDAO;
+import de.terranova.nations.listener.TestListener;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.professions.ProfessionManager;
@@ -24,6 +25,8 @@ import de.terranova.nations.regions.rank.RankObjective;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
+import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.TypeHandler;
 import de.terranova.nations.worldguard.math.Vectore2;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
@@ -127,11 +130,13 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     private void worldguardFlagRegistry() {
         RegionFlag.registerRegionFlag(this);
+        TypeFlag.registerRegionFlag(this);
     }
 
     private void worldguardHandlerRegistry() {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
+        sessionManager.registerHandler(TypeHandler.FACTORY, null);
     }
 
     public void commandRegistry() {
@@ -161,6 +166,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
         Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new TestListener(), this);
     }
 
     public void serilizationRegistry() {

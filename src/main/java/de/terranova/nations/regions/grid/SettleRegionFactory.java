@@ -62,12 +62,11 @@ public class SettleRegionFactory implements RegionFactory {
                 new Vectore2(args.get(2))
         );
     }
-
+    public static Set<String> blacklistedNames = Set.of("admin", "root", "moderator", "support");
     private static boolean isValidName(String name, Player p) {
         if (name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
-            return true;
+            return  true;
         }
-        Set<String> blacklistedNames = Set.of("admin", "root", "moderator", "support");
         if (blacklistedNames.contains(name.toLowerCase())) {
             return false;
         }

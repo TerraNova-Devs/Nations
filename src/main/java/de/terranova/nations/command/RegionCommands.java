@@ -6,6 +6,8 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
+import de.terranova.nations.gui.PropertyGUI;
+import de.terranova.nations.gui.TownGUI;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -164,6 +166,17 @@ public class RegionCommands {
         }
 
         cache.getRegion().rename(name);
+        return true;
+    }
+    @CommandAnnotation(
+            domain = "region.test",
+            permission = "nations.region.rename",
+            description = "test",
+            usage = "/terra test"
+    )
+
+    public static boolean testegion(Player p, String[] args) {
+        new PropertyGUI(p).open();
         return true;
     }
 

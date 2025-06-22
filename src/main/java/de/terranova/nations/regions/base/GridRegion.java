@@ -26,7 +26,7 @@ public abstract class GridRegion extends Region {
 
     @Override
     public final void onCreation(Player p) {
-        this.region = RegionClaimFunctions.createGridClaim(name, p, this.id);
+        this.region = RegionClaimFunctions.createGridClaim(name, p, this.id,this.type);
         onGridCreation(p);
     }
 

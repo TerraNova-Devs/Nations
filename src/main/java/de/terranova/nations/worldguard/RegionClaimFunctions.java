@@ -1,7 +1,14 @@
 package de.terranova.nations.worldguard;
 
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Polygonal2DRegion;
+import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.LocalPlayer;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -9,12 +16,10 @@ import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
-import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
+import com.sk89q.worldguard.protection.regions.*;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import net.goldtreeservers.worldguardextraflags.flags.Flags;
@@ -28,7 +33,7 @@ import java.util.*;
 
 public class RegionClaimFunctions {
 
-    public static ProtectedRegion createGridClaim(String name, Player p, UUID uuid) {
+    public static ProtectedRegion createGridClaim(String name, Player p, UUID uuid, String type) {
 
         int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
         int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
@@ -49,6 +54,7 @@ public class RegionClaimFunctions {
         owners.addPlayer(lp);
         region.setOwners(owners);
         region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
+        region.setFlag(TypeFlag.NATIONS_TYPE, type);
         region.setFlag(Flags.GLIDE, ForcedStateFlag.ForcedState.ALLOW);
         region.setPriority(100);
 
@@ -60,8 +66,41 @@ public class RegionClaimFunctions {
         return regions.getRegion(region.getId());
     }
 
-    public static ProtectedRegion createBoundaryClaim() {
-        return null;
+    public static ProtectedRegion createBoundaryClaim(String name, Player p, UUID uuid, String type) {
+        BukkitPlayer wePlayer = BukkitAdapter.adapt(p);
+        LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
+        Region selection;
+        try {
+            selection = session.getSelection(wePlayer.getWorld());
+        } catch (IncompleteRegionException e) {
+            p.sendMessage("You need to make a complete selection first.");
+            return null;
+        }
+        if (!(selection instanceof CuboidRegion || selection instanceof Polygonal2DRegion)) {
+            p.sendMessage("Only Cuboid and Polygonal2D regions are supported.");
+            return null;
+        }
+        org.bukkit.World bukkitWorld = p.getWorld();
+        RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+        com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(bukkitWorld);
+        RegionManager regionManager = container.get(weWorld);
+        if (regionManager == null) {
+            p.sendMessage("WorldGuard region manager not found for this world.");
+            return null;
+        }
+
+        ProtectedRegion region;
+        if (selection instanceof CuboidRegion cuboid) {
+            region = new ProtectedCuboidRegion(name, cuboid.getMinimumPoint(), cuboid.getMaximumPoint());
+        } else {
+            Polygonal2DRegion poly = (Polygonal2DRegion) selection;
+            region = new ProtectedPolygonalRegion(name, poly.getPoints(), poly.getMinimumY(), poly.getMaximumY());
+        }
+        region.getOwners().addPlayer(wePlayer.getUniqueId());
+        region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
+        region.setFlag(TypeFlag.NATIONS_TYPE, type);
+        regionManager.addRegion(region);
+        return region;
     }
 
     public static void changeFlag(Player p, UUID settlementID, Flag flag) {
