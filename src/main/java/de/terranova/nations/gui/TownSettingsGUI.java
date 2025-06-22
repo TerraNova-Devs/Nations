@@ -53,11 +53,11 @@ public class TownSettingsGUI extends RoseGUI {
         addStateFlag(Flags.CHORUS_TELEPORT, 16, Material.CHORUS_FRUIT, "Sollen Chorusfrüchte in deiner Stadt funktionieren?");
         addSetFlag(Flags.DENY_SPAWN, 19, Material.ZOMBIE_HEAD, "Sollen Monster in deiner Stadt spawnen?",
                 EntityType.REGISTRY.get("minecraft:phantom"), // used to check if it's "enabled"
+                new HashSet<>(Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager"))),
                 new HashSet<>(Arrays.asList(EntityType.REGISTRY.get("minecraft:zombie_villager"), EntityType.REGISTRY.get("minecraft:zombie"), EntityType.REGISTRY.get("minecraft:spider"),
                         EntityType.REGISTRY.get("minecraft:skeleton"), EntityType.REGISTRY.get("minecraft:enderman"), EntityType.REGISTRY.get("minecraft:phantom"), EntityType.REGISTRY.get("minecraft:drowned"),
                         EntityType.REGISTRY.get("minecraft:witch"), EntityType.REGISTRY.get("minecraft:pillager"), com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
-                        EntityType.REGISTRY.get("minecraft:creeper"))),
-                new HashSet<>(Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager"))));
+                        EntityType.REGISTRY.get("minecraft:creeper"))));
 
         /*
         Set<EntityType> mobs = region.getFlag(Flags.DENY_SPAWN);

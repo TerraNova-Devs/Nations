@@ -1,6 +1,7 @@
 package de.terranova.nations.listener;
 
 import com.sk89q.worldedit.IncompleteRegionException;
+import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.PropertyValidationFunctions;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import org.bukkit.Material;
@@ -14,7 +15,7 @@ public class TestListener implements Listener {
     private void onBlockBreak(PlayerInteractEvent e) throws IncompleteRegionException {
         if(!e.getAction().isRightClick()) return;
         if(!e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BEDROCK)) return;
-        PropertyValidationFunctions.isValidSelection(e.getPlayer());
+        e.getPlayer().sendMessage(Chat.errorFade("" + PropertyValidationFunctions.isValidSelection(e.getPlayer())));
     }
 
 }
