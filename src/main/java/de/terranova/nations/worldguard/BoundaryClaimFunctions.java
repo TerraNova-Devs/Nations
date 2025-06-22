@@ -9,11 +9,13 @@ import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
+import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
@@ -160,5 +162,43 @@ public class BoundaryClaimFunctions {
         }
 
         return nextFree;
+    }
+
+    public static boolean propertyPointInside2DBox(World bukkitWorld, BlockVector2 min, BlockVector2 max) {
+        RegionManager manager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(bukkitWorld));
+        if (manager == null) return false;
+
+        // Normalize bounds
+        int minX = Math.min(min.x(), max.x());
+        int maxX = Math.max(min.x(), max.x());
+        int minZ = Math.min(min.z(), max.z());
+        int maxZ = Math.max(min.z(), max.z());
+
+        for (ProtectedRegion region : manager.getRegions().values()) {
+            String type = region.getFlag(TypeFlag.NATIONS_TYPE);
+            if (!"property".equalsIgnoreCase(type)) continue;
+
+            // Representative point of the other region (e.g., its center)
+            int regionX = (region.getMinimumPoint().x() + region.getMaximumPoint().x()) / 2;
+            int regionZ = (region.getMinimumPoint().z() + region.getMaximumPoint().z()) / 2;
+
+            if (regionX >= minX && regionX <= maxX && regionZ >= minZ && regionZ <= maxZ) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static boolean isPointIn2DBox(Vectore2 x, Vectore2 z, Vectore2 point) {
+        // Normalize bounds
+        double minX = Math.min(x.x, z.x);
+        double maxX = Math.max(x.x, z.x);
+        double minZ = Math.min(x.z, z.z);
+        double maxZ = Math.max(x.z, z.z);
+
+        double px = point.x;
+        double pz = point.z;
+
+        return px >= minX && px <= maxX && pz >= minZ && pz <= maxZ;
     }
 }

@@ -1,8 +1,10 @@
 package de.terranova.nations.command;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.ApplicableRegionSet;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.NationsPlugin;
@@ -26,6 +28,9 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
+import de.terranova.nations.worldguard.BoundaryClaimFunctions;
+import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -598,14 +603,28 @@ public class TownCommands extends AbstractCommand {
         RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
         RegionQuery query = container.createQuery();
         ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
-        if (set.size() != 0) {
-            p.sendMessage(Chat.errorFade("Du kannst nicht auf der Region eines anderen Spielers claimen!."));
-            p.sendMessage(Chat.errorFade("Überlappende Regionen: " + set));
-            return false;
+        if (set.getRegions().stream().findFirst().isPresent()) {
+            if(!Objects.equals(set.getRegions().stream().findFirst().get().getFlag(RegionFlag.REGION_UUID_FLAG), settle.getId().toString())) {
+                p.sendMessage(Chat.errorFade("Du kannst nicht auf der Region eines anderen Spielers claimen!."));
+                p.sendMessage(Chat.errorFade("Überlappende Regionen: " + set.getRegions().stream().map(ProtectedRegion::getId).toList()));
+                return false;
+            }
         }
 
         if (settle.getClaims() >= settle.getMaxClaims()) {
             p.sendMessage(Chat.errorFade("Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
+            return false;
+        }
+
+        int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
+        int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
+        if(BoundaryClaimFunctions.propertyPointInside2DBox(p.getWorld(), BlockVector2.at(nx,nz),BlockVector2.at(nx+48,nz+48))){
+            p.sendMessage(Chat.errorFade("In dem Claim befindet sich noch mindestens ein Grundstück."));
+            return false;
+        }
+        System.out.println(nx +" | " +nz+ " <> " + settle.getLocation().x + " | " + settle.getLocation().z);
+        if(BoundaryClaimFunctions.isPointIn2DBox(new Vectore2(nx,nz),new Vectore2(nx+48,nz+48),settle.getLocation())){
+            p.sendMessage(Chat.errorFade("Du kannst den Initialclaim nicht entfernen!"));
             return false;
         }
 

@@ -45,7 +45,6 @@ public class PropertyRegionFactory implements RegionFactory {
             return null;
         }
 
-        // Perform all necessary validations before creation
         if (!isValidName(name, p)) {
             p.sendMessage(Chat.errorFade("Invalid name for Property." + name));
             return null;  // Return null to indicate creation failure.

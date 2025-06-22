@@ -34,6 +34,11 @@ public class Vectore2 {
         this.z = loc.z();
     }
 
+    public Vectore2(BlockVector2 vec) {
+        this.x = vec.x();
+        this.z = vec.z();
+    }
+
     public static Collection<Vectore2> fromBlockVectorList(Collection<BlockVector2> vectors) {
         Collection<Vectore2> output = new ArrayList<Vectore2>();
         for (BlockVector2 vector : vectors) {
