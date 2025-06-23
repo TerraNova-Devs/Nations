@@ -6,6 +6,8 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
+import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldguard.WorldGuard;
@@ -20,6 +22,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,101 +31,71 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BoundaryClaimFunctions {
-    public static boolean isValidSelection(Player player) {
-        com.sk89q.worldedit.entity.Player wePlayer = BukkitAdapter.adapt(player);
-        LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
-        RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(player.getWorld()));
 
-        if (!selector.isDefined()) return false;
-        try {
-            Region region = selector.getRegion();
-            BlockVector3 min = region.getMinimumPoint();
-            BlockVector3 max = region.getMaximumPoint();
+    public static boolean doRegionsOverlap2D(ProtectedRegion r1, ProtectedRegion r2) {
+        Polygon poly1 = get2DPolygon(r1);
+        Polygon poly2 = get2DPolygon(r2);
 
-            BlockVector2 point1 = BlockVector2.at(min.x(), min.z());
-            BlockVector2 point2 = BlockVector2.at(max.x(), max.z());
+        if (poly1 == null || poly2 == null) return false;
 
-            // 🔍 Get region manager
-            RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(player.getWorld()));
-            if (regionManager == null) return false;
-
-            // 🔍 Find region with flag "settle"
-            ProtectedRegion parentRegion = null;
-            for (ProtectedRegion r : regionManager.getRegions().values()) {
-                String type = r.getFlag(TypeFlag.NATIONS_TYPE);
-                if ("settle".equalsIgnoreCase(type)) {
-                    parentRegion = r;
-                    break;
-                }
-            }
-
-            if (parentRegion == null) return false;
-
-            boolean inside1 = isInsideRegion(point1, parentRegion);
-            boolean inside2 = isInsideRegion(point2, parentRegion);
-
-            if (!inside1 || !inside2) return false;
-
-            return !lineCrossesRegionBorder(point1, point2, parentRegion);
-        } catch (IncompleteRegionException e) {
-            return false;
-        }
-    }
-
-    private static boolean isInsideRegion(BlockVector2 point, ProtectedRegion region) {
-        if (region instanceof ProtectedPolygonalRegion) {
-            return isInsidePolygon(point, region.getPoints());
-        } else if (region instanceof ProtectedCuboidRegion) {
-            BlockVector3 min = region.getMinimumPoint();
-            BlockVector3 max = region.getMaximumPoint();
-            return point.x() >= min.x() && point.x() <= max.x()
-                    && point.z() >= min.z() && point.z() <= max.z();
-        }
-        return false;
-    }
-
-    private static boolean lineCrossesRegionBorder(BlockVector2 p1, BlockVector2 p2, ProtectedRegion region) {
-        List<BlockVector2> edges = new ArrayList<>();
-
-        if (region instanceof ProtectedPolygonalRegion) {
-            edges = region.getPoints();
-        } else if (region instanceof ProtectedCuboidRegion) {
-            BlockVector3 min = region.getMinimumPoint();
-            BlockVector3 max = region.getMaximumPoint();
-            edges.add(BlockVector2.at(min.x(), min.z()));
-            edges.add(BlockVector2.at(min.x(), max.z()));
-            edges.add(BlockVector2.at(max.x(), max.z()));
-            edges.add(BlockVector2.at(max.x(), min.z()));
-        } else {
-            return false;
-        }
-
-        for (int i = 0; i < edges.size(); i++) {
-            BlockVector2 a = edges.get(i);
-            BlockVector2 b = edges.get((i + 1) % edges.size());
-
-            if (linesIntersect(p1, p2, a, b)) {
+        // Check if any point from one polygon is inside the other
+        for (int i = 0; i < poly1.npoints; i++) {
+            if (poly2.contains(poly1.xpoints[i], poly1.ypoints[i])) {
                 return true;
             }
         }
+        for (int i = 0; i < poly2.npoints; i++) {
+            if (poly1.contains(poly2.xpoints[i], poly2.ypoints[i])) {
+                return true;
+            }
+        }
+
+        // Optional: Add edge-intersection check if you want precise behavior
         return false;
     }
 
+    private static Polygon get2DPolygon(ProtectedRegion region) {
+        if (region instanceof ProtectedCuboidRegion cuboid) {
+            BlockVector2 min = cuboid.getMinimumPoint().toBlockVector2();
+            BlockVector2 max = cuboid.getMaximumPoint().toBlockVector2();
 
+            int[] x = {min.x(), max.x(), max.x(), min.x()};
+            int[] z = {min.z(), min.z(), max.z(), max.z()};
 
-    private static boolean isInsidePolygon(BlockVector2 point, List<BlockVector2> polygon) {
-        int intersections = 0;
-        for (int i = 0; i < polygon.size(); i++) {
-            BlockVector2 a = polygon.get(i);
-            BlockVector2 b = polygon.get((i + 1) % polygon.size());
+            return new Polygon(x, z, 4);
+        } else if (region instanceof ProtectedPolygonalRegion polygon) {
+            List<BlockVector2> points = polygon.getPoints();
+            int[] x = new int[points.size()];
+            int[] z = new int[points.size()];
 
-            if (((a.z() > point.z()) != (b.z() > point.z())) &&
-                    (point.x() < (b.x() - a.x()) * (point.z() - a.z()) / (double)(b.z() - a.z()) + a.x())) {
-                intersections++;
+            for (int i = 0; i < points.size(); i++) {
+                x[i] = points.get(i).x();
+                z[i] = points.get(i).z();
             }
+
+            return new Polygon(x, z, points.size());
         }
-        return (intersections % 2) == 1;
+
+        // Other region types not supported
+        return null;
     }
+
+    public static ProtectedRegion asProtectedRegion(Region region, String id) {
+        if (region instanceof CuboidRegion cuboid) {
+            BlockVector3 min = cuboid.getMinimumPoint();
+            BlockVector3 max = cuboid.getMaximumPoint();
+            return new ProtectedCuboidRegion(id, min, max);
+        } else if (region instanceof Polygonal2DRegion polygon) {
+            List<BlockVector2> points = polygon.getPoints();
+            int minY = polygon.getMinimumY();
+            int maxY = polygon.getMaximumY();
+            return new ProtectedPolygonalRegion(id, points, minY, maxY);
+        } else {
+            return null; // Unsupported region type
+        }
+    }
+
+
 
     private static boolean linesIntersect(BlockVector2 p1, BlockVector2 p2, BlockVector2 q1, BlockVector2 q2) {
         return ccw(p1, q1, q2) != ccw(p2, q1, q2) && ccw(p1, p2, q1) != ccw(p1, p2, q2);
@@ -164,7 +137,7 @@ public class BoundaryClaimFunctions {
         return nextFree;
     }
 
-    public static boolean propertyPointInside2DBox(World bukkitWorld, BlockVector2 min, BlockVector2 max) {
+    public static boolean propertyPointInside2DBox(World bukkitWorld, BlockVector2 min, BlockVector2 max, String typeFlag) {
         RegionManager manager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(bukkitWorld));
         if (manager == null) return false;
 
@@ -176,7 +149,7 @@ public class BoundaryClaimFunctions {
 
         for (ProtectedRegion region : manager.getRegions().values()) {
             String type = region.getFlag(TypeFlag.NATIONS_TYPE);
-            if (!"property".equalsIgnoreCase(type)) continue;
+            if (!typeFlag.equalsIgnoreCase(type)) continue;
 
             // Representative point of the other region (e.g., its center)
             int regionX = (region.getMinimumPoint().x() + region.getMaximumPoint().x()) / 2;

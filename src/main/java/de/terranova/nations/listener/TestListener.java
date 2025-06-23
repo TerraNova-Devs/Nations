@@ -14,7 +14,7 @@ public class TestListener implements Listener {
     private void onBlockBreak(PlayerInteractEvent e) throws IncompleteRegionException {
         if(!e.getAction().isRightClick()) return;
         if(!e.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.BEDROCK)) return;
-        e.getPlayer().sendMessage(Chat.errorFade("" + BoundaryClaimFunctions.isValidSelection(e.getPlayer())));
+        //e.getPlayer().sendMessage(Chat.errorFade("" + BoundaryClaimFunctions.isValidSelection(e.getPlayer())));
     }
 
 }

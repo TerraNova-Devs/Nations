@@ -618,7 +618,7 @@ public class TownCommands extends AbstractCommand {
 
         int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
         int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
-        if(BoundaryClaimFunctions.propertyPointInside2DBox(p.getWorld(), BlockVector2.at(nx,nz),BlockVector2.at(nx+48,nz+48))){
+        if(BoundaryClaimFunctions.propertyPointInside2DBox(p.getWorld(), BlockVector2.at(nx,nz),BlockVector2.at(nx+48,nz+48), "property")){
             p.sendMessage(Chat.errorFade("In dem Claim befindet sich noch mindestens ein Grundstück."));
             return false;
         }

@@ -1,5 +1,10 @@
 package de.terranova.nations.regions.boundary;
 
+import com.sk89q.worldedit.IncompleteRegionException;
+import com.sk89q.worldedit.LocalSession;
+import com.sk89q.worldedit.WorldEdit;
+import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.regions.RegionSelector;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -11,9 +16,7 @@ import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 public class PropertyRegionFactory implements RegionFactory {
 
@@ -40,8 +43,23 @@ public class PropertyRegionFactory implements RegionFactory {
             return null;
         }
 
-        if(!BoundaryClaimFunctions.isValidSelection(p)) {
-            p.sendMessage(Chat.errorFade("Deine Auswahl befindet sich ausserhalb der Stadtgrenzen"));
+        com.sk89q.worldedit.entity.Player wePlayer = BukkitAdapter.adapt(p);
+        LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
+        RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(p.getWorld()));
+        try {
+            com.sk89q.worldedit.regions.Region region = selector.getRegion();
+            if(!BoundaryClaimFunctions.doRegionsOverlap2D(BoundaryClaimFunctions.asProtectedRegion(region,UUID.randomUUID().toString()), settle.getWorldguardRegion())) {
+                p.sendMessage(Chat.errorFade("Deine Auswahl befindet sich ausserhalb der Stadtgrenzen."));
+                return null;
+            }
+        } catch (IncompleteRegionException e) {
+            p.sendMessage(Chat.errorFade("Deine Auswahl ist unvollständig."));
+            return null;
+        }
+
+
+        if() {
+            p.sendMessage(Chat.errorFade("Deine Auswahl überschneidet ein anderes Grundstück."));
             return null;
         }
 
