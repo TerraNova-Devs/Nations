@@ -5,6 +5,7 @@ import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.regions.RegionSelector;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.access.TownAccess;
 import de.terranova.nations.regions.access.TownAccessLevel;
@@ -48,9 +49,21 @@ public class PropertyRegionFactory implements RegionFactory {
         RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(p.getWorld()));
         try {
             com.sk89q.worldedit.regions.Region region = selector.getRegion();
-            if(!BoundaryClaimFunctions.doRegionsOverlap2D(BoundaryClaimFunctions.asProtectedRegion(region,UUID.randomUUID().toString()), settle.getWorldguardRegion())) {
+            ProtectedRegion tempRegion = BoundaryClaimFunctions.asProtectedRegion(region,UUID.randomUUID().toString());
+
+            if(!BoundaryClaimFunctions.doRegionsOverlap2D(tempRegion, settle.getWorldguardRegion())) {
                 p.sendMessage(Chat.errorFade("Deine Auswahl befindet sich ausserhalb der Stadtgrenzen."));
                 return null;
+            }
+            Collection<Region> properties = settle.getHierarchy()
+                    .getChildren()
+                    .getOrDefault("property", Collections.emptyMap())
+                    .values();
+            for (Region property : properties) {
+                if (BoundaryClaimFunctions.doRegionsOverlap2D(tempRegion, property.getWorldguardRegion())) {
+                    p.sendMessage(Chat.errorFade("Deine Auswahl überschneidet ein anderes Grundstück."));
+                    return null;
+                }
             }
         } catch (IncompleteRegionException e) {
             p.sendMessage(Chat.errorFade("Deine Auswahl ist unvollständig."));
@@ -58,10 +71,6 @@ public class PropertyRegionFactory implements RegionFactory {
         }
 
 
-        if( settle.getHierarchy().getChildren().stream().forEach(child -> BoundaryClaimFunctions.doRegionsOverlap2D(child.getId(),settle.getWorldguardRegion()))) {
-            p.sendMessage(Chat.errorFade("Deine Auswahl überschneidet ein anderes Grundstück."));
-            return null;
-        }
 
         if (!isValidName(name, p)) {
             p.sendMessage(Chat.errorFade("Invalid name for Property." + name));
