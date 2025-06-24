@@ -6,14 +6,17 @@ import de.terranova.nations.regions.access.PropertyAccessLevel;
 import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
+import de.terranova.nations.regions.hierarchy.HasHierarchy;
+import de.terranova.nations.regions.hierarchy.Hierarchy;
 
 import java.util.*;
 
-public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled , BankHolder {
+public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled , BankHolder, HasHierarchy {
     public static final String REGION_TYPE = "property";
 
     private PropertyAccess access;
     private Bank bank;
+    private Hierarchy hierarchy;
 
     public PropertyRegion(String name, UUID ruuid, UUID owner) {
         super(name, ruuid, REGION_TYPE);
@@ -51,4 +54,7 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
     public Bank getBank() {
         return bank;
     }
+
+    @Override
+    public Hierarchy getHierarchy() { return hierarchy; }
 }

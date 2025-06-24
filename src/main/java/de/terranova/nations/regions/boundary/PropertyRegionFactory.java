@@ -58,7 +58,7 @@ public class PropertyRegionFactory implements RegionFactory {
         }
 
 
-        if() {
+        if( settle.getHierarchy().getChildren().stream().forEach(child -> BoundaryClaimFunctions.doRegionsOverlap2D(child.getId(),settle.getWorldguardRegion()))) {
             p.sendMessage(Chat.errorFade("Deine Auswahl überschneidet ein anderes Grundstück."));
             return null;
         }

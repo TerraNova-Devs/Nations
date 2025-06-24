@@ -10,6 +10,8 @@ import de.terranova.nations.regions.bank.Bank;
 import de.terranova.nations.regions.bank.BankHolder;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.GridRegion;
+import de.terranova.nations.regions.hierarchy.HasHierarchy;
+import de.terranova.nations.regions.hierarchy.Hierarchy;
 import de.terranova.nations.regions.npc.NPCHolder;
 import de.terranova.nations.regions.npc.NPCr;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -23,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion {
+public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion, HasHierarchy {
 
     public static final String REGION_TYPE = "settle";
     public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5,4,4,4,4,7,4,4,4,4,10,5,5,5,5,10));
@@ -31,6 +33,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
     private final NPCr npc;
     private final TownAccess access;
     private final Bank bank;
+    private Hierarchy hierarchy;
 
 
 
@@ -105,5 +108,10 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
     public void onLevelUP() {
         RegionLayer.updateRegion(this);
         npc.hologramNPC(new String[]{String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
+    }
+
+    @Override
+    public Hierarchy getHierarchy() {
+        return hierarchy;
     }
 }
