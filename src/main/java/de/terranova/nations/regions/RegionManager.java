@@ -15,7 +15,6 @@ import org.bukkit.Location;
 
 import java.util.*;
 
-//TODO get regions from DB
 public class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
     private final static Map<String, Map<UUID, ? extends Region>> regionCache = new HashMap<>();
