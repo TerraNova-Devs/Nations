@@ -1,22 +1,21 @@
 package de.terranova.nations.regions.boundary;
 
+import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.modules.access.PropertyAccess;
 import de.terranova.nations.regions.modules.access.PropertyAccessControlled;
 import de.terranova.nations.regions.modules.access.PropertyAccessLevel;
 import de.terranova.nations.regions.modules.bank.Bank;
 import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
-import de.terranova.nations.regions.hierarchy.HasHierarchy;
-import de.terranova.nations.regions.hierarchy.Hierarchy;
-
 import java.util.*;
 
-public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled , BankHolder, HasHierarchy {
+public class PropertyRegion extends BoundaryRegion implements PropertyAccessControlled , BankHolder, HasParent<SettleRegion> {
     public static final String REGION_TYPE = "property";
 
     private PropertyAccess access;
     private Bank bank;
-    private Hierarchy hierarchy;
+    private SettleRegion parent;
 
     public PropertyRegion(String name, UUID ruuid, UUID owner) {
         super(name, ruuid, REGION_TYPE);
@@ -56,5 +55,7 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
     }
 
     @Override
-    public Hierarchy getHierarchy() { return hierarchy; }
+    public SettleRegion getParent() {
+        return parent;
+    }
 }

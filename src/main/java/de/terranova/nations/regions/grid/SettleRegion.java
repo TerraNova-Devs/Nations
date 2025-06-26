@@ -3,6 +3,8 @@ package de.terranova.nations.regions.grid;
 import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.modules.HasChildren;
 import de.terranova.nations.regions.modules.access.TownAccess;
 import de.terranova.nations.regions.modules.access.TownAccessControlled;
 import de.terranova.nations.regions.modules.access.TownAccessLevel;
@@ -10,8 +12,6 @@ import de.terranova.nations.regions.modules.bank.Bank;
 import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.GridRegion;
-import de.terranova.nations.regions.hierarchy.HasHierarchy;
-import de.terranova.nations.regions.hierarchy.Hierarchy;
 import de.terranova.nations.regions.modules.npc.NPCHolder;
 import de.terranova.nations.regions.modules.npc.NPCr;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion, HasHierarchy {
+public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion, HasChildren {
 
     public static final String REGION_TYPE = "settle";
     public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5,4,4,4,4,7,4,4,4,4,10,5,5,5,5,10));
@@ -33,8 +33,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
     private final NPCr npc;
     private final TownAccess access;
     private final Bank bank;
-    private Hierarchy hierarchy;
-
+    private final Map<String, List<Region>> children = new HashMap<>();
 
 
     public SettleRegion(String name, UUID ruuid, Vectore2 loc) {
@@ -111,7 +110,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
     }
 
     @Override
-    public Hierarchy getHierarchy() {
-        return hierarchy;
+    public Map<String, List<Region>> getChildrenMap() {
+        return children;
     }
 }
