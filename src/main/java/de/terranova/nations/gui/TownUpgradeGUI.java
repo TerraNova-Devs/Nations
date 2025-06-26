@@ -2,14 +2,12 @@ package de.terranova.nations.gui;
 
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.regions.rank.RankObjective;
+import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;

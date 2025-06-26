@@ -1,6 +1,7 @@
-package de.terranova.nations.regions.access;
+package de.terranova.nations.regions.modules.access;
 
 import de.terranova.nations.database.dao.AccessDAO;
+import de.terranova.nations.database.dao.PropertyAccessDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionListener;
 import de.terranova.nations.utils.Chat;
@@ -9,74 +10,74 @@ import org.bukkit.Bukkit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TownAccess implements RegionListener {
+public class PropertyAccess implements RegionListener {
 
     private Region region;
-    private HashMap<UUID, TownAccessLevel> accessLevel;
+    private HashMap<UUID, PropertyAccessLevel> accessLevel;
 
-    public TownAccess(Region region) {
-        if (!(region instanceof TownAccessControlled)) throw new IllegalArgumentException();
+    public PropertyAccess(Region region) {
+        if (!(region instanceof PropertyAccessControlled)) throw new IllegalArgumentException();
         this.region = region;
-        this.accessLevel = new HashMap<>(AccessDAO.getMembersAccess(region.getId()));
+        this.accessLevel = new HashMap<>(PropertyAccessDAO.getMembersAccess(region.getId()));
         region.addListener(this);
     }
 
-    public void setAccessLevels(HashMap<UUID, TownAccessLevel> accessLevels) {
+    public void setAccessLevels(HashMap<UUID, PropertyAccessLevel> accessLevels) {
         this.accessLevel = accessLevels;
     }
 
-    public HashMap<UUID, TownAccessLevel> getAccessLevels() {
+    public HashMap<UUID, PropertyAccessLevel> getAccessLevels() {
         return this.accessLevel;
     }
 
-    public void setAccessLevel(UUID uuid, TownAccessLevel accessLevel) {
-        HashMap<UUID, TownAccessLevel> accessLevels = getAccessLevels();
+    public void setAccessLevel(UUID uuid, PropertyAccessLevel accessLevel) {
+        HashMap<UUID, PropertyAccessLevel> accessLevels = getAccessLevels();
         if (getAccessLevels().containsKey(uuid)) {
             accessLevels.replace(uuid, accessLevel);
         } else {
             accessLevels.put(uuid, accessLevel);
         }
-        AccessDAO.changeMemberAccess(region.getId(), uuid, accessLevel);
+        PropertyAccessDAO.changeMemberAccess(region.getId(), uuid, accessLevel);
         setAccessLevels(accessLevels);
     }
 
-    public TownAccessLevel getAccessLevel(UUID uuid) {
+    public PropertyAccessLevel getAccessLevel(UUID uuid) {
         return getAccessLevels().get(uuid);
     }
 
     public void removeAccess(UUID uuid) {
-        HashMap<UUID, TownAccessLevel> accessLevels = getAccessLevels();
+        HashMap<UUID, PropertyAccessLevel> accessLevels = getAccessLevels();
         accessLevels.remove(uuid);
         AccessDAO.changeMemberAccess(region.getId(), uuid, null);
         setAccessLevels(accessLevels);
     }
 
-    public static boolean hasAccess(TownAccessLevel access, TownAccessLevel neededAccess) {
+    public static boolean hasAccess(PropertyAccessLevel access, PropertyAccessLevel neededAccess) {
         return access != null && access.getWeight() >= neededAccess.getWeight();
     }
 
-    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(TownAccessLevel access) {
+    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(PropertyAccessLevel access) {
         return accessLevel.keySet()
                 .stream().filter(uuid -> accessLevel.get(uuid).equals(access))
                 .collect(Collectors.toSet());
     }
 
-    public Collection<String> getEveryMemberNameWithCertainAccessLevel(TownAccessLevel access) {
+    public Collection<String> getEveryMemberNameWithCertainAccessLevel(PropertyAccessLevel access) {
         return accessLevel.keySet()
                 .stream().filter(uuid -> accessLevel.get(uuid).equals(access))
                 .map(uuid -> Bukkit.getOfflinePlayer(uuid).getName())
                 .filter(Objects::nonNull).collect(Collectors.toSet());
     }
 
-    public UUID getMajor() {
+    public UUID getOwner() {
         return accessLevel.entrySet()
-                .stream().filter(entry -> entry.getValue() == TownAccessLevel.MAJOR)
+                .stream().filter(entry -> entry.getValue() == PropertyAccessLevel.OWNER)
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<UUID> getAllUUIDsOfLevel(TownAccessLevel level) {
+    public List<UUID> getAllUUIDsOfLevel(PropertyAccessLevel level) {
         return accessLevel.entrySet()
                 .stream().filter(entry -> entry.getValue() == level)
                 .map(Map.Entry::getKey)
@@ -96,6 +97,6 @@ public class TownAccess implements RegionListener {
 
     @Override
     public void onRegionRemoved() {
-        AccessDAO.removeEveryAccess(region.getId());
+        PropertyAccessDAO.removeEveryAccess(region.getId());
     }
 }

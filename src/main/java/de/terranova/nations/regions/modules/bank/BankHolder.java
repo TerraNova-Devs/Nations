@@ -1,9 +1,7 @@
-package de.terranova.nations.regions.bank;
+package de.terranova.nations.regions.modules.bank;
 
 import org.jetbrains.annotations.ApiStatus;
 
-import java.sql.Timestamp;
-import java.util.List;
 import java.util.UUID;
 
 public interface BankHolder {

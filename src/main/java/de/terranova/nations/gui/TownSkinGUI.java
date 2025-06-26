@@ -2,10 +2,10 @@ package de.terranova.nations.gui;
 
 
 
-import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccess;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.regions.npc.NPCSkins;
+import de.terranova.nations.regions.modules.npc.NPCSkins;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;

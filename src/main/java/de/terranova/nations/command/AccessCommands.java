@@ -1,9 +1,9 @@
 package de.terranova.nations.command;
 
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessControlled;
-import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccess;
+import de.terranova.nations.regions.modules.access.TownAccessControlled;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.Bukkit;

@@ -1,7 +1,7 @@
 package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.bank.Transaction;
+import de.terranova.nations.regions.modules.bank.Transaction;
 
 import java.sql.*;
 import java.util.*;

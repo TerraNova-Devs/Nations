@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.access;
+package de.terranova.nations.regions.modules.access;
 
 import java.util.UUID;
 

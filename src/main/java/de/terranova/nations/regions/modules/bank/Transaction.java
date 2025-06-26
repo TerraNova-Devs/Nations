@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.bank;
+package de.terranova.nations.regions.modules.bank;
 
 import java.time.Instant;
 

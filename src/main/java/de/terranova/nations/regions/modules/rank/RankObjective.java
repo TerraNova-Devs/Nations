@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.rank;
+package de.terranova.nations.regions.modules.rank;
 
 import java.io.Serializable;
 

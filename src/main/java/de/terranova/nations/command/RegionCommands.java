@@ -7,10 +7,9 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.gui.PropertyGUI;
-import de.terranova.nations.gui.TownGUI;
 import de.terranova.nations.pl3xmap.RegionLayer;
-import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccess;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
 import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
@@ -21,7 +20,6 @@ import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 

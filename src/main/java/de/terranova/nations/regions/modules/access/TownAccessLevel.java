@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.access;
+package de.terranova.nations.regions.modules.access;
 
 public enum TownAccessLevel {
     ADMIN(1000000),

@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.bank;
+package de.terranova.nations.regions.modules.bank;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.BankDAO;

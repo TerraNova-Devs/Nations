@@ -1,8 +1,8 @@
 package de.terranova.nations.regions.base;
 
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.access.TownAccessLevel;
-import de.terranova.nations.regions.access.TownAccessControlled;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccessControlled;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 

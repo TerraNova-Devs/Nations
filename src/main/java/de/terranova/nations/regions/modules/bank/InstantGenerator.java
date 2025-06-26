@@ -1,11 +1,9 @@
-package de.terranova.nations.regions.bank;
+package de.terranova.nations.regions.modules.bank;
 
-import java.sql.Timestamp;
 import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ConcurrentMap;
 
 public class InstantGenerator {
 

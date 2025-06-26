@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.npc;
+package de.terranova.nations.regions.modules.npc;
 
 //Skin bei https://mineskin.org/ hochladen für signature & texture values.
 public enum NPCSkins {

@@ -2,9 +2,9 @@ package de.terranova.nations.gui;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.access.TownAccess;
-import de.terranova.nations.regions.access.TownAccessControlled;
-import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccess;
+import de.terranova.nations.regions.modules.access.TownAccessControlled;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -19,7 +19,6 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 

@@ -1,7 +1,7 @@
 package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.access.PropertyAccessLevel;
+import de.terranova.nations.regions.modules.access.PropertyAccessLevel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

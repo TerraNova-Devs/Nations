@@ -1,10 +1,10 @@
 package de.terranova.nations.regions.boundary;
 
-import de.terranova.nations.regions.access.PropertyAccess;
-import de.terranova.nations.regions.access.PropertyAccessControlled;
-import de.terranova.nations.regions.access.PropertyAccessLevel;
-import de.terranova.nations.regions.bank.Bank;
-import de.terranova.nations.regions.bank.BankHolder;
+import de.terranova.nations.regions.modules.access.PropertyAccess;
+import de.terranova.nations.regions.modules.access.PropertyAccessControlled;
+import de.terranova.nations.regions.modules.access.PropertyAccessLevel;
+import de.terranova.nations.regions.modules.bank.Bank;
+import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.hierarchy.HasHierarchy;
 import de.terranova.nations.regions.hierarchy.Hierarchy;

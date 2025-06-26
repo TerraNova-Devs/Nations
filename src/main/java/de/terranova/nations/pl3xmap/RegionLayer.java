@@ -5,7 +5,7 @@ import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.professions.ProfessionStatus;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.TownAccessLevel;
 import de.terranova.nations.regions.base.RegionListener;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.BannerRenderer;
@@ -25,7 +25,6 @@ import net.pl3x.map.core.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.BannerMeta;
 import org.jetbrains.annotations.NotNull;
 
 import javax.imageio.ImageIO;

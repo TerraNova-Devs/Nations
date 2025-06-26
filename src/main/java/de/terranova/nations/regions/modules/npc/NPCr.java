@@ -1,4 +1,4 @@
-package de.terranova.nations.regions.npc;
+package de.terranova.nations.regions.modules.npc;
 
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.regions.base.GridRegion;
