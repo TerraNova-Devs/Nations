@@ -7,19 +7,16 @@ import de.terranova.nations.regions.rule.RuleRequirement;
 import java.util.Set;
 
 public class RequireInsideParentRule implements RegionRule {
-    private final String regionType;
-    private final String parentType;
+    private final String requiredParentType;
 
-    public RequireInsideParentRule(String regionType, String parentType) {
-        this.regionType = regionType;
-        this.parentType = parentType;
+    public RequireInsideParentRule(String requiredParentType) {
+        this.requiredParentType = requiredParentType;
     }
 
     @Override
     public boolean isAllowed(RuleContext ctx) {
-        if (!ctx.type.equals(regionType)) return true;
         return ctx.parent != null &&
-                ctx.parent.getType().equals(parentType) &&
+                ctx.parent.getType().equals(requiredParentType) &&
                 ctx.fakeRegionBeingPlaced.isInside(ctx.parent);
     }
 

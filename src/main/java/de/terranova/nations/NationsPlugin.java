@@ -17,9 +17,13 @@ import de.terranova.nations.professions.pojo.ProfessionsYaml;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.modules.rank.RankObjective;
+import de.terranova.nations.regions.rule.RuleSet;
+import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
+import de.terranova.nations.regions.rule.rules.RequireInsideParentRule;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
@@ -94,8 +98,10 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionRegistry.register(new SettleRegionFactory());
-        RegionRegistry.register(new PropertyRegionFactory());
+        RegionRegistry.register(new SettleRegionFactory(),RuleSet.defaultRules());
+        RuleSet propertyRuleset = RuleSet.defaultRules()
+                .addRule(new RequireInsideParentRule(SettleRegion.REGION_TYPE));
+        RegionRegistry.register(new PropertyRegionFactory(),propertyRuleset);
     }
 
     @Override

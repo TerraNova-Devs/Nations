@@ -7,19 +7,15 @@ import de.terranova.nations.regions.rule.RuleRequirement;
 
 import java.util.Set;
 
+import java.util.Set;
+
 public class NoSelfOverlapRule implements RegionRule {
-    private final String regionType;
-
-    public NoSelfOverlapRule(String regionType) {
-        this.regionType = regionType;
-    }
-
     @Override
     public boolean isAllowed(RuleContext ctx) {
         for (Region r : ctx.nearbyRegions) {
-            //if (r.getType().equals(regionType) && ctx.fakeRegionBeingPlaced.overlaps(r)) {
+            if (r.getType().equals(ctx.type) && ctx.fakeRegionBeingPlaced.overlaps(r)) {
                 return false;
-            //}
+            }
         }
         return true;
     }

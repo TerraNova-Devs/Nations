@@ -7,15 +7,8 @@ import de.terranova.nations.regions.rule.RuleRequirement;
 import java.util.Set;
 
 public class NoParentOverlapRule implements RegionRule {
-    private final String regionType;
-
-    public NoParentOverlapRule(String regionType) {
-        this.regionType = regionType;
-    }
-
     @Override
     public boolean isAllowed(RuleContext ctx) {
-        if (!ctx.type.equals(regionType)) return true;
         return ctx.parent != null && !ctx.fakeRegionBeingPlaced.overlaps(ctx.parent);
     }
 

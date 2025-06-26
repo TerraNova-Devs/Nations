@@ -13,8 +13,7 @@ import java.util.stream.Collectors;
 public class RuleValidator {
 
     public static boolean validate(RegionContext ctx, String regionType, Region regionBeingPlaced, Region explicitParent) {
-        String type = regionType;
-        RuleSet rules = type.getRuleSet();
+        RuleSet rules = RegionRegistry.getRuleSet(regionType);
 
         Set<RuleRequirement> requirements = rules.getRules().stream()
                 .flatMap(rule -> rule.getRequirements().stream())
