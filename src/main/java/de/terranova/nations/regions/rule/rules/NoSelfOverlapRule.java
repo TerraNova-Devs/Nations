@@ -28,7 +28,7 @@ public class NoSelfOverlapRule implements RegionRule {
 
         // Ist das Grid belegt?
         if(explicitParent == null && isGrid) {
-            return RegionClaimFunctions.checkAreaForSettles(p);
+            return !RegionClaimFunctions.checkAreaForSettles(p);
         }
 
         // Hast die Region Childrensets?

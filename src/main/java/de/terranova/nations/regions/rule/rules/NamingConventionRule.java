@@ -15,9 +15,10 @@ public class NamingConventionRule implements RegionRule {
     }
 
     @Override
-    public boolean isAllowed(Player p, String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
-        if (regex.matches(regex)) {
-            return  true;
+    public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
+
+        if (regionName.matches(regex)) {
+            return true;
         }
         p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
         return false;

@@ -1,7 +1,6 @@
 package de.terranova.nations.regions.grid;
 
 import de.terranova.nations.regions.base.*;
-import de.terranova.nations.regions.boundary.PropertyRegion;
 import de.terranova.nations.utils.BiomeUtil;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
@@ -10,7 +9,6 @@ import de.terranova.nations.worldguard.math.claimCalc;
 import org.bukkit.entity.Player;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 public class SettleRegionFactory implements RegionFactoryBase {
@@ -23,7 +21,7 @@ public class SettleRegionFactory implements RegionFactoryBase {
     @Override
     public Region createWithContext(RegionContext ctx) {
         Player p = ctx.player;
-        String name = ctx.extra.get("name");
+        String name = ctx.name;
 
         if (!validate(ctx,name,null, null)){
             return null;
