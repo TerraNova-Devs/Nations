@@ -25,6 +25,7 @@ import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
 import de.terranova.nations.regions.rule.rules.MustBeWithinParentRule;
 import de.terranova.nations.regions.rule.rules.NamingConventionRule;
+import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
@@ -101,11 +102,16 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     private void nationsRegionTypeRegistry() {
         RegionRegistry.register(new SettleRegionFactory(),
                 RuleSet.defaultRules()
-                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")));
+                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
+                        .excludeDefaultRule(NoSelfOverlapRule.class)
+                        .addRule(new NoSelfOverlapRule(true))
+        );
+
         RegionRegistry.register(new PropertyRegionFactory(),
                 RuleSet.defaultRules()
                         .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
-                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class,SettleRegion.class)));
+                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class,SettleRegion.class))
+        );
 
     }
 

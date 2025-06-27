@@ -1,6 +1,7 @@
 package de.terranova.nations.regions.grid;
 
 import de.terranova.nations.regions.base.*;
+import de.terranova.nations.regions.boundary.PropertyRegion;
 import de.terranova.nations.utils.BiomeUtil;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
@@ -15,8 +16,8 @@ import java.util.UUID;
 public class SettleRegionFactory implements RegionFactoryBase {
 
     @Override
-    public Class<? extends Region> getRegionClass() {
-        return SettleRegion.class;
+    public String getType() {
+        return SettleRegion.REGION_TYPE;
     }
 
     @Override

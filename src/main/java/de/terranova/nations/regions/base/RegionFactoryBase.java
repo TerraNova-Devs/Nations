@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RegionFactoryBase {
 
-    Class<? extends Region> getRegionClass();
+    String getType();
 
     // For new Creations facilitates more information
     Region createWithContext(RegionContext ctx);
@@ -17,6 +17,6 @@ public interface RegionFactoryBase {
     Region createFromArgs(List<String> args);
 
     default boolean validate(RegionContext ctx,String name, ProtectedRegion fakeRegion, Region parent) {
-        return RuleValidator.validate(ctx.player, getRegionClass().getTypeName(), name, fakeRegion ,parent);
+        return RuleValidator.validate(ctx.player, getType(), name, fakeRegion ,parent);
     }
 }

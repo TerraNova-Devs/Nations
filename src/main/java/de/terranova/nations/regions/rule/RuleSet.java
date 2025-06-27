@@ -8,7 +8,7 @@ import java.util.List;
 public class RuleSet {
 
     private static final List<RegionRule> DEFAULT_RULES = List.of(
-            new NoSelfOverlapRule()
+            new NoSelfOverlapRule(false)
     );
 
     private final List<RegionRule> customRules;

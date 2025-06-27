@@ -18,14 +18,9 @@ public class MustBeWithinParentRule<T extends Region & HasParent<P>, P extends R
     }
 
     @Override
-    public boolean isAllowed(Player p,Class<? extends Region> regionClass,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
-        if (!regionClass.getTypeName().equals(childClass.getTypeName())) return false;
+    public boolean isAllowed(Player p,String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         if (!parentClass.isInstance(explicitParent)) return false;
-
-        ProtectedRegion childRegion = regionBeingPlaced;
-        ProtectedRegion parentRegion = explicitParent.getWorldguardRegion();
-
-        return BoundaryClaimFunctions.doRegionsOverlap2D(childRegion, parentRegion);
+        return BoundaryClaimFunctions.doRegionsOverlap2D(regionBeingPlaced, explicitParent.getWorldguardRegion());
     }
 
     @Override

@@ -21,9 +21,11 @@ import java.util.*;
 
 public class PropertyRegionFactory implements RegionFactoryBase {
 
+
+
     @Override
-    public Class<? extends Region> getRegionClass() {
-        return PropertyRegion.class;
+    public String getType() {
+        return PropertyRegion.REGION_TYPE;
     }
 
     @Override

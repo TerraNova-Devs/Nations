@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Optional;
 
 public class RegionRegistry {
-    private static final Map<String, RegionFactoryBase> factories = new HashMap<>();
+    public static final Map<String, RegionFactoryBase> factories = new HashMap<>();
     private static final Map<String, RuleSet> ruleSets = new HashMap<>();
 
     public static void register(RegionFactoryBase factory, RuleSet ruleSet) {

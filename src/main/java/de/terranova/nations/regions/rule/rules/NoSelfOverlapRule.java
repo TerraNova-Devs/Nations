@@ -16,26 +16,31 @@ import java.util.List;
 
 public class NoSelfOverlapRule implements RegionRule {
 
+    private boolean isGrid;
+
+    public NoSelfOverlapRule(Boolean noParentGrid) {
+        this.isGrid = noParentGrid;
+    }
 
     @Override
-    public boolean isAllowed(Player p, Class<? extends Region> regionClass,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
+    public boolean isAllowed(Player p, String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         List<Region> relevantRegions;
 
         // Ist das Grid belegt?
-        if(explicitParent == null && BoundaryRegion.class.isAssignableFrom(regionClass)) {
+        if(explicitParent == null && isGrid) {
             return RegionClaimFunctions.checkAreaForSettles(p);
         }
 
         // Hast die Region Childrensets?
-        boolean hasInsideParentRule = RegionRegistry.getRuleSet(regionClass.getTypeName()).getRules().stream()
+        boolean hasInsideParentRule = RegionRegistry.getRuleSet(type).getRules().stream()
                 .anyMatch(rule -> rule instanceof MustBeWithinParentRule<?, ?>);
 
         if (hasInsideParentRule && explicitParent instanceof HasChildren) {
             // Case 1: Wenn die Region Children hat nur gegen diese Testen
-            relevantRegions = ((HasChildren) explicitParent).getChildrenByType(regionClass.getTypeName());
+            relevantRegions = ((HasChildren) explicitParent).getChildrenByType(type);
         } else {
             // Case 2: Gegen alle Regionen mit dem Typen Testen
-            relevantRegions = new ArrayList<>(RegionManager.retrieveAllCachedRegions(regionClass.getTypeName()).values());
+            relevantRegions = new ArrayList<>(RegionManager.retrieveAllCachedRegions(type).values());
         }
 
         for (Region existing : relevantRegions) {

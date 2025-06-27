@@ -37,8 +37,8 @@ public class RegionCommands {
         String type = args[2].toLowerCase();
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 3, args.length)));
 
-        if(!RegionRegistry.registry.containsKey(type)){
-            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionRegistry.registry.keySet())));
+        if(!RegionRegistry.factories.containsKey(type)){
+            p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionRegistry.factories.keySet())));
             return false;
         }
         Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p,name,Map.of()));

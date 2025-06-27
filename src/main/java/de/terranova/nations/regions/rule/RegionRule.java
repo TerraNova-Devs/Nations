@@ -7,6 +7,6 @@ import org.bukkit.entity.Player;
 import java.util.Set;
 
 public interface RegionRule {
-    boolean isAllowed(Player p,Class<? extends Region> regionClass,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent);
+    boolean isAllowed(Player p,String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent);
     String getErrorMessage();
 }

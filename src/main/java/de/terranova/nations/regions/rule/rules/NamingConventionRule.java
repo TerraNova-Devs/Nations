@@ -15,7 +15,7 @@ public class NamingConventionRule implements RegionRule {
     }
 
     @Override
-    public boolean isAllowed(Player p, Class<? extends Region> regionClass,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
+    public boolean isAllowed(Player p, String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         if (regex.matches(regex)) {
             return  true;
         }

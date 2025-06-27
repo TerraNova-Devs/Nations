@@ -8,11 +8,11 @@ import org.bukkit.entity.Player;
 
 public class RuleValidator {
 
-    public static boolean validate(Player p, Class<? extends Region> regionClass,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
-        RuleSet rules = RegionRegistry.getRuleSet(regionClass.getTypeName());
+    public static boolean validate(Player p, String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
+        RuleSet rules = RegionRegistry.getRuleSet(type);
 
         for (RegionRule rule : rules.getRules()) {
-            if (!rule.isAllowed(p, regionClass,regionName ,regionBeingPlaced, explicitParent)) {
+            if (!rule.isAllowed(p, type,regionName ,regionBeingPlaced, explicitParent)) {
                 p.sendMessage(Chat.errorFade(rule.getErrorMessage()));
                 return false;
             }
