@@ -8,15 +8,15 @@ import java.util.Map;
 import java.util.Optional;
 
 public class RegionRegistry {
-    private static final Map<String, RegionFactory> factories = new HashMap<>();
+    private static final Map<String, RegionFactoryBase> factories = new HashMap<>();
     private static final Map<String, RuleSet> ruleSets = new HashMap<>();
 
-    public static void register(RegionFactory factory, RuleSet ruleSet) {
+    public static void register(RegionFactoryBase factory, RuleSet ruleSet) {
         factories.put(factory.getType(), factory);
         ruleSets.put(factory.getType(), ruleSet);
     }
 
-    public static RegionFactory getFactory(String type) {
+    public static RegionFactoryBase getFactory(String type) {
         return factories.get(type);
     }
 

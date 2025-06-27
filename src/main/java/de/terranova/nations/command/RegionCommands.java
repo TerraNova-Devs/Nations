@@ -41,7 +41,7 @@ public class RegionCommands {
             p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionRegistry.registry.keySet())));
             return false;
         }
-        Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p,Map.of("name", name)));
+        Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p,name,Map.of()));
         if (regionTypeOpt.isPresent()) {
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
         } else {

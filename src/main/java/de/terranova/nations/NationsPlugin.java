@@ -16,13 +16,15 @@ import de.terranova.nations.professions.pojo.ProfessionConfigLoader;
 import de.terranova.nations.professions.pojo.ProfessionsYaml;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.RegionRegistry;
+import de.terranova.nations.regions.boundary.PropertyRegion;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
-import de.terranova.nations.regions.rule.rules.MustBeInsideParent;
+import de.terranova.nations.regions.rule.rules.MustBeWithinParentRule;
+import de.terranova.nations.regions.rule.rules.NamingConventionRule;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
@@ -97,10 +99,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     private void nationsRegionTypeRegistry() {
-        RegionRegistry.register(new SettleRegionFactory(),RuleSet.defaultRules());
-        RuleSet propertyRuleset = RuleSet.defaultRules()
-                .addRule(new MustBeInsideParent(SettleRegion.REGION_TYPE));
-        RegionRegistry.register(new PropertyRegionFactory(),propertyRuleset);
+        RegionRegistry.register(new SettleRegionFactory(),
+                RuleSet.defaultRules()
+                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")));
+        RegionRegistry.register(new PropertyRegionFactory(),
+                RuleSet.defaultRules()
+                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
+                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class,SettleRegion.class)));
+
     }
 
     @Override

@@ -12,21 +12,20 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-public class SettleRegionFactory implements RegionFactory {
+public class SettleRegionFactory implements RegionFactoryBase {
 
     @Override
-    public String getType() {
-        return SettleRegion.REGION_TYPE;
+    public Class<? extends Region> getRegionClass() {
+        return SettleRegion.class;
     }
 
     @Override
     public Region createWithContext(RegionContext ctx) {
         Player p = ctx.player;
         String name = ctx.extra.get("name");
-        // Perform all necessary validations before creation
-        if (!isValidName(name, p)) {
-            p.sendMessage(Chat.errorFade("Invalid name for settlement." + name));
-            return null;  // Return null to indicate creation failure.
+
+        if (!validate(ctx,name,null, null)){
+            return null;
         }
 
         if (isInBlacklistedBiome(p)) {
@@ -62,19 +61,6 @@ public class SettleRegionFactory implements RegionFactory {
                 new Vectore2(args.get(2))
         );
     }
-    public static Set<String> blacklistedNames = Set.of("admin", "root", "moderator", "support");
-    private static boolean isValidName(String name, Player p) {
-        if (name.matches("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$")) {
-            return  true;
-        }
-        if (blacklistedNames.contains(name.toLowerCase())) {
-            return false;
-        }
-        p.sendMessage(Chat.errorFade("Bitte verwende keine Sonderzeichen im Stadtnamen. Statt Leerzeichen _ verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
-        return false;
-    }
-
-
 
     private static boolean isTooCloseToAnotherSettlement(Player p) {
         return getClosestSettlementDistance(p) < 2000;

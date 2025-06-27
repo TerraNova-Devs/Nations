@@ -58,4 +58,9 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
     public SettleRegion getParent() {
         return parent;
     }
+
+    @Override
+    public void setParentRaw(SettleRegion parent) {
+        this.parent = parent;
+    }
 }

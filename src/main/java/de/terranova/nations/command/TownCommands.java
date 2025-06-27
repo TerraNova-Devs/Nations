@@ -553,7 +553,7 @@ public class TownCommands extends AbstractCommand {
             return false;
         }
 
-        Optional<Region> osettle = RegionRegistry.createWithContext("settle", new RegionContext(p, Map.of("name", name)));
+        Optional<Region> osettle = RegionRegistry.createWithContext("settle", new RegionContext(p,name, Map.of( )));
         if (osettle.isPresent()) {
             p.sendMessage(Chat.greenFade("Stadt " + name + " wurde erfolgreich gegründet."));
             return true;
