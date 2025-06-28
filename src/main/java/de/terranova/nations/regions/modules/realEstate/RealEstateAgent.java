@@ -12,6 +12,8 @@ import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
 public class RealEstateAgent {
@@ -43,6 +45,7 @@ public class RealEstateAgent {
     int buyPrice;
     boolean isForRent;
     int rentPrice;
+    Instant timestamp;
 
     public void buyEstate(Player buyer) {
         if(ownerId != null){
@@ -63,18 +66,39 @@ public class RealEstateAgent {
         isForBuy = false;
         isForRent = false;
         this.ownerId = buyer.getUniqueId();
+        timestamp = Instant.now();
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.",region.getName(),transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s gekauft.",buyer.getName(),transfer,region.getName()), AccessLevel.CITIZEN);
 
     }
 
     public void rentEstate(Player buyer) {
-        if(ownerId != null){
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(ownerId).getName() + " belegt."));
+        if(buyer.getUniqueId() != ownerId) {
+            if(ownerId != null){
+                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(ownerId).getName() + " belegt."));
+            }
+            if(!isForRent) {
+                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist nicht zur miete erhältlich."));
+            }
         }
-        if(!isForRent) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist nicht zur miete erhältlich."));
+
+        int transfer = ItemTransfer.charge(buyer, "terranova_silver",rentPrice,true);
+        if(transfer == -1){
+            buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+        } else {
+            parentBank.getBank().cashTransfer(String.format("Property rented by %s(%s) for %s",buyer.getName(),buyer.getUniqueId(),transfer),transfer);
         }
+
+        addOwner(region.getWorldguardRegion(),buyer.getUniqueId());
+        isForBuy = false;
+        isForRent = false;
+        if(buyer.getUniqueId() != ownerId){
+            timestamp = Instant.now();
+        }
+        timestamp = timestamp.plus(7, ChronoUnit.DAYS);
+        this.ownerId = buyer.getUniqueId();
+        buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 7 Tage gemietet.",region.getName(),transfer)));
+        parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 7 Tage gemietet.",buyer.getName(),transfer,region.getName()), AccessLevel.CITIZEN);
     }
 
     public void addOwner(ProtectedRegion region, UUID ownerUuid) {
