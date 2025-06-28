@@ -15,37 +15,17 @@ import java.util.Objects;
 
 public class HikariCP {
 
-    //static Dotenv secret;
-
     private final NationsPlugin plugin;
     private final String user;
     private final String password;
     public HikariDataSource dataSource;
 
     public HikariCP(NationsPlugin plugin) throws SQLException {
-
-
         this.plugin = plugin;
-        //secret = Dotenv.configure().directory().filename(".env").load();
-
-        //user = secret.get("USERNAME");
         user = "minecraft";
-        //System.out.println(user);
-        //password = secret.get("PASSWORD");
         password = "minecraft";
-        //System.out.println(password);
-
         HikariConfig config = getHikariConfig();
         dataSource = new HikariDataSource(config);
-
-        try (Connection connection = dataSource.getConnection()) {
-            DatabaseMetaData metaData = connection.getMetaData();
-            System.out.println("Driver Name: " + metaData.getDriverName());
-            System.out.println("Driver Version: " + metaData.getDriverVersion());
-            System.out.println("Database Product Name: " + metaData.getDatabaseProductName());
-            System.out.println("Database Product Version: " + metaData.getDatabaseProductVersion());
-        }
-
         prepareTables();
     }
 
@@ -64,11 +44,9 @@ public class HikariCP {
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
-        //before true
         config.addDataSourceProperty("useServerPrepStmts", "false");
         config.addDataSourceProperty("useLocalSessionState", "true");
         config.addDataSourceProperty("useLocalTransactionState", "true");
-        //before true
         config.addDataSourceProperty("rewriteBatchedStatements", "false");
         config.addDataSourceProperty("cacheServerConfiguration", "true");
         config.addDataSourceProperty("cacheResultSetMetadata", "true");
@@ -77,7 +55,7 @@ public class HikariCP {
         return config;
     }
 
-    private void prepareTables() throws SQLException {
+    private void prepareTables() {
         try (Connection connection = dataSource.getConnection()) {
             final String[] databaseSchema = new String(Objects.requireNonNull(plugin.getResource("database/mysql_schema.sql")).readAllBytes(), StandardCharsets.UTF_8).split("--");
             try (Statement statement = connection.createStatement()) {
@@ -93,7 +71,6 @@ public class HikariCP {
         }
 
     }
-
     public void closeConnection() throws SQLException {
         dataSource.close();
     }

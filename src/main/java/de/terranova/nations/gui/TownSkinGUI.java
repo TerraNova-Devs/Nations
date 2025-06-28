@@ -2,8 +2,8 @@ package de.terranova.nations.gui;
 
 
 
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.npc.NPCSkins;
 import de.terranova.nations.utils.Chat;
@@ -64,7 +64,7 @@ public class TownSkinGUI extends RoseGUI {
                         .build();
                 addItem(index + 10, skull);
                 skull.onClick(e -> {
-                    if (!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)){
+                    if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)){
                         player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
                         return;
                     }

@@ -8,8 +8,8 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.gui.PropertyGUI;
 import de.terranova.nations.pl3xmap.RegionLayer;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
@@ -61,14 +61,14 @@ public class RegionCommands {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
         Region region = cache.getRegion();
-        TownAccessLevel playerAccess = cache.getAccess();
+        AccessLevel playerAccess = cache.getAccess();
 
         if (region == null) {
             p.sendMessage(Chat.errorFade("Keine ausgewählte Region gefunden."));
             return false;
         }
 
-        if (playerAccess == null || !TownAccess.hasAccess(playerAccess, TownAccessLevel.MAJOR)) {
+        if (playerAccess == null || !Access.hasAccess(playerAccess, AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("You do not have the required access level to remove this settlement."));
             return false;
         }
@@ -93,8 +93,8 @@ public class RegionCommands {
             p.sendMessage(Chat.errorFade("Du kannst die ausgewählte region nicht durch claimen erweitern"));
             return false;
         }
-        TownAccessLevel access = cache.getAccess();
-        if (!TownAccess.hasAccess(access, TownAccessLevel.VICE)) {
+        AccessLevel access = cache.getAccess();
+        if (!Access.hasAccess(access, AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
             return false;
         }
@@ -147,8 +147,8 @@ public class RegionCommands {
     public static boolean renameRegion(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
-        TownAccessLevel access = cache.getAccess();
-        if (!TownAccess.hasAccess(access, TownAccessLevel.MAJOR)) {
+        AccessLevel access = cache.getAccess();
+        if (!Access.hasAccess(access, AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung um diese Stadt zu erweitern."));
             return false;
         }

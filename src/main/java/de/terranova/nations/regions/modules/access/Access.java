@@ -9,28 +9,28 @@ import org.bukkit.Bukkit;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class TownAccess implements RegionListener {
+public class Access implements RegionListener {
 
     private Region region;
-    private HashMap<UUID, TownAccessLevel> accessLevel;
+    private HashMap<UUID, AccessLevel> accessLevel;
 
-    public TownAccess(Region region) {
-        if (!(region instanceof TownAccessControlled)) throw new IllegalArgumentException();
+    public Access(Region region) {
+        if (!(region instanceof AccessControlled)) throw new IllegalArgumentException();
         this.region = region;
         this.accessLevel = new HashMap<>(AccessDAO.getMembersAccess(region.getId()));
         region.addListener(this);
     }
 
-    public void setAccessLevels(HashMap<UUID, TownAccessLevel> accessLevels) {
+    public void setAccessLevels(HashMap<UUID, AccessLevel> accessLevels) {
         this.accessLevel = accessLevels;
     }
 
-    public HashMap<UUID, TownAccessLevel> getAccessLevels() {
+    public HashMap<UUID, AccessLevel> getAccessLevels() {
         return this.accessLevel;
     }
 
-    public void setAccessLevel(UUID uuid, TownAccessLevel accessLevel) {
-        HashMap<UUID, TownAccessLevel> accessLevels = getAccessLevels();
+    public void setAccessLevel(UUID uuid, AccessLevel accessLevel) {
+        HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
         if (getAccessLevels().containsKey(uuid)) {
             accessLevels.replace(uuid, accessLevel);
         } else {
@@ -40,28 +40,28 @@ public class TownAccess implements RegionListener {
         setAccessLevels(accessLevels);
     }
 
-    public TownAccessLevel getAccessLevel(UUID uuid) {
+    public AccessLevel getAccessLevel(UUID uuid) {
         return getAccessLevels().get(uuid);
     }
 
     public void removeAccess(UUID uuid) {
-        HashMap<UUID, TownAccessLevel> accessLevels = getAccessLevels();
+        HashMap<UUID, AccessLevel> accessLevels = getAccessLevels();
         accessLevels.remove(uuid);
         AccessDAO.changeMemberAccess(region.getId(), uuid, null);
         setAccessLevels(accessLevels);
     }
 
-    public static boolean hasAccess(TownAccessLevel access, TownAccessLevel neededAccess) {
+    public static boolean hasAccess(AccessLevel access, AccessLevel neededAccess) {
         return access != null && access.getWeight() >= neededAccess.getWeight();
     }
 
-    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(TownAccessLevel access) {
+    public Collection<UUID> getEveryUUIDWithCertainAccessLevel(AccessLevel access) {
         return accessLevel.keySet()
                 .stream().filter(uuid -> accessLevel.get(uuid).equals(access))
                 .collect(Collectors.toSet());
     }
 
-    public Collection<String> getEveryMemberNameWithCertainAccessLevel(TownAccessLevel access) {
+    public Collection<String> getEveryMemberNameWithCertainAccessLevel(AccessLevel access) {
         return accessLevel.keySet()
                 .stream().filter(uuid -> accessLevel.get(uuid).equals(access))
                 .map(uuid -> Bukkit.getOfflinePlayer(uuid).getName())
@@ -70,23 +70,24 @@ public class TownAccess implements RegionListener {
 
     public UUID getMajor() {
         return accessLevel.entrySet()
-                .stream().filter(entry -> entry.getValue() == TownAccessLevel.MAJOR)
+                .stream().filter(entry -> entry.getValue() == AccessLevel.MAJOR)
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
     }
 
-    public List<UUID> getAllUUIDsOfLevel(TownAccessLevel level) {
+    public List<UUID> getAllUUIDsOfLevel(AccessLevel level) {
         return accessLevel.entrySet()
                 .stream().filter(entry -> entry.getValue() == level)
                 .map(Map.Entry::getKey)
                 .collect(Collectors.toList());
     }
 
-    public void broadcast(String message) {
+    public void broadcast(String message, AccessLevel level) {
         accessLevel.keySet()
                 .stream().map(Bukkit::getPlayer)
                 .filter(Objects::nonNull)
+                .filter(p -> Access.hasAccess(accessLevel.get(p.getUniqueId()), level))
                 .forEach(p -> p.sendMessage(Chat.greenFade(message)));
     }
 

@@ -52,6 +52,14 @@ CREATE TABLE IF NOT EXISTS `rank`
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
+CREATE TABLE IF NOT EXISTS `rank`
+(
+    `RUUID` varchar(36)   NOT NULL,
+    `Level` smallint      NOT NULL DEFAULT 1,
+    PRIMARY KEY (`RUUID`)
+) DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+--
 CREATE TABLE IF NOT EXISTS `nations_table`
 (
     `NUUID`         VARCHAR(36) NOT NULL,

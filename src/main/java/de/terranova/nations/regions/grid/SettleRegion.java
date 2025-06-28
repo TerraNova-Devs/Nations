@@ -5,9 +5,9 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasChildren;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessControlled;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessControlled;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.bank.Bank;
 import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.regions.RegionManager;
@@ -25,13 +25,13 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class SettleRegion extends GridRegion implements BankHolder, TownAccessControlled, NPCHolder, RankedRegion, HasChildren {
+public class SettleRegion extends GridRegion implements BankHolder, AccessControlled, NPCHolder, RankedRegion, HasChildren {
 
     public static final String REGION_TYPE = "settle";
     public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5,4,4,4,4,7,4,4,4,4,10,5,5,5,5,10));
     private final Rank rank;
     private final NPCr npc;
-    private final TownAccess access;
+    private final Access access;
     private final Bank bank;
     private final Map<String, List<Region>> children = new HashMap<>();
 
@@ -40,7 +40,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
         super(name, ruuid, REGION_TYPE, loc);
         addNameToCache(this.name);
         this.rank = new Rank(this);
-        this.access = new TownAccess(this);
+        this.access = new Access(this);
         this.npc = new NPCr(this);
         npc.hologramNPC(new String[]{String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
         this.bank = new Bank(this);
@@ -58,7 +58,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
         Set<EntityType> set = getDeniedSpawnEntityTypes();
         region.setFlag(Flags.DENY_SPAWN, set);
         region.setFlag(Flags.PVP, StateFlag.State.DENY);
-        access.setAccessLevel(p.getUniqueId(), TownAccessLevel.MAJOR);
+        access.setAccessLevel(p.getUniqueId(), AccessLevel.MAJOR);
         RegionLayer.updateRegion(this);
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
     }
@@ -87,7 +87,7 @@ public class SettleRegion extends GridRegion implements BankHolder, TownAccessCo
 
     //Access
     @Override
-    public TownAccess getAccess() {
+    public Access getAccess() {
         return this.access;
     }
 

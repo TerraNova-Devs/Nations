@@ -2,9 +2,9 @@ package de.terranova.nations.gui;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessControlled;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessControlled;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -25,10 +25,10 @@ import java.util.*;
 public class TownPlayersGUI extends RoseGUI {
 
     SettleRegion settle;
-    TownAccessControlled access;
+    AccessControlled access;
     RosePagination pagination;
 
-    public TownPlayersGUI(Player player, SettleRegion settle, TownAccessControlled access) {
+    public TownPlayersGUI(Player player, SettleRegion settle, AccessControlled access) {
         super(player, "players-gui", Chat.blueFade("<b>Einwohner"), 6);
         this.settle = settle;
         this.access = access;
@@ -50,9 +50,9 @@ public class TownPlayersGUI extends RoseGUI {
     private void registerPlayerSlots() {
         pagination.getItems().clear();
 
-        HashMap<UUID, TownAccessLevel> accessLevels = access.getAccess().getAccessLevels();
+        HashMap<UUID, AccessLevel> accessLevels = access.getAccess().getAccessLevels();
         // Sort them by weight descending:
-        LinkedHashMap<UUID, TownAccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
+        LinkedHashMap<UUID, AccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
                 .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getWeight(), entry1.getValue().getWeight()))
                 .collect(LinkedHashMap::new, (map, e) -> map.put(e.getKey(), e.getValue()), LinkedHashMap::putAll);
 
@@ -111,39 +111,39 @@ public class TownPlayersGUI extends RoseGUI {
     }
 
 
-    private void handlePlayerClick(InventoryClickEvent e, Player player, TownAccessControlled access, TownAccessLevel level, UUID uuid) {
-        if(!TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)) {
+    private void handlePlayerClick(InventoryClickEvent e, Player player, AccessControlled access, AccessLevel level, UUID uuid) {
+        if(!Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
             player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Rang dieses Spielers ändern zu können."));
             return;
         }
 
         if(e.isRightClick()) {
-            if(level == TownAccessLevel.CITIZEN) {
+            if(level == AccessLevel.CITIZEN) {
                 player.sendMessage(Chat.errorFade("Dieser Spieler ist bereits Einwohner."));
-            } else if(level == TownAccessLevel.COUNCIL) {
-                access.getAccess().setAccessLevel(uuid, TownAccessLevel.CITIZEN);
+            } else if(level == AccessLevel.COUNCIL) {
+                access.getAccess().setAccessLevel(uuid, AccessLevel.CITIZEN);
                 player.sendMessage(Chat.greenFade("Der Spieler ist nun Einwohner."));
                 registerPlayerSlots();
             }
 
-            if (TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.MAJOR)) {
-                if (level == TownAccessLevel.VICE) {
-                    access.getAccess().setAccessLevel(uuid, TownAccessLevel.COUNCIL);
+            if (Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.MAJOR)) {
+                if (level == AccessLevel.VICE) {
+                    access.getAccess().setAccessLevel(uuid, AccessLevel.COUNCIL);
                     player.sendMessage(Chat.greenFade("Der Spieler ist nun im Stadtrat."));
                     registerPlayerSlots();
                 }
             }
         }
         if(e.isLeftClick()) {
-            if(level == TownAccessLevel.CITIZEN) {
-                access.getAccess().setAccessLevel(uuid, TownAccessLevel.COUNCIL);
+            if(level == AccessLevel.CITIZEN) {
+                access.getAccess().setAccessLevel(uuid, AccessLevel.COUNCIL);
                 player.sendMessage(Chat.greenFade("Dieser Spieler ist nun im Stadtrat."));
                 registerPlayerSlots();
             }
 
-            if (TownAccess.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.MAJOR)) {
-                if (level == TownAccessLevel.COUNCIL) {
-                    access.getAccess().setAccessLevel(uuid, TownAccessLevel.VICE);
+            if (Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.MAJOR)) {
+                if (level == AccessLevel.COUNCIL) {
+                    access.getAccess().setAccessLevel(uuid, AccessLevel.VICE);
                     player.sendMessage(Chat.greenFade("Der Spieler ist nun Vize."));
                     registerPlayerSlots();
                 }

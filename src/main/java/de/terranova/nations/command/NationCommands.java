@@ -8,8 +8,8 @@ import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationPlayerRank;
 import de.terranova.nations.nations.SettlementRank;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
@@ -115,7 +115,7 @@ public class NationCommands extends AbstractCommand {
 
         SettleRegion settle = osettle.get();
 
-        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.MAJOR)) {
+        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("Du musst Bürgermeister deiner Stadt sein."));
             return false;
         }
@@ -246,7 +246,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         pendingInvites.put(nation.getId(), settle.getId());
-        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde in die Nation " + StringUtils.capitalise(nation.getName()) + " eingeladen.");
+        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde in die Nation " + StringUtils.capitalise(nation.getName()) + " eingeladen.",AccessLevel.VICE);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde erfolgreich in die Nation eingeladen.");
         return true;
     }
@@ -284,7 +284,7 @@ public class NationCommands extends AbstractCommand {
 
         SettleRegion settle = settleOpt.get();
 
-        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)) {
+        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um mit deiner Stadt einer Nation beizutreten."));
             return false;
         }
@@ -310,7 +310,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         SettleRegion settle = settleOpt.get();
-        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)) {
+        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um deine Stadt aus der Nation zu entfernen."));
             return false;
         }
@@ -327,7 +327,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         nationManager.removeSettlementFromNation(nation.getId(), RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getId());
-        RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getAccess().broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation " + StringUtils.capitalise(nation.getName()) + " verlassen.");
+        RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getAccess().broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation " + StringUtils.capitalise(nation.getName()) + " verlassen.",AccessLevel.CITIZEN);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation verlassen.");
         return true;
     }
@@ -374,7 +374,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         nationManager.removeSettlementFromNation(nation.getId(), settle.getId());
-        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation " + StringUtils.capitalise(nation.getName()) + " entfernt.");
+        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation " + StringUtils.capitalise(nation.getName()) + " entfernt.",AccessLevel.CITIZEN);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation entfernt.");
         return true;
     }

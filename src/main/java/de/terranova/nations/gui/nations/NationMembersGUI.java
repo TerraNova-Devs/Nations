@@ -6,8 +6,8 @@ import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationPlayerRank;
 import de.terranova.nations.nations.SettlementRank;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -52,24 +52,24 @@ public class NationMembersGUI extends RoseGUI {
     private void registerPlayerSlots() {
         pagination.getItems().clear();
 
-        HashMap<UUID, TownAccessLevel> accessLevels = new HashMap<>();
+        HashMap<UUID, AccessLevel> accessLevels = new HashMap<>();
 
         // Fetch all access levels for each settlement which are at least CITIZEN
         for (Map.Entry<UUID, SettlementRank> settlement : nation.getSettlements().entrySet()) {
             UUID settleId = settlement.getKey();
             Optional<SettleRegion> settle = RegionManager.retrieveRegion("settle", settleId);
             if (settle.isPresent()) {
-                TownAccess access = settle.get().getAccess();
+                Access access = settle.get().getAccess();
                 if (access != null) {
                     accessLevels.putAll(access.getAccessLevels().entrySet().stream()
-                            .filter(entry -> TownAccess.hasAccess(entry.getValue(), TownAccessLevel.CITIZEN))
+                            .filter(entry -> Access.hasAccess(entry.getValue(), AccessLevel.CITIZEN))
                             .collect(HashMap::new, (map, e) -> map.put(e.getKey(), e.getValue()), HashMap::putAll));
                 }
             }
         }
 
         // Sort them by weight descending:
-        LinkedHashMap<UUID, TownAccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
+        LinkedHashMap<UUID, AccessLevel> sortedAccessLevels = accessLevels.entrySet().stream()
                 .sorted((entry1, entry2) -> Integer.compare(entry2.getValue().getWeight(), entry1.getValue().getWeight()))
                 .collect(LinkedHashMap::new, (map, e) -> map.put(e.getKey(), e.getValue()), LinkedHashMap::putAll);
 

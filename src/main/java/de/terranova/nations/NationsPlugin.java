@@ -6,6 +6,7 @@ import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
+import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.listener.TestListener;
 import de.terranova.nations.logging.FileLogger;
@@ -21,8 +22,10 @@ import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
+import de.terranova.nations.regions.rule.rules.AccessLevelRule;
 import de.terranova.nations.regions.rule.rules.MustBeWithinParentRule;
 import de.terranova.nations.regions.rule.rules.NamingConventionRule;
 import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
@@ -96,7 +99,9 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
     @EventHandler
     public void onCitizensEnable(CitizensEnableEvent event) {
+        //Citizens muss vor den Regionen geladen sein
         RegionManager.cacheRegions("settle", GridRegionDAO.fetchRegionsByType("settle"));
+        RegionManager.cacheRegions("property", BoundaryRegionDAO.fetchRegionsByType("property"));
     }
 
     private void nationsRegionTypeRegistry() {
@@ -105,12 +110,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
                         .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
                         .excludeDefaultRule(NoSelfOverlapRule.class)
                         .addRule(new NoSelfOverlapRule(true))
+                        .addRule(new AccessLevelRule(null))
         );
 
         RegionRegistry.register(new PropertyRegionFactory(),
                 RuleSet.defaultRules()
                         .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
                         .addRule(new MustBeWithinParentRule<>(PropertyRegion.class,SettleRegion.class))
+                        .addRule(new AccessLevelRule(AccessLevel.VICE))
         );
 
     }

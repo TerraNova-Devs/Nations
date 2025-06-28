@@ -1,9 +1,9 @@
 package de.terranova.nations.command;
 
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessControlled;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessControlled;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.Bukkit;
@@ -31,10 +31,10 @@ public class AccessCommands {
     )
     public boolean invitePlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
-        TownAccessControlled access = getAccessControlledRegion(p, cache);
+        AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if (!TownAccess.hasAccess(cache.getAccess(), TownAccessLevel.VICE)) {
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -66,7 +66,7 @@ public class AccessCommands {
     )
     public boolean acceptPlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
-        TownAccessControlled access = getAccessControlledRegion(p, cache);
+        AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
         if(!invites.containsKey(p.getUniqueId())){
@@ -78,9 +78,9 @@ public class AccessCommands {
             return false;
         }
 
-        access.getAccess().broadcast(p.getName() + " ist erfolgreich der Stadt " + cache.getRegion().getName() + " beigetreten.");
+        access.getAccess().broadcast(p.getName() + " ist erfolgreich der Stadt " + cache.getRegion().getName() + " beigetreten.",AccessLevel.CITIZEN);
         cache.getRegion().addMember(p.getUniqueId());
-        access.getAccess().setAccessLevel(p.getUniqueId(), TownAccessLevel.CITIZEN);
+        access.getAccess().setAccessLevel(p.getUniqueId(), AccessLevel.CITIZEN);
         p.sendMessage(Chat.greenFade("Du bist erfolgreich der Stadt " + cache.getRegion().getName() + " beigetreten."));
 
         TerraSelectCache.renewSelect(p);
@@ -95,10 +95,10 @@ public class AccessCommands {
     )
     public boolean removePlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
-        TownAccessControlled access = getAccessControlledRegion(p, cache);
+        AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if (!TownAccess.hasAccess(cache.getAccess(), TownAccessLevel.VICE)) {
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -116,14 +116,14 @@ public class AccessCommands {
             return false;
         }
 
-        if(!TownAccess.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)){
+        if(!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um einen Spieler von der Stadt zu entfernen."));
             return false;
         }
 
         cache.getRegion().removeMember(target.getUniqueId());
         access.getAccess().removeAccess(target.getUniqueId());
-        access.getAccess().broadcast(target.getName() + " wurde von " + p.getName() + " der Stadt " + cache.getRegion().getName() + " verwiesen.");
+        access.getAccess().broadcast(target.getName() + " wurde von " + p.getName() + " der Stadt " + cache.getRegion().getName() + " verwiesen.",AccessLevel.CITIZEN);
         TerraSelectCache.renewSelect(target);
         return true;
     }
@@ -136,17 +136,17 @@ public class AccessCommands {
     )
     public boolean leave(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
-        TownAccessControlled access = getAccessControlledRegion(p, cache);
+        AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
-        if(TownAccess.hasAccess(cache.getAccess(), TownAccessLevel.MAJOR) || TownAccess.hasAccess(cache.getAccess(), TownAccessLevel.ADMIN)){
+        if(Access.hasAccess(cache.getAccess(), AccessLevel.MAJOR) || Access.hasAccess(cache.getAccess(), AccessLevel.ADMIN)){
             p.sendMessage(Chat.errorFade("Der Major kann seine Stadt nicht verlassen!"));
             return false;
         }
 
         cache.getRegion().removeMember(p.getUniqueId());
         access.getAccess().removeAccess(p.getUniqueId());
-        access.getAccess().broadcast(p.getName() + " hat die Stadt " + cache.getRegion().getName() + " verlassen.");
+        access.getAccess().broadcast(p.getName() + " hat die Stadt " + cache.getRegion().getName() + " verlassen.",AccessLevel.CITIZEN);
         TerraSelectCache.renewSelect(p);
         return true;
     }
@@ -159,11 +159,11 @@ public class AccessCommands {
     )
     public boolean rankPlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
-        TownAccessControlled access = getAccessControlledRegion(p, cache);
+        AccessControlled access = getAccessControlledRegion(p, cache);
         if (access == null) return false;
 
         access.getAccess();
-        if (!TownAccess.hasAccess(cache.getAccess(), TownAccessLevel.VICE)) {
+        if (!Access.hasAccess(cache.getAccess(), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
             return false;
         }
@@ -171,7 +171,7 @@ public class AccessCommands {
         Player target = getTargetPlayer(p, args, 2);
         if (target == null) return false;
 
-        TownAccessLevel newAccess = getAccessLevelFromArgs(p, args, 3);
+        AccessLevel newAccess = getAccessLevelFromArgs(p, args, 3);
         if (newAccess == null) return false;
 
         if (access.getAccess().getAccessLevel(target.getUniqueId()) == null) {
@@ -179,12 +179,12 @@ public class AccessCommands {
             return false;
         }
 
-        if(newAccess.equals(TownAccessLevel.MAJOR) || newAccess.equals(TownAccessLevel.ADMIN)) {
+        if(newAccess.equals(AccessLevel.MAJOR) || newAccess.equals(AccessLevel.ADMIN)) {
             p.sendMessage(Chat.errorFade("Du kannst den Stadtbesitzer nicht ändern."));
             return false;
         }
 
-        if(target.getUniqueId() == p.getUniqueId() && cache.getAccess().equals(TownAccessLevel.MAJOR)) {
+        if(target.getUniqueId() == p.getUniqueId() && cache.getAccess().equals(AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("Du kannst deinen eigenen Rang nicht ändern!"));
             return false;
         }
@@ -199,7 +199,7 @@ public class AccessCommands {
             return false;
         }
 
-        if(!TownAccess.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), TownAccessLevel.VICE)){
+        if(!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)){
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um access level ändern zu können."));
             return false;
         }
@@ -210,9 +210,9 @@ public class AccessCommands {
         return true;
     }
 
-    private TownAccessControlled getAccessControlledRegion(Player p, TerraSelectCache cache) {
+    private AccessControlled getAccessControlledRegion(Player p, TerraSelectCache cache) {
         if (cache == null) return null;
-        if (!(cache.getRegion() instanceof TownAccessControlled access)) {
+        if (!(cache.getRegion() instanceof AccessControlled access)) {
             p.sendMessage(Chat.errorFade("Die von dir ausgewählte Region besitzt keine Ränge"));
             return null;
         }
@@ -232,12 +232,12 @@ public class AccessCommands {
         return target;
     }
 
-    private TownAccessLevel getAccessLevelFromArgs(Player p, String[] args, int index) {
+    private AccessLevel getAccessLevelFromArgs(Player p, String[] args, int index) {
         if (args.length <= index) {
             p.sendMessage(Chat.errorFade("Bitte gib ein gültiges AccessLevel an."));
             return null;
         }
-        for (TownAccessLevel level : TownAccessLevel.values()) {
+        for (AccessLevel level : AccessLevel.values()) {
             if (level.name().equalsIgnoreCase(args[index])) {
                 return level;
             }

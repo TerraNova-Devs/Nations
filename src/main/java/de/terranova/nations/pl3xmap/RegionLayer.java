@@ -5,7 +5,7 @@ import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.professions.ProfessionStatus;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.RegionListener;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.BannerRenderer;
@@ -72,11 +72,11 @@ public class RegionLayer extends WorldLayer implements RegionListener {
         Polygon polygonMarker = new Polygon("polygon" + region.getId(), new Polyline("line" + region.getId(), markerPoints));
 
         // 2) Build the tooltip (already done in your code)
-        Collection<String> vices = region.getAccess().getEveryMemberNameWithCertainAccessLevel(TownAccessLevel.VICE);
-        Collection<String> councils = region.getAccess().getEveryMemberNameWithCertainAccessLevel(TownAccessLevel.COUNCIL);
+        Collection<String> vices = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.VICE);
+        Collection<String> councils = region.getAccess().getEveryMemberNameWithCertainAccessLevel(AccessLevel.COUNCIL);
         String owner = "error";
-        if (!region.getAccess().getEveryUUIDWithCertainAccessLevel(TownAccessLevel.MAJOR).isEmpty()) {
-            UUID ownerId = region.getAccess().getEveryUUIDWithCertainAccessLevel(TownAccessLevel.MAJOR).iterator().next();
+        if (!region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).isEmpty()) {
+            UUID ownerId = region.getAccess().getEveryUUIDWithCertainAccessLevel(AccessLevel.MAJOR).iterator().next();
             owner = Bukkit.getOfflinePlayer(ownerId).getName();
         }
 

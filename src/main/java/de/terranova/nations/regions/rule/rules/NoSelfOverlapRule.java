@@ -2,7 +2,6 @@ package de.terranova.nations.regions.rule.rules;
 
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.modules.HasChildren;
@@ -36,7 +35,7 @@ public class NoSelfOverlapRule implements RegionRule {
                 .anyMatch(rule -> rule instanceof MustBeWithinParentRule<?, ?>);
 
         if (hasInsideParentRule && explicitParent instanceof HasChildren) {
-            // Case 1: Wenn die Region Children hat nur gegen diese Testen
+            // Case 1: Wenn die Region Children hat nur gegen diese testen
             relevantRegions = ((HasChildren) explicitParent).getChildrenByType(type);
         } else {
             // Case 2: Gegen alle Regionen mit dem Typen Testen

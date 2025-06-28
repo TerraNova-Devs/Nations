@@ -17,11 +17,12 @@ public class PropertyRegion extends BoundaryRegion implements PropertyAccessCont
     private Bank bank;
     private SettleRegion parent;
 
-    public PropertyRegion(String name, UUID ruuid, UUID owner) {
+    public PropertyRegion(String name, UUID ruuid, UUID owner, SettleRegion parent) {
         super(name, ruuid, REGION_TYPE);
         this.access = new PropertyAccess(this);
         this.setOwner(owner);
         this.addNameToCache(name);
+        setParent(parent);
     }
 
     public UUID getOwner() {

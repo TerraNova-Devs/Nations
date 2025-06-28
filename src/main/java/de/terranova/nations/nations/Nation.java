@@ -4,6 +4,7 @@ import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.NationsDAO;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.utils.ItemStackSerializer;
 import org.bukkit.inventory.ItemStack;
 
@@ -141,7 +142,7 @@ public class Nation {
             Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settlementId);
             if (settleOpt.isEmpty()) return;
             SettleRegion settle = settleOpt.get();
-            settle.getAccess().broadcast(message);
+            settle.getAccess().broadcast(message, AccessLevel.CITIZEN);
         });
     }
 

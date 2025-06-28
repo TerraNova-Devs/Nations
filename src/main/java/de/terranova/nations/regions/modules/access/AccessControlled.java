@@ -2,9 +2,9 @@ package de.terranova.nations.regions.modules.access;
 
 import java.util.UUID;
 
-public interface TownAccessControlled {
+public interface AccessControlled {
 
-    TownAccess getAccess();
+    Access getAccess();
     UUID getId();
 
 }

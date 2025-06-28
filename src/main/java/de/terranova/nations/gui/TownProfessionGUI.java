@@ -4,8 +4,8 @@ import de.terranova.nations.professions.*;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
-import de.terranova.nations.regions.modules.access.TownAccess;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -173,12 +173,12 @@ public class TownProfessionGUI extends RoseGUI {
 
         Player player = (Player) e.getWhoClicked();
 
-        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.CITIZEN)) {
+        if(!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.CITIZEN)) {
             player.sendMessage(Chat.errorFade("Du bist kein Mitglied dieser Stadt!"));
             return;
         }
 
-        if(!TownAccess.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), TownAccessLevel.VICE)) {
+        if(!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
             player.sendMessage(Chat.errorFade("Du hast nicht die nötigen Rechte, um Professions zu bearbeiten!"));
             return;
         }

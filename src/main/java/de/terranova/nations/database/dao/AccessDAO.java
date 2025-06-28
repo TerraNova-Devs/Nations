@@ -1,7 +1,7 @@
 package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.modules.access.TownAccessLevel;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -22,15 +22,15 @@ public class AccessDAO {
         queries.put("removeAll", "DELETE FROM `access` WHERE `RUUID` = ?;");
     }
 
-    public static Map<UUID, TownAccessLevel> getMembersAccess(UUID ruuid) {
+    public static Map<UUID, AccessLevel> getMembersAccess(UUID ruuid) {
         String sql = queries.get("getAll");
-        Map<UUID, TownAccessLevel> access = new HashMap<>();
+        Map<UUID, AccessLevel> access = new HashMap<>();
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
-                access.put(UUID.fromString(rs.getString("PUUID")), TownAccessLevel.valueOf(rs.getString("access")));
+                access.put(UUID.fromString(rs.getString("PUUID")), AccessLevel.valueOf(rs.getString("access")));
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to get members access: " + ruuid.toString());
@@ -38,7 +38,7 @@ public class AccessDAO {
         return access;
     }
 
-    public static void changeMemberAccess(UUID ruuid, UUID puuid, TownAccessLevel access) {
+    public static void changeMemberAccess(UUID ruuid, UUID puuid, AccessLevel access) {
         String sql = access == null ? queries.get("remove") : queries.get("add");
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement statement = con.prepareStatement(sql)) {
