@@ -22,7 +22,7 @@ public class RealEstateAgent {
      AccessControlled parentTown;
      Region region;
 
-    RealEstateAgent(Region region){
+    public RealEstateAgent(Region region){
         this.region = region;
         if(region instanceof HasParent<?> parent){
             if(parent.getParent() instanceof BankHolder holder){
@@ -37,6 +37,9 @@ public class RealEstateAgent {
             ownerId = owners.getUniqueIds().stream().findFirst().get();
             isForRent = false;
             isForBuy = false;
+        }
+        if(isForBuy || isForRent){
+            RealEstateManager.addRealestate((CanBeSold) region);
         }
     }
 
@@ -105,6 +108,10 @@ public class RealEstateAgent {
         DefaultDomain owners = region.getOwners();
         owners.addPlayer(ownerUuid);
         region.setOwners(owners); // optional, da `getOwners()` nicht kopiert
+    }
+
+    public Region getRegion(){
+        return region;
     }
 
 }

@@ -6,25 +6,24 @@ import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.modules.bank.Bank;
 import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.regions.base.BoundaryRegion;
+import de.terranova.nations.regions.modules.realEstate.CanBeSold;
+import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
+
 import java.util.*;
 
-public class PropertyRegion extends BoundaryRegion implements  BankHolder, HasParent<SettleRegion> {
+public class PropertyRegion extends BoundaryRegion implements  HasParent<SettleRegion>, CanBeSold {
     public static final String REGION_TYPE = "property";
 
-    private Bank bank;
     private SettleRegion parent;
+    private RealEstateAgent realEstateAgent;
 
     public PropertyRegion(String name, UUID ruuid, SettleRegion parent) {
         super(name, ruuid, REGION_TYPE);
         this.addNameToCache(name);
         setParent(parent);
+        this.realEstateAgent = new RealEstateAgent(this);
     }
 
-
-    @Override
-    public Bank getBank() {
-        return bank;
-    }
 
     @Override
     public SettleRegion getParent() {
@@ -34,5 +33,10 @@ public class PropertyRegion extends BoundaryRegion implements  BankHolder, HasPa
     @Override
     public void setParentRaw(SettleRegion parent) {
         this.parent = parent;
+    }
+
+    @Override
+    public RealEstateAgent getAgent() {
+        return realEstateAgent;
     }
 }
