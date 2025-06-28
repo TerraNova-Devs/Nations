@@ -11,6 +11,7 @@ import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
+import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import org.bukkit.Location;
 
 import java.util.*;
@@ -96,5 +97,17 @@ public class RegionManager {
             }
         }
         return Optional.empty();
+    }
+
+    public static <T extends Region> Optional<T> retrieveRegion(ProtectedRegion region) {
+        String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
+        String regionType = region.getFlag(TypeFlag.NATIONS_TYPE);
+
+        if (regionUUIDString == null || regionType == null || regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) {
+            return Optional.empty();
+        }
+
+        UUID regionUUID = UUID.fromString(regionUUIDString);
+        return RegionManager.retrieveRegion(regionType, regionUUID);
     }
 }
