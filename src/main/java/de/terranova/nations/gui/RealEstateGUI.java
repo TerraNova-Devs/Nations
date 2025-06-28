@@ -3,16 +3,15 @@ package de.terranova.nations.gui;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
-import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class PropertyGUI extends RoseGUI {
+public class RealEstateGUI extends RoseGUI {
 
 
-    public PropertyGUI(@NotNull Player player) {
+    public RealEstateGUI(@NotNull Player player) {
         super(player, "hanseecke_3", Chat.cottonCandy("Hanseecke_3"), 6);
     }
 

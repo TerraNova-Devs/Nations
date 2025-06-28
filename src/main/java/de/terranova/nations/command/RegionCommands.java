@@ -6,7 +6,7 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.gui.PropertyGUI;
+import de.terranova.nations.gui.RealEstateGUI;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
@@ -174,7 +174,7 @@ public class RegionCommands {
     )
 
     public static boolean testegion(Player p, String[] args) {
-        new PropertyGUI(p).open();
+        new RealEstateGUI(p).open();
         return true;
     }
 

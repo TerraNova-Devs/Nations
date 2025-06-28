@@ -9,12 +9,17 @@ description: Nations Plugin tailored & written by & for TerraNova.
 commands:
   town:
     description: The main command for TerraNova Towns.
-    aliases: [t]
+    aliases: [ t ]
     permission: nations.use
     permission-message: You do not have permission to use this command.
   nation:
     description: The main command for TerraNova Nations.
-    aliases: [n]
+    aliases: [ n ]
+    permission: nations.use
+    permission-message: You do not have permission to use this command.
+  realEstate:
+    description: The main command for TerraNova RealEstate.
+    aliases: [ re ]
     permission: nations.use
     permission-message: You do not have permission to use this command.
 depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Nexo]

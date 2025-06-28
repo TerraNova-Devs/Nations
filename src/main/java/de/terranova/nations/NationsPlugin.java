@@ -4,6 +4,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
+import de.terranova.nations.command.realEstate.RealEstateCommand;
 import de.terranova.nations.command.TownCommands;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
@@ -161,27 +162,15 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     }
 
     public void commandRegistry() {
-//        PropertyCommand terraCommand = new PropertyCommand();
-//        if (this.getCommand("terra") == null) {
-//            getLogger().severe("Failed to get command 'terra' from plugin.yml. Please check your plugin.yml!");
-//            return;
-//        }
-//        this.getCommand("terra").setExecutor(terraCommand);
-//        this.getCommand("terra").setTabCompleter(terraCommand);
+        RealEstateCommand realEstateCommand = new RealEstateCommand();
+        Objects.requireNonNull(this.getCommand("realEstate")).setExecutor(realEstateCommand);
+        Objects.requireNonNull(this.getCommand("realEstate")).setTabCompleter(realEstateCommand);
         TownCommands townCommand = new TownCommands();
-        if (this.getCommand("town") == null) {
-            getLogger().severe("Failed to get command 'town' from plugin.yml. Please check your plugin.yml!");
-            return;
-        }
-        this.getCommand("town").setExecutor(townCommand);
-        this.getCommand("town").setTabCompleter(townCommand);
+        Objects.requireNonNull(this.getCommand("town")).setExecutor(townCommand);
+        Objects.requireNonNull(this.getCommand("town")).setTabCompleter(townCommand);
         NationCommands nationCommand = new NationCommands();
-        this.getCommand("nation").setExecutor(nationCommand);
-        this.getCommand("nation").setTabCompleter(nationCommand);
-        if (this.getCommand("nation") == null) {
-            getLogger().severe("Failed to get command 'nation' from plugin.yml. Please check your plugin.yml!");
-            return;
-        }
+        Objects.requireNonNull(this.getCommand("nation")).setExecutor(nationCommand);
+        Objects.requireNonNull(this.getCommand("nation")).setTabCompleter(nationCommand);
     }
 
     public void listenerRegistry() {

@@ -57,7 +57,6 @@ public class PropertyRegionFactory implements RegionFactoryBase {
         return new PropertyRegion(
                 ctx.name.toLowerCase() + "_" + BoundaryClaimFunctions.getNextFreeRegionNumber(ctx.name),
                 UUID.randomUUID(),
-                ctx.player.getUniqueId(),
                 settle
         );
     }
@@ -67,7 +66,6 @@ public class PropertyRegionFactory implements RegionFactoryBase {
         return new PropertyRegion(
                 args.getFirst(),
                 UUID.fromString(args.get(1)),
-                UUID.fromString(args.get(2)),
                 (SettleRegion) RegionManager.retrieveRegion("settle",UUID.fromString(args.get(1))).get()
         );
     }
