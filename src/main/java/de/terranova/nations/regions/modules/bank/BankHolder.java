@@ -9,7 +9,8 @@ public interface BankHolder {
     Bank getBank();
 
     @ApiStatus.OverrideOnly
-    default void onTransaction(String record, int credit){}
+    default void onTransaction(String record, int credit) {
+    }
 
     UUID getId();
 }

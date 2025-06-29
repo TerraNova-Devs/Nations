@@ -5,5 +5,6 @@ public class BuildingConfig {
     public String name;
     public String description;
 
-    public BuildingConfig() {}
+    public BuildingConfig() {
+    }
 }

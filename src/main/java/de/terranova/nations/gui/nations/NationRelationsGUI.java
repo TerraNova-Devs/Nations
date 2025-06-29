@@ -65,7 +65,7 @@ public class NationRelationsGUI extends RoseGUI {
                 // Set click action to change relation
                 relationItem.onClick(e -> {
                     // Open a GUI or prompt to change relation
-                    if(nation.getPlayerRank(player.getUniqueId()).getWeight() >= 100) {
+                    if (nation.getPlayerRank(player.getUniqueId()).getWeight() >= 100) {
                         new NationChangeRelationGUI(player, nation, otherNation).open();
                     }
                 });
@@ -148,7 +148,7 @@ public class NationRelationsGUI extends RoseGUI {
                 .build();
 
         // Fill slots except for navigation buttons
-        for (int i : new int[]{0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44, 46, 47, 49, 51, 52, 53}) {
+        for (int i : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 46, 47, 49, 51, 52, 53}) {
             addItem(i, filler);
         }
     }

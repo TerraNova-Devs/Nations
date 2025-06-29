@@ -1,6 +1,5 @@
 package de.terranova.nations.gui.nations;
 
-import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.SettlementRank;
 import de.terranova.nations.regions.RegionManager;
@@ -12,7 +11,6 @@ import de.terranova.nations.utils.roseGUI.RosePagination;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -117,7 +115,7 @@ public class NationSettlementsGUI extends RoseGUI {
                 .build();
 
         // Fill slots except for navigation buttons
-        for (int i : new int[]{0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44, 46, 47, 49, 51, 52, 53}) {
+        for (int i : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 46, 47, 49, 51, 52, 53}) {
             addItem(i, filler);
         }
     }

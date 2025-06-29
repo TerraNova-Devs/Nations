@@ -8,8 +8,6 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
-import java.util.UUID;
-
 public class RegionFlag {
     //Muss StringFlag sein, da UUIDs von WorldGuards SnakeYML nicht gespeichert werden können
     public static StringFlag REGION_UUID_FLAG;

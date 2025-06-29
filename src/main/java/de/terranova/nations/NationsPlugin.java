@@ -4,14 +4,15 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
-import de.terranova.nations.command.realEstate.RealEstateCommand;
 import de.terranova.nations.command.TownCommands;
+import de.terranova.nations.command.realEstate.RealEstateCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.listener.TestListener;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
+import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfigLoader;
@@ -22,7 +23,6 @@ import de.terranova.nations.regions.boundary.PropertyRegion;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
@@ -57,7 +57,10 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
@@ -86,7 +89,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         citizensTraitRegistry();
         worldguardHandlerRegistry();
         pl3xmapMarkerRegistry();
-        layerRegistry.register("settlement-layer",new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+        layerRegistry.register("settlement-layer", new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
         saveDefaultConfig();
         nationManager = new NationManager();
         commandRegistry();
@@ -117,7 +120,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         RegionRegistry.register(new PropertyRegionFactory(),
                 RuleSet.defaultRules()
                         .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
-                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class,SettleRegion.class))
+                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class, SettleRegion.class))
                         .addRule(new AccessLevelRule(AccessLevel.VICE))
         );
 

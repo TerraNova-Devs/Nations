@@ -14,10 +14,11 @@ public class ProfessionConfig {
     public List<ObjectiveConfig> objectives;
 
 
+    public ProfessionConfig() {
+    }
+
     public int getLevel() {
         return level;
     }
-
-    public ProfessionConfig() {}
 }
 

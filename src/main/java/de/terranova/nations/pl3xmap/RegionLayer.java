@@ -5,9 +5,9 @@ import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.professions.ProfessionStatus;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.RegionListener;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.utils.BannerRenderer;
 import de.terranova.nations.utils.ColorUtils;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -34,6 +34,8 @@ import java.util.*;
 
 public class RegionLayer extends WorldLayer implements RegionListener {
 
+    static Map<String, Marker<?>> markers = new HashMap<>();
+
     public RegionLayer(@NotNull World world) {
         super("settlement-layer", world, () -> "St\u00E4dte");
 
@@ -52,8 +54,6 @@ public class RegionLayer extends WorldLayer implements RegionListener {
         setPriority(100);
         setZIndex(999);
     }
-
-    static Map<String,Marker<?>> markers = new HashMap<>();
 
     public static void updateRegion(SettleRegion region) {
         if (markers.containsKey(region.getId() + "icon")) {
@@ -109,7 +109,7 @@ public class RegionLayer extends WorldLayer implements RegionListener {
                 }
             }
 
-            if(nation.getCapital().equals(region.getId())){
+            if (nation.getCapital().equals(region.getId())) {
                 regionName = "✪ " + regionName;
             }
         }
@@ -119,79 +119,79 @@ public class RegionLayer extends WorldLayer implements RegionListener {
 
         // 4) Build your tooltip text with the new <div> for professions at the bottom
         String tooltip = String.format("""
-                <style>
-                  @font-face {
-                    font-family: minecraft;
-                    src: url('images/font/Minecrafter.Reg.ttf');
-                  }
-                  p, h2 {
-                    font-family: minecraft;
-                    margin: 2px;
-                    color: #D9D9D9;
-                  }
-                  .title {
-                    font-size: 26px;
-                    color: %s; /* nation color */
-                  }
-                  .row {
-                    display: flex;
-                    justify-content: space-between;
-                    align-items: flex-start;
-                  }
-                  .row-bottom {
-                    display: flex;
-                    justify-content: space-around;
-                    margin-top: 10px;
-                  }
-                  .professions-block {
-                    margin-top: 10px; /* put some space above */
-                  }
-                  /* Each profession line: name + 4 circles */
-                  .profession-line {
-                    display: flex;
-                    align-items: center;
-                    margin: 4px 0;
-                  }
-                  .profession-name {
-                    min-width: 100px;
-                    margin-right: 8px;
-                    color: #D9D9D9; /* or something light */
-                  }
-                  .circle {
-                    display: inline-block;
-                    width: 14px;
-                    height: 14px;
-                    border-radius: 50%%;
-                    margin-right: 4px;
-                    background-color: #888; /* fallback if not overridden */
-                  }
-                </style>
-                
-                <!-- Top row: settlement name, banner, etc. -->
-                <div class="row">
-                  <div>
-                    <h2 class="title">%s</h2>
-                    <p>Nation: %s<br>Level: %s<br>Claims: %s/%s</p>
-                  </div>
-                  <div>
-                    %s
-                  </div>
-                </div>
-                
-                <!-- Middle row with the “Mitglieder” image, owner, vize, council -->
-                <div class="row-bottom">
-                  <div>
-                    <img src="images/banner/Mitglieder.png" height="50" width="200" />
-                    <p>Owner: %s<br>Vize: %s<br>Council: %s</p>
-                  </div>
-                </div>
-                
-                <!-- Profession Dots -->
-                <div class="professions-block">
-                  <img src="images/banner/Statistiken.png" height="50" width="200" />
-                  %s
-                </div>
-                """,
+                        <style>
+                          @font-face {
+                            font-family: minecraft;
+                            src: url('images/font/Minecrafter.Reg.ttf');
+                          }
+                          p, h2 {
+                            font-family: minecraft;
+                            margin: 2px;
+                            color: #D9D9D9;
+                          }
+                          .title {
+                            font-size: 26px;
+                            color: %s; /* nation color */
+                          }
+                          .row {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: flex-start;
+                          }
+                          .row-bottom {
+                            display: flex;
+                            justify-content: space-around;
+                            margin-top: 10px;
+                          }
+                          .professions-block {
+                            margin-top: 10px; /* put some space above */
+                          }
+                          /* Each profession line: name + 4 circles */
+                          .profession-line {
+                            display: flex;
+                            align-items: center;
+                            margin: 4px 0;
+                          }
+                          .profession-name {
+                            min-width: 100px;
+                            margin-right: 8px;
+                            color: #D9D9D9; /* or something light */
+                          }
+                          .circle {
+                            display: inline-block;
+                            width: 14px;
+                            height: 14px;
+                            border-radius: 50%%;
+                            margin-right: 4px;
+                            background-color: #888; /* fallback if not overridden */
+                          }
+                        </style>
+                        
+                        <!-- Top row: settlement name, banner, etc. -->
+                        <div class="row">
+                          <div>
+                            <h2 class="title">%s</h2>
+                            <p>Nation: %s<br>Level: %s<br>Claims: %s/%s</p>
+                          </div>
+                          <div>
+                            %s
+                          </div>
+                        </div>
+                        
+                        <!-- Middle row with the “Mitglieder” image, owner, vize, council -->
+                        <div class="row-bottom">
+                          <div>
+                            <img src="images/banner/Mitglieder.png" height="50" width="200" />
+                            <p>Owner: %s<br>Vize: %s<br>Council: %s</p>
+                          </div>
+                        </div>
+                        
+                        <!-- Profession Dots -->
+                        <div class="professions-block">
+                          <img src="images/banner/Statistiken.png" height="50" width="200" />
+                          %s
+                        </div>
+                        """,
                 nationColorHex,
                 regionName,
                 nationName,
@@ -304,24 +304,37 @@ public class RegionLayer extends WorldLayer implements RegionListener {
      */
     private static String getColorFor(String type) {
         switch (type.toUpperCase()) {
-            case "FISHERY":      return "#2980B9"; // a nice blue
-            case "MINING":       return "#7f8c8d"; // gray
-            case "FARMING":      return "#27ae60"; // green
-            case "RANCHING":     return "#9C6B3B"; // brownish
-            case "BREWING":      return "#9b59b6"; // purple
-            case "SMITHING":     return "#424242"; // dark gray
-            case "MAGIC":        return "#E91E63"; // pinkish
-            case "WOODCUTTING":  return "#8D6E63"; // wood-brown
-            case "MILITARY":     return "#c0392b"; // red
-            case "STONEWORK":    return "#BCAAA4"; // pale stone
-            case "TRADE":        return "#FFD54F"; // gold
-            case "FAITH":        return "#9575CD"; // lavender
-            default:             return "#888888"; // fallback gray
+            case "FISHERY":
+                return "#2980B9"; // a nice blue
+            case "MINING":
+                return "#7f8c8d"; // gray
+            case "FARMING":
+                return "#27ae60"; // green
+            case "RANCHING":
+                return "#9C6B3B"; // brownish
+            case "BREWING":
+                return "#9b59b6"; // purple
+            case "SMITHING":
+                return "#424242"; // dark gray
+            case "MAGIC":
+                return "#E91E63"; // pinkish
+            case "WOODCUTTING":
+                return "#8D6E63"; // wood-brown
+            case "MILITARY":
+                return "#c0392b"; // red
+            case "STONEWORK":
+                return "#BCAAA4"; // pale stone
+            case "TRADE":
+                return "#FFD54F"; // gold
+            case "FAITH":
+                return "#9575CD"; // lavender
+            default:
+                return "#888888"; // fallback gray
         }
     }
 
 
-    public static void removeRegion(UUID regionID){
+    public static void removeRegion(UUID regionID) {
         markers.remove(regionID.toString() + "icon");
         markers.remove(regionID + "area");
     }
@@ -335,7 +348,7 @@ public class RegionLayer extends WorldLayer implements RegionListener {
     public void onRegionRenamed(String newRegionName) {
         Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", newRegionName);
 
-        if(settleOpt.isEmpty()){
+        if (settleOpt.isEmpty()) {
             return;
         }
 

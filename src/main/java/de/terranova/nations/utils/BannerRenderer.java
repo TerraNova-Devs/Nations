@@ -8,20 +8,20 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 
 import javax.imageio.ImageIO;
-import java.awt.Color;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
+import java.util.List;
 import java.util.*;
 
 import static org.bukkit.block.banner.PatternType.*;
 
 /**
  * Utility class to render a Banner item to a Base64-encoded PNG "data URI" string.
- *
+ * <p>
  * Make sure you have the PNG overlays (banner_base.png + pattern files) in:
- *   src/main/resources/banners/
+ * src/main/resources/banners/
  */
 public class BannerRenderer {
 
@@ -30,26 +30,27 @@ public class BannerRenderer {
 
     static {
         // Fill in the color map to match Minecraft’s banner dye tints as closely as possible
-        DYE_TO_AWT.put(DyeColor.WHITE,       new Color(255, 255, 255));
-        DYE_TO_AWT.put(DyeColor.ORANGE,      new Color(216, 127, 51));
-        DYE_TO_AWT.put(DyeColor.MAGENTA,     new Color(178, 76, 216));
-        DYE_TO_AWT.put(DyeColor.LIGHT_BLUE,  new Color(102, 153, 216));
-        DYE_TO_AWT.put(DyeColor.YELLOW,      new Color(229, 229, 51));
-        DYE_TO_AWT.put(DyeColor.LIME,        new Color(127, 204, 25));
-        DYE_TO_AWT.put(DyeColor.PINK,        new Color(242, 127, 165));
-        DYE_TO_AWT.put(DyeColor.GRAY,        new Color(76, 76, 76));
-        DYE_TO_AWT.put(DyeColor.LIGHT_GRAY,  new Color(153, 153, 153));
-        DYE_TO_AWT.put(DyeColor.CYAN,        new Color(76, 127, 153));
-        DYE_TO_AWT.put(DyeColor.PURPLE,      new Color(127, 63, 178));
-        DYE_TO_AWT.put(DyeColor.BLUE,        new Color(51, 76, 178));
-        DYE_TO_AWT.put(DyeColor.BROWN,       new Color(102, 76, 51));
-        DYE_TO_AWT.put(DyeColor.GREEN,       new Color(102, 127, 51));
-        DYE_TO_AWT.put(DyeColor.RED,         new Color(153, 51, 51));
-        DYE_TO_AWT.put(DyeColor.BLACK,       new Color(25, 25, 25));
+        DYE_TO_AWT.put(DyeColor.WHITE, new Color(255, 255, 255));
+        DYE_TO_AWT.put(DyeColor.ORANGE, new Color(216, 127, 51));
+        DYE_TO_AWT.put(DyeColor.MAGENTA, new Color(178, 76, 216));
+        DYE_TO_AWT.put(DyeColor.LIGHT_BLUE, new Color(102, 153, 216));
+        DYE_TO_AWT.put(DyeColor.YELLOW, new Color(229, 229, 51));
+        DYE_TO_AWT.put(DyeColor.LIME, new Color(127, 204, 25));
+        DYE_TO_AWT.put(DyeColor.PINK, new Color(242, 127, 165));
+        DYE_TO_AWT.put(DyeColor.GRAY, new Color(76, 76, 76));
+        DYE_TO_AWT.put(DyeColor.LIGHT_GRAY, new Color(153, 153, 153));
+        DYE_TO_AWT.put(DyeColor.CYAN, new Color(76, 127, 153));
+        DYE_TO_AWT.put(DyeColor.PURPLE, new Color(127, 63, 178));
+        DYE_TO_AWT.put(DyeColor.BLUE, new Color(51, 76, 178));
+        DYE_TO_AWT.put(DyeColor.BROWN, new Color(102, 76, 51));
+        DYE_TO_AWT.put(DyeColor.GREEN, new Color(102, 127, 51));
+        DYE_TO_AWT.put(DyeColor.RED, new Color(153, 51, 51));
+        DYE_TO_AWT.put(DyeColor.BLACK, new Color(25, 25, 25));
     }
 
     /**
      * Render the given banner ItemStack into a Base64-encoded PNG "data:image/png;base64,..." string.
+     *
      * @param bannerItem A colored Banner item (any color, with zero or more patterns).
      * @return Base64 data URI string, or null if invalid banner or error.
      */
@@ -155,7 +156,7 @@ public class BannerRenderer {
     /**
      * Switch on ALL known PatternType enum constants (1.20/1.21).
      * Return the overlay PNG filename that you placed in /banners/.
-     *
+     * <p>
      * For example, if you have "pattern_stripe_top.png" for STRIPE_TOP,
      * you return that exact string. Adjust to match the actual file names
      * you are using.

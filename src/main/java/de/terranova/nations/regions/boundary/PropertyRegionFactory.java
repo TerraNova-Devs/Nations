@@ -7,18 +7,19 @@ import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.RegionFactoryBase;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionContext;
+import de.terranova.nations.regions.base.RegionFactoryBase;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
 
 public class PropertyRegionFactory implements RegionFactoryBase {
-
 
 
     @Override
@@ -44,9 +45,9 @@ public class PropertyRegionFactory implements RegionFactoryBase {
         RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(p.getWorld()));
         try {
             com.sk89q.worldedit.regions.Region region = selector.getRegion();
-            ProtectedRegion tempRegion = BoundaryClaimFunctions.asProtectedRegion(region,UUID.randomUUID().toString());
+            ProtectedRegion tempRegion = BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
 
-            if (!validate(ctx,name,tempRegion, settle)){
+            if (!validate(ctx, name, tempRegion, settle)) {
                 return null;
             }
         } catch (IncompleteRegionException e) {
@@ -66,7 +67,7 @@ public class PropertyRegionFactory implements RegionFactoryBase {
         return new PropertyRegion(
                 args.getFirst(),
                 UUID.fromString(args.get(1)),
-                (SettleRegion) RegionManager.retrieveRegion("settle",UUID.fromString(args.get(1))).get()
+                (SettleRegion) RegionManager.retrieveRegion("settle", UUID.fromString(args.get(1))).get()
         );
     }
 

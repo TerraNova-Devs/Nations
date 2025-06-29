@@ -8,10 +8,10 @@ import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.gui.RealEstateGUI;
 import de.terranova.nations.pl3xmap.RegionLayer;
-import de.terranova.nations.regions.modules.access.Access;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -24,24 +24,18 @@ import java.util.Map;
 import java.util.Optional;
 
 
-
 public class RegionCommands {
 
-    @CommandAnnotation(
-            domain = "region.create.$REGISTERED_REGION_TYPES.%<name>",
-            permission = "nations.region.create",
-            description = "Creates a new region",
-            usage = "/terra region create <type> <name>"
-    )
+    @CommandAnnotation(domain = "region.create.$REGISTERED_REGION_TYPES.%<name>", permission = "nations.region.create", description = "Creates a new region", usage = "/terra region create <type> <name>")
     public static boolean createRegion(Player p, String[] args) {
         String type = args[2].toLowerCase();
         String name = MiniMessage.miniMessage().stripTags(String.join("_", Arrays.copyOfRange(args, 3, args.length)));
 
-        if(!RegionRegistry.factories.containsKey(type)){
+        if (!RegionRegistry.factories.containsKey(type)) {
             p.sendMessage(Chat.errorFade(String.format("Bitte benutze nur folgende Regionstypen: %s", RegionRegistry.factories.keySet())));
             return false;
         }
-        Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p,name,Map.of()));
+        Optional<Region> regionTypeOpt = RegionRegistry.createWithContext(type, new RegionContext(p, name, Map.of()));
         if (regionTypeOpt.isPresent()) {
             p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
         } else {
@@ -51,12 +45,7 @@ public class RegionCommands {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "region.remove",
-            permission = "nations.region.delete",
-            description = "Removes an existing region",
-            usage = "/terra region remove"
-    )
+    @CommandAnnotation(domain = "region.remove", permission = "nations.region.delete", description = "Removes an existing region", usage = "/terra region remove")
     public static boolean removeRegion(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
@@ -68,7 +57,7 @@ public class RegionCommands {
             return false;
         }
 
-        if (playerAccess == null || !Access.hasAccess(playerAccess, AccessLevel.MAJOR)) {
+        if (!Access.hasAccess(playerAccess, AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("You do not have the required access level to remove this settlement."));
             return false;
         }
@@ -79,17 +68,12 @@ public class RegionCommands {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "region.claim",
-            permission = "nations.region.claim",
-            description = "Adds Claimes to GridRegions",
-            usage = "/terra region claim"
-    )
+    @CommandAnnotation(domain = "region.claim", permission = "nations.region.claim", description = "Adds Claimes to GridRegions", usage = "/terra region claim")
     public static boolean claimRegion(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
 
-        if(!(cache.getRegion() instanceof GridRegion region)){
+        if (!(cache.getRegion() instanceof GridRegion region)) {
             p.sendMessage(Chat.errorFade("Du kannst die ausgewählte region nicht durch claimen erweitern"));
             return false;
         }
@@ -131,19 +115,15 @@ public class RegionCommands {
         RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
 
         region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
-        if(cache.getRegion() instanceof SettleRegion settle){
+        if (cache.getRegion() instanceof SettleRegion settle) {
             RegionLayer.updateRegion(settle);
         }
         p.sendMessage(Chat.greenFade("Deine Stadt wurde erfolgreich erweitert. (" + region.getClaims() + "/" + region.getMaxClaims() + ")"));
 
         return true;
     }
-    @CommandAnnotation(
-            domain = "region.rename.%<name>",
-            permission = "nations.region.rename",
-            description = "Renames a Region",
-            usage = "/terra region rename <name>"
-    )
+
+    @CommandAnnotation(domain = "region.rename.%<name>", permission = "nations.region.rename", description = "Renames a Region", usage = "/terra region rename <name>")
     public static boolean renameRegion(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         if (cache == null) return false;
@@ -166,19 +146,13 @@ public class RegionCommands {
         cache.getRegion().rename(name);
         return true;
     }
-    @CommandAnnotation(
-            domain = "region.test",
-            permission = "nations.region.rename",
-            description = "test",
-            usage = "/terra test"
-    )
+
+    @CommandAnnotation(domain = "region.test", permission = "nations.region.rename", description = "test", usage = "/terra test")
 
     public static boolean testegion(Player p, String[] args) {
         new RealEstateGUI(p).open();
         return true;
     }
-
-
 
 
 }

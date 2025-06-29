@@ -6,15 +6,18 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
-import de.terranova.nations.regions.modules.access.Access;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import org.bukkit.Location;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 public class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
@@ -65,7 +68,7 @@ public class RegionManager {
         if (typeMap == null) {
             return Optional.empty(); // Type not found
         }
-        if(typeMap.containsKey(uuid)) {
+        if (typeMap.containsKey(uuid)) {
             return Optional.of(typeMap.get(uuid)); // Retrieve region by name
         }
         return Optional.empty();
@@ -74,7 +77,7 @@ public class RegionManager {
     public static <T extends Region> Optional<T> retrieveRegion(String type, String name) {
         Map<UUID, T> regions = retrieveAllCachedRegions(type);
         for (T region : regions.values()) {
-            if(name.equalsIgnoreCase(region.getName())) return Optional.of(region);
+            if (name.equalsIgnoreCase(region.getName())) return Optional.of(region);
         }
         return Optional.empty();
     }
@@ -88,10 +91,10 @@ public class RegionManager {
         for (ProtectedRegion region : set) {
             for (Region regionType : regions.values()) {
                 String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-                if(regionUUIDString == null) continue;
-                if(regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) continue;
+                if (regionUUIDString == null) continue;
+                if (regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) continue;
                 UUID regionUUID = UUID.fromString(regionUUIDString);
-                if(regionType.getId().equals(regionUUID)) {
+                if (regionType.getId().equals(regionUUID)) {
                     return Optional.of(regions.get(regionUUID));
                 }
             }

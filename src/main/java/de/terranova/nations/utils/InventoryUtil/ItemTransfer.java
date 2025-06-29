@@ -72,7 +72,7 @@ public class ItemTransfer {
     private static ItemStack resolveItem(String itemString) {
         if (NexoItems.exists(itemString)) {
             return NexoItems.itemFromId(itemString).build();
-        } else if(EnumUtils.isValidEnum(Material.class, itemString)) {
+        } else if (EnumUtils.isValidEnum(Material.class, itemString)) {
             return new ItemStack(Material.valueOf(itemString));
         } else {
             throw new IllegalArgumentException("Folgendes Item konnte nicht gefunden werden:" + itemString);

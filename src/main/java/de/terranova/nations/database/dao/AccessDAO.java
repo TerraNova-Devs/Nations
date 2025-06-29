@@ -25,8 +25,7 @@ public class AccessDAO {
     public static Map<UUID, AccessLevel> getMembersAccess(UUID ruuid) {
         String sql = queries.get("getAll");
         Map<UUID, AccessLevel> access = new HashMap<>();
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -40,8 +39,7 @@ public class AccessDAO {
 
     public static void changeMemberAccess(UUID ruuid, UUID puuid, AccessLevel access) {
         String sql = access == null ? queries.get("remove") : queries.get("add");
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             statement.setString(2, puuid.toString());
             if (access != null) {
@@ -55,8 +53,7 @@ public class AccessDAO {
 
     public static void removeEveryAccess(UUID ruuid) {
         String sql = queries.get("removeAll");
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             statement.executeUpdate();
         } catch (SQLException e) {

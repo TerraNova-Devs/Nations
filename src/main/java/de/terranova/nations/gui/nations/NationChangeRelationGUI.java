@@ -2,7 +2,6 @@ package de.terranova.nations.gui.nations;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
-import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.nations.NationRelationType;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;

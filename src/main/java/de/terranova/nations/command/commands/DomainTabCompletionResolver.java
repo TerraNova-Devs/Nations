@@ -3,7 +3,6 @@ package de.terranova.nations.command.commands;
 import org.bukkit.command.CommandSender;
 
 import java.util.*;
-import java.util.function.Supplier;
 
 /**
  * The DomainTabCompletionResolver class processes a list of domain strings
@@ -16,8 +15,7 @@ public class DomainTabCompletionResolver {
     protected final Map<String, PlayerAwarePlaceholder> commandTabPlaceholders;
     private final List<String[]> domainPartsList;
 
-    public DomainTabCompletionResolver(List<String> domains,
-                                       Map<String, PlayerAwarePlaceholder> commandTabPlaceholders) {
+    public DomainTabCompletionResolver(List<String> domains, Map<String, PlayerAwarePlaceholder> commandTabPlaceholders) {
         this.domainPartsList = new ArrayList<>();
         for (String domain : domains) {
             String[] parts = domain.split("\\.");
@@ -117,9 +115,7 @@ public class DomainTabCompletionResolver {
      * Replace placeholders in nextElements with the supplier results, filtered by the
      * current user input. Now uses PlayerAwarePlaceholder's getSuggestions(sender).
      */
-    private void replaceAndFilterPlaceholders(CommandSender sender,
-                                              Set<String> nextElements,
-                                              String[] args) {
+    private void replaceAndFilterPlaceholders(CommandSender sender, Set<String> nextElements, String[] args) {
         // Determine the current user input
         String userInput = (args.length > 0) ? args[args.length - 1] : "";
 

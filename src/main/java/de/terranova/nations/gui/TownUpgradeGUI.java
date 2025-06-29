@@ -52,11 +52,11 @@ public class TownUpgradeGUI extends RoseGUI {
 
         RoseItem submit = new RoseItem.Builder()
                 .material(canLevelup ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK)
-                .displayName(canLevelup ? Chat.greenFade("Level Up!") : Chat.redFade("Nicht genügend Resourcen!") )
+                .displayName(canLevelup ? Chat.greenFade("Level Up!") : Chat.redFade("Nicht genügend Resourcen!"))
                 .build();
         if (canLevelup) {
             submit.onClick(e -> {
-                settle.getBank().cashTransfer("Region-LevelUp",-goalRankObjective.getSilver());
+                settle.getBank().cashTransfer("Region-LevelUp", -goalRankObjective.getSilver());
                 settle.getRank().levelUP();
 
                 new TownUpgradeGUI(player, settle).open();

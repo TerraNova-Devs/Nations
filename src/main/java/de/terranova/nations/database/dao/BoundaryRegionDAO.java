@@ -2,10 +2,8 @@ package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.base.BoundaryRegion;
-import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionRegistry;
-import de.terranova.nations.worldguard.math.Vectore2;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -28,8 +26,7 @@ public class BoundaryRegionDAO {
 
     public static void insertRegion(BoundaryRegion region) {
         String sql = queries.get("insert");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, region.getId().toString());
             ps.setString(2, region.getName());
             ps.setString(3, region.getType());
@@ -41,8 +38,7 @@ public class BoundaryRegionDAO {
 
     public static void removeRegion(UUID ruuid) {
         String sql = queries.get("remove");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, ruuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -52,8 +48,7 @@ public class BoundaryRegionDAO {
 
     public static void updateRegionName(UUID ruuid, String name) {
         String sql = queries.get("updateName");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, ruuid.toString());
             ps.executeUpdate();
@@ -65,13 +60,12 @@ public class BoundaryRegionDAO {
     public static Map<UUID, Region> fetchRegionsByType(String type) {
         String sql = queries.get("fetchByType");
         Map<UUID, Region> gridRegions = new HashMap<>();
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, type);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("RUUID");
-                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"),id)));
+                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"), id)));
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);

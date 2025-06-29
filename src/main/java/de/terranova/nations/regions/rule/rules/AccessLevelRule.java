@@ -23,12 +23,9 @@ public class AccessLevelRule implements RegionRule {
     @Override
     public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
-        if (!settleOpt.isPresent() ) {
-            if(accessLevel == null){
-                return true;
-            }
-            return false;
-        } else if(accessLevel == null){
+        if (!settleOpt.isPresent()) {
+            return accessLevel == null;
+        } else if (accessLevel == null) {
             return false;
         }
         AccessControlled accessControlled = settleOpt.get();

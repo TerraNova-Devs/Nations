@@ -1,21 +1,18 @@
 package de.terranova.nations.regions.boundary;
 
+import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.HasParent;
-
-import de.terranova.nations.regions.modules.bank.Bank;
-import de.terranova.nations.regions.modules.bank.BankHolder;
-import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 
-import java.util.*;
+import java.util.UUID;
 
-public class PropertyRegion extends BoundaryRegion implements  HasParent<SettleRegion>, CanBeSold {
+public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRegion>, CanBeSold {
     public static final String REGION_TYPE = "property";
 
     private SettleRegion parent;
-    private RealEstateAgent realEstateAgent;
+    private final RealEstateAgent realEstateAgent;
 
     public PropertyRegion(String name, UUID ruuid, SettleRegion parent) {
         super(name, ruuid, REGION_TYPE);

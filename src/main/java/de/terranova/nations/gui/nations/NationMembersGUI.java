@@ -6,9 +6,9 @@ import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationPlayerRank;
 import de.terranova.nations.nations.SettlementRank;
 import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
@@ -139,10 +139,10 @@ public class NationMembersGUI extends RoseGUI {
             return;
         }
 
-        if(e.isRightClick()) {
-            if(currentRank == NationPlayerRank.MEMBER) {
+        if (e.isRightClick()) {
+            if (currentRank == NationPlayerRank.MEMBER) {
                 player.sendMessage(Chat.errorFade("Dieser Spieler ist bereits Mitglied."));
-            } else if(currentRank == NationPlayerRank.COUNCIL) {
+            } else if (currentRank == NationPlayerRank.COUNCIL) {
                 nation.setPlayerRank(uuid, NationPlayerRank.MEMBER);
                 NationsPlugin.nationManager.saveNation(nation);
                 player.sendMessage(Chat.greenFade("Der Spieler ist nun Mitglied."));
@@ -158,8 +158,8 @@ public class NationMembersGUI extends RoseGUI {
                 }
             }
         }
-        if(e.isLeftClick()) {
-            if(currentRank == NationPlayerRank.MEMBER) {
+        if (e.isLeftClick()) {
+            if (currentRank == NationPlayerRank.MEMBER) {
                 nation.setPlayerRank(uuid, NationPlayerRank.COUNCIL);
                 NationsPlugin.nationManager.saveNation(nation);
                 player.sendMessage(Chat.greenFade("Dieser Spieler ist nun im Nationsrat."));
@@ -225,7 +225,7 @@ public class NationMembersGUI extends RoseGUI {
                 .build();
 
         // Fill slots except for navigation buttons
-        for (int i : new int[]{0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44, 46, 47, 49, 51, 52, 53}) {
+        for (int i : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 46, 47, 49, 51, 52, 53}) {
             addItem(i, filler);
         }
     }

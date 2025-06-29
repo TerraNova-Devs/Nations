@@ -77,6 +77,11 @@ public class Nation {
                 .orElse(null);
     }
 
+    public void setLeader(UUID leader) {
+        this.playerRanks.values().remove(NationPlayerRank.LEADER);
+        this.playerRanks.put(leader, NationPlayerRank.LEADER);
+    }
+
     public Set<UUID> getViceLeaders() {
         return playerRanks.entrySet().stream()
                 .filter(entry -> entry.getValue() == NationPlayerRank.VICE_LEADER)
@@ -91,25 +96,21 @@ public class Nation {
                 .collect(Collectors.toSet());
     }
 
-    public void setLeader(UUID leader) {
-        this.playerRanks.values().remove(NationPlayerRank.LEADER);
-        this.playerRanks.put(leader, NationPlayerRank.LEADER);
-    }
-
     // Settlements
     public Map<UUID, SettlementRank> getSettlements() {
         return settlements;
     }
+
+    public void setSettlements(Map<UUID, SettlementRank> settlements) {
+        this.settlements = settlements;
+    }
+
     public UUID getCapital() {
         return settlements.entrySet().stream()
                 .filter(entry -> entry.getValue() == SettlementRank.CAPITAL)
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .orElse(null);
-    }
-
-    public void setSettlements(Map<UUID, SettlementRank> settlements) {
-        this.settlements = settlements;
     }
 
     public void addSettlement(UUID settlementId, SettlementRank rank) {
@@ -155,7 +156,7 @@ public class Nation {
 
     public boolean isMember(UUID playerId) {
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(playerId);
-        if(settleOpt.isPresent()){
+        if (settleOpt.isPresent()) {
             SettleRegion settle = settleOpt.get();
             return settlements.containsKey(settle.getId());
         }
@@ -174,13 +175,13 @@ public class Nation {
         return playerRanks;
     }
 
+    public void setPlayerRanks(Map<UUID, NationPlayerRank> playerRanks) {
+        this.playerRanks = playerRanks;
+    }
+
     public void removePlayerRank(UUID playerId) {
         playerRanks.remove(playerId);
         NationsDAO.removePlayerRankFromNation(playerId);
-    }
-
-    public void setPlayerRanks(Map<UUID, NationPlayerRank> playerRanks) {
-        this.playerRanks = playerRanks;
     }
 
     public NationPlayerRank getPlayerRank(UUID playerId) {
@@ -192,7 +193,7 @@ public class Nation {
     }
 
     public void setBanner(ItemStack banner) {
-        this.bannerBase64 =  ItemStackSerializer.getBase64StringFromItemStack(banner);
+        this.bannerBase64 = ItemStackSerializer.getBase64StringFromItemStack(banner);
     }
 
     public String getBannerBase64() {

@@ -1,6 +1,8 @@
 package de.terranova.nations.professions;
 
-import de.terranova.nations.database.dao.*;
+import de.terranova.nations.database.dao.SettlementBuildingsDAO;
+import de.terranova.nations.database.dao.SettlementObjectiveProgressDAO;
+import de.terranova.nations.database.dao.SettlementProfessionRelationDAO;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
@@ -100,7 +102,7 @@ public class ProfessionProgressManager {
     }
 
     public long getObjectiveProgress(String objectiveId) {
-        return SettlementObjectiveProgressDAO.getProgress(settlementId.toString(),objectiveId);
+        return SettlementObjectiveProgressDAO.getProgress(settlementId.toString(), objectiveId);
     }
 
     public boolean hasBuilding(String buildingId) {
@@ -117,7 +119,7 @@ public class ProfessionProgressManager {
         ProfessionConfig prof = ProfessionManager.getProfessionById(professionId);
         List<ObjectiveConfig> objectives = ProfessionManager.getObjectivesForProfession(professionId);
         for (ObjectiveConfig obj : objectives) {
-            if(obj.amount > getObjectiveProgress(obj.objectiveId)) {
+            if (obj.amount > getObjectiveProgress(obj.objectiveId)) {
                 return false;
             }
         }
@@ -135,11 +137,11 @@ public class ProfessionProgressManager {
 
         SettleRegion settle = settleOpt.get();
 
-        if(settle.getBank().getCredit() < prof.price){
+        if (settle.getBank().getCredit() < prof.price) {
             return false;
         }
 
-        if(SettlementProfessionRelationDAO.getStatus(settlementId.toString(), professionId).equals(ProfessionStatus.COMPLETED)){
+        if (SettlementProfessionRelationDAO.getStatus(settlementId.toString(), professionId).equals(ProfessionStatus.COMPLETED)) {
             return true; //Bereits gekauft
         }
         settle.getBank().cashTransfer("Profession " + prof.professionId, -prof.price);

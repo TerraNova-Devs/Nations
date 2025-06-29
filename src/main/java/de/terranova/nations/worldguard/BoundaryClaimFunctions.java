@@ -1,17 +1,12 @@
 package de.terranova.nations.worldguard;
 
-import com.sk89q.worldedit.IncompleteRegionException;
-import com.sk89q.worldedit.LocalSession;
-import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.math.BlockVector2;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
-import com.sk89q.worldedit.regions.RegionSelector;
 import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.flags.StringFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
@@ -20,10 +15,8 @@ import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.entity.Player;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -96,7 +89,6 @@ public class BoundaryClaimFunctions {
     }
 
 
-
     private static boolean linesIntersect(BlockVector2 p1, BlockVector2 p2, BlockVector2 q1, BlockVector2 q2) {
         return ccw(p1, q1, q2) != ccw(p2, q1, q2) && ccw(p1, p2, q1) != ccw(p1, p2, q2);
     }
@@ -104,6 +96,7 @@ public class BoundaryClaimFunctions {
     private static boolean ccw(BlockVector2 a, BlockVector2 b, BlockVector2 c) {
         return (c.z() - a.z()) * (b.x() - a.x()) > (b.z() - a.z()) * (c.x() - a.x());
     }
+
     public static int getNextFreeRegionNumber(String baseName) {
         Set<Integer> usedNumbers = new HashSet<>();
         Pattern pattern = Pattern.compile("^" + Pattern.quote(baseName.toLowerCase()) + "_(\\d+)$");
@@ -162,6 +155,7 @@ public class BoundaryClaimFunctions {
 
         return false;
     }
+
     public static boolean isPointIn2DBox(Vectore2 x, Vectore2 z, Vectore2 point) {
         // Normalize bounds
         double minX = Math.min(x.x, z.x);

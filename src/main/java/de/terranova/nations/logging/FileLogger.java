@@ -4,20 +4,24 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.logging.*;
+import java.util.logging.FileHandler;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
+import java.util.logging.Logger;
 
 public class FileLogger {
-    private Logger logger;
+    private final Logger logger;
     private FileHandler fileHandler;
     private LocalDate currentDate;
     private int fileId;
-    private String path; // Path to the log directory
-    private String className; // For the initial header line
-    private String filename;
+    private final String path; // Path to the log directory
+    private final String className; // For the initial header line
+    private final String filename;
 
     public FileLogger(String path, String filename) {
         // Initialize the logger with a unique name
@@ -99,7 +103,7 @@ public class FileLogger {
         // List files matching the pattern
         File[] matchingFiles = dir.listFiles((d, name) -> name.matches(filePattern));
 
-        if (matchingFiles != null && matchingFiles.length > 0) {
+        if (matchingFiles != null) {
             // Extract IDs and find the maximum
             for (File file : matchingFiles) {
                 String fileName = file.getName();
@@ -128,7 +132,7 @@ public class FileLogger {
     }
 
     private void writeInitialHeader(File logFile) {
-        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(logFile.toPath()), "UTF-8")) {
+        try (Writer writer = new OutputStreamWriter(Files.newOutputStream(logFile.toPath()), StandardCharsets.UTF_8)) {
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("MMM. dd, yyyy hh:mm:ss a");
             String dateTimeString = LocalDateTime.now().format(dateTimeFormatter);
             String header = String.format("%s %s logInfo%n", dateTimeString, className);

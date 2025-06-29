@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegionEventBus {
-    private List<RegionListener> listeners = new ArrayList<>();
+    private final List<RegionListener> listeners = new ArrayList<>();
 
     public void subscribe(RegionListener listener) {
         listeners.add(listener);

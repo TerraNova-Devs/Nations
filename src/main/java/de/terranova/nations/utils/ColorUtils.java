@@ -1,14 +1,14 @@
 package de.terranova.nations.utils;
 
-import java.awt.Color;
+import java.awt.*;
 
 public class ColorUtils {
     /**
      * Generates a semi-transparent color deterministically from a string (e.g. Nation name).
      * For example, we:
-     *  - Use the string's hash code to pick a hue in the [0..360) range
-     *  - Fix saturation/brightness to produce pleasant, distinct hues
-     *  - Add an alpha channel for partial transparency
+     * - Use the string's hash code to pick a hue in the [0..360) range
+     * - Fix saturation/brightness to produce pleasant, distinct hues
+     * - Add an alpha channel for partial transparency
      */
     public static int getColorFromName(String text) {
         if (text == null || text.isEmpty()) {

@@ -1,12 +1,14 @@
 package de.terranova.nations.gui;
 
-import de.terranova.nations.professions.*;
+import de.terranova.nations.professions.ProfessionManager;
+import de.terranova.nations.professions.ProfessionProgressManager;
+import de.terranova.nations.professions.ProfessionStatus;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
@@ -20,7 +22,9 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class TownProfessionGUI extends RoseGUI {
     private final SettleRegion settle;
@@ -107,7 +111,7 @@ public class TownProfessionGUI extends RoseGUI {
         // Status
         lore.add(Component.text("§7Status: " + (status == ProfessionStatus.ACTIVE ? "§a" : "§f") + status.name()));
 
-        if(!(status == ProfessionStatus.COMPLETED)) {
+        if (!(status == ProfessionStatus.COMPLETED)) {
             // Kosten & Score
             String costLine = String.format("§7Kosten: §e%d §7Silber  §8|  §7Score-Bonus: §e%d", prof.price, prof.score);
             lore.add(Component.text(costLine));
@@ -140,7 +144,8 @@ public class TownProfessionGUI extends RoseGUI {
         switch (status) {
             case LOCKED -> lore.add(Component.text("§cNoch gesperrt! Vorstufe nicht abgeschlossen."));
             case AVAILABLE -> lore.add(Component.text("§eKlicke, um an dieser Profession zu arbeiten."));
-            case ACTIVE -> lore.add(Component.text("§aAktiv! Klicke, um die Arbeit an dieser Profession zu pausieren."));
+            case ACTIVE ->
+                    lore.add(Component.text("§aAktiv! Klicke, um die Arbeit an dieser Profession zu pausieren."));
             case PAUSED -> lore.add(Component.text("§7Pausiert! Klicke, um weiter an dieser Profession zu arbeiten."));
             case COMPLETED -> lore.add(Component.text("§aAbgeschlossen!"));
         }
@@ -170,20 +175,19 @@ public class TownProfessionGUI extends RoseGUI {
         e.setCancelled(true);
 
 
-
         Player player = (Player) e.getWhoClicked();
 
-        if(!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.CITIZEN)) {
+        if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.CITIZEN)) {
             player.sendMessage(Chat.errorFade("Du bist kein Mitglied dieser Stadt!"));
             return;
         }
 
-        if(!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+        if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
             player.sendMessage(Chat.errorFade("Du hast nicht die nötigen Rechte, um Professions zu bearbeiten!"));
             return;
         }
 
-        if(e.isLeftClick()) {
+        if (e.isLeftClick()) {
 
             switch (status) {
                 case LOCKED -> {
@@ -209,7 +213,7 @@ public class TownProfessionGUI extends RoseGUI {
                     player.sendMessage(Chat.errorFade("Dieser Beruf ist bereits komplett abgeschlossen!"));
                 }
             }
-        } else if(e.isRightClick()){
+        } else if (e.isRightClick()) {
             if (mgr.completeProfession(prof.professionId)) {
                 player.sendMessage(Chat.greenFade("Glückwunsch! Du hast " + prof.prettyName + " (Stufe " + prof.getLevel() + ") abgeschlossen!"));
             }

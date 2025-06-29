@@ -6,24 +6,25 @@ import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
-import de.terranova.nations.utils.Chat;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
-import de.terranova.nations.worldguard.math.Vectore2;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 public abstract class Region {
 
+    private static final List<String> nameCache = new ArrayList<>();
     // Registry for dynamically adding Region
     protected final UUID id;
     protected final String type;
     private final RegionEventBus eventBus = new RegionEventBus();
     protected String name;
     protected ProtectedRegion region;
-    private static final List<String> nameCache = new ArrayList<>();
 
     public Region(String name, UUID id, String type) {
         this.id = id;
@@ -44,7 +45,6 @@ public abstract class Region {
     public void addNameToCache(String name) {
         nameCache.add(name.toLowerCase());
     }
-
 
 
     // Abstract method to enforce implementation in subclasses

@@ -15,18 +15,18 @@ import java.util.List;
 
 public class NoSelfOverlapRule implements RegionRule {
 
-    private boolean isGrid;
+    private final boolean isGrid;
 
     public NoSelfOverlapRule(Boolean noParentGrid) {
         this.isGrid = noParentGrid;
     }
 
     @Override
-    public boolean isAllowed(Player p, String type,String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
+    public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         List<Region> relevantRegions;
 
         // Ist das Grid belegt?
-        if(explicitParent == null && isGrid) {
+        if (explicitParent == null && isGrid) {
             return !RegionClaimFunctions.checkAreaForSettles(p);
         }
 

@@ -12,10 +12,10 @@ public class InstantGenerator {
     /**
      * Generates an Instant for the given UUID, ensuring strictly increasing
      * microsecond-level timestamps for each UUID.
-     *
+     * <p>
      * - Compare microsecond timestamps of the old and new Instants.
      * - If the new microsecond timestamp is <= old's microsecond timestamp,
-     *   bump the old by 1 microsecond (i.e., plus 1000 nanoseconds).
+     * bump the old by 1 microsecond (i.e., plus 1000 nanoseconds).
      * - Otherwise, use the newly generated Instant directly.
      *
      * @param uuid the UUID for which we want an Instant

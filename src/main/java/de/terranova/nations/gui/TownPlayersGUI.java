@@ -2,10 +2,10 @@ package de.terranova.nations.gui;
 
 import com.destroystokyo.paper.profile.PlayerProfile;
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
@@ -20,7 +20,10 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class TownPlayersGUI extends RoseGUI {
 
@@ -112,15 +115,15 @@ public class TownPlayersGUI extends RoseGUI {
 
 
     private void handlePlayerClick(InventoryClickEvent e, Player player, AccessControlled access, AccessLevel level, UUID uuid) {
-        if(!Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+        if (!Access.hasAccess(access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
             player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Rang dieses Spielers ändern zu können."));
             return;
         }
 
-        if(e.isRightClick()) {
-            if(level == AccessLevel.CITIZEN) {
+        if (e.isRightClick()) {
+            if (level == AccessLevel.CITIZEN) {
                 player.sendMessage(Chat.errorFade("Dieser Spieler ist bereits Einwohner."));
-            } else if(level == AccessLevel.COUNCIL) {
+            } else if (level == AccessLevel.COUNCIL) {
                 access.getAccess().setAccessLevel(uuid, AccessLevel.CITIZEN);
                 player.sendMessage(Chat.greenFade("Der Spieler ist nun Einwohner."));
                 registerPlayerSlots();
@@ -134,8 +137,8 @@ public class TownPlayersGUI extends RoseGUI {
                 }
             }
         }
-        if(e.isLeftClick()) {
-            if(level == AccessLevel.CITIZEN) {
+        if (e.isLeftClick()) {
+            if (level == AccessLevel.CITIZEN) {
                 access.getAccess().setAccessLevel(uuid, AccessLevel.COUNCIL);
                 player.sendMessage(Chat.greenFade("Dieser Spieler ist nun im Stadtrat."));
                 registerPlayerSlots();
@@ -199,7 +202,7 @@ public class TownPlayersGUI extends RoseGUI {
                 .build();
 
         // Fill slots except for navigation buttons
-        for (int i : new int[]{0,1,2,3,4,5,6,7,8,9,17,18,26,27,35,36,44, 46, 47, 49, 51, 52, 53}) {
+        for (int i : new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 17, 18, 26, 27, 35, 36, 44, 46, 47, 49, 51, 52, 53}) {
             addItem(i, filler);
         }
     }

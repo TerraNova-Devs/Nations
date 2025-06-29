@@ -8,15 +8,18 @@ import de.terranova.nations.nations.Nation;
 import de.terranova.nations.nations.NationPlayerRank;
 import de.terranova.nations.nations.SettlementRank;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.modules.access.Access;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
+import de.terranova.nations.regions.modules.access.Access;
+import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 import org.codehaus.plexus.util.StringUtils;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static de.terranova.nations.NationsPlugin.nationManager;
@@ -27,39 +30,26 @@ public class NationCommands extends AbstractCommand {
 
     public NationCommands() {
 
-        addPlaceholder("$PENDING_INVITES", PlayerAwarePlaceholder.ofCachedPlayerFunction(
-                (UUID uuid) -> {
-                    return pendingInvites.entrySet().stream()
-                            .filter(entry -> RegionManager.retrievePlayersSettlement(uuid).get().getId() == entry.getValue())
-                            .map(entry -> nationManager.getNation(entry.getKey()).getName())
-                            .collect(Collectors.toList());
-                },
-                10000
-        ));
-        addPlaceholder("$NATION_NAMES", () ->
-                nationManager.getNations().values().stream().map(Nation::getName).collect(Collectors.toList()));
-        addPlaceholder("$SETTLEMENTS", () ->
-                RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).collect(Collectors.toList()));
+        addPlaceholder("$PENDING_INVITES", PlayerAwarePlaceholder.ofCachedPlayerFunction((UUID uuid) -> {
+            return pendingInvites.entrySet().stream().filter(entry -> RegionManager.retrievePlayersSettlement(uuid).get().getId() == entry.getValue()).map(entry -> nationManager.getNation(entry.getKey()).getName()).collect(Collectors.toList());
+        }, 10000));
+        addPlaceholder("$NATION_NAMES", () -> nationManager.getNations().values().stream().map(Nation::getName).collect(Collectors.toList()));
+        addPlaceholder("$SETTLEMENTS", () -> RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).collect(Collectors.toList()));
 
-        registerSubCommand(this,"create");
-        registerSubCommand(this,"delete");
-        registerSubCommand(this,"leave");
-        registerSubCommand(this,"kick");
-        registerSubCommand(this,"delete.confirm");
-        registerSubCommand(this,"invite");
-        registerSubCommand(this,"accept");
-        registerSubCommand(this,"rename");
+        registerSubCommand(this, "create");
+        registerSubCommand(this, "delete");
+        registerSubCommand(this, "leave");
+        registerSubCommand(this, "kick");
+        registerSubCommand(this, "delete.confirm");
+        registerSubCommand(this, "invite");
+        registerSubCommand(this, "accept");
+        registerSubCommand(this, "rename");
 
         setupHelpCommand();
         initialize();
     }
 
-    @CommandAnnotation(
-            domain = "rename.$0",
-            permission = "nations.nation.rename",
-            description = "Renames a nation",
-            usage = "/nation rename <name>"
-    )
+    @CommandAnnotation(domain = "rename.$0", permission = "nations.nation.rename", description = "Renames a nation", usage = "/nation rename <name>")
     public boolean renameNation(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
@@ -89,12 +79,7 @@ public class NationCommands extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "create.$0",
-            permission = "nations.nation.create",
-            description = "Creates a new nation",
-            usage = "/nation create <name>"
-    )
+    @CommandAnnotation(domain = "create.$0", permission = "nations.nation.create", description = "Creates a new nation", usage = "/nation create <name>")
     public boolean createNation(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
@@ -115,7 +100,7 @@ public class NationCommands extends AbstractCommand {
 
         SettleRegion settle = osettle.get();
 
-        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.MAJOR)) {
+        if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.MAJOR)) {
             p.sendMessage(Chat.errorFade("Du musst Bürgermeister deiner Stadt sein."));
             return false;
         }
@@ -128,25 +113,20 @@ public class NationCommands extends AbstractCommand {
             }
         }
 
-        if(settle.getBank().getCredit() < NationsPlugin.plugin.getConfig().getInt("nation.cost")) {
+        if (settle.getBank().getCredit() < NationsPlugin.plugin.getConfig().getInt("nation.cost")) {
             p.sendMessage(Chat.errorFade("Deine Stadt hat nicht genügend Geld um eine Nation zu gründen. (" + NationsPlugin.plugin.getConfig().getInt("nation.cost") + " Silber)"));
             return false;
         }
 
         Nation nation = new Nation(nationName, p.getUniqueId(), settle.getId());
         nationManager.addNation(nation);
-        settle.getBank().cashTransfer("Nationsgründung",-NationsPlugin.plugin.getConfig().getInt("nation.cost"));
+        settle.getBank().cashTransfer("Nationsgründung", -NationsPlugin.plugin.getConfig().getInt("nation.cost"));
 
         p.sendMessage(Chat.greenFade("Die Nation " + StringUtils.capitalise(nationName) + " wurde erfolgreich gegründet."));
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "delete.$NATION_NAMES",
-            permission = "nations.nation.delete",
-            description = "Deletes a nation",
-            usage = "/nation delete <name>"
-    )
+    @CommandAnnotation(domain = "delete.$NATION_NAMES", permission = "nations.nation.delete", description = "Deletes a nation", usage = "/nation delete <name>")
     public boolean deleteNation(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
@@ -169,12 +149,7 @@ public class NationCommands extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "delete.confirm.$NATION_NAMES",
-            permission = "nations.nation.delete.confirm",
-            description = "Deletes your nation",
-            usage = "/nation delete confirm <name>"
-    )
+    @CommandAnnotation(domain = "delete.confirm.$NATION_NAMES", permission = "nations.nation.delete.confirm", description = "Deletes your nation", usage = "/nation delete confirm <name>")
     public boolean deleteNationConfirm(Player p, String[] args) {
         if (args.length < 3) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
@@ -198,12 +173,7 @@ public class NationCommands extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "invite.$SETTLEMENTS",
-            permission = "nations.nation.invite",
-            description = "Invite a settlement to the nation",
-            usage = "/nation invite <settle-name>"
-    )
+    @CommandAnnotation(domain = "invite.$SETTLEMENTS", permission = "nations.nation.invite", description = "Invite a settlement to the nation", usage = "/nation invite <settle-name>")
     public boolean inviteSettlement(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Stadt an."));
@@ -246,17 +216,12 @@ public class NationCommands extends AbstractCommand {
         }
 
         pendingInvites.put(nation.getId(), settle.getId());
-        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde in die Nation " + StringUtils.capitalise(nation.getName()) + " eingeladen.",AccessLevel.VICE);
+        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde in die Nation " + StringUtils.capitalise(nation.getName()) + " eingeladen.", AccessLevel.VICE);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(settleName) + " wurde erfolgreich in die Nation eingeladen.");
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "accept.$PENDING_INVITES",
-            permission = "nations.nation.accept",
-            description = "Accept an invitation to a nation",
-            usage = "/nation accept <nation-name>"
-    )
+    @CommandAnnotation(domain = "accept.$PENDING_INVITES", permission = "nations.nation.accept", description = "Accept an invitation to a nation", usage = "/nation accept <nation-name>")
     public boolean acceptInvite(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Nation an."));
@@ -284,7 +249,7 @@ public class NationCommands extends AbstractCommand {
 
         SettleRegion settle = settleOpt.get();
 
-        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+        if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um mit deiner Stadt einer Nation beizutreten."));
             return false;
         }
@@ -296,12 +261,7 @@ public class NationCommands extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "leave",
-            permission = "nations.nation.leave",
-            description = "Leave your current nation",
-            usage = "/nation leave"
-    )
+    @CommandAnnotation(domain = "leave", permission = "nations.nation.leave", description = "Leave your current nation", usage = "/nation leave")
     public boolean leaveNation(Player p, String[] args) {
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
         if (settleOpt.isEmpty()) {
@@ -310,7 +270,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         SettleRegion settle = settleOpt.get();
-        if(!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+        if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
             p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um deine Stadt aus der Nation zu entfernen."));
             return false;
         }
@@ -321,23 +281,18 @@ public class NationCommands extends AbstractCommand {
             return false;
         }
 
-        if(nation.getSettlements().get(settle.getId()) == SettlementRank.CAPITAL) {
+        if (nation.getSettlements().get(settle.getId()) == SettlementRank.CAPITAL) {
             p.sendMessage(Chat.errorFade("Du kannst die Nation nicht verlassen, da du in der Hauptstadt bist."));
             return false;
         }
 
         nationManager.removeSettlementFromNation(nation.getId(), RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getId());
-        RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getAccess().broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation " + StringUtils.capitalise(nation.getName()) + " verlassen.",AccessLevel.CITIZEN);
+        RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getAccess().broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation " + StringUtils.capitalise(nation.getName()) + " verlassen.", AccessLevel.CITIZEN);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(RegionManager.retrievePlayersSettlement(p.getUniqueId()).get().getName()) + " hat die Nation verlassen.");
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "kick.$SETTLEMENTS",
-            permission = "nations.nation.kick",
-            description = "Kick a settlement from the nation",
-            usage = "/nation kick <settle-name>"
-    )
+    @CommandAnnotation(domain = "kick.$SETTLEMENTS", permission = "nations.nation.kick", description = "Kick a settlement from the nation", usage = "/nation kick <settle-name>")
     public boolean kickSettlement(Player p, String[] args) {
         if (args.length < 2) {
             p.sendMessage(Chat.errorFade("Bitte gebe den Namen der Stadt an."));
@@ -374,7 +329,7 @@ public class NationCommands extends AbstractCommand {
         }
 
         nationManager.removeSettlementFromNation(nation.getId(), settle.getId());
-        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation " + StringUtils.capitalise(nation.getName()) + " entfernt.",AccessLevel.CITIZEN);
+        settle.getAccess().broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation " + StringUtils.capitalise(nation.getName()) + " entfernt.", AccessLevel.CITIZEN);
         nation.broadcast("Die Stadt " + StringUtils.capitalise(settle.getName()) + " wurde aus der Nation entfernt.");
         return true;
     }

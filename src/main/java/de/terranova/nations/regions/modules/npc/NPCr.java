@@ -19,10 +19,10 @@ public class NPCr implements RegionListener {
     private NPC npc;
 
     public NPCr(Region regionType) {
-        if(!(regionType instanceof NPCHolder)) throw new IllegalArgumentException();
+        if (!(regionType instanceof NPCHolder)) throw new IllegalArgumentException();
         this.regionType = regionType;
-        if(!verifyNPC()){
-            if(regionType instanceof GridRegion gridRegionType){
+        if (!verifyNPC()) {
+            if (regionType instanceof GridRegion gridRegionType) {
                 this.npc = createNPC(regionType.getName(), gridRegionType.getLocation().asLocation());
             }
         }
@@ -96,7 +96,7 @@ public class NPCr implements RegionListener {
         HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
         hologramTrait.clear();
 
-        for(String line : lines){
+        for (String line : lines) {
             hologramTrait.addLine(line);
         }
     }
@@ -116,7 +116,7 @@ public class NPCr implements RegionListener {
     }
 
     @Override
-    public void onRegionRemoved(){
+    public void onRegionRemoved() {
         remove();
     }
 

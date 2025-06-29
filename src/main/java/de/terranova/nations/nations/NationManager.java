@@ -8,7 +8,7 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import java.util.*;
 
 public class NationManager {
-    private Map<UUID, Nation> nations;
+    private final Map<UUID, Nation> nations;
 
     public NationManager() {
         this.nations = new HashMap<>();
@@ -32,14 +32,14 @@ public class NationManager {
 
     // Remove a nation from the manager and database
     public void removeNation(UUID nationId) {
-       Nation nation = nations.get(nationId);
-       for (UUID settlementId : nation.getSettlements().keySet()) {
-           Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
-           RegionLayer.updateRegion(settleRegion.get());
-       }
+        Nation nation = nations.get(nationId);
+        for (UUID settlementId : nation.getSettlements().keySet()) {
+            Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+            RegionLayer.updateRegion(settleRegion.get());
+        }
 
-       nations.remove(nationId);
-       NationsDAO.deleteNation(nationId);
+        nations.remove(nationId);
+        NationsDAO.deleteNation(nationId);
     }
 
     // Get a nation by UUID

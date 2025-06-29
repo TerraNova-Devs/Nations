@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
-import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
@@ -71,6 +70,7 @@ public class HikariCP {
         }
 
     }
+
     public void closeConnection() throws SQLException {
         dataSource.close();
     }

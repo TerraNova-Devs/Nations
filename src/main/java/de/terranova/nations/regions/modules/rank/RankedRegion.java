@@ -5,7 +5,8 @@ import org.jetbrains.annotations.ApiStatus;
 public interface RankedRegion {
 
     @ApiStatus.OverrideOnly
-    default void onLevelUP(){}
+    default void onLevelUP() {
+    }
 
     Rank getRank();
 

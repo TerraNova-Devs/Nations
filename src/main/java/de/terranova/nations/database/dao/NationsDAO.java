@@ -4,8 +4,14 @@ import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.*;
 import de.terranova.nations.regions.RegionManager;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class NationsDAO {
     // Load all nations from the database
@@ -13,8 +19,7 @@ public class NationsDAO {
         List<Nation> nations = new ArrayList<>();
         String sql = "SELECT * FROM nations_table";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -22,14 +27,7 @@ public class NationsDAO {
                 String name = rs.getString("name");
                 String bannerBase64 = rs.getString("banner_base64");
 
-                Nation nation = new Nation(
-                        nationId,
-                        name,
-                        null,
-                        null,
-                        null,
-                        bannerBase64
-                );
+                Nation nation = new Nation(nationId, name, null, null, null, bannerBase64);
 
                 loadNationSettlements(nation);
                 loadNationRelations(nation);
@@ -46,12 +44,9 @@ public class NationsDAO {
     }
 
     public static void createNation(Nation nation) {
-        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?)" +
-                " ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
-        String sqlInsertSettlement = "INSERT INTO settlement_nation_relations (`SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?)" +
-                " ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
-        String sqlInsertLeader = "INSERT INTO nation_ranks (`PUUID`, `SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
+        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?)" + " ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
+        String sqlInsertSettlement = "INSERT INTO settlement_nation_relations (`SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?)" + " ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
+        String sqlInsertLeader = "INSERT INTO nation_ranks (`PUUID`, `SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?, ?) " + "ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
 
         try (Connection con = NationsPlugin.hikari.dataSource.getConnection()) {
             con.setAutoCommit(false);
@@ -90,11 +85,9 @@ public class NationsDAO {
 
     // Save a nation to the database
     public static void saveNation(Nation nation) {
-        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
+        String sqlInsertNation = "INSERT INTO nations_table (NUUID, name, banner_base64) VALUES (?, ?, ?) " + "ON DUPLICATE KEY UPDATE name = VALUES(name), banner_base64 = VALUES(banner_base64)";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sqlInsertNation)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sqlInsertNation)) {
 
             ps.setString(1, nation.getId().toString());
             ps.setString(2, nation.getName());
@@ -103,11 +96,7 @@ public class NationsDAO {
 
             // Save other nation data
             saveNationRelations(nation);
-            nation.getPlayerRanks().forEach((playerId, rank) ->
-                    RegionManager.retrievePlayersSettlement(playerId).ifPresent(settleId ->
-                            savePlayerRankToNation(rank, playerId, settleId.getId(), nation.getId())
-                    )
-            );
+            nation.getPlayerRanks().forEach((playerId, rank) -> RegionManager.retrievePlayersSettlement(playerId).ifPresent(settleId -> savePlayerRankToNation(rank, playerId, settleId.getId(), nation.getId())));
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -120,10 +109,7 @@ public class NationsDAO {
         String sqlDeleteRelations = "DELETE FROM nation_relations WHERE NUUID1 = ? OR NUUID2 = ?";
         String sqlDeleteSettlementRelations = "DELETE FROM settlement_nation_relations WHERE NUUID = ?";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement psDeleteNation = con.prepareStatement(sqlDeleteNation);
-             PreparedStatement psDeleteRelations = con.prepareStatement(sqlDeleteRelations);
-             PreparedStatement psDeleteSettlementRelations = con.prepareStatement(sqlDeleteSettlementRelations)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement psDeleteNation = con.prepareStatement(sqlDeleteNation); PreparedStatement psDeleteRelations = con.prepareStatement(sqlDeleteRelations); PreparedStatement psDeleteSettlementRelations = con.prepareStatement(sqlDeleteSettlementRelations)) {
 
             psDeleteNation.setString(1, nationId.toString());
             psDeleteNation.executeUpdate();
@@ -144,8 +130,7 @@ public class NationsDAO {
     private static Nation loadNationSettlements(Nation nation) {
         String sql = "SELECT `SUUID`, `rank` FROM settlement_nation_relations WHERE `NUUID` = ?";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, nation.getId().toString());
             ResultSet rs = ps.executeQuery();
@@ -168,8 +153,7 @@ public class NationsDAO {
     public static void addSettlementToNation(SettlementNationRelation relation) {
         String sql = "INSERT INTO settlement_nation_relations (`SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?) ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, relation.getSettlementId().toString());
             ps.setString(2, relation.getNationId().toString());
@@ -185,8 +169,7 @@ public class NationsDAO {
     public static void removeSettlementFromNation(UUID settlementId) {
         String sql = "DELETE FROM settlement_nation_relations WHERE `SUUID` = ?";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, settlementId.toString());
             ps.executeUpdate();
@@ -200,8 +183,7 @@ public class NationsDAO {
     public static boolean isSettlementInNation(UUID settlementId) {
         String sql = "SELECT `NUUID` FROM settlement_nation_relations WHERE `SUUID` = ?";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, settlementId.toString());
             ResultSet rs = ps.executeQuery();
@@ -216,8 +198,7 @@ public class NationsDAO {
     // Load relations of a nation
     private static Nation loadNationRelations(Nation nation) {
         String sql = "SELECT `NUUID2`, `relation` FROM nation_relations WHERE `NUUID1` = ?";
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, nation.getId().toString());
             ResultSet rs = ps.executeQuery();
@@ -239,9 +220,7 @@ public class NationsDAO {
         String sqlDelete = "DELETE FROM nation_relations WHERE `NUUID1` = ?";
         String sqlInsert = "INSERT INTO nation_relations (`NUUID1`, `NUUID2`, `relation`) VALUES (?, ?, ?)";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement psDelete = con.prepareStatement(sqlDelete);
-             PreparedStatement psInsert = con.prepareStatement(sqlInsert)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement psDelete = con.prepareStatement(sqlDelete); PreparedStatement psInsert = con.prepareStatement(sqlInsert)) {
 
             psDelete.setString(1, nation.getId().toString());
             psDelete.executeUpdate();
@@ -262,8 +241,7 @@ public class NationsDAO {
     // Load player ranks of a nation
     private static Nation loadNationPlayerRanks(Nation nation) {
         String sql = "SELECT `PUUID`, `rank` FROM nation_ranks WHERE `NUUID` = ?";
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, nation.getId().toString());
             ResultSet rs = ps.executeQuery();
@@ -282,11 +260,9 @@ public class NationsDAO {
 
     // Add a player rank to a nation
     public static void savePlayerRankToNation(NationPlayerRank rank, UUID playerId, UUID settleId, UUID nationId) {
-        String sql = "INSERT INTO nation_ranks (`PUUID`, `SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?, ?) " +
-                "ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
+        String sql = "INSERT INTO nation_ranks (`PUUID`, `SUUID`, `NUUID`, `rank`) VALUES (?, ?, ?, ?) " + "ON DUPLICATE KEY UPDATE `rank` = VALUES(`rank`)";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, playerId.toString());
             ps.setString(2, settleId.toString());
@@ -303,8 +279,7 @@ public class NationsDAO {
     public static void removePlayerRankFromNation(UUID playerId) {
         String sql = "DELETE FROM nation_ranks WHERE `PUUID` = ?";
 
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, playerId.toString());
             ps.executeUpdate();

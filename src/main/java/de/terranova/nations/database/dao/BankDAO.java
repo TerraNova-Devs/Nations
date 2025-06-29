@@ -21,8 +21,7 @@ public class BankDAO {
     public List<Transaction> getLatestTransactions(UUID ruuid) {
         String sql = queries.get("getLatestTransactions");
         List<Transaction> transactions = new ArrayList<>();
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             ResultSet rs = statement.executeQuery();
             while (rs.next()) {
@@ -36,8 +35,7 @@ public class BankDAO {
 
     public Optional<Transaction> getBankCredit(UUID ruuid) {
         String sql = queries.get("getBankCredit");
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement statement = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement statement = con.prepareStatement(sql)) {
             statement.setString(1, ruuid.toString());
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -52,9 +50,7 @@ public class BankDAO {
     public void insertTransaction(UUID ruuid, Transaction transaction) {
         String sql = queries.get("insert");
         String sql2 = queries.get("checkEntries");
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps2 = con.prepareStatement(sql2);
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps2 = con.prepareStatement(sql2); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, ruuid.toString());
             ps.setString(2, transaction.user);
             ps.setInt(3, transaction.amount);
@@ -71,8 +67,7 @@ public class BankDAO {
 
     public void deleteAllEntries(UUID ruuid) {
         String sql = queries.get("delete");
-        try (Connection con = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, ruuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {

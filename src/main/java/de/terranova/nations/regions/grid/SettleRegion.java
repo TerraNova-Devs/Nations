@@ -3,6 +3,9 @@ package de.terranova.nations.regions.grid;
 import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasChildren;
 import de.terranova.nations.regions.modules.access.Access;
@@ -10,11 +13,8 @@ import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.bank.Bank;
 import de.terranova.nations.regions.modules.bank.BankHolder;
-import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.modules.npc.NPCHolder;
 import de.terranova.nations.regions.modules.npc.NPCr;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.modules.rank.Rank;
 import de.terranova.nations.regions.modules.rank.RankedRegion;
 import de.terranova.nations.utils.Chat;
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 public class SettleRegion extends GridRegion implements BankHolder, AccessControlled, NPCHolder, RankedRegion, HasChildren {
 
     public static final String REGION_TYPE = "settle";
-    public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5,4,4,4,4,7,4,4,4,4,10,5,5,5,5,10));
+    public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(3, 3, 3, 3, 5, 3, 3, 3, 3, 5, 4, 4, 4, 4, 7, 4, 4, 4, 4, 10, 5, 5, 5, 5, 10));
     private final Rank rank;
     private final NPCr npc;
     private final Access access;
@@ -75,7 +75,7 @@ public class SettleRegion extends GridRegion implements BankHolder, AccessContro
 
     @Override
     public void onGridRemove() {
-        RegionManager.removeRegion(type,id);
+        RegionManager.removeRegion(type, id);
         RegionLayer.removeRegion(this.id);
     }
 

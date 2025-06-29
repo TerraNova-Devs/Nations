@@ -1,10 +1,9 @@
 package de.terranova.nations.gui;
 
 
-
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.npc.NPCSkins;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -34,7 +33,6 @@ public class TownSkinGUI extends RoseGUI {
     public void onOpen(InventoryOpenEvent event) {
 
 
-
         RoseItem filler = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
@@ -57,20 +55,20 @@ public class TownSkinGUI extends RoseGUI {
 
             // SKININVENTAR AUTOMATISCHEN ZEILENUMBRUCH UND SEITEN EINFÜGEN
 
-                RoseItem skull = new RoseItem.Builder()
-                        .setSkull(skin.getSkinTexture())
-                        .displayName(Chat.yellowFade("<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
-                        .addLore(settle.getRank().getLevel() >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
-                        .build();
-                addItem(index + 10, skull);
-                skull.onClick(e -> {
-                    if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)){
-                        player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
-                        return;
-                    }
-                    if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
-                });
-                index++;
+            RoseItem skull = new RoseItem.Builder()
+                    .setSkull(skin.getSkinTexture())
+                    .displayName(Chat.yellowFade("<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
+                    .addLore(settle.getRank().getLevel() >= skin.getLEVEL() ? Chat.greenFade("Level: " + skin.getLEVEL()) : Chat.redFade("Level: " + skin.getLEVEL()))
+                    .build();
+            addItem(index + 10, skull);
+            skull.onClick(e -> {
+                if (!Access.hasAccess(settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+                    player.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
+                    return;
+                }
+                if (settle.getRank().getLevel() >= skin.getLEVEL()) settle.getNPC().reskinNpc(skin);
+            });
+            index++;
 
         }
     }

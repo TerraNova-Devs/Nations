@@ -6,6 +6,7 @@ public class ObjectiveConfig {
     public String object;   // e.g. "COD", "SALMON", "FISCHER_SIGN"
     public long amount;
 
-    public ObjectiveConfig() {}
+    public ObjectiveConfig() {
+    }
 }
 

@@ -1,7 +1,6 @@
 package de.terranova.nations.command;
 
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.database.dao.SettlementBuildingsDAO;
 import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -16,12 +15,7 @@ public class BuildingCommands {
 
     }
 
-    @CommandAnnotation(
-            domain = "building.confirm.$REGION_NAMES.$BUILDINGS",
-            permission = "nations.town.building.confirm",
-            description = "Bestätigt den Bau eines Gebäudes.",
-            usage = "/town building confirm <settlement> <buildingId>"
-    )
+    @CommandAnnotation(domain = "building.confirm.$REGION_NAMES.$BUILDINGS", permission = "nations.town.building.confirm", description = "Bestätigt den Bau eines Gebäudes.", usage = "/town building confirm <settlement> <buildingId>")
     public boolean confirmBuilding(Player p, String[] args) {
         if (args.length < 4) {
             p.sendMessage("Bitte /town building confirm <settlement> <buildingId>");
@@ -54,12 +48,7 @@ public class BuildingCommands {
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "building.cancel.$REGION_NAMES.$BUILDINGS",
-            permission = "nations.town.building.cancel",
-            description = "Cancels the construction of a building.",
-            usage = "/town building cancel <settlement> <buildingId>"
-    )
+    @CommandAnnotation(domain = "building.cancel.$REGION_NAMES.$BUILDINGS", permission = "nations.town.building.cancel", description = "Cancels the construction of a building.", usage = "/town building cancel <settlement> <buildingId>")
     public boolean cancelBuilding(Player p, String[] args) {
         if (args.length < 4) {
             p.sendMessage(Chat.yellowFade("Bitte /town building cancel <settlement> <buildingId>"));

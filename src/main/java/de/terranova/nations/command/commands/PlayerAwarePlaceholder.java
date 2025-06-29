@@ -14,8 +14,6 @@ import java.util.function.Function;
  */
 @FunctionalInterface
 public interface PlayerAwarePlaceholder {
-    List<String> getSuggestions(CommandSender sender);
-
     static PlayerAwarePlaceholder ofStatic(java.util.function.Supplier<List<String>> supplier) {
         return sender -> supplier.get();
     }
@@ -36,4 +34,6 @@ public interface PlayerAwarePlaceholder {
     static PlayerAwarePlaceholder ofCachedPlayerFunction(Function<UUID, List<String>> function, long cacheDurationMillis) {
         return new CachedUUIDPlaceholder(function, cacheDurationMillis);
     }
+
+    List<String> getSuggestions(CommandSender sender);
 }

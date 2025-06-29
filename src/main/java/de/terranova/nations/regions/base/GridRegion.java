@@ -26,7 +26,7 @@ public abstract class GridRegion extends Region {
 
     @Override
     public final void onCreation(Player p) {
-        this.region = RegionClaimFunctions.createGridClaim(name, p, this.id,this.type);
+        this.region = RegionClaimFunctions.createGridClaim(name, p, this.id, this.type);
         onGridCreation(p);
     }
 
@@ -44,10 +44,12 @@ public abstract class GridRegion extends Region {
     public void onGridRemove() {
 
     }
+
     @Override
     public void onRename(String name) {
         GridRegionDAO.updateRegionName(getId(), name);
     }
+
     @Override
     public final void dataBaseCall() {
         GridRegionDAO.insertRegion(this);

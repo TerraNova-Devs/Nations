@@ -41,7 +41,9 @@ public class ProfessionManager {
         return buildingsMap.getOrDefault(profId, Collections.emptyList());
     }
 
-    /** Beispiel: Finde alle Professionen eines bestimmten Typs (z.B. "FISHERY"), sortiert nach Level. */
+    /**
+     * Beispiel: Finde alle Professionen eines bestimmten Typs (z.B. "FISHERY"), sortiert nach Level.
+     */
     public static List<ProfessionConfig> getProfessionsByType(String type) {
         ArrayList<ProfessionConfig> result = new ArrayList<>();
         for (ProfessionConfig p : professionMap.values()) {

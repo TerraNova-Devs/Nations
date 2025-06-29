@@ -10,7 +10,7 @@ public class NamingConventionRule implements RegionRule {
 
     String regex;
 
-    public NamingConventionRule(String regex){
+    public NamingConventionRule(String regex) {
         this.regex = regex;
     }
 

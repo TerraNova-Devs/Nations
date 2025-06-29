@@ -28,8 +28,7 @@ public class GridRegionDAO {
 
     public static void insertRegion(GridRegion gridRegion) {
         String sql = queries.get("insert");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, gridRegion.getId().toString());
             ps.setString(2, gridRegion.getName());
             ps.setString(3, gridRegion.getType());
@@ -42,8 +41,7 @@ public class GridRegionDAO {
 
     public static void removeRegion(UUID ruuid) {
         String sql = queries.get("remove");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, ruuid.toString());
             ps.executeUpdate();
         } catch (SQLException e) {
@@ -53,8 +51,7 @@ public class GridRegionDAO {
 
     public static void updateRegionName(UUID ruuid, String name) {
         String sql = queries.get("updateName");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, name);
             ps.setString(2, ruuid.toString());
             ps.executeUpdate();
@@ -66,13 +63,12 @@ public class GridRegionDAO {
     public static Map<UUID, Region> fetchRegionsByType(String type) {
         String sql = queries.get("fetchByType");
         Map<UUID, Region> gridRegions = new HashMap<>();
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, type);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("RUUID");
-                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"),id,new Vectore2(rs.getString("location")).asString())));
+                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"), id, new Vectore2(rs.getString("location")).asString())));
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);

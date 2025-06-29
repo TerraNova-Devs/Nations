@@ -2,17 +2,15 @@ package de.terranova.nations.gui;
 
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
-import de.terranova.nations.utils.roseGUI.RoseItem;
-import net.kyori.adventure.text.Component;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
-public class RealEstateBrowserGUI  extends RoseGUI {
+public class RealEstateBrowserGUI extends RoseGUI {
     public RealEstateBrowserGUI(@NotNull Player player) {
         super(player, "realestate-browser", Chat.blueFade("Real Estate Browser"), 6);
     }
+
     @Override
     public void onOpen(InventoryOpenEvent event) {
 

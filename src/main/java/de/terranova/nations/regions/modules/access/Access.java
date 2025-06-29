@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 
 public class Access implements RegionListener {
 
-    private Region region;
+    private final Region region;
     private HashMap<UUID, AccessLevel> accessLevel;
 
     public Access(Region region) {
