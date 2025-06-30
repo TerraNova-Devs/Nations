@@ -11,6 +11,7 @@ import de.terranova.nations.utils.roseGUI.RosePagination;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -134,5 +135,10 @@ public class RealEstateBrowserGUI extends RoseGUI {
     private enum FilterMode {ALL, BUY, RENT}
 
     private enum SortOrder {ASC, DESC}
+
+    @Override
+    public void onClose(InventoryCloseEvent event) {
+
+    }
 }
 

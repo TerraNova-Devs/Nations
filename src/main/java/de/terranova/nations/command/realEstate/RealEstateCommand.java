@@ -20,7 +20,7 @@ import java.util.Optional;
 public class RealEstateCommand extends AbstractCommand {
     public RealEstateCommand() {
         addPlaceholder("$SETTLES", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
-
+        registerSubCommand(this, "browser");
         setupHelpCommand();
         initialize();
     }
@@ -39,29 +39,29 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(domain = "browser.$SETTLES", permission = "nations.realestate.browser", description = "Opens the Realestate Browser", usage = "/realestate browser <Stadt>")
     public boolean openBrowser(Player p, String[] args) {
-        Optional<Region> osettle = de.terranova.nations.regions.RegionManager.retrieveRegion("settle",args[0]);
+        Optional<Region> osettle = de.terranova.nations.regions.RegionManager.retrieveRegion("settle",args[1]);
         if(osettle.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die von dir genannte Stadt konnte nicht gefunden werden."));
             return false;
         }
-        new RealEstateBrowserGUI(p,osettle.get() );
+        new RealEstateBrowserGUI(p,osettle.get()).open();
         return true;
     }
 
     @CommandAnnotation(domain = "rent.$name", permission = "nations.realestate.rent", description = "Opens the Realestate Browser", usage = "/realestate browser")
     public boolean rent(Player p, String[] args) {
-        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[0]);
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " existiert nicht."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
             return false;
         }
         Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
         if (region.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " ist keine Nations Region."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
         if (!(region.get() instanceof CanBeSold agent)) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " hat kein RealEstate Modul."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
         agent.getAgent().rentEstate(p);
@@ -70,18 +70,18 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(domain = "buy.$name", permission = "nations.realestate.buy", description = "Opens the Realestate Browser", usage = "/realestate browser")
     public boolean buy(Player p, String[] args) {
-        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[0]);
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " existiert nicht."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
             return false;
         }
         Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
         if (region.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " ist keine Nations Region."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
         if (!(region.get() instanceof CanBeSold agent)) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[0] + " hat kein RealEstate Modul."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
         agent.getAgent().buyEstate(p);
