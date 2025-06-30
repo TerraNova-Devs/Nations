@@ -1,15 +1,17 @@
 package de.terranova.nations.regions.modules.realEstate;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class RealEstateManager {
-    private static final Map<UUID, CanBeSold> realEstates = new HashMap<>();
+    private static final Map<UUID, List<CanBeSold>> realEstates = new HashMap<>();
 
     public static void addRealestate(CanBeSold estate) {
-        realEstates.put(estate.getAgent().ownerId, estate);
+        UUID agentId = estate.getAgent().ownerId;
+        realEstates.computeIfAbsent(agentId, k -> new ArrayList<>()).add(estate);
     }
 
+    public static List<CanBeSold> getRealestate(UUID agentId) {
+        return realEstates.getOrDefault(agentId, Collections.emptyList());
+    }
 
 }

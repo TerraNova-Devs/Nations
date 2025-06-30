@@ -114,4 +114,9 @@ public class RealEstateAgent {
         return region;
     }
 
+    public boolean isForBuy() {return isForBuy; }
+    public boolean isForRent() {return isForRent; }
+    public int getBuyPrice() {return buyPrice; }
+    public int getRentPrice() {return buyPrice; }
+
 }

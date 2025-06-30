@@ -36,7 +36,7 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(domain = "browser", permission = "nations.realestate.browser", description = "Opens the Realestate Browser", usage = "/realestate browser")
     public boolean openBrowser(Player p, String[] args) {
-        new RealEstateBrowserGUI(p);
+        new RealEstateBrowserGUI(p,);
         return true;
     }
 

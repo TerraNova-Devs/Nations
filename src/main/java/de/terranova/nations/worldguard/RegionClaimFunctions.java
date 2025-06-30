@@ -6,6 +6,7 @@ import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.bukkit.BukkitPlayer;
 import com.sk89q.worldedit.math.BlockVector2;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
@@ -207,5 +208,21 @@ public class RegionClaimFunctions {
 
     public static void remove(String name) {
 
+    }
+
+    public static BlockVector3 getRegionCenter(ProtectedRegion region) {
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+
+        int centerX = (min.x() + max.x()) / 2;
+        int centerY = (min.y() + max.y()) / 2;
+        int centerZ = (min.z() + max.z()) / 2;
+
+        return BlockVector3.at(centerX, centerY, centerZ);
+    }
+
+    public static Location getRegionCenterAsLocation(ProtectedRegion region) {
+        BlockVector3 location = getRegionCenter(region);
+        return new Location(Bukkit.getWorld("world"),location.x(), location.y(), location.z());
     }
 }
