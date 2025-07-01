@@ -97,7 +97,6 @@ public class RegionClaimFunctions {
             Polygonal2DRegion poly = (Polygonal2DRegion) selection;
             region = new ProtectedPolygonalRegion(name, poly.getPoints(), poly.getMinimumY(), poly.getMaximumY());
         }
-        region.getOwners().addPlayer(wePlayer.getUniqueId());
         region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
         region.setFlag(TypeFlag.NATIONS_TYPE, type);
         regionManager.addRegion(region);

@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
+import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.bank.BankHolder;
@@ -106,18 +107,18 @@ public class RealEstateAgent {
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 7 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
 
-    public void sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
+    public boolean sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
 
         if(region.getWorldguardRegion().getOwners().size() != 0){
             if(!region.getWorldguardRegion().getOwners().contains(seller.getUniqueId())){
                 seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
-                return;
+                return false;
 
             }
         } else {
-            if(!parentTown.getAccess().getAccessLevel(seller.getUniqueId()).equals(AccessLevel.VICE)){
+            if(!Access.hasAccess(parentTown.getAccess().getAccessLevel(seller.getUniqueId()),AccessLevel.VICE)){
                 seller.sendMessage(Chat.errorFade("Du besitzt keine Rechte dieses Grundstück zu verkaufen."));
-                return;
+                return false;
             }
         }
 
@@ -126,9 +127,11 @@ public class RealEstateAgent {
         data.buyPrice = buyAmount;
         data.rentPrice = rentAmount;
         data.ownerId = seller.getUniqueId();
+        data.timestamp = Instant.now();
 
         RealEstateDAO.upsertRealEstate(this);
         RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
+        return true;
     }
 
     public void addOwner(ProtectedRegion region, UUID ownerUuid) {

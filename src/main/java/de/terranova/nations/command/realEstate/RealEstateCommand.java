@@ -114,8 +114,7 @@ public class RealEstateCommand extends AbstractCommand {
                 if(rent > 0){
                     canRent = true;
                 }
-                agent.getAgent().sellEstate(p,canBuy,buy,canRent ,rent);
-                p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
+                if(agent.getAgent().sellEstate(p,canBuy,buy,canRent ,rent)) p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
             } catch (NumberFormatException e) {
                 System.out.println("Invalid number format.");
             }
