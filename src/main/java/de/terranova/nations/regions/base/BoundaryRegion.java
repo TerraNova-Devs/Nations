@@ -15,10 +15,10 @@ public abstract class BoundaryRegion extends Region {
     @Override
     public final void onCreation(Player p) {
         this.region = RegionClaimFunctions.createBoundaryClaim(this.name, p, this.id, this.type);
-        onPolyCreation(p);
+        onBoundaryCreation(p);
     }
 
-    public void onPolyCreation(Player p) {
+    public void onBoundaryCreation(Player p) {
 
     }
 

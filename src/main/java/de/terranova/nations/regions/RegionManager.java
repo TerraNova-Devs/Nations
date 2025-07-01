@@ -105,7 +105,6 @@ public class RegionManager {
     public static <T extends Region> Optional<T> retrieveRegion(ProtectedRegion region) {
         String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
         String regionType = region.getFlag(TypeFlag.NATIONS_TYPE);
-
         if (regionUUIDString == null || regionType == null || regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) {
             return Optional.empty();
         }

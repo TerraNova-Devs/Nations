@@ -52,14 +52,6 @@ CREATE TABLE IF NOT EXISTS `rank`
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
-CREATE TABLE IF NOT EXISTS `rank`
-(
-    `RUUID` varchar(36)   NOT NULL,
-    `Level` smallint      NOT NULL DEFAULT 1,
-    PRIMARY KEY (`RUUID`)
-) DEFAULT CHARSET = utf8
-  COLLATE = utf8_unicode_ci;
---
 CREATE TABLE IF NOT EXISTS `nations_table`
 (
     `NUUID`         VARCHAR(36) NOT NULL,
@@ -68,14 +60,6 @@ CREATE TABLE IF NOT EXISTS `nations_table`
     PRIMARY KEY (`NUUID`)
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
---
-CREATE TABLE IF NOT EXISTS `nations_table` (
-      `NUUID` VARCHAR(36) NOT NULL,
-      `name` VARCHAR(30) NOT NULL,
-      `banner_base64` TEXT NULL,
-      PRIMARY KEY (`NUUID`)
-) DEFAULT CHARSET=utf8
-  COLLATE=utf8_unicode_ci;
 --
 CREATE TABLE IF NOT EXISTS `settlement_nation_relations`
 (
@@ -116,8 +100,7 @@ CREATE TABLE IF NOT EXISTS `settlement_profession_relation`
     `Status` VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     PRIMARY KEY (`RUUID`, `ProfessionID`),
     FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
+) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
 CREATE TABLE IF NOT EXISTS `settlement_objective_progress`
@@ -127,8 +110,7 @@ CREATE TABLE IF NOT EXISTS `settlement_objective_progress`
     `Progress`    BIGINT      NOT NULL DEFAULT 0,
     PRIMARY KEY (`RUUID`, `ObjectiveID`),
     FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8
+) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
 CREATE TABLE IF NOT EXISTS `settlement_buildings`
@@ -138,6 +120,13 @@ CREATE TABLE IF NOT EXISTS `settlement_buildings`
     `IsBuilt`    TINYINT(1)  NOT NULL DEFAULT 0,
     PRIMARY KEY (`RUUID`, `BuildingID`),
     FOREIGN KEY (`RUUID`) REFERENCES `grid_regions` (`RUUID`) ON DELETE CASCADE
+) DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+--
+CREATE TABLE IF NOT EXISTS `parent_table` (
+    `RUUID` VARCHAR(36) NOT NULL,
+    `PUUID` VARCHAR(36) NOT NULL,
+    PRIMARY KEY (`RUUID`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;

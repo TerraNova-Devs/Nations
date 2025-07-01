@@ -21,10 +21,12 @@ public class RealEstateAgent {
     BankHolder parentBank;
     AccessControlled parentTown;
     Region region;
+    Region parentRegion;
 
     public RealEstateAgent(Region region) {
         this.region = region;
         if (region instanceof HasParent<?> parent) {
+            this.parentRegion = parent.getParent();
             if (parent.getParent() instanceof BankHolder holder) {
                 this.parentBank = holder;
             }
@@ -39,7 +41,7 @@ public class RealEstateAgent {
             isForBuy = false;
         }
         if (isForBuy || isForRent) {
-            RealEstateManager.addRealestate((CanBeSold) region);
+            RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         }
     }
 
@@ -102,6 +104,30 @@ public class RealEstateAgent {
         this.ownerId = buyer.getUniqueId();
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 7 Tage gemietet.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 7 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
+    }
+
+    public void sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
+
+        if(region.getWorldguardRegion().getOwners().size() != 0){
+            if(!region.getWorldguardRegion().getOwners().contains(seller.getUniqueId())){
+                seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
+                return;
+
+            }
+        } else {
+            if(!parentTown.getAccess().getAccessLevel(seller.getUniqueId()).equals(AccessLevel.VICE)){
+                seller.sendMessage(Chat.errorFade("Du besitzt keine Rechte dieses Grundstück zu verkaufen."));
+                return;
+            }
+        }
+
+        this.isForBuy = isForBuy;
+        this.isForRent = isForRent;
+        this.buyPrice = buyAmount;
+        this.rentPrice = rentAmount;
+        this.ownerId = seller.getUniqueId();
+
+        RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
     }
 
     public void addOwner(ProtectedRegion region, UUID ownerUuid) {

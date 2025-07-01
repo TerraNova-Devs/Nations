@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static de.terranova.nations.database.dao.GridRegionDAO.fetchParent;
+
 public class BoundaryRegionDAO {
     private static final Map<String, String> queries = new HashMap<>();
 
@@ -65,7 +67,25 @@ public class BoundaryRegionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("RUUID");
-                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"), id)));
+                UUID uuid = UUID.fromString(id);
+                UUID parentId = fetchParent(uuid);
+                if(parentId == null) {
+                    gridRegions.put(
+                            UUID.fromString(id),
+                            RegionRegistry.createFromArgs(
+                                    rs.getString("type"),
+                                    List.of(rs.getString("name"),
+                                            id)));
+                } else {
+                    gridRegions.put(
+                            UUID.fromString(id),
+                            RegionRegistry.createFromArgs(
+                                    rs.getString("type"),
+                                    List.of(rs.getString("name"),
+                                            id,
+                                            parentId.toString())));
+                }
+
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);

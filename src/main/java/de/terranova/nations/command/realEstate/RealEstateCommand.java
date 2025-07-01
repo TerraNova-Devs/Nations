@@ -11,6 +11,7 @@ import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
+import de.terranova.nations.regions.modules.realEstate.RealEstateManager;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
@@ -21,6 +22,7 @@ public class RealEstateCommand extends AbstractCommand {
     public RealEstateCommand() {
         addPlaceholder("$SETTLES", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
         registerSubCommand(this, "browser");
+        registerSubCommand(this, "sell");
         setupHelpCommand();
         initialize();
     }
@@ -88,8 +90,39 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "sell.$name", permission = "nations.realestate.nosell", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(domain = "sell.$name.$buyamount.$rentamount", permission = "nations.realestate.nosell", description = "Opens the Realestate Browser", usage = "/realestate browser")
     public boolean sell(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if(region.get() instanceof CanBeSold agent) {
+            try {
+                int buy = Integer.parseInt(args[2]);
+                int rent = Integer.parseInt(args[3]);
+                boolean canBuy = false;
+                boolean canRent = false;
+                if(buy > 0){
+                    canBuy = true;
+                }
+                if(rent > 0){
+                    canRent = true;
+                }
+                agent.getAgent().sellEstate(p,canBuy,buy,canRent ,rent);
+                p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid number format.");
+            }
+
+        } else {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " kann nicht verkauft werden."));
+        }
         return true;
     }
 

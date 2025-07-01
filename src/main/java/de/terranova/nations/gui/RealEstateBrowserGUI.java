@@ -32,22 +32,24 @@ public class RealEstateBrowserGUI extends RoseGUI {
     public RealEstateBrowserGUI(@NotNull Player player, Region agentRegion) {
         super(player, "realestate-browser", Chat.blueFade(String.format("RealEstate %s", agentRegion.getName())), 6);
         this.agentUUID = agentRegion.getId();
+        System.out.println(agentRegion.getName());
         pagination.registerPageSlotsBetween(10, 16);
         pagination.registerPageSlotsBetween(19, 25);
         pagination.registerPageSlotsBetween(28, 34);
         pagination.registerPageSlotsBetween(37, 43);
 
         OFFER_CACHE.computeIfAbsent(agentUUID, id ->
-                new CachedSupplier<>(() -> RealEstateManager.getRealestate(id), 180_000));
+                new CachedSupplier<>(() -> RealEstateManager.getRealestate(id), 20));
     }
 
     @Override
     public void onOpen(InventoryOpenEvent event) {
-        RoseItem filler = new RoseItem.Builder()
+
+        RoseItem fillerDark = new RoseItem.Builder()
                 .material(Material.BLACK_STAINED_GLASS_PANE)
                 .displayName("")
                 .build();
-        fillGui(filler);
+        outlineGui(fillerDark);
 
         RoseItem next = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
@@ -65,8 +67,8 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
         RoseItem filter = new RoseItem.Builder()
                 .material(Material.HOPPER)
-                .displayName(Chat.redFade("<b>Filter: ") + filterMode.name())
-                .addLore("§7Klicke zum Wechseln: ALL → BUY → RENT")
+                .displayName(Chat.redFade("<b>Filter: "+ filterMode.name()) )
+                .addLore("Klicke zum Wechseln: ALL → BUY → RENT")
                 .build()
                 .onClick(e -> {
                     filterMode = switch (filterMode) {
@@ -80,8 +82,8 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
         RoseItem order = new RoseItem.Builder()
                 .material(Material.COMPARATOR)
-                .displayName(Chat.redFade("<b>Sort: ") + sortOrder.name())
-                .addLore("§7Klicke zum Umschalten zwischen ASC/DESC")
+                .displayName(Chat.redFade("<b>Sort: " + sortOrder.name()))
+                .addLore("Klicke zum Umschalten zwischen ASC/DESC")
                 .build()
                 .onClick(e -> {
                     sortOrder = (sortOrder == SortOrder.ASC) ? SortOrder.DESC : SortOrder.ASC;
@@ -96,19 +98,20 @@ public class RealEstateBrowserGUI extends RoseGUI {
                     return new RoseItem.Builder()
                             .material(Material.ACACIA_SIGN)
                             .displayName(region.getType() + " - " + region.getName())
-                            .addLore(Chat.blueFade("Location: ") + Chat.prettyLocation(RegionClaimFunctions.getRegionCenterAsLocation(region.getWorldguardRegion())))
-                            .addLore(Chat.blueFade("Buy: ") + (offer.getAgent().isForBuy() ? offer.getAgent().getBuyPrice() + " Silber" : "No buy option"))
-                            .addLore(Chat.blueFade("Rent: ") + (offer.getAgent().isForRent() ? offer.getAgent().getBuyPrice() + " Silber / 7 Days" : "No rent option"))
+                            .addLore(Chat.blueFade("Location: " + Chat.prettyLocation(RegionClaimFunctions.getRegionCenterAsLocation(region.getWorldguardRegion()))))
+                            .addLore(Chat.blueFade("Buy: " + (offer.getAgent().isForBuy() ? offer.getAgent().getBuyPrice() + " Silber" : "No buy option")))
+                            .addLore(Chat.blueFade("Rent: " + (offer.getAgent().isForRent() ? offer.getAgent().getBuyPrice() + " Silber / 7 Days" : "No rent option")))
                             .build();
                 })
                 .collect(Collectors.toList());
 
         pagination.addItem(offerItems.toArray(new RoseItem[0]));
+        pagination.update();
     }
 
     private List<CanBeSold> getFilteredAndSortedOffers() {
         List<CanBeSold> offers = OFFER_CACHE.getOrDefault(agentUUID,
-                new CachedSupplier<>(() -> List.of(), 180_000)).get();
+                new CachedSupplier<>(() -> List.of(), 20)).get();
 
         return offers.stream()
                 .filter(offer -> switch (filterMode) {

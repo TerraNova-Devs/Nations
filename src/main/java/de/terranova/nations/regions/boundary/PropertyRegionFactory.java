@@ -67,16 +67,8 @@ public class PropertyRegionFactory implements RegionFactoryBase {
         return new PropertyRegion(
                 args.getFirst(),
                 UUID.fromString(args.get(1)),
-                (SettleRegion) RegionManager.retrieveRegion("settle", UUID.fromString(args.get(1))).get()
+                (SettleRegion) RegionManager.retrieveRegion("settle", UUID.fromString(args.get(2))).get()
         );
     }
 
-    public static boolean isInteger(String s) {
-        try {
-            Integer.parseInt(s);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
 }

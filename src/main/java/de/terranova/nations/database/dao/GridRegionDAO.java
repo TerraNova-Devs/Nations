@@ -24,6 +24,8 @@ public class GridRegionDAO {
         queries.put("remove", "DELETE FROM `grid_regions` WHERE `RUUID` = ?;");
         queries.put("updateName", "UPDATE `grid_regions` SET `name` = ? WHERE `RUUID` = ?;");
         queries.put("fetchByType", "SELECT * FROM `grid_regions` WHERE `type` = ?;");
+        queries.put("fetchParent","SELECT `PUUID` FROM `parent_table` WHERE `RUUID` = ?;");
+        queries.put("insertParent", "INSERT INTO `parent_table` (`RUUID`, `PUUID`) VALUES (?, ?) ON DUPLICATE KEY UPDATE `PUUID` = VALUES(`PUUID`);");
     }
 
     public static void insertRegion(GridRegion gridRegion) {
@@ -68,11 +70,64 @@ public class GridRegionDAO {
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 String id = rs.getString("RUUID");
-                gridRegions.put(UUID.fromString(id), RegionRegistry.createFromArgs(rs.getString("type"), List.of(rs.getString("name"), id, new Vectore2(rs.getString("location")).asString())));
+                UUID uuid = UUID.fromString(id);
+                UUID parentId = fetchParent(uuid);
+                if(parentId == null) {
+                    gridRegions.put(
+                            UUID.fromString(id),
+                            RegionRegistry.createFromArgs(rs.getString("type"),
+                                    List.of(rs.getString("name"),
+                                    id,
+                                    new Vectore2(rs.getString("location")).asString())));
+                } else {
+                    gridRegions.put(
+                            UUID.fromString(id),
+                            RegionRegistry.createFromArgs(rs.getString("type"),
+                                    List.of(rs.getString("name"),
+                                    id,
+                                    new Vectore2(rs.getString("location")).asString(),
+                                    parentId.toString())));
+                }
+
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);
         }
         return gridRegions;
+    }
+
+    public static UUID fetchParent(UUID regionId) {
+        String sql = queries.get("fetchParent");
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, regionId.toString());
+            ResultSet rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return UUID.fromString(rs.getString("PUUID"));
+            }
+
+            // No parent found — that's OK, so do nothing
+        } catch (SQLException e) {
+            NationsPlugin.plugin.getLogger().severe("SQL error while fetching parent for region: " + regionId);
+            e.printStackTrace();
+        }
+
+        return null; // no parent
+    }
+    public static void insertParent(UUID regionId, UUID parentId) {
+        String sql = queries.get("insertParent");
+        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, regionId.toString());
+            ps.setString(2, parentId.toString());
+
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            NationsPlugin.plugin.getLogger().severe("Failed to insert parent for region " + regionId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
