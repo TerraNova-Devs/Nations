@@ -22,8 +22,10 @@ public class RealEstateAgent {
     AccessControlled parentTown;
     Region region;
     Region parentRegion;
+    RealEstateData data;
 
-    public RealEstateAgent(Region region) {
+    public RealEstateAgent(Region region, RealEstateData data) {
+        this.data = data;
         this.region = region;
         if (region instanceof HasParent<?> parent) {
             this.parentRegion = parent.getParent();
@@ -34,33 +36,30 @@ public class RealEstateAgent {
                 this.parentTown = town;
             }
         }
+
         DefaultDomain owners = region.getWorldguardRegion().getOwners();
         if (!owners.getUniqueIds().isEmpty()) {
-            ownerId = owners.getUniqueIds().stream().findFirst().get();
-            isForRent = false;
-            isForBuy = false;
+            data.ownerId = owners.getUniqueIds().stream().findFirst().get();
+            data.isForRent = false;
+            data.isForBuy = false;
         }
-        if (isForBuy || isForRent) {
+
+        if (data.isForBuy || data.isForRent) {
             RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         }
     }
 
-    UUID ownerId = null;
-    boolean isForBuy;
-    int buyPrice;
-    boolean isForRent;
-    int rentPrice;
-    Instant timestamp;
+
 
     public void buyEstate(Player buyer) {
-        if (ownerId != null) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(ownerId).getName() + " belegt."));
+        if (data.ownerId != null) {
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
         }
-        if (!isForBuy) {
+        if (!data.isForBuy) {
             buyer.sendMessage(Chat.errorFade("Dieses Grundstück steht nicht zum verkauf erhältlich."));
         }
 
-        int transfer = ItemTransfer.charge(buyer, "terranova_silver", buyPrice, true);
+        int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.buyPrice, true);
         if (transfer == -1) {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
         } else {
@@ -68,26 +67,26 @@ public class RealEstateAgent {
         }
 
         addOwner(region.getWorldguardRegion(), buyer.getUniqueId());
-        isForBuy = false;
-        isForRent = false;
-        this.ownerId = buyer.getUniqueId();
-        timestamp = Instant.now();
+        data.isForBuy = false;
+        data.isForRent = false;
+        data.ownerId = buyer.getUniqueId();
+        data.timestamp = Instant.now();
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s gekauft.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
 
     }
 
     public void rentEstate(Player buyer) {
-        if (buyer.getUniqueId() != ownerId) {
-            if (ownerId != null) {
-                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(ownerId).getName() + " belegt."));
+        if (buyer.getUniqueId() != data.ownerId) {
+            if (data.ownerId != null) {
+                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
             }
-            if (!isForRent) {
+            if (!data.isForRent) {
                 buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist nicht zur miete erhältlich."));
             }
         }
 
-        int transfer = ItemTransfer.charge(buyer, "terranova_silver", rentPrice, true);
+        int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.rentPrice, true);
         if (transfer == -1) {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
         } else {
@@ -95,13 +94,13 @@ public class RealEstateAgent {
         }
 
         addOwner(region.getWorldguardRegion(), buyer.getUniqueId());
-        isForBuy = false;
-        isForRent = false;
-        if (buyer.getUniqueId() != ownerId) {
-            timestamp = Instant.now();
+        data.isForBuy = false;
+        data.isForRent = false;
+        if (buyer.getUniqueId() != data.ownerId) {
+            data.timestamp = Instant.now();
         }
-        timestamp = timestamp.plus(7, ChronoUnit.DAYS);
-        this.ownerId = buyer.getUniqueId();
+        data.timestamp = data.timestamp.plus(7, ChronoUnit.DAYS);
+        data.ownerId = buyer.getUniqueId();
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 7 Tage gemietet.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 7 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
@@ -121,11 +120,11 @@ public class RealEstateAgent {
             }
         }
 
-        this.isForBuy = isForBuy;
-        this.isForRent = isForRent;
-        this.buyPrice = buyAmount;
-        this.rentPrice = rentAmount;
-        this.ownerId = seller.getUniqueId();
+        data.isForBuy = isForBuy;
+        data.isForRent = isForRent;
+        data.buyPrice = buyAmount;
+        data.rentPrice = rentAmount;
+        data.ownerId = seller.getUniqueId();
 
         RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
     }
@@ -140,9 +139,20 @@ public class RealEstateAgent {
         return region;
     }
 
-    public boolean isForBuy() {return isForBuy; }
-    public boolean isForRent() {return isForRent; }
-    public int getBuyPrice() {return buyPrice; }
-    public int getRentPrice() {return buyPrice; }
+    public UUID getRegionOwner() {
+        return data.ownerId;
+    }
+
+    public Instant getTimestamp() {
+        return data.timestamp;
+    }
+
+
+    public boolean isForBuy() {return data.isForBuy; }
+    public boolean isForRent() {return data.isForRent; }
+    public int getBuyPrice() {return data.buyPrice; }
+    public int getRentPrice() {return data.buyPrice; }
+
+
 
 }

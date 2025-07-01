@@ -65,6 +65,13 @@ public class RealEstateBrowserGUI extends RoseGUI {
                 .onClick(e -> pagination.goPreviousPage());
         addItem(last, 45);
 
+        createSortItems();
+
+        pagination.addItem(calculateOffers().toArray(new RoseItem[0]));
+        pagination.update();
+    }
+
+    private void createSortItems(){
         RoseItem filter = new RoseItem.Builder()
                 .material(Material.HOPPER)
                 .displayName(Chat.redFade("<b>Filter: "+ filterMode.name()) )
@@ -76,7 +83,10 @@ public class RealEstateBrowserGUI extends RoseGUI {
                         case BUY -> FilterMode.RENT;
                         case RENT -> FilterMode.ALL;
                     };
-                    onOpen(null); // Refresh GUI
+                    pagination.clearAllItems();
+                    pagination.addItem(calculateOffers().toArray(new RoseItem[0]));
+                    pagination.update();
+                    createSortItems();
                 });
         addItem(filter, 48);
 
@@ -87,12 +97,16 @@ public class RealEstateBrowserGUI extends RoseGUI {
                 .build()
                 .onClick(e -> {
                     sortOrder = (sortOrder == SortOrder.ASC) ? SortOrder.DESC : SortOrder.ASC;
-                    onOpen(null); // Refresh GUI
+                    pagination.clearAllItems();
+                    pagination.addItem(calculateOffers().toArray(new RoseItem[0]));
+                    pagination.update();
+                    createSortItems();
                 });
         addItem(order, 50);
+    }
 
-        // Create and display filtered, sorted, cached items
-        List<RoseItem> offerItems = getFilteredAndSortedOffers().stream()
+    private List<RoseItem> calculateOffers(){
+        return getFilteredAndSortedOffers().stream()
                 .map(offer -> {
                     Region region = (Region) offer;
                     return new RoseItem.Builder()
@@ -104,9 +118,6 @@ public class RealEstateBrowserGUI extends RoseGUI {
                             .build();
                 })
                 .collect(Collectors.toList());
-
-        pagination.addItem(offerItems.toArray(new RoseItem[0]));
-        pagination.update();
     }
 
     private List<CanBeSold> getFilteredAndSortedOffers() {

@@ -40,6 +40,10 @@ public class RosePagination {
         this.slots.clear();
     }
 
+    public void clearAllItems() {
+        this.items.clear();
+    }
+
     public RoseGUI getGui() {
         return this.gui;
     }

@@ -103,6 +103,19 @@ CREATE TABLE IF NOT EXISTS `settlement_profession_relation`
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
+CREATE TABLE IF NOT EXISTS `nations_realestate`
+(
+    `RUUID`        VARCHAR(36) NOT NULL,
+    `PUUID`        VARCHAR(36) NOT NULL,
+    `isForBuy`     bool        NOT NULL DEFAULT false,
+    `buyPrice`     int         NOT NULL DEFAULT 0,
+    `isForRent`    bool        NOT NULL DEFAULT false,
+    `rentPrice`    int         NOT NULL DEFAULT 0,
+    `timestamp`    timestamp(6) NOT NULL,
+    PRIMARY KEY (`RUUID`)
+) DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+--
 CREATE TABLE IF NOT EXISTS `settlement_objective_progress`
 (
     `RUUID`       VARCHAR(36) NOT NULL,
