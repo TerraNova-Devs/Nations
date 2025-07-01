@@ -2,6 +2,7 @@ package de.terranova.nations.regions.modules.realEstate;
 
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.modules.access.AccessControlled;
@@ -126,6 +127,7 @@ public class RealEstateAgent {
         data.rentPrice = rentAmount;
         data.ownerId = seller.getUniqueId();
 
+        RealEstateDAO.upsertRealEstate(this);
         RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
     }
 

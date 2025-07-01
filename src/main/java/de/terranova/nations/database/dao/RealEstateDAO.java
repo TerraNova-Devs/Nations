@@ -1,7 +1,6 @@
 package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
-import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateData;
 
@@ -17,20 +16,23 @@ public class RealEstateDAO {
     static {
         queries.put("selectRealEstateById",
                 "SELECT * FROM `nations_realestate` WHERE `RUUID` = ?;");
-        queries.put("insertRealEstate",
+        queries.put("upsertRealEstate",
                 "INSERT INTO `nations_realestate` (`RUUID`, `PUUID`, `isForBuy`, `buyPrice`, `isForRent`, `rentPrice`, `timestamp`) " +
-                        "VALUES (?, ?, ?, ?, ?, ?, ?);");
-
-        queries.put("updateRealEstate",
-                "UPDATE `nations_realestate` SET `PUUID` = ?, `isForBuy` = ?, `buyPrice` = ?, `isForRent` = ?, `rentPrice` = ?, `timestamp` = ? " +
-                        "WHERE `RUUID` = ?;");
+                        "VALUES (?, ?, ?, ?, ?, ?, ?) " +
+                        "ON DUPLICATE KEY UPDATE " +
+                        "`PUUID` = VALUES(`PUUID`), " +
+                        "`isForBuy` = VALUES(`isForBuy`), " +
+                        "`buyPrice` = VALUES(`buyPrice`), " +
+                        "`isForRent` = VALUES(`isForRent`), " +
+                        "`rentPrice` = VALUES(`rentPrice`), " +
+                        "`timestamp` = VALUES(`timestamp`);");
 
         queries.put("removeRealEstate",
                 "DELETE FROM `nations_realestate` WHERE `RUUID` = ?;");
     }
 
-    public static void insertRealEstate(RealEstateAgent agent) {
-        String sql = queries.get("insertRealEstate");
+    public static void upsertRealEstate(RealEstateAgent agent) {
+        String sql = queries.get("upsertRealEstate");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
@@ -44,27 +46,10 @@ public class RealEstateDAO {
 
             ps.executeUpdate();
         } catch (SQLException e) {
-            NationsPlugin.plugin.getLogger().severe("Failed to insert real estate entry: " + e.getMessage());
+            NationsPlugin.plugin.getLogger().severe("Failed to upsert real estate entry: " + e.getMessage());
         }
     }
-    public static void updateRealEstate(RealEstateAgent agent) {
-        String sql = queries.get("updateRealEstate");
-        try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, agent.getRegionOwner().toString());
-            ps.setBoolean(2, agent.isForBuy());
-            ps.setInt(3, agent.getBuyPrice());
-            ps.setBoolean(4, agent.isForRent());
-            ps.setInt(5, agent.getRentPrice());
-            ps.setTimestamp(6, Timestamp.from(agent.getTimestamp()));
-            ps.setString(7, agent.getRegion().getId().toString());
-
-            ps.executeUpdate();
-        } catch (SQLException e) {
-            NationsPlugin.plugin.getLogger().severe("Failed to update real estate entry: " + e.getMessage());
-        }
-    }
     public static void removeRealEstate(RealEstateAgent agent) {
         String sql = queries.get("removeRealEstate");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
@@ -76,6 +61,7 @@ public class RealEstateDAO {
             NationsPlugin.plugin.getLogger().severe("Failed to remove real estate entry: " + e.getMessage());
         }
     }
+    
     public static RealEstateData getRealEstateById(UUID ruuid) {
         String sql = queries.get("selectRealEstateById");
 
