@@ -38,36 +38,29 @@ public class RealEstateAgent {
                 this.parentTown = town;
             }
         }
-
-        DefaultDomain owners = region.getWorldguardRegion().getOwners();
-        if (!owners.getUniqueIds().isEmpty()) {
-            data.ownerId = owners.getUniqueIds().stream().findFirst().get();
-            data.isForRent = false;
-            data.isForBuy = false;
-        }
-
-
     }
 
 
     public void addToMarked(){
         if (data.isForBuy || data.isForRent) {
-            RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
+            RealEstateOfferCache.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         }
     }
 
 
     public void buyEstate(Player buyer) {
-        if (data.ownerId != null) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
-        }
+
         if (!data.isForBuy) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück steht nicht zum verkauf erhältlich."));
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
+            return;
+        }else if(buyer.getUniqueId() == data.ownerId){
+            buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
         }
 
         int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.buyPrice, true);
         if (transfer == -1) {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+            return;
         } else {
             parentBank.getBank().cashTransfer(String.format("Property bought by %s(%s) for %s", buyer.getName(), buyer.getUniqueId(), transfer), transfer);
         }
@@ -77,20 +70,20 @@ public class RealEstateAgent {
         data.isForRent = false;
         data.ownerId = buyer.getUniqueId();
         data.timestamp = Instant.now();
+        RealEstateDAO.removeRealEstate(this);
+        RealEstateOfferCache.removeRealestate(parentRegion.getId(),region.getId());
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s gekauft.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
 
     }
 
     public void rentEstate(Player buyer) {
-        if (buyer.getUniqueId() != data.ownerId) {
-            if (data.ownerId != null) {
-                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
-            }
-            if (!data.isForRent) {
-                buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist nicht zur miete erhältlich."));
-            }
+        if (!data.isForRent) {
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
+        } else if(buyer.getUniqueId() == data.ownerId){
+            buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
         }
+
 
         int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.rentPrice, true);
         if (transfer == -1) {
@@ -107,6 +100,7 @@ public class RealEstateAgent {
         }
         data.timestamp = data.timestamp.plus(7, ChronoUnit.DAYS);
         data.ownerId = buyer.getUniqueId();
+        RealEstateDAO.removeRealEstate(this);
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 14 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
@@ -134,7 +128,7 @@ public class RealEstateAgent {
         data.timestamp = Instant.now();
 
         RealEstateDAO.upsertRealEstate(this);
-        RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
+        RealEstateOfferCache.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         return true;
     }
 

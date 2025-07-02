@@ -3,7 +3,7 @@ package de.terranova.nations.gui;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
-import de.terranova.nations.regions.modules.realEstate.RealEstateManager;
+import de.terranova.nations.regions.modules.realEstate.RealEstateOfferCache;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
@@ -39,7 +39,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
         pagination.registerPageSlotsBetween(37, 43);
 
         OFFER_CACHE.computeIfAbsent(agentUUID, id ->
-                new CachedSupplier<>(() -> RealEstateManager.getRealestate(id), 20));
+                new CachedSupplier<>(() -> RealEstateOfferCache.getRealestate(id), 20));
     }
 
     @Override
