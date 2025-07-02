@@ -138,11 +138,13 @@ public class RoseItem {
         }
 
         public Builder addLore(String lore) {
+            if(lore == null) return this;
             this.lore.add(MiniMessage.miniMessage().deserialize(lore).decoration(TextDecoration.ITALIC, false));
             return this;
         }
 
         public Builder addLore(Component lore) {
+            if(lore == null) return this;
             this.lore.add(lore.decoration(TextDecoration.ITALIC, false));
             return this;
         }

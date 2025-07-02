@@ -35,13 +35,12 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
         if(region != null) {
             this.realEstateAgent = new RealEstateAgent(this,RealEstateDAO.getRealEstateById(this.getId()));
         }
+        realEstateAgent.addToMarked();
 
     }
 
-    //GridRegionType
     @Override
     public void onBoundaryCreation(Player p) {
-        System.out.println("onBoundaryCreation");
         GridRegionDAO.insertParent(this.id,parent.getId());
         this.realEstateAgent = new RealEstateAgent(this,new RealEstateData(null,false,0,false,0, null));
         p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));

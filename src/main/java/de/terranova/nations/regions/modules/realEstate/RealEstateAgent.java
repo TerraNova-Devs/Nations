@@ -46,11 +46,15 @@ public class RealEstateAgent {
             data.isForBuy = false;
         }
 
+
+    }
+
+
+    public void addToMarked(){
         if (data.isForBuy || data.isForRent) {
             RealEstateManager.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         }
     }
-
 
 
     public void buyEstate(Player buyer) {
@@ -103,8 +107,8 @@ public class RealEstateAgent {
         }
         data.timestamp = data.timestamp.plus(7, ChronoUnit.DAYS);
         data.ownerId = buyer.getUniqueId();
-        buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 7 Tage gemietet.", region.getName(), transfer)));
-        parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 7 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
+        buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.", region.getName(), transfer)));
+        parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 14 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
 
     public boolean sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {

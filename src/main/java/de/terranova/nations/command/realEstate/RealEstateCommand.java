@@ -11,7 +11,6 @@ import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
-import de.terranova.nations.regions.modules.realEstate.RealEstateManager;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
@@ -23,6 +22,8 @@ public class RealEstateCommand extends AbstractCommand {
         addPlaceholder("$SETTLES", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
         registerSubCommand(this, "browser");
         registerSubCommand(this, "sell");
+        registerSubCommand(this, "buy");
+        registerSubCommand(this, "rent");
         setupHelpCommand();
         initialize();
     }
