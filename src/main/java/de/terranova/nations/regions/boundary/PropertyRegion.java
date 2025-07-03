@@ -1,24 +1,16 @@
 package de.terranova.nations.regions.boundary;
 
-import com.sk89q.worldedit.world.entity.EntityType;
-import com.sk89q.worldguard.protection.flags.Flags;
-import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.HasParent;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateData;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
-import java.sql.Timestamp;
-import java.time.Instant;
-import java.util.Set;
 import java.util.UUID;
 
 public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRegion>, CanBeSold {
@@ -34,8 +26,9 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
         this.region = getWorldguardRegion();
         if(region != null) {
             this.realEstateAgent = new RealEstateAgent(this,RealEstateDAO.getRealEstateById(this.getId()));
+            realEstateAgent.addToOfferCacheMarket();
         }
-        realEstateAgent.addToMarked();
+
 
     }
 
@@ -43,7 +36,7 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
     public void onBoundaryCreation(Player p) {
         GridRegionDAO.insertParent(this.id,parent.getId());
         this.realEstateAgent = new RealEstateAgent(this,new RealEstateData(null,false,0,false,0, null));
-        p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
+        p.sendMessage(Chat.greenFade("Dein Grundstück " + name + " wurde erfolgreich erstellt."));
     }
 
     @Override

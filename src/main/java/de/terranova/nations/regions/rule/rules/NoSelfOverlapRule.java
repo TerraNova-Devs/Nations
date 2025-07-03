@@ -32,7 +32,7 @@ public class NoSelfOverlapRule implements RegionRule {
 
         // Hast die Region Childrensets?
         boolean hasInsideParentRule = RegionRegistry.getRuleSet(type).getRules().stream()
-                .anyMatch(rule -> rule instanceof MustBeWithinParentRule<?, ?>);
+                .anyMatch(rule -> rule instanceof WithinParentRegionRule<?, ?>);
 
         if (hasInsideParentRule && explicitParent instanceof HasChildren) {
             // Case 1: Wenn die Region Children hat nur gegen diese testen

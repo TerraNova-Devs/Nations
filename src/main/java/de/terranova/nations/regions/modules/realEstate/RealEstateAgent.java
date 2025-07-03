@@ -5,7 +5,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
-import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.bank.BankHolder;
@@ -15,6 +14,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.UUID;
 
@@ -24,10 +25,19 @@ public class RealEstateAgent {
     AccessControlled parentTown;
     Region region;
     Region parentRegion;
+
     RealEstateData data;
+    UUID propertyOwner;
+    boolean isRented;
 
     public RealEstateAgent(Region region, RealEstateData data) {
-        this.data = data;
+        //Wenn es einen Eintrag(data) gibt ist die Region auf dem Markt oder Vermietet sonst Verkauft und in Besitz
+        if(data != null) {
+            this.data = data;
+            this.propertyOwner = data.ownerId;
+        } else {
+            this.propertyOwner = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().get()).getUniqueId();
+        }
         this.region = region;
         if (region instanceof HasParent<?> parent) {
             this.parentRegion = parent.getParent();
@@ -38,10 +48,27 @@ public class RealEstateAgent {
                 this.parentTown = town;
             }
         }
+
+        //Wenn die Region nicht zur Miete ist aber ein Mietpreis vorliegt ist Sie vermietet
+        if(data != null) {
+            if(data.rentPrice != 0 && !isForRent()) {
+                isRented = true;
+                if(Instant.now().isAfter(data.timestamp)){
+                    rentEnded();
+                }
+            }
+        }
+
     }
 
+    public void rentEnded() {
+        String oldOwner = overwriteOwner(propertyOwner);
+        RealEstateDAO.removeRealEstate(this);
+        isRented = false;
+        parentTown.getAccess().broadcast(String.format("%s seine Miete für %s | %s ist ausgelaufen.", oldOwner, region.getName(),Chat.prettyLocation(region.getRegionCenter())), AccessLevel.COUNCIL);
+    }
 
-    public void addToMarked(){
+    public void addToOfferCacheMarket(){
         if (data.isForBuy || data.isForRent) {
             RealEstateOfferCache.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         }
@@ -55,6 +82,7 @@ public class RealEstateAgent {
             return;
         }else if(buyer.getUniqueId() == data.ownerId){
             buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
+            return;
         }
 
         int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.buyPrice, true);
@@ -65,7 +93,7 @@ public class RealEstateAgent {
             parentBank.getBank().cashTransfer(String.format("Property bought by %s(%s) for %s", buyer.getName(), buyer.getUniqueId(), transfer), transfer);
         }
 
-        addOwner(region.getWorldguardRegion(), buyer.getUniqueId());
+        overwriteOwner( buyer.getUniqueId());
         data.isForBuy = false;
         data.isForRent = false;
         data.ownerId = buyer.getUniqueId();
@@ -78,46 +106,68 @@ public class RealEstateAgent {
     }
 
     public void rentEstate(Player buyer) {
-        if (!data.isForRent) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
-        } else if(buyer.getUniqueId() == data.ownerId){
+
+        Bukkit.broadcast(Chat.cottonCandy(isRented + ""));
+        Bukkit.broadcast(Chat.cottonCandy(buyer.getUniqueId() + ""));
+        Bukkit.broadcast(Chat.cottonCandy(region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get() + ""));
+        Bukkit.broadcast(Chat.cottonCandy(data.ownerId + ""));
+        if(buyer.getUniqueId().equals(data.ownerId)){
             buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
+            return;
+        } else
+        if (isRented && !region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get().equals(buyer.getUniqueId())) {
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
+            return;
         }
 
 
         int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.rentPrice, true);
         if (transfer == -1) {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+            return;
         } else {
             parentBank.getBank().cashTransfer(String.format("Property rented by %s(%s) for %s", buyer.getName(), buyer.getUniqueId(), transfer), transfer);
         }
 
-        addOwner(region.getWorldguardRegion(), buyer.getUniqueId());
+        if(isRented) {
+            ZonedDateTime nowZdt = Instant.now().atZone(ZoneId.systemDefault());
+            ZonedDateTime otherZdt = data.timestamp.atZone(ZoneId.systemDefault());
+            long monthsBetween = ChronoUnit.MONTHS.between(nowZdt, otherZdt);
+
+            if(monthsBetween >= 2){
+                buyer.sendMessage(Chat.errorFade("Du kannst nicht mehr als 2 Monate im voraus mieten."));
+                return;
+            }
+            data.timestamp = data.timestamp.plus(14, ChronoUnit.DAYS);
+
+        } else {
+            data.timestamp = Instant.now().plus(14, ChronoUnit.DAYS);
+        }
+
+        overwriteOwner(buyer.getUniqueId());
         data.isForBuy = false;
         data.isForRent = false;
-        if (buyer.getUniqueId() != data.ownerId) {
-            data.timestamp = Instant.now();
-        }
-        data.timestamp = data.timestamp.plus(7, ChronoUnit.DAYS);
-        data.ownerId = buyer.getUniqueId();
-        RealEstateDAO.removeRealEstate(this);
+        isRented = true;
+
+
+        RealEstateDAO.upsertRealEstate(this);
+        RealEstateOfferCache.removeRealestate(parentRegion.getId(),region.getId());
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.", region.getName(), transfer)));
         parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 14 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
 
     public boolean sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
 
-        if(region.getWorldguardRegion().getOwners().size() != 0){
+        if(seller.getUniqueId() != data.ownerId){
             if(!region.getWorldguardRegion().getOwners().contains(seller.getUniqueId())){
                 seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
                 return false;
+            }
+        }
 
-            }
-        } else {
-            if(!Access.hasAccess(parentTown.getAccess().getAccessLevel(seller.getUniqueId()),AccessLevel.VICE)){
-                seller.sendMessage(Chat.errorFade("Du besitzt keine Rechte dieses Grundstück zu verkaufen."));
-                return false;
-            }
+        if(isRented){
+            seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die gerade vermietet ist."));
+            return false;
         }
 
         data.isForBuy = isForBuy;
@@ -132,10 +182,13 @@ public class RealEstateAgent {
         return true;
     }
 
-    public void addOwner(ProtectedRegion region, UUID ownerUuid) {
-        DefaultDomain owners = region.getOwners();
+    public String overwriteOwner(UUID ownerUuid) {
+        DefaultDomain owners = region.getWorldguardRegion().getOwners();
+        String name = owners.getPlayers().stream().findFirst().orElse(null);
+        owners.clear();
         owners.addPlayer(ownerUuid);
-        region.setOwners(owners); // optional, da `getOwners()` nicht kopiert
+        region.getWorldguardRegion().setOwners(owners);
+        return name;
     }
 
     public Region getRegion() {
@@ -154,8 +207,11 @@ public class RealEstateAgent {
     public boolean isForBuy() {return data.isForBuy; }
     public boolean isForRent() {return data.isForRent; }
     public int getBuyPrice() {return data.buyPrice; }
-    public int getRentPrice() {return data.buyPrice; }
+    public int getRentPrice() {return data.rentPrice; }
 
-
+    public Instant getRentEndingTime(){
+        if(!isRented) return null;
+        return data.timestamp;
+    }
 
 }

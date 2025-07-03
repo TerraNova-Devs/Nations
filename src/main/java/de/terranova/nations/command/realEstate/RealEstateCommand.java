@@ -14,6 +14,7 @@ import de.terranova.nations.regions.modules.realEstate.CanBeSold;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
 import java.util.Optional;
 
 
@@ -24,6 +25,7 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "sell");
         registerSubCommand(this, "buy");
         registerSubCommand(this, "rent");
+        registerSubCommand(this, "info");
         setupHelpCommand();
         initialize();
     }
@@ -48,6 +50,30 @@ public class RealEstateCommand extends AbstractCommand {
             return false;
         }
         new RealEstateBrowserGUI(p,osettle.get()).open();
+        return true;
+    }
+
+    @CommandAnnotation(domain = "info.$name", permission = "nations.realestate.rent", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    public boolean info(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof CanBeSold agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        Instant time = agent.getAgent().getRentEndingTime();
+        p.sendMessage(Chat.cottonCandy("Infos:"));
+        if(time != null){
+            p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
+        }
         return true;
     }
 
@@ -115,9 +141,13 @@ public class RealEstateCommand extends AbstractCommand {
                 if(rent > 0){
                     canRent = true;
                 }
+                if(!canBuy && !canRent) {
+                    p.sendMessage(Chat.errorFade("Du kannst keine Region auf den Markt bringen die nicht Miet oder Kaufbar ist."));
+                    return false;
+                }
                 if(agent.getAgent().sellEstate(p,canBuy,buy,canRent ,rent)) p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
             } catch (NumberFormatException e) {
-                System.out.println("Invalid number format.");
+                p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
             }
 
         } else {

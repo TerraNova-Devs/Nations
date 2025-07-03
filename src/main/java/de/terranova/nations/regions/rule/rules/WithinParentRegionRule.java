@@ -7,12 +7,12 @@ import de.terranova.nations.regions.rule.RegionRule;
 import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import org.bukkit.entity.Player;
 
-public class MustBeWithinParentRule<T extends Region & HasParent<P>, P extends Region> implements RegionRule {
+public class WithinParentRegionRule<T extends Region & HasParent<P>, P extends Region> implements RegionRule {
 
     private final Class<T> childClass;
     private final Class<P> parentClass;
 
-    public MustBeWithinParentRule(Class<T> childClass, Class<P> parentClass) {
+    public WithinParentRegionRule(Class<T> childClass, Class<P> parentClass) {
         this.childClass = childClass;
         this.parentClass = parentClass;
     }

@@ -1,6 +1,7 @@
 package de.terranova.nations.regions.base;
 
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
+import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
@@ -8,6 +9,7 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
 
@@ -32,6 +34,17 @@ public abstract class Region {
         if (name == null) return;
         this.name = name;
         de.terranova.nations.regions.RegionManager.addRegion(getType(), getId(), this);
+    }
+
+    public Location getRegionCenter() {
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+
+        int centerX = (min.x() + max.x()) / 2;
+        int centerY = (min.y() + max.y()) / 2;
+        int centerZ = (min.z() + max.z()) / 2;
+        BlockVector3 location = BlockVector3.at(centerX, centerY, centerZ);
+        return new Location(Bukkit.getWorld("world"),location.x(), location.y(), location.z());
     }
 
     public static List<String> getNameCache() {

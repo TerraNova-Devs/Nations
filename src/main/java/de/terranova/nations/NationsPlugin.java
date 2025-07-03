@@ -26,9 +26,9 @@ import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
-import de.terranova.nations.regions.rule.rules.AccessLevelRule;
-import de.terranova.nations.regions.rule.rules.MustBeWithinParentRule;
-import de.terranova.nations.regions.rule.rules.NamingConventionRule;
+import de.terranova.nations.regions.rule.rules.HasAccessLevelRule;
+import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;
+import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
@@ -111,19 +111,19 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     private void nationsRegionTypeRegistry() {
         RegionRegistry.register(new SettleRegionFactory(),
                 RuleSet.defaultRules()
-                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
-                        .excludeDefaultRule(NoSelfOverlapRule.class)
+                        .addRule(new RegionNameValidationRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
                         .addRule(new NoSelfOverlapRule(true))
-                        .addRule(new AccessLevelRule(null))
+                        .addRule(new HasAccessLevelRule(null))
         );
 
         RegionRegistry.register(new PropertyRegionFactory(),
                 RuleSet.defaultRules()
-                        .addRule(new NamingConventionRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
-                        .addRule(new MustBeWithinParentRule<>(PropertyRegion.class, SettleRegion.class))
-                        .addRule(new AccessLevelRule(AccessLevel.VICE))
-        );
+                        .addRule(new RegionNameValidationRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
+                        .addRule(new NoSelfOverlapRule(false))
+                        .addRule(new HasAccessLevelRule(AccessLevel.VICE))
+                        .addRule(new WithinParentRegionRule<>(PropertyRegion.class, SettleRegion.class))
 
+        );
     }
 
     @Override

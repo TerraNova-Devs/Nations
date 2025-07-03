@@ -12,6 +12,9 @@ public class RealEstateOfferCache {
 
         // Add the new/updated entry
         list.add(estate);
+        //realEstates.values().forEach(k -> k.forEach(c -> System.out.println(c.getAgent().getRegion().getName())));
+        //realEstates.values().forEach(k -> k.forEach(c -> System.out.println(c.getAgent().data.buyPrice)));
+        //realEstates.values().forEach(k -> k.forEach(c -> System.out.println(c.getAgent().data.rentPrice)));
 
     }
 

@@ -112,9 +112,9 @@ public class RealEstateBrowserGUI extends RoseGUI {
                     return new RoseItem.Builder()
                             .material(Material.ACACIA_SIGN)
                             .displayName(region.getType() + " - " + region.getName())
-                            .addLore(Chat.blueFade("Location: " + Chat.prettyLocation(RegionClaimFunctions.getRegionCenterAsLocation(region.getWorldguardRegion()))))
-                            .addLore(Chat.blueFade("Buy: " + (offer.getAgent().isForBuy() ? offer.getAgent().getBuyPrice() + " Silber" : null)))
-                            .addLore(Chat.blueFade("Rent: " + (offer.getAgent().isForRent() ? offer.getAgent().getBuyPrice() + " Silber / 14 Tage" : null)))
+                            .addLore(Chat.blueFade("Location: " + Chat.prettyLocation(region.getRegionCenter())))
+                            .addLore(offer.getAgent().isForBuy() ? String.format("Buy: %s",offer.getAgent().getBuyPrice()) : null)
+                            .addLore(offer.getAgent().isForRent() ? String.format("Rent: %s / 14 Tage",offer.getAgent().getRentPrice()) : null)
                             .build();
                 })
                 .collect(Collectors.toList());

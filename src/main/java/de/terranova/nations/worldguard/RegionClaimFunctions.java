@@ -99,6 +99,9 @@ public class RegionClaimFunctions {
         }
         region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
         region.setFlag(TypeFlag.NATIONS_TYPE, type);
+        DefaultDomain owners = region.getOwners();
+        owners.addPlayer(p.getUniqueId());
+        region.setOwners(owners); // optional, da `getOwners()` nicht kopiert
         regionManager.addRegion(region);
         return region;
     }
@@ -209,19 +212,4 @@ public class RegionClaimFunctions {
 
     }
 
-    public static BlockVector3 getRegionCenter(ProtectedRegion region) {
-        BlockVector3 min = region.getMinimumPoint();
-        BlockVector3 max = region.getMaximumPoint();
-
-        int centerX = (min.x() + max.x()) / 2;
-        int centerY = (min.y() + max.y()) / 2;
-        int centerZ = (min.z() + max.z()) / 2;
-
-        return BlockVector3.at(centerX, centerY, centerZ);
-    }
-
-    public static Location getRegionCenterAsLocation(ProtectedRegion region) {
-        BlockVector3 location = getRegionCenter(region);
-        return new Location(Bukkit.getWorld("world"),location.x(), location.y(), location.z());
-    }
 }

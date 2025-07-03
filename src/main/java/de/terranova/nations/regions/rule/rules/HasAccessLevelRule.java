@@ -12,11 +12,11 @@ import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
-public class AccessLevelRule implements RegionRule {
+public class HasAccessLevelRule implements RegionRule {
 
     AccessLevel accessLevel;
 
-    public AccessLevelRule(AccessLevel accessLevel) {
+    public HasAccessLevelRule(AccessLevel accessLevel) {
         this.accessLevel = accessLevel;
     }
 

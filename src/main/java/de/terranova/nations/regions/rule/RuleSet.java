@@ -1,14 +1,11 @@
 package de.terranova.nations.regions.rule;
 
-import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class RuleSet {
 
     private static final List<RegionRule> DEFAULT_RULES = List.of(
-            new NoSelfOverlapRule(false)
     );
 
     private final List<RegionRule> customRules;

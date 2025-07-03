@@ -6,11 +6,11 @@ import de.terranova.nations.regions.rule.RegionRule;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
-public class NamingConventionRule implements RegionRule {
+public class RegionNameValidationRule implements RegionRule {
 
     String regex;
 
-    public NamingConventionRule(String regex) {
+    public RegionNameValidationRule(String regex) {
         this.regex = regex;
     }
 
