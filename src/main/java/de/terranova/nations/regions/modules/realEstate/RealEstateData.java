@@ -5,14 +5,14 @@ import java.util.UUID;
 
 public class RealEstateData {
 
-    UUID ownerId;
+    UUID landlord;
     boolean isForBuy;
     int buyPrice;
     boolean isForRent;
     int rentPrice;
     Instant timestamp;
-    public RealEstateData(UUID ownerId, boolean isForBuy, int buyPrice, boolean isForRent, int rentPrice, Instant timestamp) {
-        this.ownerId = ownerId;
+    public RealEstateData(UUID landlord, boolean isForBuy, int buyPrice, boolean isForRent, int rentPrice, Instant timestamp) {
+        this.landlord = landlord;
         this.isForBuy = isForBuy;
         this.buyPrice = buyPrice;
         this.isForRent = isForRent;

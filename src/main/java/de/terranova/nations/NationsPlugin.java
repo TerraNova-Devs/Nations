@@ -118,7 +118,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
         RegionRegistry.register(new PropertyRegionFactory(),
                 RuleSet.defaultRules()
-                        .addRule(new RegionNameValidationRule("^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
                         .addRule(new NoSelfOverlapRule(false))
                         .addRule(new HasAccessLevelRule(AccessLevel.VICE))
                         .addRule(new WithinParentRegionRule<>(PropertyRegion.class, SettleRegion.class))

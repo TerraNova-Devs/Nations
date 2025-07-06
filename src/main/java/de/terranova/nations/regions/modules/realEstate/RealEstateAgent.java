@@ -1,7 +1,6 @@
 package de.terranova.nations.regions.modules.realEstate;
 
 import com.sk89q.worldguard.domains.DefaultDomain;
-import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
@@ -27,16 +26,16 @@ public class RealEstateAgent {
     Region parentRegion;
 
     RealEstateData data;
-    UUID propertyOwner;
+    UUID landlord;
     boolean isRented;
 
     public RealEstateAgent(Region region, RealEstateData data) {
         //Wenn es einen Eintrag(data) gibt ist die Region auf dem Markt oder Vermietet sonst Verkauft und in Besitz
         if(data != null) {
             this.data = data;
-            this.propertyOwner = data.ownerId;
+            this.landlord = data.landlord;
         } else {
-            this.propertyOwner = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().get()).getUniqueId();
+            this.landlord = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().get()).getUniqueId();
         }
         this.region = region;
         if (region instanceof HasParent<?> parent) {
@@ -62,7 +61,7 @@ public class RealEstateAgent {
     }
 
     public void rentEnded() {
-        String oldOwner = overwriteOwner(propertyOwner);
+        String oldOwner = overwriteOwner(landlord);
         RealEstateDAO.removeRealEstate(this);
         isRented = false;
         parentTown.getAccess().broadcast(String.format("%s seine Miete für %s | %s ist ausgelaufen.", oldOwner, region.getName(),Chat.prettyLocation(region.getRegionCenter())), AccessLevel.COUNCIL);
@@ -78,9 +77,9 @@ public class RealEstateAgent {
     public void buyEstate(Player buyer) {
 
         if (!data.isForBuy) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.landlord).getName() + " belegt."));
             return;
-        }else if(buyer.getUniqueId() == data.ownerId){
+        }else if(buyer.getUniqueId().equals(data.landlord)){
             buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
             return;
         }
@@ -96,7 +95,7 @@ public class RealEstateAgent {
         overwriteOwner( buyer.getUniqueId());
         data.isForBuy = false;
         data.isForRent = false;
-        data.ownerId = buyer.getUniqueId();
+        data.landlord = buyer.getUniqueId();
         data.timestamp = Instant.now();
         RealEstateDAO.removeRealEstate(this);
         RealEstateOfferCache.removeRealestate(parentRegion.getId(),region.getId());
@@ -107,19 +106,13 @@ public class RealEstateAgent {
 
     public void rentEstate(Player buyer) {
 
-        Bukkit.broadcast(Chat.cottonCandy(isRented + ""));
-        Bukkit.broadcast(Chat.cottonCandy(buyer.getUniqueId() + ""));
-        Bukkit.broadcast(Chat.cottonCandy(region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get() + ""));
-        Bukkit.broadcast(Chat.cottonCandy(data.ownerId + ""));
-        if(buyer.getUniqueId().equals(data.ownerId)){
+        if(buyer.getUniqueId().equals(data.landlord)){
             buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
             return;
-        } else
-        if (isRented && !region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get().equals(buyer.getUniqueId())) {
-            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.ownerId).getName() + " belegt."));
+        } else if (isRented && !region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get().equals(buyer.getUniqueId())) {
+            buyer.sendMessage(Chat.errorFade("Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.landlord).getName() + " belegt."));
             return;
         }
-
 
         int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.rentPrice, true);
         if (transfer == -1) {
@@ -158,7 +151,7 @@ public class RealEstateAgent {
 
     public boolean sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
 
-        if(seller.getUniqueId() != data.ownerId){
+        if(seller.getUniqueId() != data.landlord){
             if(!region.getWorldguardRegion().getOwners().contains(seller.getUniqueId())){
                 seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
                 return false;
@@ -174,9 +167,10 @@ public class RealEstateAgent {
         data.isForRent = isForRent;
         data.buyPrice = buyAmount;
         data.rentPrice = rentAmount;
-        data.ownerId = seller.getUniqueId();
+        data.landlord = seller.getUniqueId();
         data.timestamp = Instant.now();
 
+        stripmember();
         RealEstateDAO.upsertRealEstate(this);
         RealEstateOfferCache.addRealestate(this.parentRegion.getId(),(CanBeSold) region);
         return true;
@@ -190,13 +184,37 @@ public class RealEstateAgent {
         region.getWorldguardRegion().setOwners(owners);
         return name;
     }
+    public boolean hasmember(UUID user) {
+        DefaultDomain members  = region.getWorldguardRegion().getMembers();
+        return members.contains(user);
+    }
+    public void addmember(UUID user) {
+        DefaultDomain members  = region.getWorldguardRegion().getMembers();
+        members.addPlayer(user);
+        region.getWorldguardRegion().setMembers(members);
+    }
+    public void removemember(UUID user) {
+        DefaultDomain members  = region.getWorldguardRegion().getMembers();
+        members.removePlayer(user);
+        region.getWorldguardRegion().setMembers(members);
+    }
+
+    public void stripmember() {
+        DefaultDomain members  = region.getWorldguardRegion().getMembers();
+        members.clear();
+        region.getWorldguardRegion().setMembers(members);
+    }
 
     public Region getRegion() {
         return region;
     }
 
-    public UUID getRegionOwner() {
-        return data.ownerId;
+    public UUID getRegionLandlord() {
+        return data.landlord;
+    }
+
+    public UUID getRegionUser(){
+        return region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().orElseGet(this::getRegionLandlord);
     }
 
     public Instant getTimestamp() {

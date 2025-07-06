@@ -12,6 +12,7 @@ import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
 import de.terranova.nations.utils.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
@@ -210,7 +211,17 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
-        agent.getAgent().buyEstate(p);
+        Player target = Bukkit.getPlayerExact(args[2]);
+        if (target == null) {
+            p.sendMessage(Chat.errorFade("Der Spieler " + args[2] + " ist nicht online."));
+            return false;
+        }
+        if(agent.getAgent().hasmember(target.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Der von dir banannte Spieler " + target.getName() + " ist bereits hinzugefügt."));
+            return false;
+        }
+        agent.getAgent().addmember(target.getUniqueId());
+        Chat.greenFade("Du hast Spieler " + target.getName() + " erfolgreich zu " + agent.getAgent().getRegion().getName() + " hinzugefügt.");
         return true;
     }
 
@@ -235,32 +246,18 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
-        agent.getAgent().buyEstate(p);
+        Player target = Bukkit.getPlayerExact(args[2]);
+        if (target == null) {
+            p.sendMessage(Chat.errorFade("Der Spieler " + args[2] + " ist nicht online."));
+            return false;
+        }
+        if(!agent.getAgent().hasmember(target.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Der von dir banannte Spieler " + target.getName() + " ist kein Mitglied der Region."));
+            return false;
+        }
+        agent.getAgent().removemember(target.getUniqueId());
+        Chat.greenFade("Du hast Spieler " + target.getName() + " erfolgreich von " + agent.getAgent().getRegion().getName() + " entfernt.");
         return true;
     }
 
-    @CommandAnnotation(
-            domain = "banmember.$name.$name",
-            permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
-    )
-    public boolean banmember(Player p, String[] args) {
-        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
-        if (Oregion.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
-            return false;
-        }
-        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
-        if (region.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
-            return false;
-        }
-        if (!(region.get() instanceof CanBeSold agent)) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
-            return false;
-        }
-        agent.getAgent().buyEstate(p);
-        return true;
-    }
 }
