@@ -27,6 +27,8 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "buy");
         registerSubCommand(this, "rent");
         registerSubCommand(this, "info");
+        registerSubCommand(this, "add");
+        registerSubCommand(this, "remove");
         setupHelpCommand();
         initialize();
     }
@@ -191,12 +193,12 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "addmember.$name.$name",
+            domain = "add.$name.$name",
             permission = "nations.realestate.buy",
             description = "Opens the Realestate Browser",
             usage = "/realestate browser"
     )
-    public boolean addmember(Player p, String[] args) {
+    public boolean add(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
@@ -226,12 +228,12 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "removemember.$name.$name",
+            domain = "remove.$name.$name",
             permission = "nations.realestate.buy",
             description = "Opens the Realestate Browser",
             usage = "/realestate browser"
     )
-    public boolean removemember(Player p, String[] args) {
+    public boolean remove(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
