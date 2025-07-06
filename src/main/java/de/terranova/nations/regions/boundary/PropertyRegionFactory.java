@@ -18,6 +18,8 @@ import org.bukkit.entity.Player;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class PropertyRegionFactory implements RegionFactoryBase {
 
@@ -32,6 +34,9 @@ public class PropertyRegionFactory implements RegionFactoryBase {
 
         Player p = ctx.player;
         String name = ctx.name;
+
+        name = buildRegionName(name,p);
+
         Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
         if (settleOpt.isEmpty()) {
             p.sendMessage(Chat.errorFade("Du bist in keiner Stadt."));
@@ -55,8 +60,10 @@ public class PropertyRegionFactory implements RegionFactoryBase {
             return null;
         }
 
+
+
         return new PropertyRegion(
-                ctx.name.toLowerCase() + "_" + BoundaryClaimFunctions.getNextFreeRegionNumber(ctx.name),
+                name,
                 UUID.randomUUID(),
                 settle
         );
@@ -69,6 +76,71 @@ public class PropertyRegionFactory implements RegionFactoryBase {
                 UUID.fromString(args.get(1)),
                 (SettleRegion) RegionManager.retrieveRegion("settle", UUID.fromString(args.get(2))).get()
         );
+    }
+
+    public static String buildRegionName(String name, Player player) {
+        if (name == null) {
+            player.sendMessage(Chat.errorFade("Bitte gib einen gültigen Straßennamen ein."));
+            return null;
+        }
+
+        if (!name.matches("[A-Za-z0-9_]+")) {
+            player.sendMessage(Chat.errorFade("Bitte nutze im Regionsnamen nur Großbuchstaben, Kleinbuchstaben, Zahlen oder (_) für Leerzeichen."));
+            return null;
+        }
+
+        Pattern trailingNumberPattern = Pattern.compile("^(.*?)(_\\d{1,3})?$");
+        Matcher matcher = trailingNumberPattern.matcher(name);
+
+        if (!matcher.matches()) {
+            player.sendMessage(Chat.errorFade("Am Ende darf optional ein Unterstrich mit bis zu 3 Ziffern stehen (z. B. Badergasse_131)."));
+            return null;
+        }
+
+        String base = matcher.group(1);
+        String trailingNumber = matcher.group(2);
+
+        if (base.length() > 30) {
+            player.sendMessage(Chat.errorFade("Der Straßenname (ohne Nummer) darf höchstens 30 Zeichen lang sein."));
+            return null;
+        }
+
+        if (base.startsWith("_") || base.endsWith("_")) {
+            player.sendMessage(Chat.errorFade("Der Name der Region darf nicht mit (_) beginnen oder enden, da (_) Leerzeichen repräsentiert."));
+            return null;
+        }
+
+        if (base.contains("__")) {
+            player.sendMessage(Chat.errorFade("Du hast in deinem Regionsnamen mehrere aufeinanderfolgende Unterstriche (_). Das ist nicht erlaubt."));
+            return null;
+        }
+
+        long underscoreCount = base.chars().filter(c -> c == '_').count();
+        if (underscoreCount > 3) {
+            player.sendMessage(Chat.errorFade("Der Regionsname darf maximal 3 Unterstriche (_) enthalten."));
+            return null;
+        }
+
+        // Validate or determine region number
+        int regionNumber;
+        if (trailingNumber != null) {
+            regionNumber = Integer.parseInt(trailingNumber.substring(1)); // Entferne führenden "_"
+            if (regionNumber > 999) {
+                player.sendMessage(Chat.errorFade("Die Grundstücksnummer darf 999 nicht überschreiten."));
+                return null;
+            }
+
+            if (!BoundaryClaimFunctions.isRegionNumberFree(base, regionNumber)) {
+                int suggestion = BoundaryClaimFunctions.getNextFreeRegionNumber(base);
+                player.sendMessage(Chat.errorFade(String.format("Die Grundstücksnummer %s existiert bereits im Bereich %s.", regionNumber, base)));
+                player.sendMessage(Chat.errorFade(String.format("Noch frei wäre: %s_%s", base, suggestion)));
+                return null;
+            }
+        } else {
+            regionNumber = BoundaryClaimFunctions.getNextFreeRegionNumber(base);
+        }
+
+        return base + "_" + regionNumber;
     }
 
 }

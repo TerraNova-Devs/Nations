@@ -42,7 +42,12 @@ public class RealEstateCommand extends AbstractCommand {
         return Optional.ofNullable(region);
     }
 
-    @CommandAnnotation(domain = "browser.$SETTLES", permission = "nations.realestate.browser", description = "Opens the Realestate Browser", usage = "/realestate browser <Stadt>")
+    @CommandAnnotation(
+            domain = "browser.$SETTLES",
+            permission = "nations.realestate.browser",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser <Stadt>"
+    )
     public boolean openBrowser(Player p, String[] args) {
         Optional<Region> osettle = de.terranova.nations.regions.RegionManager.retrieveRegion("settle",args[1]);
         if(osettle.isEmpty()) {
@@ -53,7 +58,11 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "info.$name", permission = "nations.realestate.rent", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(
+            domain = "info.$name",
+            permission = "nations.realestate.rent",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser")
     public boolean info(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
@@ -77,7 +86,11 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "rent.$name", permission = "nations.realestate.rent", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(domain = "rent.$name",
+            permission = "nations.realestate.rent",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
     public boolean rent(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
@@ -97,7 +110,12 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "buy.$name", permission = "nations.realestate.buy", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(
+            domain = "buy.$name",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
     public boolean buy(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
@@ -117,7 +135,12 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "sell.$name.$buyamount.$rentamount", permission = "nations.realestate.nosell", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(
+            domain = "sell.$name.$buyamount.$rentamount",
+            permission = "nations.realestate.nosell",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
     public boolean sell(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
@@ -156,8 +179,88 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "nosell.$name", permission = "nations.realestate.nobuy", description = "Opens the Realestate Browser", usage = "/realestate browser")
+    @CommandAnnotation(
+            domain = "nosell.$name",
+            permission = "nations.realestate.nobuy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
     public boolean nosell(Player p, String[] args) {
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "addmember.$name.$name",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean addmember(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof CanBeSold agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        agent.getAgent().buyEstate(p);
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "removemember.$name.$name",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean removemember(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof CanBeSold agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        agent.getAgent().buyEstate(p);
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "banmember.$name.$name",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean banmember(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof CanBeSold agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        agent.getAgent().buyEstate(p);
         return true;
     }
 }

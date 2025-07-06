@@ -7,6 +7,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.Polygonal2DRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldguard.WorldGuard;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedCuboidRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
@@ -98,36 +99,43 @@ public class BoundaryClaimFunctions {
     }
 
     public static int getNextFreeRegionNumber(String baseName) {
-        Set<Integer> usedNumbers = new HashSet<>();
-        Pattern pattern = Pattern.compile("^" + Pattern.quote(baseName.toLowerCase()) + "_(\\d+)$");
-
-        for (World world : Bukkit.getWorlds()) {
-            RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
-            if (regionManager == null) continue;
-
-            for (ProtectedRegion region : regionManager.getRegions().values()) {
-                String id = region.getId().toLowerCase();
-
-                if (id.equals(baseName)) {
-                    usedNumbers.add(0); // reserved without suffix
-                    continue;
-                }
-
-                Matcher matcher = pattern.matcher(id);
-                if (matcher.matches()) {
-                    int number = Integer.parseInt(matcher.group(1));
-                    usedNumbers.add(number);
-                }
-            }
-        }
-
-        // Find the smallest free number starting from 1
+        Set<Integer> usedNumbers = getUsedRegionNumbers(baseName);
         int nextFree = 1;
         while (usedNumbers.contains(nextFree)) {
             nextFree++;
         }
-
         return nextFree;
+    }
+
+    public static boolean isRegionNumberFree(String baseName, int number) {
+        return !getUsedRegionNumbers(baseName).contains(number);
+    }
+
+    private static Set<Integer> getUsedRegionNumbers(String baseName) {
+        Set<Integer> usedNumbers = new HashSet<>();
+        Pattern pattern = Pattern.compile("^" + Pattern.quote(baseName.toLowerCase()) + "_(\\d+)$");
+
+        World world = Bukkit.getWorld("world");
+        if (world == null) return usedNumbers;
+
+        RegionManager regionManager = WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+        if (regionManager == null) return usedNumbers;
+
+        for (ProtectedRegion region : regionManager.getRegions().values()) {
+            String id = region.getId().toLowerCase();
+
+            if (id.equals(baseName.toLowerCase())) {
+                usedNumbers.add(0); // reserved base name
+            } else {
+                Matcher matcher = pattern.matcher(id);
+                if (matcher.matches()) {
+                    int num = Integer.parseInt(matcher.group(1));
+                    usedNumbers.add(num);
+                }
+            }
+        }
+
+        return usedNumbers;
     }
 
     public static boolean propertyPointInside2DBox(World bukkitWorld, BlockVector2 min, BlockVector2 max, String typeFlag) {
