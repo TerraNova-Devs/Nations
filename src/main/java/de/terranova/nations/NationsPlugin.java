@@ -9,7 +9,7 @@ import de.terranova.nations.command.realEstate.RealEstateCommand;
 import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
-import de.terranova.nations.listener.TestListener;
+import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.pl3xmap.RegionLayer;
@@ -25,6 +25,8 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
+import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
+import de.terranova.nations.regions.modules.realEstate.RealEstateData;
 import de.terranova.nations.regions.rule.RuleSet;
 import de.terranova.nations.regions.rule.rules.HasAccessLevelRule;
 import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;
@@ -92,6 +94,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         layerRegistry.register("settlement-layer", new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
         saveDefaultConfig();
         nationManager = new NationManager();
+        RealEstateDAO.loadAllHoldings();
         commandRegistry();
         listenerRegistry();
         serilizationRegistry();
@@ -178,7 +181,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     public void listenerRegistry() {
         Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getPluginManager().registerEvents(new TestListener(), this);
     }
 
     public void serilizationRegistry() {

@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 
 public class RealEstateBrowserGUI extends RoseGUI {
 
+    private static final UUID GLOBAL_UUID = new UUID(0L, 0L);
+
     private static final Map<UUID, CachedSupplier<List<CanBeSold>>> OFFER_CACHE = new ConcurrentHashMap<>();
     private final RosePagination pagination = new RosePagination(this);
     private final UUID agentUUID;
@@ -30,16 +32,24 @@ public class RealEstateBrowserGUI extends RoseGUI {
     private SortOrder sortOrder = SortOrder.ASC;
 
     public RealEstateBrowserGUI(@NotNull Player player, Region agentRegion) {
-        super(player, "realestate-browser", Chat.blueFade(String.format("RealEstate %s", agentRegion.getName())), 6);
-        this.agentUUID = agentRegion.getId();
-        System.out.println(agentRegion.getName());
+        super(player, "realestate-browser", Chat.blueFade(String.format("RealEstate: %s", agentRegion != null ? agentRegion.getName() : "Global")), 6);
+
+        this.agentUUID = agentRegion != null ? agentRegion.getId() : GLOBAL_UUID;
+
         pagination.registerPageSlotsBetween(10, 16);
         pagination.registerPageSlotsBetween(19, 25);
         pagination.registerPageSlotsBetween(28, 34);
         pagination.registerPageSlotsBetween(37, 43);
 
-        OFFER_CACHE.computeIfAbsent(agentUUID, id ->
-                new CachedSupplier<>(() -> RealEstateOfferCache.getRealestate(id), 20));
+        // Default cache time: 20s (region-specific) or 5min (global)
+        OFFER_CACHE.computeIfAbsent(agentUUID, id -> {
+            if (id.equals(GLOBAL_UUID)) {
+                // Flatten all regions into one list
+                return new CachedSupplier<>(RealEstateOfferCache::getAllRealEstates, 60 * 5); // 5 minutes
+            } else {
+                return new CachedSupplier<>(() -> RealEstateOfferCache.getRealestate(id), 20);
+            }
+        });
     }
 
     @Override
@@ -122,7 +132,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
     private List<CanBeSold> getFilteredAndSortedOffers() {
         List<CanBeSold> offers = OFFER_CACHE.getOrDefault(agentUUID,
-                new CachedSupplier<>(() -> List.of(), 20)).get();
+                new CachedSupplier<>(List::of, 20)).get();
 
         return offers.stream()
                 .filter(offer -> switch (filterMode) {

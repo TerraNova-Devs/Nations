@@ -8,10 +8,13 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.command.commands.AbstractCommand;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
+import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.CanBeSold;
+import de.terranova.nations.regions.modules.realEstate.RealEstateData;
 import de.terranova.nations.utils.Chat;
+import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -58,6 +61,17 @@ public class RealEstateCommand extends AbstractCommand {
             return false;
         }
         new RealEstateBrowserGUI(p,osettle.get()).open();
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "browser",
+            permission = "nations.realestate.browser",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser <Stadt>"
+    )
+    public boolean browser(Player p, String[] args) {
+        new RealEstateBrowserGUI(p,null).open();
         return true;
     }
 
@@ -259,6 +273,33 @@ public class RealEstateCommand extends AbstractCommand {
         }
         agent.getAgent().removemember(target.getUniqueId());
         Chat.greenFade("Du hast Spieler " + target.getName() + " erfolgreich von " + agent.getAgent().getRegion().getName() + " entfernt.");
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "holdings",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean holdings(Player p, String[] args) {
+        if(!RealEstateData.holdings.containsKey(p.getUniqueId())){
+            p.sendMessage(Chat.cottonCandy("Es gibt nichts für dich abzuholen."));
+            return true;
+        }
+        int credited = ItemTransfer.credit(p,"terranova_silver",RealEstateData.holdings.get(p.getUniqueId()),false);
+
+        if(credited == 0){
+            p.sendMessage(Chat.errorFade("Du benötigst mehr freien Platz im Inventar."));
+            return true;
+        }
+
+        RealEstateData.holdings.compute(p.getUniqueId(), (key, value) -> value == null || value - credited <= 0 ? null : value - credited);
+        RealEstateDAO.upsertHolding(p.getUniqueId(), RealEstateData.holdings.getOrDefault(p.getUniqueId(), 0));
+        p.sendMessage(Chat.greenFade("Dir wurde erfolgreich " + credited + " gutgeschrieben."));
+        if(RealEstateData.holdings.containsKey(p.getUniqueId())){
+            p.sendMessage(Chat.blueFade("Verbleibend: " + RealEstateData.holdings.get(p.getUniqueId())));
+        }
         return true;
     }
 

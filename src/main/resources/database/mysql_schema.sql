@@ -116,6 +116,14 @@ CREATE TABLE IF NOT EXISTS `nations_realestate`
 ) DEFAULT CHARSET = utf8
   COLLATE = utf8_unicode_ci;
 --
+CREATE TABLE IF NOT EXISTS `nations_holdings`
+(
+    `PUUID`        VARCHAR(36) NOT NULL,
+    `amount`        int NOT NULL,
+    PRIMARY KEY (`PUUID`)
+) DEFAULT CHARSET = utf8
+  COLLATE = utf8_unicode_ci;
+--
 CREATE TABLE IF NOT EXISTS `settlement_objective_progress`
 (
     `RUUID`       VARCHAR(36) NOT NULL,

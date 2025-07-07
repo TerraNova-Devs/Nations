@@ -1,6 +1,7 @@
 package de.terranova.nations.regions.modules.realEstate;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class RealEstateOfferCache {
     private static final Map<UUID, List<CanBeSold>> realEstates = new HashMap<>();
@@ -20,6 +21,12 @@ public class RealEstateOfferCache {
 
     public static List<CanBeSold> getRealestate(UUID agentId) {
         return realEstates.getOrDefault(agentId, Collections.emptyList());
+    }
+
+    public static List<CanBeSold> getAllRealEstates() {
+        return realEstates.values().stream()
+                .flatMap(Collection::stream)
+                .collect(Collectors.toList());
     }
 
 

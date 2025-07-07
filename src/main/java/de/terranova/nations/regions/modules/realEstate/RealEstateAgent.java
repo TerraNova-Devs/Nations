@@ -89,7 +89,7 @@ public class RealEstateAgent {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
             return;
         } else {
-            parentBank.getBank().cashTransfer(String.format("Property bought by %s(%s) for %s", buyer.getName(), buyer.getUniqueId(), transfer), transfer);
+            RealEstateDAO.upsertHolding(landlord, transfer);
         }
 
         overwriteOwner( buyer.getUniqueId());
@@ -97,11 +97,11 @@ public class RealEstateAgent {
         data.isForRent = false;
         data.landlord = buyer.getUniqueId();
         data.timestamp = Instant.now();
+
         RealEstateDAO.removeRealEstate(this);
         RealEstateOfferCache.removeRealestate(parentRegion.getId(),region.getId());
-        buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.", region.getName(), transfer)));
-        parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s gekauft.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
 
+        buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.", region.getName(), transfer)));
     }
 
     public void rentEstate(Player buyer) {
@@ -119,7 +119,7 @@ public class RealEstateAgent {
             buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
             return;
         } else {
-            parentBank.getBank().cashTransfer(String.format("Property rented by %s(%s) for %s", buyer.getName(), buyer.getUniqueId(), transfer), transfer);
+            RealEstateDAO.upsertHolding(landlord, transfer);
         }
 
         if(isRented) {
@@ -132,6 +132,9 @@ public class RealEstateAgent {
                 return;
             }
             data.timestamp = data.timestamp.plus(14, ChronoUnit.DAYS);
+            RealEstateDAO.upsertRealEstate(this);
+            buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage verlängert, dein Mietvertrag läuft bis %s.", region.getName(), transfer, Chat.prettyInstant(data.timestamp))));
+            return;
 
         } else {
             data.timestamp = Instant.now().plus(14, ChronoUnit.DAYS);
@@ -146,7 +149,6 @@ public class RealEstateAgent {
         RealEstateDAO.upsertRealEstate(this);
         RealEstateOfferCache.removeRealestate(parentRegion.getId(),region.getId());
         buyer.sendMessage(Chat.greenFade(String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.", region.getName(), transfer)));
-        parentTown.getAccess().broadcast(String.format("%s hat soeben erfolgreich für %s Silber %s 14 Tage gemietet.", buyer.getName(), transfer, region.getName()), AccessLevel.CITIZEN);
     }
 
     public boolean sellEstate(Player seller, boolean isForBuy,int buyAmount,boolean isForRent, int rentAmount) {
