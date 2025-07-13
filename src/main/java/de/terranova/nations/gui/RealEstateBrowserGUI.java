@@ -2,13 +2,12 @@ package de.terranova.nations.gui;
 
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.modules.realEstate.CanBeSold;
-import de.terranova.nations.regions.modules.realEstate.RealEstateOfferCache;
+import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
+import de.terranova.nations.regions.modules.realEstate.RealEstateMarketCache;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
 import de.terranova.nations.utils.roseGUI.RoseItem;
 import de.terranova.nations.utils.roseGUI.RosePagination;
-import de.terranova.nations.worldguard.RegionClaimFunctions;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -25,7 +24,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
     private static final UUID GLOBAL_UUID = new UUID(0L, 0L);
 
-    private static final Map<UUID, CachedSupplier<List<CanBeSold>>> OFFER_CACHE = new ConcurrentHashMap<>();
+    private static final Map<UUID, CachedSupplier<List<HasRealEstateAgent>>> OFFER_CACHE = new ConcurrentHashMap<>();
     private final RosePagination pagination = new RosePagination(this);
     private final UUID agentUUID;
     private FilterMode filterMode = FilterMode.ALL;
@@ -45,9 +44,9 @@ public class RealEstateBrowserGUI extends RoseGUI {
         OFFER_CACHE.computeIfAbsent(agentUUID, id -> {
             if (id.equals(GLOBAL_UUID)) {
                 // Flatten all regions into one list
-                return new CachedSupplier<>(RealEstateOfferCache::getAllRealEstates, 60 * 5); // 5 minutes
+                return new CachedSupplier<>(RealEstateMarketCache::getAllListings, 60 * 5); // 5 minutes
             } else {
-                return new CachedSupplier<>(() -> RealEstateOfferCache.getRealestate(id), 20);
+                return new CachedSupplier<>(() -> RealEstateMarketCache.getListing(id), 20);
             }
         });
     }
@@ -60,6 +59,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
                 .displayName("")
                 .build();
         outlineGui(fillerDark);
+
 
         RoseItem next = new RoseItem.Builder()
                 .material(Material.SPECTRAL_ARROW)
@@ -125,13 +125,14 @@ public class RealEstateBrowserGUI extends RoseGUI {
                             .addLore(Chat.blueFade("Location: " + Chat.prettyLocation(region.getRegionCenter())))
                             .addLore(offer.getAgent().isForBuy() ? String.format("Buy: %s",offer.getAgent().getBuyPrice()) : null)
                             .addLore(offer.getAgent().isForRent() ? String.format("Rent: %s / 14 Tage",offer.getAgent().getRentPrice()) : null)
-                            .build();
+                            .build()
+                            .onClick(e -> new RealEstateBuyGUI(player, offer.getAgent()).open());
                 })
                 .collect(Collectors.toList());
     }
 
-    private List<CanBeSold> getFilteredAndSortedOffers() {
-        List<CanBeSold> offers = OFFER_CACHE.getOrDefault(agentUUID,
+    private List<HasRealEstateAgent> getFilteredAndSortedOffers() {
+        List<HasRealEstateAgent> offers = OFFER_CACHE.getOrDefault(agentUUID,
                 new CachedSupplier<>(List::of, 20)).get();
 
         return offers.stream()
@@ -150,7 +151,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
                 .toList();
     }
 
-    private int getRelevantPrice(CanBeSold offer) {
+    private int getRelevantPrice(HasRealEstateAgent offer) {
         boolean isBuy = filterMode != FilterMode.RENT;
         boolean isRelevant = isBuy ? offer.getAgent().isForBuy() : offer.getAgent().isForRent();
         return isRelevant ? offer.getAgent().getBuyPrice() : Integer.MAX_VALUE;

@@ -1,5 +1,7 @@
 package de.terranova.nations.regions.base;
 
+import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import org.bukkit.entity.Player;
@@ -20,6 +22,10 @@ public abstract class BoundaryRegion extends Region {
 
     public void onBoundaryCreation(Player p) {
 
+    }
+
+    public boolean isPoly(){
+        return getWorldguardRegion() instanceof ProtectedPolygonalRegion;
     }
 
     @Override

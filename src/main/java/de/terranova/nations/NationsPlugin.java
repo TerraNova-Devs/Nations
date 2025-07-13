@@ -25,8 +25,6 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
-import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
-import de.terranova.nations.regions.modules.realEstate.RealEstateData;
 import de.terranova.nations.regions.rule.RuleSet;
 import de.terranova.nations.regions.rule.rules.HasAccessLevelRule;
 import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;

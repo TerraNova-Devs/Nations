@@ -1,5 +1,5 @@
 package de.terranova.nations.regions.modules.realEstate;
 
-public interface CanBeSold {
+public interface HasRealEstateAgent {
     RealEstateAgent getAgent();
 }

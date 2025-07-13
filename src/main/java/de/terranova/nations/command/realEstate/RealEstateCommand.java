@@ -11,20 +11,23 @@ import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.modules.realEstate.CanBeSold;
-import de.terranova.nations.regions.modules.realEstate.RealEstateData;
+import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
+import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 
 public class RealEstateCommand extends AbstractCommand {
     public RealEstateCommand() {
         addPlaceholder("$SETTLES", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
+        addPlaceholder("$type", () -> List.of("rent","buy"));
         registerSubCommand(this, "browser");
         registerSubCommand(this, "sell");
         registerSubCommand(this, "buy");
@@ -32,6 +35,7 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "info");
         registerSubCommand(this, "add");
         registerSubCommand(this, "remove");
+        registerSubCommand(this, "resign");
         setupHelpCommand();
         initialize();
     }
@@ -91,12 +95,17 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if (!(region.get() instanceof CanBeSold agent)) {
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
         Instant time = agent.getAgent().getRentEndingTime();
-        p.sendMessage(Chat.cottonCandy("Infos:"));
+        p.sendMessage(Chat.cottonCandy("Infos: " + agent.getAgent().getRegion().getName()));
+        p.sendMessage(Chat.cottonCandy("Besitzer: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionLandlord()).getName()));
+        if(!agent.getAgent().getRegionLandlord().equals(agent.getAgent().getRegionUser())){
+            p.sendMessage(Chat.cottonCandy("Mieter: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionLandlord()).getName()));
+        }
+
         if(time != null){
             p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
         }
@@ -119,7 +128,7 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if (!(region.get() instanceof CanBeSold agent)) {
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
@@ -144,11 +153,36 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if (!(region.get() instanceof CanBeSold agent)) {
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
         agent.getAgent().buyEstate(p);
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "resign.$name",
+            permission = "nations.realestate.buy",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean resign(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        agent.getAgent().endRentByPlayer(p);
         return true;
     }
 
@@ -169,23 +203,53 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if(region.get() instanceof CanBeSold agent) {
+        if(region.get() instanceof HasRealEstateAgent agent) {
             try {
                 int buy = Integer.parseInt(args[2]);
                 int rent = Integer.parseInt(args[3]);
-                boolean canBuy = false;
-                boolean canRent = false;
-                if(buy > 0){
-                    canBuy = true;
-                }
-                if(rent > 0){
-                    canRent = true;
-                }
-                if(!canBuy && !canRent) {
-                    p.sendMessage(Chat.errorFade("Du kannst keine Region auf den Markt bringen die nicht Miet oder Kaufbar ist."));
-                    return false;
-                }
-                if(agent.getAgent().sellEstate(p,canBuy,buy,canRent ,rent)) p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
+
+                if(agent.getAgent().sellEstate(p,buy ,rent)) p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
+            } catch (NumberFormatException e) {
+                p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
+            }
+
+        } else {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " kann nicht verkauft werden."));
+        }
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "offer.$name.$type.$amount.$user",
+            permission = "nations.realestate.nosell",
+            description = "Opens the Realestate Browser",
+            usage = "/realestate browser"
+    )
+    public boolean offer(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!Set.of("rent", "buy").contains(args[2])) {
+            p.sendMessage(Chat.errorFade("Du musst richtig spezifizieren ob die region zum kaufen oder mieten ist."));
+            return false;
+        }
+        Player player = Bukkit.getPlayer(args[4]);
+        if(player == null) {
+            p.sendMessage(Chat.errorFade("Der von dir angewählte Spieler ist nicht online."));
+            return false;
+        }
+        if(region.get() instanceof HasRealEstateAgent agent) {
+            try {
+                int amount = Integer.parseInt(args[3]);
+
+                if(agent.getAgent().offerEstate(p,args[2] ,amount,player.getUniqueId())) p.sendMessage(Chat.greenFade("Region erfolgreich angeboten."));
             } catch (NumberFormatException e) {
                 p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
             }
@@ -223,7 +287,7 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if (!(region.get() instanceof CanBeSold agent)) {
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
@@ -258,7 +322,7 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if (!(region.get() instanceof CanBeSold agent)) {
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
@@ -283,22 +347,22 @@ public class RealEstateCommand extends AbstractCommand {
             usage = "/realestate browser"
     )
     public boolean holdings(Player p, String[] args) {
-        if(!RealEstateData.holdings.containsKey(p.getUniqueId())){
+        if(!RealEstateListing.holdings.containsKey(p.getUniqueId())){
             p.sendMessage(Chat.cottonCandy("Es gibt nichts für dich abzuholen."));
             return true;
         }
-        int credited = ItemTransfer.credit(p,"terranova_silver",RealEstateData.holdings.get(p.getUniqueId()),false);
+        int credited = ItemTransfer.credit(p,"terranova_silver", RealEstateListing.holdings.get(p.getUniqueId()),false);
 
         if(credited == 0){
             p.sendMessage(Chat.errorFade("Du benötigst mehr freien Platz im Inventar."));
             return true;
         }
 
-        RealEstateData.holdings.compute(p.getUniqueId(), (key, value) -> value == null || value - credited <= 0 ? null : value - credited);
-        RealEstateDAO.upsertHolding(p.getUniqueId(), RealEstateData.holdings.getOrDefault(p.getUniqueId(), 0));
+        RealEstateListing.holdings.compute(p.getUniqueId(), (key, value) -> value == null || value - credited <= 0 ? null : value - credited);
+        RealEstateDAO.upsertHolding(p.getUniqueId(), RealEstateListing.holdings.getOrDefault(p.getUniqueId(), 0));
         p.sendMessage(Chat.greenFade("Dir wurde erfolgreich " + credited + " gutgeschrieben."));
-        if(RealEstateData.holdings.containsKey(p.getUniqueId())){
-            p.sendMessage(Chat.blueFade("Verbleibend: " + RealEstateData.holdings.get(p.getUniqueId())));
+        if(RealEstateListing.holdings.containsKey(p.getUniqueId())){
+            p.sendMessage(Chat.blueFade("Verbleibend: " + RealEstateListing.holdings.get(p.getUniqueId())));
         }
         return true;
     }

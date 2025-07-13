@@ -5,15 +5,15 @@ import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.HasParent;
-import de.terranova.nations.regions.modules.realEstate.CanBeSold;
+import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
-import de.terranova.nations.regions.modules.realEstate.RealEstateData;
+import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
-public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRegion>, CanBeSold {
+public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRegion>, HasRealEstateAgent {
     public static final String REGION_TYPE = "property";
 
     private SettleRegion parent;
@@ -35,7 +35,7 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
     @Override
     public void onBoundaryCreation(Player p) {
         GridRegionDAO.insertParent(this.id,parent.getId());
-        this.realEstateAgent = new RealEstateAgent(this,new RealEstateData(null,false,0,false,0, null));
+        this.realEstateAgent = new RealEstateAgent(this,new RealEstateListing(null,false,0,false,0, null));
         p.sendMessage(Chat.greenFade("Dein Grundstück " + name + " wurde erfolgreich erstellt."));
     }
 

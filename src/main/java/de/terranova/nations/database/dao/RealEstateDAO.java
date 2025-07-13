@@ -2,13 +2,12 @@ package de.terranova.nations.database.dao;
 
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
-import de.terranova.nations.regions.modules.realEstate.RealEstateData;
+import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 
 import java.sql.*;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 import java.util.UUID;
 
 public class RealEstateDAO {
@@ -70,7 +69,7 @@ public class RealEstateDAO {
         }
     }
     
-    public static RealEstateData getRealEstateById(UUID ruuid) {
+    public static RealEstateListing getRealEstateById(UUID ruuid) {
         String sql = queries.get("selectRealEstateById");
 
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
@@ -86,13 +85,13 @@ public class RealEstateDAO {
                     boolean isForRent = rs.getBoolean("isForRent");
                     int rentPrice = rs.getInt("rentPrice");
                     Instant timestamp = rs.getTimestamp("timestamp").toInstant();
-                    return new RealEstateData(puuid, isForBuy, buyPrice, isForRent, rentPrice, timestamp);
+                    return new RealEstateListing(puuid, isForBuy, buyPrice, isForRent, rentPrice, timestamp);
                 }
             }
         } catch (SQLException e) {
             NationsPlugin.plugin.getLogger().severe("Failed to fetch real estate by id: " + e.getMessage());
         }
-        return new RealEstateData(null, false, 0, false, 0, null);
+        return new RealEstateListing(null, false, 0, false, 0, null);
     }
     public static void upsertHolding(UUID puuid, int amount) {
         if (amount == 0){
@@ -131,12 +130,12 @@ public class RealEstateDAO {
              PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
 
-            RealEstateData.holdings.clear(); // clear existing cache
+            RealEstateListing.holdings.clear(); // clear existing cache
             while (rs.next()) {
                 try {
                     UUID puuid = UUID.fromString(rs.getString("PUUID"));
                     int amount = rs.getInt("amount");
-                    RealEstateData.holdings.put(puuid, amount);
+                    RealEstateListing.holdings.put(puuid, amount);
                 } catch (IllegalArgumentException e) {
                     NationsPlugin.plugin.getLogger().warning("Skipping invalid PUUID in holdings: " + rs.getString("PUUID"));
                 }

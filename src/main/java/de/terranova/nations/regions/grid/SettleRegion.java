@@ -5,6 +5,7 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.RegionManager;
+import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.base.GridRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasChildren;
@@ -34,7 +35,6 @@ public class SettleRegion extends GridRegion implements BankHolder, AccessContro
     private final Access access;
     private final Bank bank;
     private final Map<String, List<Region>> children = new HashMap<>();
-
 
     public SettleRegion(String name, UUID ruuid, Vectore2 loc) {
         super(name, ruuid, REGION_TYPE, loc);
@@ -112,5 +112,21 @@ public class SettleRegion extends GridRegion implements BankHolder, AccessContro
     @Override
     public Map<String, List<Region>> getChildrenMap() {
         return children;
+    }
+
+    public int getAvaibleRegionPoints(){
+        int points = getMaxClaims() * 50;
+        List<Region> propertyRegions = children.get("property");
+
+        if (propertyRegions != null) {
+            points -= propertyRegions.stream()
+                    .filter(r -> r instanceof BoundaryRegion)
+                    .map(r -> (BoundaryRegion) r)
+                    .mapToInt(br -> br.isPoly() ? 25 : 5)
+                    .sum();
+        } else {
+            points = 0;
+        }
+        return points;
     }
 }
