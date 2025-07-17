@@ -72,7 +72,7 @@ public class RealEstateCommand extends AbstractCommand {
             domain = "browser",
             permission = "nations.realestate.browser",
             description = "Opens the Realestate Browser",
-            usage = "/realestate browser <Stadt>"
+            usage = "/realestate browser"
     )
     public boolean browser(Player p, String[] args) {
         new RealEstateBrowserGUI(p,null).open();
@@ -81,9 +81,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "info.$name",
-            permission = "nations.realestate.rent",
+            permission = "nations.realestate.info",
             description = "Opens the Realestate Browser",
-            usage = "/realestate browser")
+            usage = "/realestate info <name>")
     public boolean info(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
         if (Oregion.isEmpty()) {
@@ -114,8 +114,8 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(domain = "rent.$name",
             permission = "nations.realestate.rent",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            description = "Rents a Realestate Object",
+            usage = "/realestate rent <name>"
     )
     public boolean rent(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -139,8 +139,8 @@ public class RealEstateCommand extends AbstractCommand {
     @CommandAnnotation(
             domain = "buy.$name",
             permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            description = "Buys a Realestate Object",
+            usage = "/realestate buy <name>"
     )
     public boolean buy(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -163,9 +163,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "resign.$name",
-            permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.resign",
+            description = "Cancel the renting of a property",
+            usage = "/realestate resign <name>"
     )
     public boolean resign(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -183,14 +183,15 @@ public class RealEstateCommand extends AbstractCommand {
             return false;
         }
         agent.getAgent().endRentByPlayer(p);
+        p.sendMessage(Chat.greenFade("Das Grundstück wurde erfolgreich gekündigt."));
         return true;
     }
 
     @CommandAnnotation(
             domain = "sell.$name.$buyamount.$rentamount",
-            permission = "nations.realestate.nosell",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.sell",
+            description = "Used to sell a Realestate",
+            usage = "/realestate sell <buyprice> <rentprice>"
     )
     public boolean sell(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -221,9 +222,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "offer.$name.$type.$amount.$user",
-            permission = "nations.realestate.nosell",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.offer",
+            description = "Offers a Realestate directly to a player",
+            usage = "/realestate <name> <rent/buy> <amount> <user>"
     )
     public boolean offer(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -261,20 +262,10 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "nosell.$name",
-            permission = "nations.realestate.nobuy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
-    )
-    public boolean nosell(Player p, String[] args) {
-        return true;
-    }
-
-    @CommandAnnotation(
             domain = "add.$name.$name",
-            permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.add",
+            description = "adds a user to your realestate",
+            usage = "/realestate add <region> <user>"
     )
     public boolean add(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -307,9 +298,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "remove.$name.$name",
-            permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.remove",
+            description = "Removes a user from your realestate",
+            usage = "/realestate remove <region> <user>"
     )
     public boolean remove(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -342,9 +333,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "holdings",
-            permission = "nations.realestate.buy",
-            description = "Opens the Realestate Browser",
-            usage = "/realestate browser"
+            permission = "nations.realestate.holdings",
+            description = "Retrieves your holding from sales",
+            usage = "/realestate holdings"
     )
     public boolean holdings(Player p, String[] args) {
         if(!RealEstateListing.holdings.containsKey(p.getUniqueId())){
