@@ -212,4 +212,36 @@ public class RegionClaimFunctions {
 
     }
 
+    public static boolean checkRegionSize(ProtectedRegion region, int minHeight, int minVolume) {
+        BlockVector3 min = region.getMinimumPoint();
+        BlockVector3 max = region.getMaximumPoint();
+
+        int height = max.y() - min.y() + 1;
+        if (height < minHeight) return false;
+
+        int volume;
+
+        if (region instanceof ProtectedPolygonalRegion poly) {
+            int area = calculate2dPolygonArea(poly.getPoints());
+            volume = area * height;
+        } else {
+            int width = max.x() - min.x() + 1;
+            int depth = max.z() - min.z() + 1;
+            volume = width * depth * height;
+        }
+
+        return volume >= minVolume;
+    }
+
+    //Shoelace Formula
+    private static int calculate2dPolygonArea(List<BlockVector2> points) {
+        int area = 0;
+        for (int i = 0; i < points.size(); i++) {
+            BlockVector2 p1 = points.get(i);
+            BlockVector2 p2 = points.get((i + 1) % points.size());
+
+            area += (p1.x() * p2.z()) - (p2.x() * p1.z());
+        }
+        return Math.abs(area) / 2;
+    }
 }

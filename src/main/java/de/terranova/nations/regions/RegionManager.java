@@ -19,18 +19,36 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
+import static de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag.NATIONS_TYPE;
+
 public class RegionManager {
     // Map structure: Type -> (UUID -> RegionType)
     private final static Map<String, Map<UUID, ? extends Region>> regionCache = new HashMap<>();
 
     public static <T extends Region> void cacheRegions(String type, Map<UUID, T> regions) {
+        for (T region : regions.values()) {
+            applyNationTypeFlagIfMissing(region.getWorldguardRegion(), type);
+        }
         regionCache.put(type, regions);
+    }
+
+    //remove next update since its only a run once type of thing to make capatability with old versions
+    @Deprecated
+    public static void applyNationTypeFlagIfMissing(ProtectedRegion region, String type) {
+        if (region == null || NATIONS_TYPE == null) return;
+
+        // If region doesn't have the flag set, set it
+        String existing = region.getFlag(NATIONS_TYPE);
+        if (existing == null || existing.isEmpty()) {
+            region.setFlag(NATIONS_TYPE, type);
+        }
     }
 
     @SuppressWarnings("unchecked")
     public static <T extends Region> Map<UUID, T> retrieveAllCachedRegions(String type) {
         return (Map<UUID, T>) regionCache.get(type);
     }
+
 
     public static <T extends Region> void addRegion(String type, UUID uuid, T region) {
         // Retrieve the map for the specified type, or create a new one if it doesn't exist
@@ -106,7 +124,7 @@ public class RegionManager {
 
     public static <T extends Region> Optional<T> retrieveRegion(ProtectedRegion region) {
         String regionUUIDString = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-        String regionType = region.getFlag(TypeFlag.NATIONS_TYPE);
+        String regionType = region.getFlag(NATIONS_TYPE);
         if (regionUUIDString == null || regionType == null || regionUUIDString.equals("00000000-0000-0000-0000-000000000000")) {
             return Optional.empty();
         }
