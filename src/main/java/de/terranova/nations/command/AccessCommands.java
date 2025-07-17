@@ -77,7 +77,12 @@ public class AccessCommands {
         return true;
     }
 
-    @CommandAnnotation(domain = "access.remove.$REGION_ACCESS_USERS", permission = "nations.access.ranks", description = "Entfernt den ausgewählten Spieler von deiner Region", usage = "/terra remove <player>")
+    @CommandAnnotation(
+            domain = "access.remove.$REGION_ACCESS_USERS",
+            permission = "nations.access.ranks",
+            description = "Entfernt den ausgewählten Spieler von deiner Region",
+            usage = "/terra remove <player>"
+    )
     public boolean removePlayer(Player p, String[] args) {
         TerraSelectCache cache = TerraSelectCache.hasSelect(p);
         AccessControlled access = getAccessControlledRegion(p, cache);

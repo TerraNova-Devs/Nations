@@ -23,8 +23,8 @@ public class RealEstateBuyGUI extends RoseGUI {
     public void onOpen(InventoryOpenEvent event) {
 
         RoseItem fillerDark = new RoseItem.Builder()
+                .showTooltip(false)
                 .material(Material.BLACK_STAINED_GLASS_PANE)
-                .displayName("")
                 .build();
         fillGui(fillerDark);
 

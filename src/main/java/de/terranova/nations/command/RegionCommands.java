@@ -61,7 +61,6 @@ public class RegionCommands {
             p.sendMessage(Chat.errorFade("You do not have the required access level to remove this settlement."));
             return false;
         }
-
         region.remove();
         p.sendMessage(Chat.greenFade("Die Stadt " + region.getName() + " wurde erfolgreich entfernt."));
 

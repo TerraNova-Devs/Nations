@@ -34,8 +34,8 @@ public class TownSkinGUI extends RoseGUI {
 
 
         RoseItem filler = new RoseItem.Builder()
+                .showTooltip(false)
                 .material(Material.BLACK_STAINED_GLASS_PANE)
-                .displayName("")
                 .build();
         fillGui(filler);
 

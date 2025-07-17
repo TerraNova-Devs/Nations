@@ -37,8 +37,8 @@ public class TownUpgradeGUI extends RoseGUI {
         boolean canLevelup = settle.getBank().getCredit() >= goalRankObjective.getSilver() && ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore();
 
         RoseItem filler = new RoseItem.Builder()
+                .showTooltip(false)
                 .material(Material.BLACK_STAINED_GLASS_PANE)
-                .displayName("")
                 .build();
         fillGui(filler);
 

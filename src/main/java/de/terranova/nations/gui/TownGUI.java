@@ -38,7 +38,10 @@ public class TownGUI extends RoseGUI {
 
         Nation nation = NationsPlugin.nationManager.getNationBySettlement(settle.getId());
 
-        RoseItem filler = new RoseItem.Builder().material(Material.BLACK_STAINED_GLASS_PANE).displayName("").build();
+        RoseItem filler = new RoseItem.Builder()
+                .showTooltip(false)
+                .material(Material.BLACK_STAINED_GLASS_PANE)
+                .build();
         fillGui(filler);
 
         RoseItem level = new RoseItem.Builder().material(Material.NETHER_STAR).displayName(Chat.redFade("<b>Stadtlevel: " + settle.getRank().getLevel())).addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.getClaims(), settle.getMaxClaims()))).build();

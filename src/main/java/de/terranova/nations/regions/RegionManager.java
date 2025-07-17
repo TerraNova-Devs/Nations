@@ -32,17 +32,6 @@ public class RegionManager {
         return (Map<UUID, T>) regionCache.get(type);
     }
 
-    public static Optional<SettleRegion> retrievePlayersSettlement(UUID player) {
-
-        for (Region region : retrieveAllCachedRegions("settle").values()) {
-            SettleRegion settle = (SettleRegion) region;
-            if (Access.hasAccess(settle.getAccess().getAccessLevel(player), AccessLevel.CITIZEN)) {
-                return Optional.of(settle);
-            }
-        }
-        return Optional.empty();
-    }
-
     public static <T extends Region> void addRegion(String type, UUID uuid, T region) {
         // Retrieve the map for the specified type, or create a new one if it doesn't exist
         Map<UUID, T> regions = retrieveAllCachedRegions(type);
@@ -61,6 +50,19 @@ public class RegionManager {
         }
         return regions.remove(uuid) != null;
     }
+
+    public static Optional<SettleRegion> retrievePlayersSettlement(UUID player) {
+
+        for (Region region : retrieveAllCachedRegions("settle").values()) {
+            SettleRegion settle = (SettleRegion) region;
+            if (Access.hasAccess(settle.getAccess().getAccessLevel(player), AccessLevel.CITIZEN)) {
+                return Optional.of(settle);
+            }
+        }
+        return Optional.empty();
+    }
+
+
 
     @SuppressWarnings("unchecked")
     public static <T extends Region> Optional<T> retrieveRegion(String type, UUID uuid) {

@@ -197,8 +197,8 @@ public class TownPlayersGUI extends RoseGUI {
 
     private void fillBorder() {
         RoseItem filler = new RoseItem.Builder()
+                .showTooltip(false)
                 .material(Material.BLACK_STAINED_GLASS_PANE)
-                .displayName("")
                 .build();
 
         // Fill slots except for navigation buttons
