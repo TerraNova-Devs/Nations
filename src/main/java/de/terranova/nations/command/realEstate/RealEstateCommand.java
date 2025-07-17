@@ -8,9 +8,11 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.command.commands.AbstractCommand;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
+import de.terranova.nations.command.commands.PlayerAwarePlaceholder;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
@@ -19,15 +21,39 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 public class RealEstateCommand extends AbstractCommand {
     public RealEstateCommand() {
-        addPlaceholder("$SETTLES", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
-        addPlaceholder("$type", () -> List.of("rent","buy"));
+
+        addPlaceholder("$onlinePlayers", new CachedSupplier<>(
+                () -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()),
+                10000
+        ));
+        addPlaceholder("$settles", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
+        addPlaceholder("$types", () -> List.of("rent","buy"));
+        addPlaceholder("$properties", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property").values().stream().map(Region::getName).toList(),100000) );
+        addPlaceholder("$personalProperties",
+                PlayerAwarePlaceholder.ofCachedPlayerFunction(
+                        (UUID uuid) ->
+                             de.terranova.nations.regions.RegionManager.retrievePlayersSettlement(uuid)
+                                    .map(settlement -> settlement.getChildrenMap()
+                                            .values()
+                                            .stream()
+                                            .flatMap(List::stream)
+                                            .map(Region::getName)
+                                            .collect(Collectors.toList())
+                                    )
+                                    .orElseGet(Collections::emptyList)
+                        ,
+                        3000)
+        );
+        addPlaceholder("$amount", new CachedSupplier<>(() -> List.of("1","10","100","1000"),10000));
+
+
+
         registerSubCommand(this, "browser");
         registerSubCommand(this, "sell");
         registerSubCommand(this, "buy");
@@ -36,8 +62,10 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "add");
         registerSubCommand(this, "remove");
         registerSubCommand(this, "resign");
+
         setupHelpCommand();
         initialize();
+
     }
 
     public static Optional<ProtectedRegion> getRegionByName(Player player, String regionName) {
@@ -53,7 +81,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "browser.$SETTLES",
+            domain = "browser.$settles",
             permission = "nations.realestate.browser",
             description = "Opens the Realestate Browser",
             usage = "/realestate browser <Stadt>"
@@ -80,7 +108,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "info.$name",
+            domain = "info.$properties",
             permission = "nations.realestate.info",
             description = "Opens the Realestate Browser",
             usage = "/realestate info <name>")
@@ -112,7 +140,7 @@ public class RealEstateCommand extends AbstractCommand {
         return true;
     }
 
-    @CommandAnnotation(domain = "rent.$name",
+    @CommandAnnotation(domain = "rent.$properties",
             permission = "nations.realestate.rent",
             description = "Rents a Realestate Object",
             usage = "/realestate rent <name>"
@@ -137,7 +165,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "buy.$name",
+            domain = "buy.$properties",
             permission = "nations.realestate.buy",
             description = "Buys a Realestate Object",
             usage = "/realestate buy <name>"
@@ -162,7 +190,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "resign.$name",
+            domain = "resign.$properties",
             permission = "nations.realestate.resign",
             description = "Cancel the renting of a property",
             usage = "/realestate resign <name>"
@@ -188,7 +216,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "sell.$name.$buyamount.$rentamount",
+            domain = "sell.$properties.$amount.$amount",
             permission = "nations.realestate.sell",
             description = "Used to sell a Realestate",
             usage = "/realestate sell <buyprice> <rentprice>"
@@ -221,7 +249,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "offer.$name.$type.$amount.$user",
+            domain = "offer.$properties.$type.$amount.$onlinePlayers",
             permission = "nations.realestate.offer",
             description = "Offers a Realestate directly to a player",
             usage = "/realestate <name> <rent/buy> <amount> <user>"
@@ -262,7 +290,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "add.$name.$name",
+            domain = "add.$properties.$onlinePlayers",
             permission = "nations.realestate.add",
             description = "adds a user to your realestate",
             usage = "/realestate add <region> <user>"
@@ -297,7 +325,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "remove.$name.$name",
+            domain = "remove.$properties.$onlinePlayers",
             permission = "nations.realestate.remove",
             description = "Removes a user from your realestate",
             usage = "/realestate remove <region> <user>"
