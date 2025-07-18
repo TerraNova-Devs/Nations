@@ -46,7 +46,11 @@ public class DenyEntryPlayersHandler extends FlagValueChangeHandler<Set<String>>
         for (ProtectedRegion region : entered) {
             Set<String> deniedUUIDs = region.getFlag(DenyEntryPlayersFlag.DENY_ENTRY_PLAYERS);
             if (deniedUUIDs != null && deniedUUIDs.contains(uuid.toString())) {
-                bukkitPlayer.sendMessage("§cDu darfst dieses Gebiet nicht betreten.");
+                if(bukkitPlayer.isOp()){
+                    bukkitPlayer.sendMessage(Chat.redFade("Du bist von diesem Grundstück gebannt op bypass"));
+                    return true;
+                }
+                bukkitPlayer.sendMessage(Chat.errorFade("Du darfst dieses Gebiet nicht betreten, da der besitzer dich gebannt hat."));
                 // Teleport back to "from" location
                 bukkitPlayer.teleport(BukkitAdapter.adapt(from));
                 return false;

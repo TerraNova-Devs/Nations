@@ -12,6 +12,7 @@ import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.gui.RealEstateBuyGUI;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
@@ -23,6 +24,7 @@ import org.bukkit.entity.Player;
 import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -400,9 +402,9 @@ public class RealEstateCommand extends AbstractCommand {
 
     @CommandAnnotation(
             domain = "toggleban.$properties.$onlinePlayers",
-            permission = "nations.realestate.holdings",
-            description = "Retrieves your holding from sales",
-            usage = "/realestate holdings"
+            permission = "nations.realestate.toggleban",
+            description = "Bans Players from your property",
+            usage = "/realestate toggleban <property> <player>"
     )
     public boolean toggleban(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
@@ -419,8 +421,98 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
+
+        if(!agent.getAgent().getLandlord().equals(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
+            return false;
+        }
+        String name = PropertyRegionFactory.buildRegionName(args[0], p);
+        if(name == null){
+            p.sendMessage(Chat.errorFade("Error bei benennung abbruch."));
+            return false;
+        }
+        agent.getAgent().getRegion().rename(name);
+        p.sendMessage(Chat.errorFade("Region erfolgreich umbenannt"));
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "rename.$properties.$name",
+            permission = "nations.realestate.holdings",
+            description = "Retrieves your holding from sales",
+            usage = "/realestate rename <property> <name>"
+    )
+    public boolean rename(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
         OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
         agent.getAgent().toggleban(p,target);
+        return true;
+    }
+
+    private static final List<String> PREFIXES = List.of(
+            "red", "brewer", "quiet", "stormy", "golden", "dark", "lonely", "windy", "ancient", "happy",
+            "frozen", "sunny", "muddy", "swift", "burning", "misty", "blue", "crimson", "glowing", "silver"
+    );
+
+    private static final List<String> NAMES = List.of(
+            "Dragon", "Magic", "Falcon", "Ember", "Willow", "Shadow", "Oak", "Crystal", "Phoenix", "Echo",
+            "Basilisk", "Moon", "Tiger", "Comet", "Forge", "Temple", "Witch", "Lantern", "Sprig", "Thorn"
+    );
+
+    private static final List<String> SUFFIXES = List.of(
+            "street", "alley", "avenue", "lane", "path", "way", "circle", "square", "road", "terrace",
+            "bend", "point", "hill", "ridge", "gate", "meadow", "garden", "crossing", "pass", "corner"
+    );
+
+    @CommandAnnotation(
+            domain = "generaterandomname",
+            permission = "nations.realestate.generaterandomname",
+            description = "Generates a random Streetname you can use",
+            usage = "/realestate generaterandomname"
+    )
+    public boolean generaterandomname(Player p, String[] args) {
+        String name = null;
+        Random random = new Random();
+        int attempts = 0;
+
+        while (attempts < 100 && (name == null || name.length() > 30)) {
+            attempts++;
+
+            // Randomly include prefix and name
+            boolean usePrefix = random.nextBoolean();
+            boolean useName = random.nextBoolean();
+
+            String prefix = usePrefix ? PREFIXES.get(random.nextInt(PREFIXES.size())) : null;
+            String core = useName ? NAMES.get(random.nextInt(NAMES.size())) : null;
+            String suffix = SUFFIXES.get(random.nextInt(SUFFIXES.size()));
+
+            StringBuilder builder = new StringBuilder();
+            if (prefix != null) builder.append(prefix).append(":");
+            if (core != null) builder.append(core).append(":");
+            builder.append(suffix);
+
+            name = builder.toString();
+        }
+
+        if (name == null || name.length() > 30) {
+            p.sendMessage(Chat.errorFade("Konnte keinen gültigen Namen generieren."));
+            return true;
+        }
+
+        p.sendMessage(Chat.cottonCandy("Zufälliger Name: " + name));
         return true;
     }
 
