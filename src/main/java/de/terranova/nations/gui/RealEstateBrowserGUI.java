@@ -3,6 +3,7 @@ package de.terranova.nations.gui;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
+import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateMarketCache;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.roseGUI.RoseGUI;
@@ -19,6 +20,7 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class RealEstateBrowserGUI extends RoseGUI {
 
@@ -32,7 +34,6 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
     public RealEstateBrowserGUI(@NotNull Player player, Region agentRegion) {
         super(player, "realestate-browser", Chat.blueFade(String.format("RealEstate: %s", agentRegion != null ? agentRegion.getName() : "Global")), 6);
-
         this.agentUUID = agentRegion != null ? agentRegion.getId() : GLOBAL_UUID;
 
         pagination.registerPageSlotsBetween(10, 16);
@@ -50,10 +51,10 @@ public class RealEstateBrowserGUI extends RoseGUI {
             }
         });
     }
-
+    private List<RealEstateAgent> privateOffers = List.of();
     @Override
     public void onOpen(InventoryOpenEvent event) {
-
+        this.privateOffers = RealEstateAgent.offerCache.getOrDefault(player.getUniqueId(), List.of());
         RoseItem fillerDark = new RoseItem.Builder()
                 .showTooltip(false)
                 .material(Material.BLACK_STAINED_GLASS_PANE)
@@ -91,7 +92,8 @@ public class RealEstateBrowserGUI extends RoseGUI {
                     filterMode = switch (filterMode) {
                         case ALL -> FilterMode.BUY;
                         case BUY -> FilterMode.RENT;
-                        case RENT -> FilterMode.ALL;
+                        case RENT -> FilterMode.PRIVATE;
+                        case PRIVATE -> FilterMode.ALL;
                     };
                     pagination.clearAllItems();
                     pagination.addItem(calculateOffers().toArray(new RoseItem[0]));
@@ -106,7 +108,12 @@ public class RealEstateBrowserGUI extends RoseGUI {
                 .addLore("Klicke zum Umschalten zwischen ASC/DESC")
                 .build()
                 .onClick(e -> {
-                    sortOrder = (sortOrder == SortOrder.ASC) ? SortOrder.DESC : SortOrder.ASC;
+                    filterMode = switch (filterMode) {
+                        case ALL -> FilterMode.BUY;
+                        case BUY -> FilterMode.RENT;
+                        case RENT -> FilterMode.PRIVATE;
+                        case PRIVATE -> FilterMode.ALL;
+                    };
                     pagination.clearAllItems();
                     pagination.addItem(calculateOffers().toArray(new RoseItem[0]));
                     pagination.update();
@@ -118,15 +125,29 @@ public class RealEstateBrowserGUI extends RoseGUI {
     private List<RoseItem> calculateOffers(){
         return getFilteredAndSortedOffers().stream()
                 .map(offer -> {
-                    Region region = (Region) offer;
-                    return new RoseItem.Builder()
-                            .material(Material.ACACIA_SIGN)
-                            .displayName(region.getType() + " - " + region.getName())
-                            .addLore(Chat.blueFade("Location: " + Chat.prettyLocation(region.getRegionCenter())))
-                            .addLore(offer.getAgent().isForBuy() ? String.format("Buy: %s",offer.getAgent().getBuyPrice()) : null)
-                            .addLore(offer.getAgent().isForRent() ? String.format("Rent: %s / 14 Tage",offer.getAgent().getRentPrice()) : null)
-                            .build()
-                            .onClick(e -> new RealEstateBuyGUI(player, offer.getAgent(),false).open());
+                    Region region = offer.getAgent().getRegion();
+                    RealEstateAgent agent = offer.getAgent();
+                    boolean isPrivate = region == null;
+
+                    Material signMaterial = isPrivate ? Material.DARK_OAK_SIGN : Material.ACACIA_SIGN;
+                    String name = isPrivate ? "Privates Angebot" : (region.getType() + " - " + region.getName());
+
+                    RoseItem.Builder builder = new RoseItem.Builder()
+                            .material(signMaterial)
+                            .displayName(name);
+
+                    if (!isPrivate) {
+                        builder.addLore(Chat.blueFade("Location: " + Chat.prettyLocation(region.getRegionCenter())));
+                    }
+
+                    if (agent.isForBuy())
+                        builder.addLore("Buy: " + agent.getBuyPrice());
+
+                    if (agent.isForRent())
+                        builder.addLore("Rent: " + agent.getRentPrice() + " / 14 Tage");
+
+                    return builder.build()
+                            .onClick(e -> new RealEstateBuyGUI(player, agent, false).open());
                 })
                 .collect(Collectors.toList());
     }
@@ -135,12 +156,27 @@ public class RealEstateBrowserGUI extends RoseGUI {
         List<HasRealEstateAgent> offers = OFFER_CACHE.getOrDefault(agentUUID,
                 new CachedSupplier<>(List::of, 20)).get();
 
-        return offers.stream()
-                .filter(offer -> switch (filterMode) {
-                    case BUY -> offer.getAgent().isForBuy();
-                    case RENT -> offer.getAgent().isForRent();
-                    case ALL -> true;
+        // Add private offers as anonymous HasRealEstateAgent implementations
+        List<HasRealEstateAgent> privateWrapped = privateOffers.stream()
+                .<HasRealEstateAgent>map(agent -> new HasRealEstateAgent() {
+                    @Override
+                    public RealEstateAgent getAgent() {
+                        return agent;
+                    }
                 })
+                .toList();
+
+        Stream<HasRealEstateAgent> stream;
+
+        switch (filterMode) {
+            case BUY -> stream = offers.stream().filter(o -> o.getAgent().isForBuy());
+            case RENT -> stream = offers.stream().filter(o -> o.getAgent().isForRent());
+            case PRIVATE -> stream = privateWrapped.stream();
+            case ALL -> stream = Stream.concat(privateWrapped.stream(), offers.stream());
+            default -> stream = offers.stream();
+        }
+
+        return stream
                 .sorted((a, b) -> {
                     int priceA = getRelevantPrice(a);
                     int priceB = getRelevantPrice(b);
@@ -157,7 +193,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
         return isRelevant ? offer.getAgent().getBuyPrice() : Integer.MAX_VALUE;
     }
 
-    private enum FilterMode {ALL, BUY, RENT}
+    private enum FilterMode { ALL, BUY, RENT, PRIVATE }
 
     private enum SortOrder {ASC, DESC}
 

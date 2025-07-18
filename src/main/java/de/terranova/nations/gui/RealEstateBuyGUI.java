@@ -14,13 +14,11 @@ import org.jetbrains.annotations.NotNull;
 public class RealEstateBuyGUI extends RoseGUI {
 
     RealEstateAgent agent;
-    Player p;
     boolean isOffer;
 
     public RealEstateBuyGUI(@NotNull Player p, RealEstateAgent agent, boolean isOffer) {
         super(p, "re-buy", Chat.cottonCandy(agent.getRegion().getName()), 3);
         this.agent = agent;
-        this.p = p;
         this.isOffer = isOffer;
     }
 
@@ -39,7 +37,7 @@ public class RealEstateBuyGUI extends RoseGUI {
         if (!isOffer && agent.isForBuy()) {
             material = Material.SLIME_BLOCK;
             lore = Chat.cottonCandy(agent.getBuyPrice() + " Silber");
-        } else if (isOffer && agent.hasOffer(p) && agent.getOfferType().equals("buy")) {
+        } else if (isOffer && agent.hasOffer(player) && agent.getOfferType().equals("buy")) {
             material = Material.SLIME_BLOCK;
             lore = Chat.cottonCandy(agent.getOfferAmount() + " Silber");
         }
@@ -55,8 +53,8 @@ public class RealEstateBuyGUI extends RoseGUI {
                         player.performCommand("re buy " + agent.getRegion().getName());
                         player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                         player.closeInventory();
-                    } else if (agent.hasOffer(p) && agent.getOfferType().equals("buy") && isOffer) {
-                        agent.acceptOffer(p);
+                    } else if (agent.hasOffer(player) && agent.getOfferType().equals("buy") && isOffer) {
+                        agent.acceptOffer(player);
                         player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                         player.closeInventory();
                     } else {
@@ -73,7 +71,7 @@ public class RealEstateBuyGUI extends RoseGUI {
         if (!isOffer && agent.isForRent()) {
             material = Material.SLIME_BLOCK;
             lore = Chat.cottonCandy(agent.getRentPrice() + " Silber");
-        } else if (isOffer && agent.hasOffer(p) && agent.getOfferType().equals("rent")) {
+        } else if (isOffer && agent.hasOffer(player) && agent.getOfferType().equals("rent")) {
             material = Material.SLIME_BLOCK;
             lore = Chat.cottonCandy(agent.getOfferAmount() + " Silber");
         }
@@ -88,8 +86,8 @@ public class RealEstateBuyGUI extends RoseGUI {
                         player.performCommand("re rent " + agent.getRegion().getName());
                         player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                         player.closeInventory();
-                    } else if (agent.hasOffer(p) && agent.getOfferType().equals("rent")) {
-                        agent.acceptOffer(p);
+                    } else if (agent.hasOffer(player) && agent.getOfferType().equals("rent")) {
+                        agent.acceptOffer(player);
                         player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                         player.closeInventory();
                     } else {

@@ -16,8 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 public class RealEstateAgent {
 
@@ -230,6 +229,7 @@ public class RealEstateAgent {
         return true;
     }
 
+    public static Map<UUID, List<RealEstateAgent>> offerCache = new HashMap<>();
     private UUID offeredPlayer;
     private int offeredAmount;
     private String offeredType;
@@ -272,12 +272,22 @@ public class RealEstateAgent {
         offeredPlayer = user.getUniqueId();
         offeredAmount = amount;
         offeredType = type;
+        offerCache.computeIfAbsent(offeredPlayer, k -> new ArrayList<>()).add(this);
         user.sendMessage(Chat.greenFade(String.format("Dir wurde die Region %s von %s zum %s angeboten für %s Coins.",region.getName(),offerer.getName(),(Objects.equals(type, "buy")) ? "kaufen" : "miete / 14 Tage",amount)));
         user.sendMessage("Zum Annehmen einfach [hier] klicken");
         return true;
     }
 
     public void clearOffer(){
+        if (offeredPlayer != null) {
+            List<RealEstateAgent> offers = offerCache.get(offeredPlayer);
+            if (offers != null) {
+                offers.remove(this);
+                if (offers.isEmpty()) {
+                    offerCache.remove(offeredPlayer);
+                }
+            }
+        }
         offeredPlayer = null;
         offeredAmount = 0;
         offeredType = null;
