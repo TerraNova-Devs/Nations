@@ -44,7 +44,7 @@ public class RealEstateDAO {
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
             ps.setString(1, agent.getRegion().getId().toString());
-            ps.setString(2, agent.getRegionLandlord().toString());
+            ps.setString(2, agent.getLandlord().toString());
             ps.setBoolean(3, agent.isForBuy());
             ps.setInt(4, agent.getBuyPrice());
             ps.setBoolean(5, agent.isForRent());

@@ -32,11 +32,20 @@ public class RealEstateAgent {
 
     public RealEstateAgent(Region region, RealEstateListing data) {
         //Wenn es einen Eintrag(data) gibt ist die Region auf dem Markt oder Vermietet sonst Verkauft und in Besitz
-        if(data != null) {
+        if(data != null && data.landlord != null) {
             this.data = data;
             this.landlord = data.landlord;
         } else {
-            this.landlord = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().get()).getUniqueId();
+            if(data != null) {
+                this.data = data;
+            }
+            if(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().isPresent()) {
+                this.landlord = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getPlayers().stream().findFirst().get()).getUniqueId();
+            }
+            if(region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().isPresent()) {
+                this.landlord = Bukkit.getOfflinePlayer(region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().get()).getUniqueId();
+            }
+
         }
         this.region = region;
         if (region instanceof HasParent<?> parent) {
@@ -326,15 +335,25 @@ public class RealEstateAgent {
         DefaultDomain members  = region.getWorldguardRegion().getMembers();
         return members.contains(user);
     }
-    public void addmember(UUID user) {
+    public void addmember(Player p, UUID user) {
+        if(!region.getWorldguardRegion().getOwners().contains(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
+            return;
+        }
         DefaultDomain members  = region.getWorldguardRegion().getMembers();
         members.addPlayer(user);
         region.getWorldguardRegion().setMembers(members);
+        p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s zu %s hinzugefügt.",Bukkit.getOfflinePlayer(user).getName() ,region.getName())));
     }
-    public void removemember(UUID user) {
+    public void removemember(Player p , UUID user) {
+        if(!region.getWorldguardRegion().getOwners().contains(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
+            return;
+        }
         DefaultDomain members  = region.getWorldguardRegion().getMembers();
         members.removePlayer(user);
         region.getWorldguardRegion().setMembers(members);
+        p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s zu %s entfernt.",Bukkit.getOfflinePlayer(user).getName() ,region.getName())));
     }
 
     public void stripmember() {
@@ -347,12 +366,12 @@ public class RealEstateAgent {
         return region;
     }
 
-    public UUID getRegionLandlord() {
-        return data.landlord;
+    public UUID getLandlord() {
+        return landlord;
     }
 
     public UUID getRegionUser(){
-        return region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().orElseGet(this::getRegionLandlord);
+        return region.getWorldguardRegion().getOwners().getUniqueIds().stream().findFirst().orElseGet(this::getLandlord);
     }
 
     public Instant getTimestamp() {

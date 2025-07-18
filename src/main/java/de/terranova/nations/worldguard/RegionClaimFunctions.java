@@ -99,6 +99,7 @@ public class RegionClaimFunctions {
         }
         region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
         region.setFlag(TypeFlag.NATIONS_TYPE, type);
+        region.setPriority(101);
         DefaultDomain owners = region.getOwners();
         owners.addPlayer(p.getUniqueId());
         region.setOwners(owners); // optional, da `getOwners()` nicht kopiert

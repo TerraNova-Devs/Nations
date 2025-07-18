@@ -44,7 +44,7 @@ public class RealEstateBuyGUI extends RoseGUI {
 
                 });
 
-        addItem(12, buy);
+        addItem(11, buy);
 
         RoseItem rent = new RoseItem.Builder()
                 .material(agent.isForRent() ? Material.HONEY_BLOCK : Material.RED_STAINED_GLASS_PANE)
@@ -63,6 +63,6 @@ public class RealEstateBuyGUI extends RoseGUI {
 
                 });
 
-        addItem(16, rent);
+        addItem(15, rent);
     }
 }

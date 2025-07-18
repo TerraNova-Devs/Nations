@@ -8,11 +8,9 @@ import com.sk89q.worldguard.protection.regions.RegionContainer;
 import de.terranova.nations.command.commands.AbstractCommand;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.command.commands.PlayerAwarePlaceholder;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.TerraSelectCache;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
@@ -21,7 +19,9 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 
@@ -32,27 +32,10 @@ public class RealEstateCommand extends AbstractCommand {
                 () -> Bukkit.getOnlinePlayers().stream().map(Player::getName).collect(Collectors.toList()),
                 10000
         ));
-        addPlaceholder("$settles", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(),100000) );
-        addPlaceholder("$types", () -> List.of("rent","buy"));
-        addPlaceholder("$properties", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property").values().stream().map(Region::getName).toList(),100000) );
-        addPlaceholder("$personalProperties",
-                PlayerAwarePlaceholder.ofCachedPlayerFunction(
-                        (UUID uuid) ->
-                             de.terranova.nations.regions.RegionManager.retrievePlayersSettlement(uuid)
-                                    .map(settlement -> settlement.getChildrenMap()
-                                            .values()
-                                            .stream()
-                                            .flatMap(List::stream)
-                                            .map(Region::getName)
-                                            .collect(Collectors.toList())
-                                    )
-                                    .orElseGet(Collections::emptyList)
-                        ,
-                        3000)
-        );
-        addPlaceholder("$amount", new CachedSupplier<>(() -> List.of("1","10","100","1000"),10000));
-
-
+        addPlaceholder("$settles", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle").values().stream().map(Region::getName).toList(), 100000));
+        addPlaceholder("$types", () -> List.of("rent", "buy"));
+        addPlaceholder("$properties", new CachedSupplier<>(() -> de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property").values().stream().map(Region::getName).toList(), 100000));
+        addPlaceholder("$amount", new CachedSupplier<>(() -> List.of("1", "10", "100", "1000"), 10000));
 
         registerSubCommand(this, "browser");
         registerSubCommand(this, "sell");
@@ -62,7 +45,8 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "add");
         registerSubCommand(this, "remove");
         registerSubCommand(this, "resign");
-
+        registerSubCommand(this, "holdings");
+        registerSubCommand(this, "offer");
         setupHelpCommand();
         initialize();
 
@@ -87,12 +71,12 @@ public class RealEstateCommand extends AbstractCommand {
             usage = "/realestate browser <Stadt>"
     )
     public boolean openBrowser(Player p, String[] args) {
-        Optional<Region> osettle = de.terranova.nations.regions.RegionManager.retrieveRegion("settle",args[1]);
-        if(osettle.isEmpty()) {
+        Optional<Region> osettle = de.terranova.nations.regions.RegionManager.retrieveRegion("settle", args[1]);
+        if (osettle.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die von dir genannte Stadt konnte nicht gefunden werden."));
             return false;
         }
-        new RealEstateBrowserGUI(p,osettle.get()).open();
+        new RealEstateBrowserGUI(p, osettle.get()).open();
         return true;
     }
 
@@ -103,7 +87,7 @@ public class RealEstateCommand extends AbstractCommand {
             usage = "/realestate browser"
     )
     public boolean browser(Player p, String[] args) {
-        new RealEstateBrowserGUI(p,null).open();
+        new RealEstateBrowserGUI(p, null).open();
         return true;
     }
 
@@ -129,12 +113,12 @@ public class RealEstateCommand extends AbstractCommand {
         }
         Instant time = agent.getAgent().getRentEndingTime();
         p.sendMessage(Chat.cottonCandy("Infos: " + agent.getAgent().getRegion().getName()));
-        p.sendMessage(Chat.cottonCandy("Besitzer: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionLandlord()).getName()));
-        if(!agent.getAgent().getRegionLandlord().equals(agent.getAgent().getRegionUser())){
-            p.sendMessage(Chat.cottonCandy("Mieter: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionLandlord()).getName()));
+        p.sendMessage(Chat.cottonCandy("Besitzer: " + Bukkit.getOfflinePlayer(agent.getAgent().getLandlord()).getName()));
+        if (!agent.getAgent().getLandlord().equals(agent.getAgent().getRegionUser())) {
+            p.sendMessage(Chat.cottonCandy("Mieter: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionUser()).getName()));
         }
 
-        if(time != null){
+        if (time != null) {
             p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
         }
         return true;
@@ -232,12 +216,13 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
             return false;
         }
-        if(region.get() instanceof HasRealEstateAgent agent) {
+        if (region.get() instanceof HasRealEstateAgent agent) {
             try {
                 int buy = Integer.parseInt(args[2]);
                 int rent = Integer.parseInt(args[3]);
 
-                if(agent.getAgent().sellEstate(p,buy ,rent)) p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
+                if (agent.getAgent().sellEstate(p, buy, rent))
+                    p.sendMessage(Chat.greenFade("Region erfolgreich auf den Markt gebracht."));
             } catch (NumberFormatException e) {
                 p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
             }
@@ -249,7 +234,7 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "offer.$properties.$type.$amount.$onlinePlayers",
+            domain = "offer.$properties.$types.$amount.$onlinePlayers",
             permission = "nations.realestate.offer",
             description = "Offers a Realestate directly to a player",
             usage = "/realestate <name> <rent/buy> <amount> <user>"
@@ -270,15 +255,16 @@ public class RealEstateCommand extends AbstractCommand {
             return false;
         }
         Player player = Bukkit.getPlayer(args[4]);
-        if(player == null) {
+        if (player == null) {
             p.sendMessage(Chat.errorFade("Der von dir angewählte Spieler ist nicht online."));
             return false;
         }
-        if(region.get() instanceof HasRealEstateAgent agent) {
+        if (region.get() instanceof HasRealEstateAgent agent) {
             try {
                 int amount = Integer.parseInt(args[3]);
 
-                if(agent.getAgent().offerEstate(p,args[2] ,amount,player.getUniqueId())) p.sendMessage(Chat.greenFade("Region erfolgreich angeboten."));
+                if (agent.getAgent().offerEstate(p, args[2], amount, player.getUniqueId()))
+                    p.sendMessage(Chat.greenFade("Region erfolgreich angeboten."));
             } catch (NumberFormatException e) {
                 p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
             }
@@ -315,11 +301,11 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Der Spieler " + args[2] + " ist nicht online."));
             return false;
         }
-        if(agent.getAgent().hasmember(target.getUniqueId())){
+        if (agent.getAgent().hasmember(target.getUniqueId())) {
             p.sendMessage(Chat.errorFade("Der von dir banannte Spieler " + target.getName() + " ist bereits hinzugefügt."));
             return false;
         }
-        agent.getAgent().addmember(target.getUniqueId());
+        agent.getAgent().addmember(p,target.getUniqueId());
         Chat.greenFade("Du hast Spieler " + target.getName() + " erfolgreich zu " + agent.getAgent().getRegion().getName() + " hinzugefügt.");
         return true;
     }
@@ -350,11 +336,11 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Der Spieler " + args[2] + " ist nicht online."));
             return false;
         }
-        if(!agent.getAgent().hasmember(target.getUniqueId())){
+        if (!agent.getAgent().hasmember(target.getUniqueId())) {
             p.sendMessage(Chat.errorFade("Der von dir banannte Spieler " + target.getName() + " ist kein Mitglied der Region."));
             return false;
         }
-        agent.getAgent().removemember(target.getUniqueId());
+        agent.getAgent().removemember(p,target.getUniqueId());
         Chat.greenFade("Du hast Spieler " + target.getName() + " erfolgreich von " + agent.getAgent().getRegion().getName() + " entfernt.");
         return true;
     }
@@ -366,13 +352,13 @@ public class RealEstateCommand extends AbstractCommand {
             usage = "/realestate holdings"
     )
     public boolean holdings(Player p, String[] args) {
-        if(!RealEstateListing.holdings.containsKey(p.getUniqueId())){
+        if (!RealEstateListing.holdings.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.cottonCandy("Es gibt nichts für dich abzuholen."));
             return true;
         }
-        int credited = ItemTransfer.credit(p,"terranova_silver", RealEstateListing.holdings.get(p.getUniqueId()),false);
+        int credited = ItemTransfer.credit(p, "terranova_silver", RealEstateListing.holdings.get(p.getUniqueId()), false);
 
-        if(credited == 0){
+        if (credited == 0) {
             p.sendMessage(Chat.errorFade("Du benötigst mehr freien Platz im Inventar."));
             return true;
         }
@@ -380,7 +366,7 @@ public class RealEstateCommand extends AbstractCommand {
         RealEstateListing.holdings.compute(p.getUniqueId(), (key, value) -> value == null || value - credited <= 0 ? null : value - credited);
         RealEstateDAO.upsertHolding(p.getUniqueId(), RealEstateListing.holdings.getOrDefault(p.getUniqueId(), 0));
         p.sendMessage(Chat.greenFade("Dir wurde erfolgreich " + credited + " gutgeschrieben."));
-        if(RealEstateListing.holdings.containsKey(p.getUniqueId())){
+        if (RealEstateListing.holdings.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.blueFade("Verbleibend: " + RealEstateListing.holdings.get(p.getUniqueId())));
         }
         return true;
