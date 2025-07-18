@@ -17,6 +17,7 @@ import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
@@ -48,6 +49,7 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "resign");
         registerSubCommand(this, "holdings");
         registerSubCommand(this, "offer");
+        registerSubCommand(this, "toggleban");
         setupHelpCommand();
         initialize();
 
@@ -359,11 +361,7 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
-        Player target = Bukkit.getPlayerExact(args[2]);
-        if (target == null) {
-            p.sendMessage(Chat.errorFade("Der Spieler " + args[2] + " ist nicht online."));
-            return false;
-        }
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
         if (!agent.getAgent().hasmember(target.getUniqueId())) {
             p.sendMessage(Chat.errorFade("Der von dir banannte Spieler " + target.getName() + " ist kein Mitglied der Region."));
             return false;
@@ -397,6 +395,32 @@ public class RealEstateCommand extends AbstractCommand {
         if (RealEstateListing.holdings.containsKey(p.getUniqueId())) {
             p.sendMessage(Chat.blueFade("Verbleibend: " + RealEstateListing.holdings.get(p.getUniqueId())));
         }
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "toggleban.$properties.$onlinePlayers",
+            permission = "nations.realestate.holdings",
+            description = "Retrieves your holding from sales",
+            usage = "/realestate holdings"
+    )
+    public boolean toggleban(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+        OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
+        agent.getAgent().toggleban(p,target);
         return true;
     }
 

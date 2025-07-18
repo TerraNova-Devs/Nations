@@ -9,7 +9,9 @@ import de.terranova.nations.regions.modules.bank.BankHolder;
 import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.TaskTrigger;
 import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
+import de.terranova.nations.worldguard.NationsRegionFlag.DenyEntryPlayersFlag;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
@@ -360,7 +362,7 @@ public class RealEstateAgent {
         return members.contains(user);
     }
     public void addmember(Player p, UUID user) {
-        if(!region.getWorldguardRegion().getOwners().contains(p.getUniqueId())){
+        if(!getRegionUser().equals(p.getUniqueId())){
             p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
             return;
         }
@@ -370,7 +372,7 @@ public class RealEstateAgent {
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s zu %s hinzugefügt.",Bukkit.getOfflinePlayer(user).getName() ,region.getName())));
     }
     public void removemember(Player p , UUID user) {
-        if(!region.getWorldguardRegion().getOwners().contains(p.getUniqueId())){
+        if(!getRegionUser().equals(p.getUniqueId())){
             p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
             return;
         }
@@ -378,6 +380,23 @@ public class RealEstateAgent {
         members.removePlayer(user);
         region.getWorldguardRegion().setMembers(members);
         p.sendMessage(Chat.greenFade(String.format("Du hast erfolgreich %s zu %s entfernt.",Bukkit.getOfflinePlayer(user).getName() ,region.getName())));
+    }
+
+    public void toggleban(Player p, OfflinePlayer user){
+        if(!getRegionUser().equals(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
+            return;
+        }
+        Set<String> denied = region.getWorldguardRegion().getFlag(DenyEntryPlayersFlag.DENY_ENTRY_PLAYERS);
+        Set<String> updated = (denied != null) ? new HashSet<>(denied) : new HashSet<>();
+        if (updated.contains(user.getUniqueId().toString())) {
+            updated.remove(user.getUniqueId().toString());
+            p.sendMessage(Chat.greenFade(String.format("Spieler %s wurde vom Zutrittsverbot entfernt.",user.getName())));
+        } else {
+            updated.add(user.getUniqueId().toString());
+            p.sendMessage(Chat.redFade(String.format("Spieler %s wurde für dieses Grundstück gesperrt.",user.getName())));
+        }
+        region.getWorldguardRegion().setFlag(DenyEntryPlayersFlag.DENY_ENTRY_PLAYERS, updated);
     }
 
     public void stripmember() {
