@@ -178,9 +178,9 @@ public abstract class Region {
         return type;
     }
 
-    public boolean isCompletelyWithin2D(ProtectedRegion outer) {
-        Polygon innerPoly = get2DPolygon(getWorldguardRegion());
-        Polygon outerPoly = get2DPolygon(outer);
+    public boolean isCompletelyWithin2D(ProtectedRegion inner) {
+        Polygon innerPoly = get2DPolygon(inner);
+        Polygon outerPoly = get2DPolygon(getWorldguardRegion());
 
         if (innerPoly == null || outerPoly == null) return false;
 
@@ -199,34 +199,6 @@ public abstract class Region {
         }
 
         return true;
-    }
-
-    private static boolean edgesIntersect(Polygon p1, Polygon p2) {
-        for (int i = 0; i < p1.npoints; i++) {
-            int nextI = (i + 1) % p1.npoints;
-            double x1 = p1.xpoints[i], y1 = p1.ypoints[i];
-            double x2 = p1.xpoints[nextI], y2 = p1.ypoints[nextI];
-
-            for (int j = 0; j < p2.npoints; j++) {
-                int nextJ = (j + 1) % p2.npoints;
-                double x3 = p2.xpoints[j], y3 = p2.ypoints[j];
-                double x4 = p2.xpoints[nextJ], y4 = p2.ypoints[nextJ];
-
-                if (Line2D.linesIntersect(x1, y1, x2, y2, x3, y3, x4, y4)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    private boolean pointsInside(Polygon source, Polygon target) {
-        for (int i = 0; i < source.npoints; i++) {
-            if (target.contains(source.xpoints[i], source.ypoints[i])) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
