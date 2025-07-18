@@ -24,6 +24,7 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
         this.addNameToCache(name);
         setParent(parent);
         this.region = getWorldguardRegion();
+        region.setPriority(getParent().getWorldguardRegion().getPriority() + 1);
         if(region != null) {
             this.realEstateAgent = new RealEstateAgent(this,RealEstateDAO.getRealEstateById(this.getId()));
             realEstateAgent.addToOfferCacheMarket();

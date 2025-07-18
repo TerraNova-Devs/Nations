@@ -20,7 +20,7 @@ public class WithinParentRegionRule<T extends Region & HasParent<P>, P extends R
     @Override
     public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         if (!parentClass.isInstance(explicitParent)) return false;
-        return BoundaryClaimFunctions.doRegionsOverlap2D(regionBeingPlaced, explicitParent.getWorldguardRegion());
+        return explicitParent.doesOverlap2D(regionBeingPlaced);
     }
 
     @Override

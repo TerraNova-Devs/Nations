@@ -10,6 +10,7 @@ import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
+import de.terranova.nations.gui.RealEstateBuyGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
@@ -254,8 +255,8 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Du musst richtig spezifizieren ob die region zum kaufen oder mieten ist."));
             return false;
         }
-        Player player = Bukkit.getPlayer(args[4]);
-        if (player == null) {
+        Player target = Bukkit.getPlayer(args[4]);
+        if (target == null) {
             p.sendMessage(Chat.errorFade("Der von dir angewählte Spieler ist nicht online."));
             return false;
         }
@@ -263,7 +264,7 @@ public class RealEstateCommand extends AbstractCommand {
             try {
                 int amount = Integer.parseInt(args[3]);
 
-                if (agent.getAgent().offerEstate(p, args[2], amount, player.getUniqueId()))
+                if (agent.getAgent().offerEstate(p, args[2], amount, target))
                     p.sendMessage(Chat.greenFade("Region erfolgreich angeboten."));
             } catch (NumberFormatException e) {
                 p.sendMessage(Chat.errorFade("Bitte gib Zahlen ein!"));
@@ -271,6 +272,33 @@ public class RealEstateCommand extends AbstractCommand {
 
         } else {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " kann nicht verkauft werden."));
+        }
+        return true;
+    }
+
+    @CommandAnnotation(
+            domain = "accept.$properties",
+            permission = "nations.realestate.accept",
+            description = "Accepts a offered realestate",
+            usage = "/accept <name>"
+    )
+    public boolean accept(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+
+        if (region.get() instanceof HasRealEstateAgent agent) {
+            new RealEstateBuyGUI(p, agent.getAgent(), true).open();
+
+        } else {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine anbietbare Region"));
         }
         return true;
     }

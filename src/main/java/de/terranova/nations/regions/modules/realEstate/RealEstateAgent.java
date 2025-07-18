@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
+import java.util.Objects;
 import java.util.UUID;
 
 public class RealEstateAgent {
@@ -233,7 +234,19 @@ public class RealEstateAgent {
     private int offeredAmount;
     private String offeredType;
 
-    public boolean offerEstate(Player offerer, String type, int amount , UUID user) {
+    public boolean hasOffer(Player p) {
+        return offeredPlayer.equals(p.getUniqueId());
+    }
+
+    public String getOfferType() {
+        return offeredType;
+    }
+
+    public Integer getOfferAmount() {
+        return offeredAmount;
+    }
+
+    public boolean offerEstate(Player offerer, String type, int amount , Player user) {
 
         if(offerer.getUniqueId() != data.landlord){
             if(!region.getWorldguardRegion().getOwners().contains(offerer.getUniqueId())){
@@ -247,7 +260,7 @@ public class RealEstateAgent {
             return false;
         }
 
-        if(offerer.getUniqueId().equals(user)){
+        if(offerer.getUniqueId().equals(user.getUniqueId())){
             offerer.sendMessage(Chat.errorFade("Du kannst dir selber keine region anbieten."));
             return false;
         }
@@ -256,10 +269,11 @@ public class RealEstateAgent {
             clearOffer();
         }
 
-        offeredPlayer = user;
+        offeredPlayer = user.getUniqueId();
         offeredAmount = amount;
         offeredType = type;
-
+        user.sendMessage(Chat.greenFade(String.format("Dir wurde die Region %s von %s zum %s angeboten für %s Coins.",region.getName(),offerer.getName(),(Objects.equals(type, "buy")) ? "kaufen" : "miete / 14 Tage",amount)));
+        user.sendMessage("Zum Annehmen einfach [hier] klicken");
         return true;
     }
 
@@ -269,9 +283,9 @@ public class RealEstateAgent {
         offeredType = null;
     }
 
-    public void acceptOffer(Player acquirer, String name) {
+    public void acceptOffer(Player acquirer) {
 
-        if(!acquirer.getUniqueId().equals(offeredPlayer) || !region.getName().equals(name)){
+        if(!acquirer.getUniqueId().equals(offeredPlayer)){
             acquirer.sendMessage(Chat.errorFade("Du hast kein angebot von dieser Stadt vorliegen."));
             return;
         }

@@ -6,7 +6,6 @@ import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.modules.HasChildren;
 import de.terranova.nations.regions.rule.RegionRule;
-import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import org.bukkit.entity.Player;
 
@@ -43,7 +42,7 @@ public class NoSelfOverlapRule implements RegionRule {
         }
 
         for (Region existing : relevantRegions) {
-            if (BoundaryClaimFunctions.doRegionsOverlap2D(regionBeingPlaced, existing.getWorldguardRegion())) {
+            if (existing.doesOverlap2D(regionBeingPlaced)) {
                 return false;
             }
         }

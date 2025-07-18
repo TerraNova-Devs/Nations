@@ -26,54 +26,6 @@ import java.util.regex.Pattern;
 
 public class BoundaryClaimFunctions {
 
-    public static boolean doRegionsOverlap2D(ProtectedRegion r1, ProtectedRegion r2) {
-        Polygon poly1 = get2DPolygon(r1);
-        Polygon poly2 = get2DPolygon(r2);
-
-        if (poly1 == null || poly2 == null) return false;
-
-        // Check if any point from one polygon is inside the other
-        for (int i = 0; i < poly1.npoints; i++) {
-            if (poly2.contains(poly1.xpoints[i], poly1.ypoints[i])) {
-                return true;
-            }
-        }
-        for (int i = 0; i < poly2.npoints; i++) {
-            if (poly1.contains(poly2.xpoints[i], poly2.ypoints[i])) {
-                return true;
-            }
-        }
-
-        // Optional: Add edge-intersection check if you want precise behavior
-        return false;
-    }
-
-    private static Polygon get2DPolygon(ProtectedRegion region) {
-        if (region instanceof ProtectedCuboidRegion cuboid) {
-            BlockVector2 min = cuboid.getMinimumPoint().toBlockVector2();
-            BlockVector2 max = cuboid.getMaximumPoint().toBlockVector2();
-
-            int[] x = {min.x(), max.x(), max.x(), min.x()};
-            int[] z = {min.z(), min.z(), max.z(), max.z()};
-
-            return new Polygon(x, z, 4);
-        } else if (region instanceof ProtectedPolygonalRegion polygon) {
-            List<BlockVector2> points = polygon.getPoints();
-            int[] x = new int[points.size()];
-            int[] z = new int[points.size()];
-
-            for (int i = 0; i < points.size(); i++) {
-                x[i] = points.get(i).x();
-                z[i] = points.get(i).z();
-            }
-
-            return new Polygon(x, z, points.size());
-        }
-
-        // Other region types not supported
-        return null;
-    }
-
     public static ProtectedRegion asProtectedRegion(Region region, String id) {
         if (region instanceof CuboidRegion cuboid) {
             BlockVector3 min = cuboid.getMinimumPoint();

@@ -126,7 +126,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
                             .addLore(offer.getAgent().isForBuy() ? String.format("Buy: %s",offer.getAgent().getBuyPrice()) : null)
                             .addLore(offer.getAgent().isForRent() ? String.format("Rent: %s / 14 Tage",offer.getAgent().getRentPrice()) : null)
                             .build()
-                            .onClick(e -> new RealEstateBuyGUI(player, offer.getAgent()).open());
+                            .onClick(e -> new RealEstateBuyGUI(player, offer.getAgent(),false).open());
                 })
                 .collect(Collectors.toList());
     }
