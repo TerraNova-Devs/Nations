@@ -24,7 +24,6 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
         this.addNameToCache(name);
         setParent(parent);
         this.region = getWorldguardRegion();
-        region.setPriority(getParent().getWorldguardRegion().getPriority() + 1);
         if(region != null) {
             this.realEstateAgent = new RealEstateAgent(this,RealEstateDAO.getRealEstateById(this.getId()));
             realEstateAgent.addToOfferCacheMarket();
@@ -37,6 +36,7 @@ public class PropertyRegion extends BoundaryRegion implements HasParent<SettleRe
     public void onBoundaryCreation(Player p) {
         GridRegionDAO.insertParent(this.id,parent.getId());
         this.realEstateAgent = new RealEstateAgent(this,new RealEstateListing(null,false,0,false,0, null));
+        region.setPriority(getParent().getWorldguardRegion().getPriority() + 1);
         p.sendMessage(Chat.greenFade("Dein Grundstück " + name + " wurde erfolgreich erstellt."));
     }
 

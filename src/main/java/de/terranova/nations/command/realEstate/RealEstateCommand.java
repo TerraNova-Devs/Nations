@@ -22,10 +22,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.Instant;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
@@ -52,6 +49,8 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "holdings");
         registerSubCommand(this, "offer");
         registerSubCommand(this, "toggleban");
+        registerSubCommand(this, "rename");
+        registerSubCommand(this, "generaterandomname");
         setupHelpCommand();
         initialize();
 
@@ -407,18 +406,18 @@ public class RealEstateCommand extends AbstractCommand {
             usage = "/realestate toggleban <property> <player>"
     )
     public boolean toggleban(Player p, String[] args) {
-        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[2]);
         if (Oregion.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[2] + " existiert nicht."));
             return false;
         }
         Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
         if (region.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[2] + " ist keine Nations Region."));
             return false;
         }
         if (!(region.get() instanceof HasRealEstateAgent agent)) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            p.sendMessage(Chat.errorFade("Die Region " + args[2] + " hat kein RealEstate Modul."));
             return false;
         }
 
@@ -426,7 +425,7 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
             return false;
         }
-        String name = PropertyRegionFactory.buildRegionName(args[0], p);
+        String name = PropertyRegionFactory.buildRegionName(args[1], p);
         if(name == null){
             p.sendMessage(Chat.errorFade("Error bei benennung abbruch."));
             return false;
@@ -463,48 +462,52 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     private static final List<String> PREFIXES = List.of(
-            "red", "brewer", "quiet", "stormy", "golden", "dark", "lonely", "windy", "ancient", "happy",
-            "frozen", "sunny", "muddy", "swift", "burning", "misty", "blue", "crimson", "glowing", "silver"
+            "rot", "brauende", "stille", "stürmische", "goldene", "dunkle", "einsame", "windige", "uralte", "fröhliche",
+            "gefrorene", "sonnige", "schlammige", "schnelle", "brennende", "neblige", "blau", "blutrote", "leuchtende", "silberne",
+            "verlassene", "scharfe", "kalte", "verstaubte",  "karge", "klare", "steinige", "weiche", "raue"
     );
-
     private static final List<String> NAMES = List.of(
-            "Dragon", "Magic", "Falcon", "Ember", "Willow", "Shadow", "Oak", "Crystal", "Phoenix", "Echo",
-            "Basilisk", "Moon", "Tiger", "Comet", "Forge", "Temple", "Witch", "Lantern", "Sprig", "Thorn"
+            "drachen", "magie", "falken", "glut", "weiden", "schatten", "eichen", "kristall", "phönix",
+            "basilisken", "mond", "tiger", "kometen", "schmiede", "hexen", "laternen", "sprossen", "dornen",
+            "raben", "schimmer", "licht", "feuer", "sturm", "wurzel", "nebel",  "funken", "flammen"
     );
 
     private static final List<String> SUFFIXES = List.of(
-            "street", "alley", "avenue", "lane", "path", "way", "circle", "square", "road", "terrace",
-            "bend", "point", "hill", "ridge", "gate", "meadow", "garden", "crossing", "pass", "corner"
+            "straße", "gasse", "allee", "weg", "pfad", "ring", "platz", "straße", "hang", "terrasse",
+            "bogen", "punkt", "hügel", "kamm", "tor", "wiese", "garten", "kreuzung", "pass", "ecke",
+            "ufer", "winkel", "steg", "stieg", "brücke", "feld", "graben", "insel", "steig", "uferweg", "tempel"
     );
 
     @CommandAnnotation(
-            domain = "generaterandomname",
+            domain = "generaterandomname.$domain",
             permission = "nations.realestate.generaterandomname",
-            description = "Generates a random Streetname you can use",
-            usage = "/realestate generaterandomname"
+            description = "Generates a random street name you can use",
+            usage = "/realestate generaterandomname [prefix:name:suffix]"
     )
-    public boolean generaterandomname(Player p, String[] args) {
+    public boolean generaterandomnamespecific(Player p, String[] args) {
         String name = null;
         Random random = new Random();
         int attempts = 0;
 
+        String format = (args.length >= 1) ? args[1].toLowerCase() : "?:?:?"; // default to fully random
+        String[] parts = format.split(":");
+
         while (attempts < 100 && (name == null || name.length() > 30)) {
             attempts++;
 
-            // Randomly include prefix and name
-            boolean usePrefix = random.nextBoolean();
-            boolean useName = random.nextBoolean();
+            String prefix = (parts.length > 0 && !parts[0].equals("?"))
+                    ? capitalize(parts[0])
+                    : capitalize(PREFIXES.get(random.nextInt(PREFIXES.size())));
 
-            String prefix = usePrefix ? PREFIXES.get(random.nextInt(PREFIXES.size())) : null;
-            String core = useName ? NAMES.get(random.nextInt(NAMES.size())) : null;
-            String suffix = SUFFIXES.get(random.nextInt(SUFFIXES.size()));
+            String core = (parts.length > 1 && !parts[1].equals("?"))
+                    ? capitalize(parts[1])
+                    : capitalize(NAMES.get(random.nextInt(NAMES.size())));
 
-            StringBuilder builder = new StringBuilder();
-            if (prefix != null) builder.append(prefix).append(":");
-            if (core != null) builder.append(core).append(":");
-            builder.append(suffix);
+            String suffix = (parts.length > 2 && !parts[2].equals("?"))
+                    ? capitalize(parts[2])
+                    : capitalize(SUFFIXES.get(random.nextInt(SUFFIXES.size())));
 
-            name = builder.toString();
+            name = prefix + core + suffix;
         }
 
         if (name == null || name.length() > 30) {
@@ -514,6 +517,24 @@ public class RealEstateCommand extends AbstractCommand {
 
         p.sendMessage(Chat.cottonCandy("Zufälliger Name: " + name));
         return true;
+    }
+
+    @CommandAnnotation(
+            domain = "generaterandomname",
+            permission = "nations.realestate.generaterandomname",
+            description = "Generates a random Streetname you can use",
+            usage = "/realestate generaterandomname"
+    )
+    public boolean generaterandomname(Player p, String[] args) {
+        return generaterandomnamespecific(p, new String[] {
+                "generaterandomnamespecific",
+                "?:?:?"
+        });
+    }
+
+    private String capitalize(String input) {
+        if (input == null || input.isEmpty()) return "";
+        return input.substring(0, 1).toUpperCase() + input.substring(1);
     }
 
 }

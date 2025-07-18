@@ -42,7 +42,7 @@ public class NoSelfOverlapRule implements RegionRule {
         }
 
         for (Region existing : relevantRegions) {
-            if (existing.doesOverlap2D(regionBeingPlaced)) {
+            if (existing.isCompletelyWithin2D(regionBeingPlaced)) {
                 return false;
             }
         }

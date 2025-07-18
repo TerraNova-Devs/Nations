@@ -178,25 +178,27 @@ public abstract class Region {
         return type;
     }
 
-    public boolean doesOverlap2D(ProtectedRegion r2) {
-        Polygon poly1 = get2DPolygon(region);
-        Polygon poly2 = get2DPolygon(r2);
+    public boolean isCompletelyWithin2D(ProtectedRegion outer) {
+        Polygon innerPoly = get2DPolygon(getWorldguardRegion());
+        Polygon outerPoly = get2DPolygon(outer);
 
-        if (poly1 == null || poly2 == null) return false;
+        if (innerPoly == null || outerPoly == null) return false;
 
-        // Early bounding box exclusion
-        if (!poly1.getBounds2D().intersects(poly2.getBounds2D())) {
+        // Early bounding box check: if inner box is not fully inside outer box, skip
+        if (!outerPoly.getBounds2D().contains(innerPoly.getBounds2D())) {
             return false;
         }
 
-        // 1. Edge intersection
-        if (edgesIntersect(poly1, poly2)) return true;
+        // Ensure all points of the inner polygon are contained in the outer polygon
+        for (int i = 0; i < innerPoly.npoints; i++) {
+            int x = innerPoly.xpoints[i];
+            int z = innerPoly.ypoints[i];
+            if (!outerPoly.contains(x, z)) {
+                return false;
+            }
+        }
 
-        // 2. One region inside the other
-        if (pointsInside(poly1, poly2)) return true;
-        if (pointsInside(poly2, poly1)) return true;
-
-        return false;
+        return true;
     }
 
     private static boolean edgesIntersect(Polygon p1, Polygon p2) {

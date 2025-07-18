@@ -10,6 +10,10 @@ import de.terranova.nations.utils.Chat;
 import de.terranova.nations.utils.TaskTrigger;
 import de.terranova.nations.utils.InventoryUtil.ItemTransfer;
 import de.terranova.nations.worldguard.NationsRegionFlag.DenyEntryPlayersFlag;
+import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.event.ClickEvent;
+import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -276,9 +280,18 @@ public class RealEstateAgent {
         offeredType = type;
         offerCache.computeIfAbsent(offeredPlayer, k -> new ArrayList<>()).add(this);
         user.sendMessage(Chat.greenFade(String.format("Dir wurde die Region %s von %s zum %s angeboten für %s Coins.",region.getName(),offerer.getName(),(Objects.equals(type, "buy")) ? "kaufen" : "miete / 14 Tage",amount)));
-        user.sendMessage("Zum Annehmen einfach [hier] klicken");
+        Component message = Component.text("Zum Annehmen einfach ", NamedTextColor.GREEN)
+                .append(
+                        Component.text("[hier]", NamedTextColor.AQUA)
+                                .decorate(TextDecoration.BOLD)
+                                .clickEvent(ClickEvent.runCommand("/re accept " + region.getName()))
+                );
+
+        user.sendMessage(message);
+
         return true;
     }
+
 
     public void clearOffer(){
         if (offeredPlayer != null) {

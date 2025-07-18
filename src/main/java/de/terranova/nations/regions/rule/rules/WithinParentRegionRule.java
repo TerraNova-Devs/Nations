@@ -4,7 +4,6 @@ import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.rule.RegionRule;
-import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import org.bukkit.entity.Player;
 
 public class WithinParentRegionRule<T extends Region & HasParent<P>, P extends Region> implements RegionRule {
@@ -20,7 +19,7 @@ public class WithinParentRegionRule<T extends Region & HasParent<P>, P extends R
     @Override
     public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
         if (!parentClass.isInstance(explicitParent)) return false;
-        return explicitParent.doesOverlap2D(regionBeingPlaced);
+        return explicitParent.isCompletelyWithin2D(regionBeingPlaced);
     }
 
     @Override
