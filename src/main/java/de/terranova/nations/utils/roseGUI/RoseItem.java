@@ -36,7 +36,6 @@ import java.util.function.Consumer;
 
 public class RoseItem {
 
-    private static Method metaSetProfileMethod;
     public ItemStack stack;
     private Consumer<InventoryClickEvent> clickAction;
     private Consumer<InventoryDragEvent> dragAction;
@@ -62,7 +61,6 @@ public class RoseItem {
         if(!builder.showTooltip) {
             net.minecraft.world.item.ItemStack nmsItem = CraftItemStack.asNMSCopy(stack);
             nmsItem.set(DataComponents.HIDE_TOOLTIP, Unit.INSTANCE);
-            nmsItem.getComponents().stream().forEach(System.out::println);
             this.stack = CraftItemStack.asBukkitCopy(nmsItem);
         }
 

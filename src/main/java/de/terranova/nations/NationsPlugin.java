@@ -31,10 +31,7 @@ import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;
 import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
 import de.terranova.nations.utils.roseGUI.RoseGUIListener;
-import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
-import de.terranova.nations.worldguard.NationsRegionFlag.RegionHandler;
-import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
-import de.terranova.nations.worldguard.NationsRegionFlag.TypeHandler;
+import de.terranova.nations.worldguard.NationsRegionFlag.*;
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
@@ -156,12 +153,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     private void worldguardFlagRegistry() {
         RegionFlag.registerRegionFlag(this);
         TypeFlag.registerRegionFlag(this);
+        DenyEntryPlayersFlag.registerRegionFlag(this);
     }
 
     private void worldguardHandlerRegistry() {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
         sessionManager.registerHandler(TypeHandler.FACTORY, null);
+        sessionManager.registerHandler(DenyEntryPlayersHandler.FACTORY, null);
     }
 
     public void commandRegistry() {

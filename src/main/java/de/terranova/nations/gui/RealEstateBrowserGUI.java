@@ -86,7 +86,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
         RoseItem filter = new RoseItem.Builder()
                 .material(Material.HOPPER)
                 .displayName(Chat.redFade("<b>Filter: "+ filterMode.name()) )
-                .addLore("Klicke zum Wechseln: ALL → BUY → RENT")
+                .addLore("Klicke zum Wechseln: ALL → BUY → RENT → PRIVATE")
                 .build()
                 .onClick(e -> {
                     filterMode = switch (filterMode) {
@@ -105,7 +105,7 @@ public class RealEstateBrowserGUI extends RoseGUI {
         RoseItem order = new RoseItem.Builder()
                 .material(Material.COMPARATOR)
                 .displayName(Chat.redFade("<b>Sort: " + sortOrder.name()))
-                .addLore("Klicke zum Umschalten zwischen ASC/DESC")
+                .addLore("Klicke zum Umschalten zwischen hoch-niedrig → niedrig-hoch")
                 .build()
                 .onClick(e -> {
                     filterMode = switch (filterMode) {
