@@ -33,16 +33,28 @@ public class HikariCP {
         config.setJdbcUrl("jdbc:mysql://localhost/nations");
         config.setUsername(user);
         config.setPassword(password);
-        config.setMaximumPoolSize(20);
-        config.setMinimumIdle(20);
-        config.setMaxLifetime(1800000);
+        config.setPoolName("NationsHikariPool");
+
+        // Connection Pool Size
+        config.setMaximumPoolSize(6);
+        config.setMinimumIdle(2);
+
+        // Connection lifetime and idle cleanup
+        config.setMaxLifetime(900_000);
+        config.setIdleTimeout(300_000);
         config.setKeepaliveTime(0);
+
+        // fail timeout / Leak detection
+        config.setValidationTimeout(3000);
         config.setConnectionTimeout(5000);
         config.setLeakDetectionThreshold(100000);
-        config.setPoolName("NationsHikariPool");
+
+        // Statement Caching
         config.addDataSourceProperty("cachePrepStmts", "true");
         config.addDataSourceProperty("prepStmtCacheSize", "250");
         config.addDataSourceProperty("prepStmtCacheSqlLimit", "2048");
+
+        // performance
         config.addDataSourceProperty("useServerPrepStmts", "false");
         config.addDataSourceProperty("useLocalSessionState", "true");
         config.addDataSourceProperty("useLocalTransactionState", "true");
@@ -51,6 +63,13 @@ public class HikariCP {
         config.addDataSourceProperty("cacheResultSetMetadata", "true");
         config.addDataSourceProperty("elideSetAutoCommits", "true");
         config.addDataSourceProperty("maintainTimeStats", "false");
+
+        // JDBC driver properties
+        config.addDataSourceProperty("useCompression", "true");
+        config.addDataSourceProperty("serverTimezone", "UTC");
+        config.addDataSourceProperty("characterEncoding", "UTF-8");
+        config.addDataSourceProperty("useUnicode", "true");
+        config.addDataSourceProperty("noAccessToProcedureBodies", "true");
         return config;
     }
 
