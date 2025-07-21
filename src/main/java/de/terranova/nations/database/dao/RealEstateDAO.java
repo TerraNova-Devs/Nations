@@ -38,18 +38,18 @@ public class RealEstateDAO {
                 "SELECT `PUUID`, `amount` FROM `nations_holdings`;");
     }
 
-    public static void upsertRealEstate(RealEstateAgent agent) {
+    public static void upsertRealEstate(String RUUID, RealEstateListing data) {
         String sql = queries.get("upsertRealEstate");
         try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setString(1, agent.getRegion().getId().toString());
-            ps.setString(2, agent.getLandlord().toString());
-            ps.setBoolean(3, agent.isForBuy());
-            ps.setInt(4, agent.getBuyPrice());
-            ps.setBoolean(5, agent.isForRent());
-            ps.setInt(6, agent.getRentPrice());
-            ps.setTimestamp(7, Timestamp.from(agent.getTimestamp()));
+            ps.setString(1, RUUID);
+            ps.setString(2, data.landlord.toString());
+            ps.setBoolean(3, data.isForBuy);
+            ps.setInt(4, data.buyPrice);
+            ps.setBoolean(5, data.isForRent);
+            ps.setInt(6, data.rentPrice);
+            ps.setTimestamp(7, Timestamp.from(data.timestamp));
 
             ps.executeUpdate();
         } catch (SQLException e) {

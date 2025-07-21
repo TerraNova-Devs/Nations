@@ -9,12 +9,13 @@ public class RealEstateListing {
 
     public static Map<UUID, Integer> holdings = new HashMap<>();
 
-    UUID landlord;
-    boolean isForBuy;
-    int buyPrice;
-    boolean isForRent;
-    int rentPrice;
-    Instant timestamp;
+    public UUID landlord;
+    public boolean isForBuy;
+    public int buyPrice;
+    public boolean isForRent;
+    public int rentPrice;
+    public Instant timestamp;
+
     public RealEstateListing(UUID landlord, boolean isForBuy, int buyPrice, boolean isForRent, int rentPrice, Instant timestamp) {
         this.landlord = landlord;
         this.isForBuy = isForBuy;

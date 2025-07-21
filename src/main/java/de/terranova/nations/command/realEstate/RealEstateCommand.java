@@ -48,7 +48,8 @@ public class RealEstateCommand extends AbstractCommand {
         registerSubCommand(this, "resign");
         registerSubCommand(this, "holdings");
         registerSubCommand(this, "offer");
-        registerSubCommand(this, "toggleban");
+        registerSubCommand(this, "accept");
+        registerSubCommand(this, "kick");
         registerSubCommand(this, "rename");
         registerSubCommand(this, "generaterandomname");
         setupHelpCommand();
@@ -115,13 +116,14 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
-        Instant time = agent.getAgent().getRentEndingTime();
+
         p.sendMessage(Chat.cottonCandy("Infos: " + agent.getAgent().getRegion().getName()));
+
         p.sendMessage(Chat.cottonCandy("Besitzer: " + Bukkit.getOfflinePlayer(agent.getAgent().getLandlord()).getName()));
-        if (!agent.getAgent().getLandlord().equals(agent.getAgent().getRegionUser())) {
+        if (agent.getAgent().isRented()) {
             p.sendMessage(Chat.cottonCandy("Mieter: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionUser()).getName()));
         }
-
+        Instant time = agent.getAgent().getRentEndingTime();
         if (time != null) {
             p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
         }
@@ -198,7 +200,9 @@ public class RealEstateCommand extends AbstractCommand {
             p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
             return false;
         }
-        agent.getAgent().endRentByPlayer(p);
+        if(!agent.getAgent().endRentByPlayer(p)){
+            return false;
+        }
         p.sendMessage(Chat.greenFade("Das Grundstück wurde erfolgreich gekündigt."));
         return true;
     }
@@ -400,12 +404,49 @@ public class RealEstateCommand extends AbstractCommand {
     }
 
     @CommandAnnotation(
-            domain = "toggleban.$properties.$onlinePlayers",
-            permission = "nations.realestate.toggleban",
-            description = "Bans Players from your property",
-            usage = "/realestate toggleban <property> <player>"
+            domain = "kick.$properties.$onlinePlayers",
+            permission = "nations.realestate.kick",
+            description = "Kicks Player from your property",
+            usage = "/realestate kick <property> <player>"
     )
-    public boolean toggleban(Player p, String[] args) {
+    public boolean kick(Player p, String[] args) {
+        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+        if (Oregion.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+            return false;
+        }
+        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+        if (region.isEmpty()) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+            return false;
+        }
+        if (!(region.get() instanceof HasRealEstateAgent agent)) {
+            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+            return false;
+        }
+
+        if(!agent.getAgent().isOwner(p.getUniqueId())){
+            p.sendMessage(Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
+            return false;
+        }
+
+        Player target = Bukkit.getPlayer(args[2]);
+        if(target == null){
+            p.sendMessage(Chat.errorFade("Der von dir erwähnte Spieler " + args[2] + " ist nicht Online."));
+            return false;
+        }
+        agent.getAgent().kick(target);
+
+        return false;
+    }
+
+    @CommandAnnotation(
+            domain = "rename.$properties.$name",
+            permission = "nations.realestate.holdings",
+            description = "Retrieves your holding from sales",
+            usage = "/realestate rename <property> <name>"
+    )
+    public boolean rename(Player p, String[] args) {
         Optional<ProtectedRegion> Oregion = getRegionByName(p, args[2]);
         if (Oregion.isEmpty()) {
             p.sendMessage(Chat.errorFade("Die Region " + args[2] + " existiert nicht."));
@@ -432,32 +473,6 @@ public class RealEstateCommand extends AbstractCommand {
         }
         agent.getAgent().getRegion().rename(name);
         p.sendMessage(Chat.errorFade("Region erfolgreich umbenannt"));
-        return true;
-    }
-
-    @CommandAnnotation(
-            domain = "rename.$properties.$name",
-            permission = "nations.realestate.holdings",
-            description = "Retrieves your holding from sales",
-            usage = "/realestate rename <property> <name>"
-    )
-    public boolean rename(Player p, String[] args) {
-        Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
-        if (Oregion.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
-            return false;
-        }
-        Optional<Region> region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
-        if (region.isEmpty()) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
-            return false;
-        }
-        if (!(region.get() instanceof HasRealEstateAgent agent)) {
-            p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
-            return false;
-        }
-        OfflinePlayer target = Bukkit.getOfflinePlayer(args[2]);
-        agent.getAgent().toggleban(p,target);
         return true;
     }
 

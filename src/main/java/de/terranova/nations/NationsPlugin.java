@@ -153,14 +153,12 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     private void worldguardFlagRegistry() {
         RegionFlag.registerRegionFlag(this);
         TypeFlag.registerRegionFlag(this);
-        DenyEntryPlayersFlag.registerRegionFlag(this);
     }
 
     private void worldguardHandlerRegistry() {
         SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
         sessionManager.registerHandler(RegionHandler.FACTORY, null);
         sessionManager.registerHandler(TypeHandler.FACTORY, null);
-        sessionManager.registerHandler(DenyEntryPlayersHandler.FACTORY, null);
     }
 
     public void commandRegistry() {

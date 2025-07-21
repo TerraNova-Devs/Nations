@@ -57,8 +57,8 @@ public class PropertyRegionFactory implements RegionFactoryBase {
             com.sk89q.worldedit.regions.Region region = selector.getRegion();
             ProtectedRegion tempRegion = BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
 
-            if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 2 * 9)) {
-                p.sendMessage(Chat.errorFade("Die Region muss mindestens 2 Blöcke hoch und 18 blöcke Inhalt haben."));
+            if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 24)) {
+                p.sendMessage(Chat.errorFade("Die Region muss mindestens 2 Blöcke hoch und 24 blöcke Inhalt haben."));
                 return null;
             }
 
