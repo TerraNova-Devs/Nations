@@ -7,52 +7,56 @@ import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.modules.HasChildren;
 import de.terranova.nations.regions.rule.RegionRule;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
+import org.bukkit.entity.Player;
 
 public class NoSelfOverlapRule implements RegionRule {
 
-    private final boolean isGrid;
+  private final boolean isGrid;
 
-    public NoSelfOverlapRule(Boolean noParentGrid) {
-        this.isGrid = noParentGrid;
+  public NoSelfOverlapRule(Boolean noParentGrid) {
+    this.isGrid = noParentGrid;
+  }
+
+  @Override
+  public boolean isAllowed(
+      Player p,
+      String type,
+      String regionName,
+      ProtectedRegion regionBeingPlaced,
+      Region explicitParent) {
+    List<Region> relevantRegions;
+
+    // Ist das Grid belegt?
+    if (explicitParent == null && isGrid) {
+      return !RegionClaimFunctions.checkAreaForSettles(p);
     }
 
-    @Override
-    public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
-        List<Region> relevantRegions;
+    // Hast die Region Childrensets?
+    boolean hasInsideParentRule =
+        RegionRegistry.getRuleSet(type).getRules().stream()
+            .anyMatch(rule -> rule instanceof WithinParentRegionRule<?, ?>);
 
-        // Ist das Grid belegt?
-        if (explicitParent == null && isGrid) {
-            return !RegionClaimFunctions.checkAreaForSettles(p);
-        }
-
-        // Hast die Region Childrensets?
-        boolean hasInsideParentRule = RegionRegistry.getRuleSet(type).getRules().stream()
-                .anyMatch(rule -> rule instanceof WithinParentRegionRule<?, ?>);
-
-        if (hasInsideParentRule && explicitParent instanceof HasChildren) {
-            // Case 1: Wenn die Region Children hat nur gegen diese testen
-            relevantRegions = ((HasChildren) explicitParent).getChildrenByType(type);
-        } else {
-            // Case 2: Gegen alle Regionen mit dem Typen Testen
-            relevantRegions = new ArrayList<>(RegionManager.retrieveAllCachedRegions(type).values());
-        }
-
-        for (Region existing : relevantRegions) {
-            if (existing.isCompletelyWithin2D(regionBeingPlaced)) {
-                return false;
-            }
-        }
-
-        return true;
+    if (hasInsideParentRule && explicitParent instanceof HasChildren) {
+      // Case 1: Wenn die Region Children hat nur gegen diese testen
+      relevantRegions = ((HasChildren) explicitParent).getChildrenByType(type);
+    } else {
+      // Case 2: Gegen alle Regionen mit dem Typen Testen
+      relevantRegions = new ArrayList<>(RegionManager.retrieveAllCachedRegions(type).values());
     }
 
-    @Override
-    public String getErrorMessage() {
-        return "Diese Region darf sich nicht mit einer anderen Region desselben Typs überschneiden.";
+    for (Region existing : relevantRegions) {
+      if (existing.isCompletelyWithin2D(regionBeingPlaced)) {
+        return false;
+      }
     }
 
+    return true;
+  }
+
+  @Override
+  public String getErrorMessage() {
+    return "Diese Region darf sich nicht mit einer anderen Region desselben Typs überschneiden.";
+  }
 }

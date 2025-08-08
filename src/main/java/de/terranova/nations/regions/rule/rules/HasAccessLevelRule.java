@@ -8,32 +8,37 @@ import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.rule.RegionRule;
-import org.bukkit.entity.Player;
-
 import java.util.Optional;
+import org.bukkit.entity.Player;
 
 public class HasAccessLevelRule implements RegionRule {
 
-    AccessLevel accessLevel;
+  AccessLevel accessLevel;
 
-    public HasAccessLevelRule(AccessLevel accessLevel) {
-        this.accessLevel = accessLevel;
-    }
+  public HasAccessLevelRule(AccessLevel accessLevel) {
+    this.accessLevel = accessLevel;
+  }
 
-    @Override
-    public boolean isAllowed(Player p, String type, String regionName, ProtectedRegion regionBeingPlaced, Region explicitParent) {
-        Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
-        if (!settleOpt.isPresent()) {
-            return accessLevel == null;
-        } else if (accessLevel == null) {
-            return false;
-        }
-        AccessControlled accessControlled = settleOpt.get();
-        return Access.hasAccess(accessControlled.getAccess().getAccessLevel(p.getUniqueId()), accessLevel);
+  @Override
+  public boolean isAllowed(
+      Player p,
+      String type,
+      String regionName,
+      ProtectedRegion regionBeingPlaced,
+      Region explicitParent) {
+    Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
+    if (!settleOpt.isPresent()) {
+      return accessLevel == null;
+    } else if (accessLevel == null) {
+      return false;
     }
+    AccessControlled accessControlled = settleOpt.get();
+    return Access.hasAccess(
+        accessControlled.getAccess().getAccessLevel(p.getUniqueId()), accessLevel);
+  }
 
-    @Override
-    public String getErrorMessage() {
-        return "Du hast nicht die Berechtigung, um Grundstücke zu erstellen.";
-    }
+  @Override
+  public String getErrorMessage() {
+    return "Du hast nicht die Berechtigung, um Grundstücke zu erstellen.";
+  }
 }

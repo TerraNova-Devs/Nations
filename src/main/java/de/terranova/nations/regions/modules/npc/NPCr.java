@@ -15,114 +15,115 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class NPCr implements RegionListener {
 
-    Region regionType;
-    private NPC npc;
+  Region regionType;
+  private NPC npc;
 
-    public NPCr(Region regionType) {
-        if (!(regionType instanceof NPCHolder)) throw new IllegalArgumentException();
-        this.regionType = regionType;
-        if (!verifyNPC()) {
-            if (regionType instanceof GridRegion gridRegionType) {
-                this.npc = createNPC(regionType.getName(), gridRegionType.getLocation().asLocation());
-            }
+  public NPCr(Region regionType) {
+    if (!(regionType instanceof NPCHolder)) throw new IllegalArgumentException();
+    this.regionType = regionType;
+    if (!verifyNPC()) {
+      if (regionType instanceof GridRegion gridRegionType) {
+        this.npc = createNPC(regionType.getName(), gridRegionType.getLocation().asLocation());
+      }
+    }
+    regionType.addListener(this);
+  }
+
+  public NPC createNPC(String name, Location location) {
+    NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+
+    SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
+    skinTrait.setSkinPersistent(
+        name, NPCSkins.BEGGAR.getSkinSign(), NPCSkins.BEGGAR.getSkinTexture());
+
+    LookClose lookTrait = npc.getOrAddTrait(LookClose.class);
+    lookTrait.toggle();
+
+    SettleTrait settleTrait = npc.getOrAddTrait(SettleTrait.class);
+    settleTrait.setUUID(regionType.getId());
+
+    npc.setAlwaysUseNameHologram(true);
+    npc.setName(
+        String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", name.replaceAll("_", " ")));
+    npc.spawn(location);
+    return npc;
+  }
+
+  public boolean verifyNPC() {
+    if (this.npc == null) {
+      boolean beenFound = false;
+      for (NPC npc : CitizensAPI.getNPCRegistry()) {
+        if (!npc.hasTrait(SettleTrait.class)) continue;
+        if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
+
+          this.npc = npc;
+          beenFound = true;
+          break;
         }
-        regionType.addListener(this);
+      }
+
+      return beenFound;
     }
 
-    public NPC createNPC(String name, Location location) {
-        NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, name);
+    return true;
+  }
 
+  public void tpNPC(Location location) {
+    for (NPC npc : CitizensAPI.getNPCRegistry()) {
+      if (!npc.hasTrait(SettleTrait.class)) {
+        continue;
+      }
+      if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
+        npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
+      }
+    }
+  }
+
+  public void reskinNpc(NPCSkins skin) {
+    for (net.citizensnpcs.api.npc.NPC npc : CitizensAPI.getNPCRegistry()) {
+      if (!npc.hasTrait(SettleTrait.class)) {
+        continue;
+      }
+      if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
         SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-        skinTrait.setSkinPersistent(name, NPCSkins.BEGGAR.getSkinSign(), NPCSkins.BEGGAR.getSkinTexture());
-
-        LookClose lookTrait = npc.getOrAddTrait(LookClose.class);
-        lookTrait.toggle();
-
-        SettleTrait settleTrait = npc.getOrAddTrait(SettleTrait.class);
-        settleTrait.setUUID(regionType.getId());
-
-        npc.setAlwaysUseNameHologram(true);
-        npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", name.replaceAll("_", " ")));
-        npc.spawn(location);
-        return npc;
+        skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
+      }
     }
+  }
 
-    public boolean verifyNPC() {
-        if (this.npc == null) {
-            boolean beenFound = false;
-            for (NPC npc : CitizensAPI.getNPCRegistry()) {
-                if (!npc.hasTrait(SettleTrait.class)) continue;
-                if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
+  public void hologramNPC(String[] lines) {
+    verifyNPC();
 
-                    this.npc = npc;
-                    beenFound = true;
-                    break;
-                }
-            }
+    HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
+    hologramTrait.clear();
 
-            return beenFound;
-        }
-
-        return true;
+    for (String line : lines) {
+      hologramTrait.addLine(line);
     }
+  }
 
-    public void tpNPC(Location location) {
-        for (NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (!npc.hasTrait(SettleTrait.class)) {
-                continue;
-            }
-            if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
-                npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
-            }
-        }
+  public void remove() {
+    verifyNPC();
+    this.npc.destroy();
+  }
 
-    }
+  public NPC getNPC() {
+    return this.npc;
+  }
 
-    public void reskinNpc(NPCSkins skin) {
-        for (net.citizensnpcs.api.npc.NPC npc : CitizensAPI.getNPCRegistry()) {
-            if (!npc.hasTrait(SettleTrait.class)) {
-                continue;
-            }
-            if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
-                SkinTrait skinTrait = npc.getOrAddTrait(SkinTrait.class);
-                skinTrait.setSkinPersistent(skin.name(), skin.getSkinSign(), skin.getSkinTexture());
-            }
-        }
-    }
+  @Override
+  public void onRegionRenamed(String newRegionName) {
+    renameNPC(newRegionName);
+  }
 
-    public void hologramNPC(String[] lines) {
-        verifyNPC();
+  @Override
+  public void onRegionRemoved() {
+    remove();
+  }
 
-        HologramTrait hologramTrait = npc.getOrAddTrait(HologramTrait.class);
-        hologramTrait.clear();
-
-        for (String line : lines) {
-            hologramTrait.addLine(line);
-        }
-    }
-
-    public void remove() {
-        verifyNPC();
-        this.npc.destroy();
-    }
-
-    public NPC getNPC() {
-        return this.npc;
-    }
-
-    @Override
-    public void onRegionRenamed(String newRegionName) {
-        renameNPC(newRegionName);
-    }
-
-    @Override
-    public void onRegionRemoved() {
-        remove();
-    }
-
-    public void renameNPC(String name) {
-        verifyNPC();
-        this.npc.setName(String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", name.replaceAll("_", " ")));
-
-    }
+  public void renameNPC(String name) {
+    verifyNPC();
+    this.npc.setName(
+        String.format("<gradient:#AAE3E9:#DFBDEA>&l%s</gradient>", name.replaceAll("_", " ")));
+  }
 }

@@ -5,8 +5,6 @@ import io.papermc.paper.plugin.loader.PluginLoader;
 import org.jetbrains.annotations.NotNull;
 
 public class NationsPluginLoader implements PluginLoader {
-    @Override
-    public void classloader(@NotNull PluginClasspathBuilder pluginClasspathBuilder) {
-
-    }
+  @Override
+  public void classloader(@NotNull PluginClasspathBuilder pluginClasspathBuilder) {}
 }

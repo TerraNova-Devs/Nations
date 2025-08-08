@@ -1,6 +1,5 @@
 package de.terranova.nations.gui;
 
-
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -15,76 +14,108 @@ import org.bukkit.event.inventory.InventoryOpenEvent;
 
 public class TownUpgradeGUI extends RoseGUI {
 
-    SettleRegion settle;
+  SettleRegion settle;
 
-    public TownUpgradeGUI(Player player, SettleRegion settle) {
-        super(player, "town-upgrade-gui", Chat.blueFade("<b>Verbesserungen"), 6);
-        this.settle = settle;
+  public TownUpgradeGUI(Player player, SettleRegion settle) {
+    super(player, "town-upgrade-gui", Chat.blueFade("<b>Verbesserungen"), 6);
+    this.settle = settle;
+  }
+
+  @Override
+  public void onOpen(InventoryOpenEvent event) {
+
+    RankObjective progressRankObjective = settle.getRank().getRankObjective();
+    RankObjective goalRankObjective;
+
+    if (!(NationsPlugin.levelObjectives.size() + 1 == settle.getRank().getLevel())) {
+      goalRankObjective = NationsPlugin.levelObjectives.get(settle.getRank().getLevel());
+    } else {
+      goalRankObjective = new RankObjective(0, 0);
     }
 
-    @Override
-    public void onOpen(InventoryOpenEvent event) {
+    boolean canLevelup =
+        settle.getBank().getCredit() >= goalRankObjective.getSilver()
+            && ProfessionProgressManager.loadForSettlement(settle.getId()).getScore()
+                >= goalRankObjective.getScore();
 
-        RankObjective progressRankObjective = settle.getRank().getRankObjective();
-        RankObjective goalRankObjective;
+    RoseItem filler =
+        new RoseItem.Builder()
+            .showTooltip(false)
+            .material(Material.BLACK_STAINED_GLASS_PANE)
+            .build();
+    fillGui(filler);
 
-        if (!(NationsPlugin.levelObjectives.size() + 1 == settle.getRank().getLevel())) {
-            goalRankObjective = NationsPlugin.levelObjectives.get(settle.getRank().getLevel());
-        } else {
-            goalRankObjective = new RankObjective(0, 0);
-        }
-
-        boolean canLevelup = settle.getBank().getCredit() >= goalRankObjective.getSilver() && ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore();
-
-        RoseItem filler = new RoseItem.Builder()
-                .showTooltip(false)
-                .material(Material.BLACK_STAINED_GLASS_PANE)
-                .build();
-        fillGui(filler);
-
-        RoseItem back = new RoseItem.Builder()
-                .material(Material.SPECTRAL_ARROW)
-                .displayName(Chat.yellowFade("<b>Zurück</b>"))
-                .build();
-        back.onClick(e -> {
-            new TownGUI(player, settle).open();
+    RoseItem back =
+        new RoseItem.Builder()
+            .material(Material.SPECTRAL_ARROW)
+            .displayName(Chat.yellowFade("<b>Zurück</b>"))
+            .build();
+    back.onClick(
+        e -> {
+          new TownGUI(player, settle).open();
         });
 
-        RoseItem submit = new RoseItem.Builder()
-                .material(canLevelup ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK)
-                .displayName(canLevelup ? Chat.greenFade("Level Up!") : Chat.redFade("Nicht genügend Resourcen!"))
-                .build();
-        if (canLevelup) {
-            submit.onClick(e -> {
-                settle.getBank().cashTransfer("Region-LevelUp", -goalRankObjective.getSilver());
-                settle.getRank().levelUP();
+    RoseItem submit =
+        new RoseItem.Builder()
+            .material(canLevelup ? Material.EMERALD_BLOCK : Material.REDSTONE_BLOCK)
+            .displayName(
+                canLevelup
+                    ? Chat.greenFade("Level Up!")
+                    : Chat.redFade("Nicht genügend Resourcen!"))
+            .build();
+    if (canLevelup) {
+      submit.onClick(
+          e -> {
+            settle.getBank().cashTransfer("Region-LevelUp", -goalRankObjective.getSilver());
+            settle.getRank().levelUP();
 
-                new TownUpgradeGUI(player, settle).open();
-            });
-        }
-
-        RoseItem objective_bank = new RoseItem.Builder()
-                .material("terranova_silver")
-                .displayName(Chat.blueFade("<b>" + "Bank"))
-                .addLore(settle.getBank().getCredit() >= goalRankObjective.getSilver() ? Chat.greenFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())) : Chat.yellowFade(String.format(settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())))
-                .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
-                .build();
-
-        RoseItem objective_score = new RoseItem.Builder()
-                .material(Material.NETHER_STAR)
-                .displayName(Chat.blueFade("<b>" + "Score"))
-                .addLore(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore() ? Chat.greenFade(String.format(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() + " / " + goalRankObjective.getScore())) : Chat.yellowFade(String.format(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() + " / " + goalRankObjective.getScore())))
-                .isEnchanted(ProfessionProgressManager.loadForSettlement(settle.getId()).getScore() >= goalRankObjective.getScore())
-                .build();
-
-        addItem(40, submit);
-        addItem(21, objective_bank);
-        addItem(23, objective_score);
-        addItem(45, back);
+            new TownUpgradeGUI(player, settle).open();
+          });
     }
 
-    @Override
-    public void onClose(InventoryCloseEvent event) {
+    RoseItem objective_bank =
+        new RoseItem.Builder()
+            .material("terranova_silver")
+            .displayName(Chat.blueFade("<b>" + "Bank"))
+            .addLore(
+                settle.getBank().getCredit() >= goalRankObjective.getSilver()
+                    ? Chat.greenFade(
+                        String.format(
+                            settle.getBank().getCredit() + " / " + goalRankObjective.getSilver()))
+                    : Chat.yellowFade(
+                        String.format(
+                            settle.getBank().getCredit() + " / " + goalRankObjective.getSilver())))
+            .isEnchanted(settle.getBank().getCredit() >= goalRankObjective.getSilver())
+            .build();
 
-    }
+    RoseItem objective_score =
+        new RoseItem.Builder()
+            .material(Material.NETHER_STAR)
+            .displayName(Chat.blueFade("<b>" + "Score"))
+            .addLore(
+                ProfessionProgressManager.loadForSettlement(settle.getId()).getScore()
+                        >= goalRankObjective.getScore()
+                    ? Chat.greenFade(
+                        String.format(
+                            ProfessionProgressManager.loadForSettlement(settle.getId()).getScore()
+                                + " / "
+                                + goalRankObjective.getScore()))
+                    : Chat.yellowFade(
+                        String.format(
+                            ProfessionProgressManager.loadForSettlement(settle.getId()).getScore()
+                                + " / "
+                                + goalRankObjective.getScore())))
+            .isEnchanted(
+                ProfessionProgressManager.loadForSettlement(settle.getId()).getScore()
+                    >= goalRankObjective.getScore())
+            .build();
+
+    addItem(40, submit);
+    addItem(21, objective_bank);
+    addItem(23, objective_score);
+    addItem(45, back);
+  }
+
+  @Override
+  public void onClose(InventoryCloseEvent event) {}
 }

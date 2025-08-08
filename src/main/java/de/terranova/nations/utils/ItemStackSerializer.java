@@ -9,32 +9,29 @@ import org.yaml.snakeyaml.external.biz.base64Coder.Base64Coder;
 
 public class ItemStackSerializer {
 
-    public static ItemStack getItemStackFromBase64String(
-            final String base64
-    ) {
-        if (base64 == null || base64.isEmpty()) return null;
-        try {
-            FastByteArrayInputStream inputStream = new FastByteArrayInputStream(Base64Coder.decodeLines(base64));
-            BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
-            ItemStack item = (ItemStack) dataInput.readObject();
-            dataInput.close();
-            return item;
-        } catch (final Exception exception) {
-            throw new IllegalArgumentException(exception);
-        }
+  public static ItemStack getItemStackFromBase64String(final String base64) {
+    if (base64 == null || base64.isEmpty()) return null;
+    try {
+      FastByteArrayInputStream inputStream =
+          new FastByteArrayInputStream(Base64Coder.decodeLines(base64));
+      BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
+      ItemStack item = (ItemStack) dataInput.readObject();
+      dataInput.close();
+      return item;
+    } catch (final Exception exception) {
+      throw new IllegalArgumentException(exception);
     }
+  }
 
-    public static String getBase64StringFromItemStack(
-            final ItemStack item
-    ) {
-        try {
-            FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
-            BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
-            dataOutput.writeObject(item);
-            dataOutput.close();
-            return Base64Coder.encodeLines(outputStream.array);
-        } catch (final Exception exception) {
-            throw new IllegalArgumentException(exception);
-        }
+  public static String getBase64StringFromItemStack(final ItemStack item) {
+    try {
+      FastByteArrayOutputStream outputStream = new FastByteArrayOutputStream();
+      BukkitObjectOutputStream dataOutput = new BukkitObjectOutputStream(outputStream);
+      dataOutput.writeObject(item);
+      dataOutput.close();
+      return Base64Coder.encodeLines(outputStream.array);
+    } catch (final Exception exception) {
+      throw new IllegalArgumentException(exception);
     }
+  }
 }

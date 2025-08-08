@@ -1,4 +1,3 @@
 package de.terranova.nations.regions.base;
 
-public interface Selectable {
-}
+public interface Selectable {}

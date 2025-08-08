@@ -3,15 +3,15 @@ package de.terranova.nations.regions.modules;
 import de.terranova.nations.regions.base.Region;
 
 public interface HasParent<T extends Region> {
-    T getParent();
+  T getParent();
 
-    void setParentRaw(T parent);
+  void setParentRaw(T parent);
 
-    default void setParent(T parent) {
-        setParentRaw(parent);
+  default void setParent(T parent) {
+    setParentRaw(parent);
 
-        if (parent instanceof HasChildren hasChildren) {
-            hasChildren.addChild((Region) this);
-        }
+    if (parent instanceof HasChildren hasChildren) {
+      hasChildren.addChild((Region) this);
     }
+  }
 }

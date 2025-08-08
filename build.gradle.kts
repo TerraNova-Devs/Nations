@@ -6,6 +6,7 @@ plugins {
   id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("io.github.goooler.shadow") version "8.1.8"
+  id("com.diffplug.spotless") version "6.25.0"
 }
 
 group = "de.terranova.nations"
@@ -102,6 +103,14 @@ bukkitPluginYaml {
       permission = "nations.use"
       permissionMessage = "You do not have permission to use this command."
     }
+  }
+}
+
+spotless {
+  java {
+    googleJavaFormat()
+    removeUnusedImports()
+    target("src/**/*.java")
   }
 }
 

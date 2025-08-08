@@ -4,8 +4,7 @@ import java.util.UUID;
 
 public interface AccessControlled {
 
-    Access getAccess();
+  Access getAccess();
 
-    UUID getId();
-
+  UUID getId();
 }

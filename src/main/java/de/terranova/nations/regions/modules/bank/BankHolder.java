@@ -1,16 +1,14 @@
 package de.terranova.nations.regions.modules.bank;
 
-import org.jetbrains.annotations.ApiStatus;
-
 import java.util.UUID;
+import org.jetbrains.annotations.ApiStatus;
 
 public interface BankHolder {
 
-    Bank getBank();
+  Bank getBank();
 
-    @ApiStatus.OverrideOnly
-    default void onTransaction(String record, int credit) {
-    }
+  @ApiStatus.OverrideOnly
+  default void onTransaction(String record, int credit) {}
 
-    UUID getId();
+  UUID getId();
 }
