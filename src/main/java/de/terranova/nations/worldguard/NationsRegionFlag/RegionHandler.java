@@ -11,7 +11,7 @@ import com.sk89q.worldguard.session.handler.FlagValueChangeHandler;
 import com.sk89q.worldguard.session.handler.Handler;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;

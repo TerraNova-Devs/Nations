@@ -3,7 +3,7 @@ package de.terranova.nations.regions.modules.access;
 import de.terranova.nations.database.dao.AccessDAO;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionListener;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;

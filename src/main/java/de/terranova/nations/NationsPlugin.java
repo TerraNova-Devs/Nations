@@ -2,6 +2,7 @@ package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
+import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
@@ -30,7 +31,6 @@ import de.terranova.nations.regions.rule.rules.HasAccessLevelRule;
 import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
 import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;
-import de.terranova.nations.utils.roseGUI.RoseGUIListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.*;
 import java.io.File;
 import java.io.FileInputStream;

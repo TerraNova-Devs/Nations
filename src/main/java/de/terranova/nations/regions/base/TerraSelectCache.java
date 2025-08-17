@@ -3,7 +3,7 @@ package de.terranova.nations.regions.base;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.modules.access.AccessControlled;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;

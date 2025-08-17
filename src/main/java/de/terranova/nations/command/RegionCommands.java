@@ -11,7 +11,7 @@ import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;

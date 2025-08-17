@@ -1,9 +1,9 @@
 package de.terranova.nations.gui;
 
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
-import de.terranova.nations.utils.Chat;
-import de.terranova.nations.utils.roseGUI.RoseGUI;
-import de.terranova.nations.utils.roseGUI.RoseItem;
+import de.mcterranova.terranovaLib.utils.Chat;
+import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
+import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Material;
 import org.bukkit.Sound;

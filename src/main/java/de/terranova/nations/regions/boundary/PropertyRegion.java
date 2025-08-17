@@ -8,7 +8,7 @@ import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.UUID;
 import org.bukkit.entity.Player;
 

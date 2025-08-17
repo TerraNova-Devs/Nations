@@ -4,7 +4,7 @@ import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.professions.ProfessionProgressManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.grid.SettleRegion;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.Optional;
 import org.bukkit.entity.Player;
 

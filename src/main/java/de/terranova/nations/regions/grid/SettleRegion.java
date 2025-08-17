@@ -18,7 +18,7 @@ import de.terranova.nations.regions.modules.npc.NPCHolder;
 import de.terranova.nations.regions.modules.npc.NPCr;
 import de.terranova.nations.regions.modules.rank.Rank;
 import de.terranova.nations.regions.modules.rank.RankedRegion;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import de.terranova.nations.worldguard.math.Vectore2;
 import java.util.*;
 import java.util.stream.Collectors;

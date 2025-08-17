@@ -3,7 +3,7 @@ package de.terranova.nations.regions.rule.rules;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.rule.RegionRule;
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import org.bukkit.entity.Player;
 
 public class RegionNameValidationRule implements RegionRule {

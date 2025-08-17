@@ -1,6 +1,6 @@
 package de.terranova.nations.command.commands;
 
-import de.terranova.nations.utils.Chat;
+import de.mcterranova.terranovaLib.utils.Chat;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.*;
