@@ -66,6 +66,7 @@ dependencies {
   compileOnly("com.nexomc:nexo:1.1.0")
   implementation("org.yaml:snakeyaml:2.2")
   compileOnly("de.mcterranova:terranova-lib:1.0.1")
+  implementation ("org.locationtech.jts:jts-core:1.20.0")
 }
 
 tasks {

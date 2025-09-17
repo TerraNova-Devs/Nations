@@ -6,13 +6,13 @@ import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.rule.RegionRule;
 import org.bukkit.entity.Player;
 
-public class WithinParentRegionRule<T extends Region & HasParent<P>, P extends Region>
+public class WithinParent<T extends Region & HasParent<P>, P extends Region>
     implements RegionRule {
 
   private final Class<T> childClass;
   private final Class<P> parentClass;
 
-  public WithinParentRegionRule(Class<T> childClass, Class<P> parentClass) {
+  public WithinParent(Class<T> childClass, Class<P> parentClass) {
     this.childClass = childClass;
     this.parentClass = parentClass;
   }

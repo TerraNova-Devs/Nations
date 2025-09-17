@@ -6,16 +6,15 @@ import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessControlled;
-import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.rule.RegionRule;
 import java.util.Optional;
 import org.bukkit.entity.Player;
 
-public class HasAccessLevelRule implements RegionRule {
+public class AccessLevelCheck implements RegionRule {
 
-  AccessLevel accessLevel;
+  de.terranova.nations.regions.modules.access.AccessLevel accessLevel;
 
-  public HasAccessLevelRule(AccessLevel accessLevel) {
+  public AccessLevelCheck(de.terranova.nations.regions.modules.access.AccessLevel accessLevel) {
     this.accessLevel = accessLevel;
   }
 

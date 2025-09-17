@@ -27,10 +27,10 @@ import de.terranova.nations.regions.grid.SettleRegionFactory;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.rank.RankObjective;
 import de.terranova.nations.regions.rule.RuleSet;
-import de.terranova.nations.regions.rule.rules.HasAccessLevelRule;
-import de.terranova.nations.regions.rule.rules.NoSelfOverlapRule;
+import de.terranova.nations.regions.rule.rules.AccessLevelCheck;
+import de.terranova.nations.regions.rule.rules.SelfOverlap;
 import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
-import de.terranova.nations.regions.rule.rules.WithinParentRegionRule;
+import de.terranova.nations.regions.rule.rules.WithinParent;
 import de.terranova.nations.worldguard.NationsRegionFlag.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -115,15 +115,15 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
             .addRule(
                 new RegionNameValidationRule(
                     "^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
-            .addRule(new NoSelfOverlapRule(true))
-            .addRule(new HasAccessLevelRule(null)));
+            .addRule(new SelfOverlap(true))
+            .addRule(new AccessLevelCheck(null)));
 
     RegionRegistry.register(
-        new PropertyRegionFactory(),
+        new PropertyRegionFactory(), 
         RuleSet.defaultRules()
-            .addRule(new NoSelfOverlapRule(false))
-            .addRule(new HasAccessLevelRule(AccessLevel.VICE))
-            .addRule(new WithinParentRegionRule<>(PropertyRegion.class, SettleRegion.class)));
+            .addRule(new SelfOverlap(false))
+            .addRule(new AccessLevelCheck(AccessLevel.VICE))
+            .addRule(new WithinParent<>(PropertyRegion.class, SettleRegion.class)));
   }
 
   @Override
