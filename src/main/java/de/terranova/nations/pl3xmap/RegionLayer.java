@@ -19,6 +19,7 @@ import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.image.IconImage;
 import net.pl3x.map.core.markers.Point;
 import net.pl3x.map.core.markers.layer.WorldLayer;
+import net.pl3x.map.core.markers.marker.Circle;
 import net.pl3x.map.core.markers.marker.Marker;
 import net.pl3x.map.core.markers.marker.Polygon;
 import net.pl3x.map.core.markers.marker.Polyline;
@@ -28,6 +29,7 @@ import net.pl3x.map.core.util.FileUtil;
 import net.pl3x.map.core.world.World;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
@@ -93,6 +95,7 @@ public class RegionLayer extends WorldLayer implements RegionListener {
     // 3) Determine fill/stroke color based on the settlement's nation
     int fillColor = 0x5540E53F; // default
     int strokeColor = 0xDD8640E6;
+
     String nationColorHex = "#68D9B0"; // fallback if no nation
 
     var nation =
@@ -222,7 +225,6 @@ public class RegionLayer extends WorldLayer implements RegionListener {
 
     // 5) Build Options for polygon fill/stroke using the derived color
     Options optionspoly = Options.builder().fillColor(fillColor).strokeColor(strokeColor).build();
-
     // 6) Create & store markers
     markers.put(
         region.getId().toString() + "icon",
@@ -234,6 +236,18 @@ public class RegionLayer extends WorldLayer implements RegionListener {
                 32)
             .setOptions(optionsicon));
     markers.put(region.getId().toString() + "area", polygonMarker.setOptions(optionspoly));
+    // 7) forward markers to Info for radius
+    int innerColor = 0xDD87A8FA;
+    int outerColor = 0xDDFA6E6E;
+    Vectore2 loc = region.getLocation();
+    Options optionsinnercircle =
+            Options.builder().strokeColor(innerColor).build();
+    Circle innercircle = new Circle("innercircle" + region.getId(),loc.x,loc.z,750);
+    Options optionsoutercircle =
+            Options.builder().fillColor(0x66FADE6E).strokeColor(outerColor).build();
+    Circle outercircle = new Circle("outercircle" + region.getId(),loc.x,loc.z,2000);
+    InfoLayer.markers.put(region.getId().toString() + "innercirclearea",innercircle.setOptions(optionsinnercircle));
+    InfoLayer.markers.put(region.getId().toString() + "outercirclearea",outercircle.setOptions(optionsoutercircle));
   }
 
   private static String buildProfessionsHtml(UUID settlementId) {

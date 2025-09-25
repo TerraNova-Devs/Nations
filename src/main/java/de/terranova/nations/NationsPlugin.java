@@ -2,7 +2,6 @@ package de.terranova.nations;
 
 import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.session.SessionManager;
-import de.mcterranova.terranovaLib.roseGUI.RoseGUIListener;
 import de.terranova.nations.citizens.SettleTrait;
 import de.terranova.nations.command.NationCommands;
 import de.terranova.nations.command.TownCommands;
@@ -13,6 +12,7 @@ import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
+import de.terranova.nations.pl3xmap.InfoLayer;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
@@ -50,6 +50,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.LoaderOptions;
 import org.yaml.snakeyaml.TypeDescription;
@@ -69,7 +70,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public static FileLogger nationsLogger;
   public static FileLogger nationsDebugger;
   public static NationManager nationManager;
-  private Registry<Layer> layerRegistry;
+
 
   @Override
   public void onLoad() {
@@ -86,9 +87,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     citizensTraitRegistry();
     worldguardHandlerRegistry();
     pl3xmapMarkerRegistry();
-    layerRegistry.register(
-        "settlement-layer",
-        new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
     saveDefaultConfig();
     nationManager = new NationManager();
     RealEstateDAO.loadAllHoldings();
@@ -137,8 +135,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   }
 
   private void pl3xmapMarkerRegistry() {
-    this.layerRegistry =
-        Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
+    Registry<@NotNull Layer> layerRegistry;
+    layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
+    layerRegistry.register(
+            "settlement-layer",
+            new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
+    layerRegistry.register(
+            "settlement-info",
+            new InfoLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
   }
 
   private void initDatabase() {
@@ -178,7 +182,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   }
 
   public void listenerRegistry() {
-    Bukkit.getPluginManager().registerEvents(new RoseGUIListener(), this);
     Bukkit.getPluginManager().registerEvents(this, this);
   }
 
