@@ -54,13 +54,10 @@ public class ProfessionManager {
   }
 
   public static List<String> getBuildingIds() {
-    ArrayList<String> result = new ArrayList<>();
-    for (List<BuildingConfig> b : buildingsMap.values()) {
-      for (BuildingConfig bc : b) {
-        result.add(bc.buildingId);
-      }
-    }
-    return result;
+    return buildingsMap.values().stream()
+            .flatMap(List::stream)
+            .map(b -> b.buildingId)
+            .toList();
   }
 
   public static List<String> getProfessionTypes() {
