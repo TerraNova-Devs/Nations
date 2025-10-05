@@ -38,16 +38,20 @@ public class BuildingCommands {
       return false;
     }
     SettleRegion settle = settleOpt.get();
-    String ruuid = settle.getId().toString();
 
     // 2) Markiere in DB:
     ProfessionProgressManager mgr = ProfessionProgressManager.loadForSettlement(settle.getId());
-    mgr.setBuildingBuilt(buildingId, true);
+    if(mgr.setBuildingBuilt(buildingId, true)) {
+      p.sendMessage(
+              Chat.greenFade("Gebäude " + buildingId + " wurde erfolgreich als gebaut markiert!"));
+      return true;
+    } else {
+      p.sendMessage(
+              Chat.errorFade(buildingId + " existiert nicht."));
+      return true;
+    }
 
-    // 3) Ggfs. Meldung ausgeben
-    p.sendMessage(
-        Chat.greenFade("Gebäude " + buildingId + " wurde erfolgreich als gebaut markiert!"));
-    return true;
+
   }
 
   @CommandAnnotation(
@@ -79,11 +83,15 @@ public class BuildingCommands {
 
     // 2) Markiere in DB:
     ProfessionProgressManager mgr = ProfessionProgressManager.loadForSettlement(settle.getId());
-    mgr.setBuildingBuilt(buildingId, false);
+    if(mgr.setBuildingBuilt(buildingId, false)) {
+      p.sendMessage(
+              Chat.greenFade("Gebäude " + buildingId + " wurde erfolgreich als nicht gebaut markiert!"));
+      return true;
+    } else {
+      p.sendMessage(
+              Chat.errorFade(buildingId + " existiert nicht."));
+      return true;
+    }
 
-    // 3) Ggfs. Meldung ausgeben
-    p.sendMessage(
-        Chat.greenFade("Gebäude " + buildingId + " wurde erfolgreich als nicht gebaut markiert!"));
-    return true;
   }
 }

@@ -244,10 +244,10 @@ public class RegionLayer extends WorldLayer implements RegionListener {
             Options.builder().strokeColor(innerColor).build();
     Circle innercircle = new Circle("innercircle" + region.getId(),loc.x,loc.z,750);
     Options optionsoutercircle =
-            Options.builder().fillColor(0x66FADE6E).strokeColor(outerColor).build();
+            Options.builder().fillColor(0x44FADE6E).strokeColor(outerColor).strokeDashPattern("10").strokeDashOffset("10").build();
     Circle outercircle = new Circle("outercircle" + region.getId(),loc.x,loc.z,2000);
-    InfoLayer.markers.put(region.getId().toString() + "innercirclearea",innercircle.setOptions(optionsinnercircle));
     InfoLayer.markers.put(region.getId().toString() + "outercirclearea",outercircle.setOptions(optionsoutercircle));
+    InfoLayer.markers.put(region.getId().toString() + "innercirclearea",innercircle.setOptions(optionsinnercircle));
   }
 
   private static String buildProfessionsHtml(UUID settlementId) {

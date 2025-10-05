@@ -19,7 +19,7 @@ public class InfoLayer extends WorldLayer {
         setLiveUpdate(true);
         setShowControls(true);
         setDefaultHidden(true);
-        setPriority(100);
+        setPriority(99);
         setZIndex(999);
     }
 

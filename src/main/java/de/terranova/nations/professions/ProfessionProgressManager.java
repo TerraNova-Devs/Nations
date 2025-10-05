@@ -111,10 +111,12 @@ public class ProfessionProgressManager {
     return builtBuildings.contains(buildingId);
   }
 
-  public void setBuildingBuilt(String buildingId, boolean built) {
+  public boolean setBuildingBuilt(String buildingId, boolean built) {
+    if(!ProfessionManager.getBuildingIds().contains(buildingId)) return false;
     if (built) builtBuildings.add(buildingId);
     else builtBuildings.remove(buildingId);
     SettlementBuildingsDAO.setBuilt(settlementId.toString(), buildingId, built);
+    return true;
   }
 
   public boolean completeProfession(String professionId) {
