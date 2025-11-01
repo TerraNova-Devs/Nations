@@ -17,11 +17,11 @@ import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
-import java.time.Instant;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
 public class RealEstateCommand extends AbstractCommand {
@@ -47,15 +47,22 @@ public class RealEstateCommand extends AbstractCommand {
             100000));
     addPlaceholder("$types", () -> List.of("rent", "buy"));
     addPlaceholder(
-        "$properties",
-        new CachedSupplier<>(
-            () ->
-                de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property")
-                    .values()
-                    .stream()
-                    .map(Region::getName)
-                    .toList(),
-            100000));
+            "$properties",
+            new CachedSupplier<List<String>>(
+                    () -> {
+                      List<String> list = new ArrayList<>(
+                              de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property")
+                                      .values()
+                                      .stream()
+                                      .map(Region::getName)
+                                      .toList()
+                      );
+                      list.add("#block");
+                      return list;
+                    },
+                    100000
+            )
+    );
     addPlaceholder("$amount", new CachedSupplier<>(() -> List.of("1", "10", "100", "1000"), 10000));
 
     registerSubCommand(this, "browser");
@@ -117,16 +124,26 @@ public class RealEstateCommand extends AbstractCommand {
   @CommandAnnotation(
       domain = "info.$properties",
       permission = "nations.realestate.info",
-      description = "Opens the Realestate Browser",
+      description = "Gives Info about the region",
       usage = "/realestate info <name>")
   public boolean info(Player p, String[] args) {
     Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
-    if (Oregion.isEmpty()) {
+    Optional<Region> region;
+
+    if (Oregion.isEmpty() && !args[1].equals("#block")) {
       p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
       return false;
+    } else if(args[1].equals("#block")) {
+        Block block = p.getTargetBlockExact(10);
+        if(block == null) {
+          p.sendMessage(Chat.errorFade("Es konnte kein Block gefunden werden."));
+          return false;
+        }
+       region = de.terranova.nations.regions.RegionManager.retrieveRegion("property", block.getLocation());
+    } else {
+      region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
     }
-    Optional<Region> region =
-        de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+
     if (region.isEmpty()) {
       p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
       return false;
@@ -135,21 +152,7 @@ public class RealEstateCommand extends AbstractCommand {
       p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
       return false;
     }
-
-    p.sendMessage(Chat.cottonCandy("Infos: " + agent.getAgent().getRegion().getName()));
-
-    p.sendMessage(
-        Chat.cottonCandy(
-            "Besitzer: " + Bukkit.getOfflinePlayer(agent.getAgent().getLandlord()).getName()));
-    if (agent.getAgent().isRented()) {
-      p.sendMessage(
-          Chat.cottonCandy(
-              "Mieter: " + Bukkit.getOfflinePlayer(agent.getAgent().getRegionUser()).getName()));
-    }
-    Instant time = agent.getAgent().getRentEndingTime();
-    if (time != null) {
-      p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
-    }
+    agent.getAgent().sendinfo(p);
     return true;
   }
 

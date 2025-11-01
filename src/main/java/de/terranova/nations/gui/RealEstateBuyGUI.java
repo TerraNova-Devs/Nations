@@ -65,8 +65,8 @@ public class RealEstateBuyGUI extends RoseGUI {
                     player.playSound(player.getLocation(), Sound.BLOCK_NOTE_BLOCK_BASS, 1f, 1f);
                   }
                 });
-
-    addItem(11, buy);
+    if(!isOffer) addItem(11, buy);
+    if(isOffer && agent.offeredType.equals("buy")) addItem(13, buy);
 
     material = Material.RED_STAINED_GLASS_PANE;
     lore = null;
@@ -77,6 +77,8 @@ public class RealEstateBuyGUI extends RoseGUI {
     } else if (isOffer && agent.hasOffer(player) && agent.getOfferType().equals("rent")) {
       material = Material.SLIME_BLOCK;
       lore = Chat.cottonCandy(agent.getOfferAmount() + " Silber");
+    } else {
+      lore = Chat.errorFade("ERROR");
     }
 
     RoseItem rent =
@@ -87,11 +89,11 @@ public class RealEstateBuyGUI extends RoseGUI {
             .build()
             .onClick(
                 e -> {
-                  if (agent.isForRent()) {
+                  if (agent.isForRent() && !isOffer) {
                     player.performCommand("re rent " + agent.getRegion().getName());
                     player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                     player.closeInventory();
-                  } else if (agent.hasOffer(player) && agent.getOfferType().equals("rent")) {
+                  } else if (agent.getOfferType().equals("rent")) {
                     agent.acceptOffer(player);
                     player.playSound(player.getLocation(), Sound.ITEM_GOAT_HORN_SOUND_4, 1f, 1f);
                     player.closeInventory();
@@ -100,6 +102,7 @@ public class RealEstateBuyGUI extends RoseGUI {
                   }
                 });
 
-    addItem(15, rent);
+    if(!isOffer)addItem(15, rent);
+    if(isOffer && agent.offeredType.equals("rent")) addItem(13, rent);
   }
 }

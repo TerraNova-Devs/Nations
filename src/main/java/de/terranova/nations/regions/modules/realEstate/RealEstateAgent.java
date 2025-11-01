@@ -39,8 +39,8 @@ public class RealEstateAgent {
   RealEstateListing data;
   boolean isRented;
   private UUID offeredPlayer;
-  private int offeredAmount;
-  private String offeredType;
+  public int offeredAmount;
+  public String offeredType;
 
   public RealEstateAgent(Region region, RealEstateListing data) {
     // Wenn es einen Eintrag(data) gibt ist die Region auf dem Markt oder Vermietet sonst Verkauft
@@ -246,10 +246,9 @@ public class RealEstateAgent {
   }
 
   public boolean sellEstate(Player seller, int buyAmount, int rentAmount) {
-
-    if (seller.getUniqueId() != data.landlord) {
+    if (!seller.getUniqueId().equals(data.landlord)) {
       if (!region.getWorldguardRegion().getOwners().contains(seller.getUniqueId())) {
-        seller.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
+        seller.sendMessage(Chat.errorFade(String.format("Du kannst keine Region anbieten die %s besitzt", Bukkit.getOfflinePlayer(getLandlord()).getName())));
         return false;
       }
     }
@@ -298,10 +297,9 @@ public class RealEstateAgent {
   }
 
   public boolean offerEstate(Player offerer, String type, int amount, Player user) {
-
-    if (offerer.getUniqueId() != data.landlord) {
+    if (!offerer.getUniqueId().equals(data.landlord)) {
       if (!region.getWorldguardRegion().getOwners().contains(offerer.getUniqueId())) {
-        offerer.sendMessage(Chat.errorFade("Du kannst keine Region anbieten die nicht deine ist."));
+        offerer.sendMessage(Chat.errorFade(String.format("Du kannst keine Region anbieten die %s besitzt", Bukkit.getOfflinePlayer(getLandlord()).getName())));
         return false;
       }
     }
@@ -361,7 +359,6 @@ public class RealEstateAgent {
   }
 
   public void acceptOffer(Player acquirer) {
-
     if (!acquirer.getUniqueId().equals(offeredPlayer)) {
       acquirer.sendMessage(Chat.errorFade("Du hast kein angebot von dieser Stadt vorliegen."));
       return;
@@ -375,7 +372,8 @@ public class RealEstateAgent {
             Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
         return;
       } else {
-        RealEstateDAO.upsertHolding(data.landlord, transfer);
+        RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
+        RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
       }
 
       clearOffer();
@@ -396,13 +394,14 @@ public class RealEstateAgent {
                   region.getName(), transfer)));
     } else if (offeredType.equals("buy")) {
 
-      int transfer = ItemTransfer.charge(acquirer, "terranova_silver", data.buyPrice, true);
+      int transfer = ItemTransfer.charge(acquirer, "terranova_silver", offeredAmount, true);
       if (transfer == -1) {
         acquirer.sendMessage(
             Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
         return;
       } else {
-        RealEstateDAO.upsertHolding(data.landlord, transfer);
+        RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
+        RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
       }
       clearOffer();
       withdrawEstate();
@@ -414,6 +413,7 @@ public class RealEstateAgent {
 
       stripmember();
       RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
+      RealEstateDAO.removeRealEstate(this);
 
       acquirer.sendMessage(
           Chat.greenFade(
@@ -516,6 +516,23 @@ public class RealEstateAgent {
     DefaultDomain members = region.getWorldguardRegion().getMembers();
     members.clear();
     region.getWorldguardRegion().setMembers(members);
+  }
+
+  public void sendinfo(Player p) {
+    p.sendMessage(Chat.cottonCandy("Infos: " + getRegion().getName()));
+
+    p.sendMessage(
+            Chat.cottonCandy(
+                    "Besitzer: " + Bukkit.getOfflinePlayer(getLandlord()).getName()));
+    if (isRented()) {
+      p.sendMessage(
+              Chat.cottonCandy(
+                      "Mieter: " + Bukkit.getOfflinePlayer(getRegionUser()).getName()));
+    }
+    Instant time = getRentEndingTime();
+    if (time != null) {
+      p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
+    }
   }
 
   public Region getRegion() {
