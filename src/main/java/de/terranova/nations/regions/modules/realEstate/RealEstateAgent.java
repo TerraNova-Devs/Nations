@@ -111,7 +111,8 @@ public class RealEstateAgent {
           Chat.errorFade("Du kannst kein Grundstück kündigen dass auch nicht gemietet ist."));
       return false;
     }
-    if (getRegionUser() != player.getUniqueId()) {
+    System.out.println(getRegionUser() + "!" + player.getUniqueId());
+    if (!getRegionUser().equals(player.getUniqueId())) {
       player.sendMessage(Chat.errorFade("Du kannst nur eigen angemietete Verträge kündigen."));
       return false;
     }

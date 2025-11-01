@@ -239,4 +239,111 @@ public class RegionClaimFunctions {
     }
     return Math.abs(area) / 2;
   }
+
+  /**
+   * Returns the number of blocks inside the given WorldGuard region.
+   * Works for ProtectedCuboidRegion and ProtectedPolygonalRegion.
+   */
+  public static int getRegionVolume(ProtectedRegion region) {
+    if (region instanceof ProtectedCuboidRegion cuboid) {
+      return (int) cuboidVolume(cuboid);
+    } else if (region instanceof ProtectedPolygonalRegion poly) {
+      return (int) polygonalVolume(poly);
+    }
+    throw new UnsupportedOperationException(
+            "Region type not supported: " + region.getClass().getSimpleName());
+  }
+
+  // --- Cuboid ---
+
+  private static long cuboidVolume(ProtectedCuboidRegion cuboid) {
+    BlockVector3 min = cuboid.getMinimumPoint();
+    BlockVector3 max = cuboid.getMaximumPoint();
+
+    long dx = (long) max.x() - min.x() + 1;
+    long dy = (long) max.y() - min.y() + 1;
+    long dz = (long) max.z() - min.z() + 1;
+
+    return dx * dy * dz;
+  }
+
+  // --- Polygonal region (vertical prism) ---
+
+  private static long polygonalVolume(ProtectedPolygonalRegion poly) {
+    List<BlockVector2> pts = poly.getPoints();
+    if (pts.isEmpty()) return 0L;
+
+    int minY = poly.getMinimumPoint().y();
+    int maxY = poly.getMaximumPoint().y();
+    long height = (long) (maxY - minY + 1);
+    if (height <= 0) return 0L;
+
+    // Compute 2D bounding box on XZ plane
+    int minX = Integer.MAX_VALUE, minZ = Integer.MAX_VALUE;
+    int maxX = Integer.MIN_VALUE, maxZ = Integer.MIN_VALUE;
+    for (BlockVector2 p : pts) {
+      int x = p.x();
+      int z = p.z();
+      if (x < minX) minX = x;
+      if (x > maxX) maxX = x;
+      if (z < minZ) minZ = z;
+      if (z > maxZ) maxZ = z;
+    }
+
+    long baseCells = 0L;
+
+    // Integer grid fill: count block columns whose (x,z) is inside or on boundary
+    for (int x = minX; x <= maxX; x++) {
+      for (int z = minZ; z <= maxZ; z++) {
+        if (pointInPolygonInclusive(x, z, pts)) {
+          baseCells++;
+        }
+      }
+    }
+
+    return baseCells * height;
+  }
+
+  /**
+   * Ray-casting point-in-polygon with boundary inclusion (edges/vertices count as inside).
+   * Coordinates are integer block coordinates on XZ plane.
+   */
+  private static boolean pointInPolygonInclusive(int x, int z, List<BlockVector2> polygon) {
+    // Boundary check first
+    for (int i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+      BlockVector2 a = polygon.get(j);
+      BlockVector2 b = polygon.get(i);
+      if (pointOnSegment(x, z, a.x(), a.z(), b.x(), b.z())) {
+        return true; // On edge
+      }
+    }
+
+    // Standard ray-cast (odd-even rule)
+    boolean inside = false;
+    for (int i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+      int xi = polygon.get(i).x();
+      int zi = polygon.get(i).z();
+      int xj = polygon.get(j).x();
+      int zj = polygon.get(j).z();
+
+      boolean intersect = ((zi > z) != (zj > z)) &&
+              (x < (double) (xj - xi) * (z - zi) / (double) (zj - zi) + xi);
+      if (intersect) inside = !inside;
+    }
+    return inside;
+  }
+
+  /**
+   * Returns true if point P=(x,z) lies on the segment A=(x1,z1) → B=(x2,z2).
+   * Uses collinearity and bounding-box checks.
+   */
+  private static boolean pointOnSegment(int x, int z, int x1, int z1, int x2, int z2) {
+    long cross = (long) (x - x1) * (z2 - z1) - (long) (z - z1) * (x2 - x1);
+    if (cross != 0) return false; // not collinear
+
+    int minX = Math.min(x1, x2), maxX = Math.max(x1, x2);
+    int minZ = Math.min(z1, z2), maxZ = Math.max(z1, z2);
+    return x >= minX && x <= maxX && z >= minZ && z <= maxZ;
+  }
+
 }

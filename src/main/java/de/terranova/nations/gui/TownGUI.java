@@ -13,6 +13,7 @@ import de.terranova.nations.regions.modules.npc.NPCSkins;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
+import de.terranova.nations.regions.modules.rank.Rank;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -43,7 +44,6 @@ public class TownGUI extends RoseGUI {
             .material(Material.BLACK_STAINED_GLASS_PANE)
             .build();
     fillGui(filler);
-
     RoseItem level =
         new RoseItem.Builder()
             .material(Material.NETHER_STAR)
@@ -51,6 +51,8 @@ public class TownGUI extends RoseGUI {
             .addLore(
                 Chat.cottonCandy(
                     String.format("<i>%s/%s Claims", settle.getClaims(), settle.getMaxClaims())))
+          .addLore(
+                    Chat.cottonCandy(String.format("<i>%s/%s Plot Volume", settle.getMaximalRegionPoints() - settle.getAvaibleRegionPoints(),settle.getMaximalRegionPoints())))
             .build();
 
     RoseItem skins =

@@ -19,6 +19,8 @@ import de.terranova.nations.regions.modules.npc.NPCr;
 import de.terranova.nations.regions.modules.rank.Rank;
 import de.terranova.nations.regions.modules.rank.RankedRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.worldguard.BoundaryClaimFunctions;
+import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -131,7 +133,7 @@ public class SettleRegion extends GridRegion
   }
 
   public int getAvaibleRegionPoints() {
-    int points = getMaxClaims() * 50;
+    int points = getMaximalRegionPoints();
     List<Region> propertyRegions = children.get("property");
 
     if (propertyRegions != null) {
@@ -139,11 +141,15 @@ public class SettleRegion extends GridRegion
           propertyRegions.stream()
               .filter(r -> r instanceof BoundaryRegion)
               .map(r -> (BoundaryRegion) r)
-              .mapToInt(br -> br.isPoly() ? 25 : 5)
+              .mapToInt(br -> br.isPoly() ? RegionClaimFunctions.getRegionVolume(br.getWorldguardRegion()) * 3 : RegionClaimFunctions.getRegionVolume(br.getWorldguardRegion()))
               .sum();
     } else {
       points = 0;
     }
     return points;
+  }
+
+  public int getMaximalRegionPoints() {
+    return getMaxClaims() * 5000;
   }
 }

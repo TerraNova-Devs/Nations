@@ -41,6 +41,9 @@ public class RealEstateBuyGUI extends RoseGUI {
     } else if (isOffer && agent.hasOffer(player) && agent.getOfferType().equals("buy")) {
       material = Material.SLIME_BLOCK;
       lore = Chat.cottonCandy(agent.getOfferAmount() + " Silber");
+    } else {
+      material = Material.SLIME_BLOCK;
+      lore = Chat.errorFade("Error");
     }
 
     RoseItem buy =

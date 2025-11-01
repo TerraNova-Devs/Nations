@@ -57,6 +57,11 @@ public class PropertyRegionFactory implements RegionFactoryBase {
       ProtectedRegion tempRegion =
           BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
 
+      if(settle.getAvaibleRegionPoints() < RegionClaimFunctions.getRegionVolume(tempRegion)) {
+        p.sendMessage(
+                Chat.errorFade("Deine Stadt hat nicht genügend Punkte zu verfügung."));
+        return null;
+      }
       if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 24)) {
         p.sendMessage(
             Chat.errorFade("Die Region muss mindestens 2 Blöcke hoch und 24 blöcke Inhalt haben."));
@@ -70,6 +75,8 @@ public class PropertyRegionFactory implements RegionFactoryBase {
       p.sendMessage(Chat.errorFade("Deine Worldeditauswahl ist unvollständig."));
       return null;
     }
+
+
 
     return new PropertyRegion(name, UUID.randomUUID(), settle);
   }
