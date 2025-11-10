@@ -9,19 +9,26 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.util.Objects;
 import java.util.UUID;
 
 public class WebhookHandler {
 
     private final String webhookUrl;
     private final HttpClient httpClient;
+    private final boolean isValid;
 
     public WebhookHandler(String webhookUrl) {
         this.webhookUrl = webhookUrl;
+        this.isValid = !Objects.equals(webhookUrl, "https://discord.com/api/webhooks/SERVER_ID/WEBHOOK_URL");
         this.httpClient = HttpClient.newHttpClient();
     }
 
     public void send(WebhookMessage message) {
+        if(!isValid) {
+            NationsPlugin.plugin.getLogger().severe("[ERROR] Die Discord Webhook URL entspricht der Vorlage und sollte ausgetauscht werden!");
+            return;
+        }
         try {
             HttpRequest request;
             if (message.hasAttachments()) {
