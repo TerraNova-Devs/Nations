@@ -18,11 +18,10 @@
 !/testserver/plugins/Nations/
 
 #Pl3xMap
-!/testserver/plugins/Pl3xMap/web
-!/testserver/plugins/Pl3xMap/web/images
-!/testserver/plugins/Pl3xMap/web/images/banner
-!/testserver/plugins/Pl3xMap/web/images/font
-!/testserver/plugins/Pl3xMap/web/images/icon
+!/testserver/plugins/Pl3xMap/
+!/testserver/plugins/Pl3xMap/**
+/testserver/plugins/Pl3xMap/web/tiles/
+/testserver/plugins/Pl3xMap/web/images/skins/
 
 #Oraxen
 !/testserver/plugins/Oraxen/
