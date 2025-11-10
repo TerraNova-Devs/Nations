@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
+
+import de.terranova.nations.utils.SecretsReader;
 import org.jetbrains.annotations.NotNull;
 
 public class HikariCP {
@@ -20,8 +22,8 @@ public class HikariCP {
 
   public HikariCP(NationsPlugin plugin) throws SQLException {
     this.plugin = plugin;
-    user = "minecraft";
-    password = "minecraft";
+    user = SecretsReader.DATABASE_USERNAME;
+    password = SecretsReader.DATABASE_PASSWORD;
     HikariConfig config = getHikariConfig();
     dataSource = new HikariDataSource(config);
     prepareTables();

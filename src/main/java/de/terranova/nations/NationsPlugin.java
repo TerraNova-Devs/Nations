@@ -33,6 +33,7 @@ import de.terranova.nations.regions.rule.rules.AccessLevelCheck;
 import de.terranova.nations.regions.rule.rules.SelfOverlap;
 import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.terranova.nations.regions.rule.rules.WithinParent;
+import de.terranova.nations.utils.SecretsReader;
 import de.terranova.nations.worldguard.NationsRegionFlag.*;
 import java.io.File;
 import java.io.FileInputStream;
@@ -63,7 +64,6 @@ import org.yaml.snakeyaml.representer.Representer;
 
 public final class NationsPlugin extends JavaPlugin implements Listener {
 
-  private int NATION_CREATION_COST;
   public static boolean debug = false;
   public static HikariCP hikari;
   public static Map<Integer, RankObjective> levelObjectives;
@@ -86,7 +86,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
   @Override
   public void onEnable() {
-    professionsHook = new WebhookHandler("ohm here was never anything!");
+    professionsHook = new WebhookHandler(SecretsReader.DISCORD_WEBHOOK_URL);
     WebhookMessage proffensionsTestMessage = WebhookMessage.builder().username("Professions Logger").avatarUrl("https://images.cults3d.com/DotiLBC_FTGfAPPgE-jcUnwKlZE=/516x516/filters:no_upscale()/https://fbi.cults3d.com/uploaders/14911877/illustration-file/543a8806-7c25-4259-8611-2b04fb5fe244/fat-2-by-insomnia-3d-2.png").content("This is and advanced Feature Test!");
     professionsHook.send(proffensionsTestMessage);
     plugin = this;
