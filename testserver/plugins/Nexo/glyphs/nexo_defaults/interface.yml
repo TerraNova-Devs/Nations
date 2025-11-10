@@ -1,0 +1,5 @@
+menu_items:
+  texture: required/ui/menu_items
+  ascent: 37
+  height: 256
+  char: ꐘ

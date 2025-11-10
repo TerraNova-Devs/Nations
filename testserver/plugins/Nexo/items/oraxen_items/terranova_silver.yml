@@ -1,0 +1,19 @@
+terranova_silver:
+  itemname: <gradient:#AAA9AD:#D8D8D8><bold>Silber</bold></gradient>
+  material: IRON_NUGGET
+  Pack:
+    parent_model: item/generated
+    textures:
+    - terranova/silver.png
+    custom_model_data: 1000
+  Mechanics:
+    misc:
+      allow_in_vanilla_recipes: false
+terranova_ingot:
+  itemname: <gradient:#AAA9AD:#D8D8D8><bold>Silber Ingot</bold></gradient>
+  material: IRON_INGOT
+  Pack:
+    parent_model: item/generated
+    textures:
+    - terranova/silver_ingot.png
+    custom_model_data: 1000

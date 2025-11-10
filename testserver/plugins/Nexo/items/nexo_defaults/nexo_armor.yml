@@ -1,0 +1,43 @@
+# #### Models made by Workshop Six
+# #### Looking for more cool assets for your server?
+# #### Check out the Workshop Six MCModels store: https://mcmodels.net/vendors/18/workshop-six
+
+forest_helmet:
+  itemname: Forest Helmet
+  material: CHAINMAIL_HELMET
+  Pack:
+    model: nexo:item/nexo_armor/forest_helmet
+    custom_model_data: 1000
+  Components:
+    equippable:
+      slot: HEAD
+forest_chestplate:
+  itemname: Forest Chestplate
+  material: CHAINMAIL_CHESTPLATE
+  Pack:
+    texture: nexo:item/nexo_armor/forest_chestplate
+    custom_model_data: 1000
+  Components:
+    equippable:
+      slot: CHEST
+      model: nexo:forest
+forest_leggings:
+  itemname: Forest Leggings
+  material: CHAINMAIL_LEGGINGS
+  Pack:
+    texture: nexo:item/nexo_armor/forest_leggings
+    custom_model_data: 1000
+  Components:
+    equippable:
+      slot: LEGS
+      model: nexo:forest
+forest_boots:
+  itemname: Forest Boots
+  material: CHAINMAIL_BOOTS
+  Pack:
+    texture: nexo:item/nexo_armor/forest_boots
+    custom_model_data: 1000
+  Components:
+    equippable:
+      slot: FEET
+      model: nexo:forest

@@ -1,0 +1,250 @@
+nm_plushie_creeper:
+  itemname: <white>Creeper Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_creeper
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_creeper
+    custom_model_data: 1092
+nm_plushie_donkey:
+  itemname: <white>Donkey Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_donkey
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_donkey
+    custom_model_data: 1093
+nm_plushie_enderdragon:
+  itemname: <aqua>Ender Dragon Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_enderdragon
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_enderdragon
+    custom_model_data: 1094
+nm_plushie_enderman:
+  itemname: <white>Enderman Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_enderman
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_enderman
+    custom_model_data: 1095
+nm_plushie_ghast:
+  itemname: <white>Ghast Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_ghast
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_ghast
+    custom_model_data: 1096
+nm_plushie_goat:
+  itemname: <white>Goat Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_goat
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_goat
+    custom_model_data: 1097
+nm_plushie_polar_bear:
+  itemname: <white>Polar Bear Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_polar_bear
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_polar_bear
+    custom_model_data: 1098
+nm_plushie_pufferfish:
+  itemname: <white>Pufferfish Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_pufferfish
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_pufferfish
+    custom_model_data: 1099
+nm_plushie_skeleton_horse:
+  itemname: <white>Skeleton Horse Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_skeleton_horse
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_skeleton_horse
+    custom_model_data: 1110
+nm_plushie_squid:
+  itemname: <white>Squid Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_squid
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_squid
+    custom_model_data: 1111

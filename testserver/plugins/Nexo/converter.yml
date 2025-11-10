@@ -1,0 +1,21 @@
+oraxenConverter:
+  convertItems: true
+  convertResourcePack: true
+  convertSettings: true
+  # If Nexo should convert Oraxen-Furniture when a chunk/entity is loaded
+  # This includes;
+  # 1. Removing any Interaction-Hitbox-Entity (Now handled via fake entities)
+  # 2. Removing any Barrier-Hitbox-Blocks (Now handled via fake blocks)
+  # 3. Removing any Furniture-Seats (Now uses Interaction-Entities)
+  convertFurnitureOnLoad: true
+  # Do not change unless you want to re-import Oraxen entirely again
+  hasBeenConverted: true
+
+itemsadderConverter:
+  convertItems: true
+  convertResourcePack: true
+  convertFurnitureOnLoad: true
+  hasBeenConverted: true
+  # Used by Nexo to track modified item-ids
+  # Mainly used for CustomArmor items that do not follow Nexo's hardcoded scheme
+  changedItemIds: {}

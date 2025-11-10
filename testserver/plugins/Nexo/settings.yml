@@ -1,0 +1,122 @@
+debug: false
+WorldEdit:
+  noteblock_mechanic: false
+  stringblock_mechanic: false
+  furniture_mechanic: false
+Chat:
+  chat_handler: MODERN
+ConfigTools:
+  generate_default_configs: true
+  disable_automatic_model_data: false
+  disable_automatic_glyph_code: false
+  initial_custom_model_data: 1000
+  skipped_model_data_numbers: []
+  error_item:
+    material: PODZOL
+    excludeFromInventory: false
+    injectId: false
+  remove_invalid_furniture: false
+NexoInventory:
+  menu_layout:
+    nexo_armor:
+      slot: 1
+      icon: forest_helmet
+      displayname: <green>Nexo Armor</green>
+    nexo_furniture:
+      slot: 2
+      icon: arm_chair
+      displayname: <green>Nexo Furniture</green>
+    nexo_tools:
+      slot: 3
+      icon: forest_axe
+      displayname: <green>Nexo Tools</green>
+  menu_rows: 6
+  menu_size: 45
+  main_menu_title: <shift:-37><glyph:menu_items>
+  next_page_icon: next_page_icon
+  previous_page_icon: previous_page_icon
+  exit_icon: cancel_icon
+  recipe_showcase_title: <shift:-7><glyph:menu_recipe>
+Pack:
+  obfuscation:
+    type: SIMPLE
+    cache: true
+  validate:
+    models: true
+    fonts: true
+    atlas: true
+  server:
+    type: POLYMATH
+    selfhost:
+      port: 8082
+      dispatch_threads: 10
+    polymath:
+      server: atlas.nexomc.com
+      secret: nexomc
+    lobfile:
+      api_key: API-KEY
+    s3:
+      public_url: https://public_url.com
+      region: EU_WEST_1
+      bucket: packs
+      key: resource_pack
+      secret_key: SECRET
+      access_key: SECRET
+  generation:
+    read_lenient: true
+    generate_zip: true
+    minimize_json: true
+    excluded_file_extensions:
+    - .zip
+    - .tar.gz
+    packsquash:
+      enabled: false
+      executable_path: plugins/Nexo/pack/packsquash/packsquash
+      settings_path: plugins/Nexo/pack/packsquash/packsquash.toml
+  import:
+    default_assets: true
+    external_packs: true
+    from_location: []
+    from_url: []
+    external_pack_order: []
+    model_engine:
+      import_pack: true
+      exclude_shaders: true
+  dispatch:
+    send_pre_join: true
+    send_on_join: false
+    send_on_reload: true
+    delay: -1
+    mandatory: true
+    prompt: <#fa4943>Accept the pack to enjoy a full <b><gradient:#9055FF:#13E2DA>Nexo</b><#fa4943>
+      experience
+ItemUpdater:
+  update_tile_entity_contents: true
+  update_entity_contents: true
+  update_items: true
+  update_items_on_reload: true
+  override_item_lore: false
+Misc:
+  reset_recipes: true
+  add_recipes_to_book: true
+  hide_scoreboard_numbers: false
+  hide_scoreboard_background: false
+  hide_tablist_background: false
+  block_other_resourcepacks: false
+Plugin:
+  language: english
+  keep_this_up_to_date: true
+  formatting:
+    anvil: true
+    signs: true
+    chat: true
+    books: true
+    packets: true
+CustomArmor:
+  type: COMPONENT
+  auto_assign_settings: true
+Glyphs:
+  emoji_list_permission_only: true
+  unicode_completions: true
+  chat_hover_text: <glyph_placeholder>
+  shift_font: nexo:shift

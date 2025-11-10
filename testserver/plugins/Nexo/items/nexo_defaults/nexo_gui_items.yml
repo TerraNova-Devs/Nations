@@ -1,0 +1,24 @@
+next_page_icon:
+  itemname: <#D5D6D8>Next page
+  material: PAPER
+  excludeFromInventory: true
+  excludeFromCommands: true
+  Pack:
+    texture: required/arrow_next_icon.png
+    custom_model_data: 1006
+previous_page_icon:
+  itemname: <#D5D6D8>Previous page
+  material: PAPER
+  excludeFromInventory: true
+  excludeFromCommands: true
+  Pack:
+    texture: required/arrow_previous_icon.png
+    custom_model_data: 1007
+cancel_icon:
+  itemname: <gradient:#FA7CBB:#F14658>Back to main menu
+  material: PAPER
+  excludeFromInventory: true
+  excludeFromCommands: true
+  Pack:
+    texture: required/cancel_icon.png
+    custom_model_data: 1008

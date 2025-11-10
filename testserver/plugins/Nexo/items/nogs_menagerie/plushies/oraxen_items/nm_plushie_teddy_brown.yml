@@ -1,0 +1,24 @@
+nm_plushie_teddy_brown:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_teddy_brown
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_teddy_brown
+    custom_model_data: 1060
+  itemname: <white>Teddy Plushie (Brown)

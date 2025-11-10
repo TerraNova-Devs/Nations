@@ -1,0 +1,240 @@
+nm_plushie_cozy_ibex:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_ibex
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_ibex
+    custom_model_data: 1050
+  itemname: <white>Cozy Ibex Plushie
+nm_plushie_cozy_owl:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_owl
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_owl
+    custom_model_data: 1051
+  itemname: <white>Cozy Owl Plushie
+nm_plushie_cozy_penguin:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_penguin
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_penguin
+    custom_model_data: 1052
+  itemname: <white>Cozy Penguin Plushie
+nm_plushie_cozy_polar_bear:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_polar_bear
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_polar_bear
+    custom_model_data: 1053
+  itemname: <white>Cozy Polar Bear Plushie
+nm_plushie_cozy_raccoon:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_raccoon
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_raccoon
+    custom_model_data: 1054
+  itemname: <white>Cozy Raccoon Plushie
+nm_plushie_cozy_robin:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_robin
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_robin
+    custom_model_data: 1055
+  itemname: <white>Cozy Robin Plushie
+nm_plushie_cozy_snow_leopard:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_snow_leopard
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_snow_leopard
+    custom_model_data: 1056
+  itemname: <white>Cozy Snow Leopard Plushie
+nm_plushie_cozy_squirrel:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_squirrel
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_squirrel
+    custom_model_data: 1057
+  itemname: <white>Cozy Squirrel Plushie
+nm_plushie_cozy_tiger:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_tiger
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_tiger
+    custom_model_data: 1058
+  itemname: <white>Cozy Tiger Plushie
+nm_plushie_cozy_villager:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_cozy_villager
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cozy_villager
+    custom_model_data: 1059
+  itemname: <white>Cozy Villager Plushie

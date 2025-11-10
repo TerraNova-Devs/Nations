@@ -23,14 +23,37 @@
 /testserver/plugins/Pl3xMap/web/tiles/
 /testserver/plugins/Pl3xMap/web/images/skins/
 
-#Oraxen
-!/testserver/plugins/Oraxen/
-!/testserver/plugins/Oraxen/items/
-!/testserver/plugins/Oraxen/glyphs/
-!/testserver/plugins/Oraxen/languages/
-!/testserver/plugins/Oraxen/recipes/
-!/testserver/plugins/Oraxen/gestures/
-!/testserver/plugins/Oraxen/schematics/
+#Nexo
+# Nexo – include plugin, ignore everything inside
+!/testserver/plugins/Nexo/
+/testserver/plugins/Nexo/**
+
+!/testserver/plugins/Nexo/glyphs
+!/testserver/plugins/Nexo/glyphs/**
+!/testserver/plugins/Nexo/items
+!/testserver/plugins/Nexo/items/**
+!/testserver/plugins/Nexo/languages
+!/testserver/plugins/Nexo/languages/**
+!/testserver/plugins/Nexo/recipes
+!/testserver/plugins/Nexo/recipes/**
+!/testserver/plugins/Nexo/schematics
+!/testserver/plugins/Nexo/schematics/**
+!/testserver/plugins/Nexo/settings.yml
+!/testserver/plugins/Nexo/bitmaps.yml
+!/testserver/plugins/Nexo/mechanics.yml
+!/testserver/plugins/Nexo/sounds.yml
+!/testserver/plugins/Nexo/converter.yml
+!/testserver/plugins/Nexo/pack/
+!/testserver/plugins/Nexo/pack/assets/
+!/testserver/plugins/Nexo/pack/assets/minecraft/
+!/testserver/plugins/Nexo/pack/assets/minecraft/models/
+!/testserver/plugins/Nexo/pack/assets/minecraft/models/nogs_menagerie
+!/testserver/plugins/Nexo/pack/assets/minecraft/models/nogs_menagerie/**
+!/testserver/plugins/Nexo/pack/assets/minecraft/textures/
+!/testserver/plugins/Nexo/pack/assets/minecraft/textures/nogs_menagerie
+!/testserver/plugins/Nexo/pack/assets/minecraft/textures/nogs_menagerie/**
+!/testserver/plugins/Nexo/pack/assets/minecraft/textures/terranova
+!/testserver/plugins/Nexo/pack/assets/minecraft/textures/terranova/**
 
 #Opibus
 !/testserver/plugins/Opibus/

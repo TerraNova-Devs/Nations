@@ -1,0 +1,775 @@
+nm_plushie_axolotl_blue:
+  itemname: <white>Axolotl Plushie (Blue)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_axolotl_blue
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_axolotl_blue
+    custom_model_data: 1000
+nm_plushie_axolotl_brown:
+  itemname: <white>Axolotl Plushie (Brown)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_axolotl_brown
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_axolotl_brown
+    custom_model_data: 1020
+nm_plushie_axolotl_cyan:
+  itemname: <white>Axolotl Plushie (Cyan)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_axolotl_cyan
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_axolotl_cyan
+    custom_model_data: 1021
+nm_plushie_axolotl_gold:
+  itemname: <white>Axolotl Plushie (Gold)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_axolotl_gold
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_axolotl_gold
+    custom_model_data: 1022
+nm_plushie_cat_black:
+  itemname: <white>Cat Plushie (Black)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_black
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_black
+    custom_model_data: 1023
+nm_plushie_cat_british_shorthair:
+  itemname: <white>Cat Plushie (British Shorthair)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_british_shorthair
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_british_shorthair
+    custom_model_data: 1024
+nm_plushie_cat_calico:
+  itemname: <white>Cat Plushie (Calico)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_calico
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_calico
+    custom_model_data: 1025
+nm_plushie_cat_jellie:
+  itemname: <white>Cat Plushie (Jellie)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_jellie
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_jellie
+    custom_model_data: 1026
+nm_plushie_cat_persian:
+  itemname: <white>Cat Plushie (Persian)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_persian
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_persian
+    custom_model_data: 1027
+nm_plushie_cat_ragdoll:
+  itemname: <white>Cat Plushie (Ragdoll)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_ragdoll
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_ragdoll
+    custom_model_data: 1028
+nm_plushie_cat_siamese:
+  itemname: <white>Cat Plushie (Siamese)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_siamese
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_siamese
+    custom_model_data: 1029
+nm_plushie_cat_tabby:
+  itemname: <white>Cat Plushie (Tabby)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_tabby
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_tabby
+    custom_model_data: 1030
+nm_plushie_cat_tuxedo:
+  itemname: <white>Cat Plushie (Tuxedo)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_tuxedo
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_tuxedo
+    custom_model_data: 1031
+nm_plushie_cat_white:
+  itemname: <white>Cat Plushie (White)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cat_white
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cat_white
+    custom_model_data: 1032
+nm_plushie_fox_snow:
+  itemname: <white>Snow Fox Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_fox_snow
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_fox_snow
+    custom_model_data: 1033
+nm_plushie_frog_temperate:
+  itemname: <white>Frog Plushie (Temperate)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_frog_temperate
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_frog_temperate
+    custom_model_data: 1034
+nm_plushie_frog_warm:
+  itemname: <white>Frog Plushie (Warm)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_frog_warm
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_frog_warm
+    custom_model_data: 1035
+nm_plushie_horse_black:
+  itemname: <white>Horse Plushie (Black)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_horse_black
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_horse_black
+    custom_model_data: 1036
+nm_plushie_horse_chestnut:
+  itemname: <white>Horse Plushie (Chestnut)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_horse_chestnut
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_horse_chestnut
+    custom_model_data: 1037
+nm_plushie_horse_gray:
+  itemname: <white>Horse Plushie (Gray)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_horse_gray
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_horse_gray
+    custom_model_data: 1038
+nm_plushie_horse_white:
+  itemname: <white>Horse Plushie (White)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_horse_white
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_horse_white
+    custom_model_data: 1039
+nm_plushie_parrot_blue:
+  itemname: <white>Parrot Plushie (Blue)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_parrot_blue
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_parrot_blue
+    custom_model_data: 1062
+nm_plushie_parrot_cyan:
+  itemname: <white>Parrot Plushie (Cyan)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_parrot_cyan
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_parrot_cyan
+    custom_model_data: 1063
+nm_plushie_parrot_gray:
+  itemname: <white>Parrot Plushie (Gray)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_parrot_gray
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_parrot_gray
+    custom_model_data: 1064
+nm_plushie_parrot_green:
+  itemname: <white>Parrot Plushie (Green)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_parrot_green
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_parrot_green
+    custom_model_data: 1065
+nm_plushie_rabbit_black:
+  itemname: <white>Rabbit Plushie (Black)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_black
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_black
+    custom_model_data: 1066
+nm_plushie_rabbit_black_white:
+  itemname: <white>Rabbit Plushie (Black & White)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_black_white
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_black_white
+    custom_model_data: 1067
+nm_plushie_rabbit_gold:
+  itemname: <white>Rabbit Plushie (Gold)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_gold
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_gold
+    custom_model_data: 1068
+nm_plushie_rabbit_salt_pepper:
+  itemname: <white>Rabbit Plushie (Salt & Pepper)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_salt_pepper
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_salt_pepper
+    custom_model_data: 1069
+nm_plushie_rabbit_toast:
+  itemname: <white>Rabbit Plushie (Toast)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_toast
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_toast
+    custom_model_data: 1070
+nm_plushie_rabbit_white:
+  itemname: <white>Rabbit Plushie (White)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_rabbit_white
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_rabbit_white
+    custom_model_data: 1071

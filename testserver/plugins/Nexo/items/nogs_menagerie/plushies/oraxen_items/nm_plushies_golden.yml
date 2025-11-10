@@ -1,0 +1,240 @@
+nm_plushie_golden_armadillo:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_armadillo
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_armadillo
+    custom_model_data: 1100
+  itemname: <gold>Golden Armadillo Plushie
+nm_plushie_golden_axolotl:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_axolotl
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_axolotl
+    custom_model_data: 1101
+  itemname: <gold>Golden Axolotl Plushie
+nm_plushie_golden_cat:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_cat
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_cat
+    custom_model_data: 1102
+  itemname: <gold>Golden Cat Plushie
+nm_plushie_golden_cow:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_cow
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_cow
+    custom_model_data: 1103
+  itemname: <gold>Golden Cow Plushie
+nm_plushie_golden_creeper:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_creeper
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_creeper
+    custom_model_data: 1104
+  itemname: <gold>Golden Creeper Plushie
+nm_plushie_golden_dolphin:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_dolphin
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_dolphin
+    custom_model_data: 1105
+  itemname: <gold>Golden Dolphin Plushie
+nm_plushie_golden_goat:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_goat
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_goat
+    custom_model_data: 1106
+  itemname: <gold>Golden Goat Plushie
+nm_plushie_golden_pig:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_pig
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_pig
+    custom_model_data: 1107
+  itemname: <gold>Golden Pig Plushie
+nm_plushie_golden_rabbit:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_rabbit
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_rabbit
+    custom_model_data: 1108
+  itemname: <gold>Golden Rabbit Plushie
+nm_plushie_golden_wolf:
+  material: PAPER
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - probability: 1.0
+          nexo_item: nm_plushie_golden_wolf
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_golden_wolf
+    custom_model_data: 1109
+  itemname: <gold>Golden Wolf Plushie

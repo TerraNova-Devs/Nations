@@ -1,0 +1,250 @@
+nm_plushie_blaze:
+  itemname: <white>Blaze Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_blaze
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_blaze
+    custom_model_data: 1132
+nm_plushie_drowned:
+  itemname: <white>Drowned Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_drowned
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_drowned
+    custom_model_data: 1133
+nm_plushie_hoglin:
+  itemname: <white>Hoglin Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_hoglin
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_hoglin
+    custom_model_data: 1134
+nm_plushie_husk:
+  itemname: <white>Husk Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_husk
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_husk
+    custom_model_data: 1135
+nm_plushie_magma_cube:
+  itemname: <white>Magma Cube Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_magma_cube
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_magma_cube
+    custom_model_data: 1136
+nm_plushie_piglin:
+  itemname: <white>Piglin Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_piglin
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_piglin
+    custom_model_data: 1137
+nm_plushie_piglin_brute:
+  itemname: <white>Piglin Brute Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_piglin_brute
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_piglin_brute
+    custom_model_data: 1138
+nm_plushie_stray:
+  itemname: <white>Stray Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_stray
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_stray
+    custom_model_data: 1139
+nm_plushie_strider:
+  itemname: <white>Strider Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_strider
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_strider
+    custom_model_data: 1140
+nm_plushie_zombified_piglin:
+  itemname: <white>Zombified Piglin Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_zombified_piglin
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_zombified_piglin
+    custom_model_data: 1141

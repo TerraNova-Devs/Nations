@@ -1,0 +1,250 @@
+nm_plushie_evoker:
+  itemname: <white>Evoker Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_evoker
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_evoker
+    custom_model_data: 1122
+nm_plushie_iron_golem:
+  itemname: <aqua>Iron Golem Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_iron_golem
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_iron_golem
+    custom_model_data: 1123
+nm_plushie_pillager:
+  itemname: <white>Pillager Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_pillager
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_pillager
+    custom_model_data: 1124
+nm_plushie_ravager:
+  itemname: <aqua>Ravager Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_ravager
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_ravager
+    custom_model_data: 1125
+nm_plushie_trader_llama:
+  itemname: <white>Trader Llama Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_trader_llama
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_trader_llama
+    custom_model_data: 1126
+nm_plushie_vex:
+  itemname: <white>Vex Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_vex
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_vex
+    custom_model_data: 1127
+nm_plushie_villager:
+  itemname: <white>Villager Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_villager
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_villager
+    custom_model_data: 1128
+nm_plushie_vindicator:
+  itemname: <white>Vindicator Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_vindicator
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_vindicator
+    custom_model_data: 1129
+nm_plushie_wandering_trader:
+  itemname: <white>Wandering Trader Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_wandering_trader
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_wandering_trader
+    custom_model_data: 1130
+nm_plushie_zombie_villager:
+  itemname: <white>Zombie Villager Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_zombie_villager
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_zombie_villager
+    custom_model_data: 1131

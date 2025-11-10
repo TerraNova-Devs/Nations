@@ -1,0 +1,250 @@
+nm_plushie_allay:
+  itemname: <white>Allay Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_allay
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_allay
+    custom_model_data: 1072
+nm_plushie_axolotl:
+  itemname: <white>Axolotl Plushie (Pink)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_axolotl
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_axolotl
+    custom_model_data: 1073
+nm_plushie_bee:
+  itemname: <white>Bee Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_bee
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_bee
+    custom_model_data: 1074
+nm_plushie_chicken:
+  itemname: <white>Chicken Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_chicken
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_chicken
+    custom_model_data: 1075
+nm_plushie_cow:
+  itemname: <white>Cow Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_cow
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_cow
+    custom_model_data: 1076
+nm_plushie_fox:
+  itemname: <white>Fox Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_fox
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_fox
+    custom_model_data: 1077
+nm_plushie_parrot:
+  itemname: <white>Parrot Plushie (Red)
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_parrot
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_parrot
+    custom_model_data: 1078
+nm_plushie_pig:
+  itemname: <white>Pig Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_pig
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_pig
+    custom_model_data: 1079
+nm_plushie_sheep:
+  itemname: <white>Sheep Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_sheep
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_sheep
+    custom_model_data: 1080
+nm_plushie_turtle:
+  itemname: <white>Turtle Plushie
+  material: PAPER
+  Mechanics:
+    furniture:
+      rotatable: true
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      block_sounds:
+        break_sound: block.wool.break
+        place_sound: block.wool.place
+        hit_sound: block.wool.hit
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: nm_plushie_turtle
+          probability: 1.0
+      hitbox:
+        interactions:
+        - 0,0,0 1.0,1.0
+  Pack:
+    model: nogs_menagerie/plushies/nm_plushie_turtle
+    custom_model_data: 1081

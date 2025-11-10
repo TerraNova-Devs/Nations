@@ -1,0 +1,131 @@
+# MISCELLANEOUS
+
+commands:
+  enabled: true
+
+armor_effects:
+  enabled: true
+  delay_in_ticks: 20
+
+custom:
+  enabled: true
+
+itemtype:
+  enabled: true
+
+soulbound:
+  enabled: true
+
+backpack:
+  enabled: true
+
+misc:
+  enabled: true
+
+furniture:
+  default_furniture_type: DISPLAY_ENTITY # DISPLAY_ENTITY, ITEM_FRAME, GLOW_ITEM_FRAME
+  tool_types:
+  - WOODEN
+  - STONE
+  - IRON
+  - GOLDEN
+  - DIAMOND
+  - NETHERITE
+  # ticks between each check for plant growth
+  evolution_check_delay: 200
+  enabled: true
+  detect_viabackwards: true # Blocks use of Item Display Furniture when server allows clients below 1.19.4
+  custom_block_sounds: false
+  default_rotatable_on_sneak: false
+  handle_non_player_barrier_collision: true
+
+repair:
+  enabled: true
+  oraxen_durability_only: false
+  nexo_durability_only: true
+
+food:
+  enabled: true
+
+energyblast:
+  enabled: true
+
+fireball:
+  enabled: true
+
+thor:
+  enabled: true
+
+witherskull:
+  enabled: true
+
+smelting:
+  enabled: true
+  # To remove an item that should not be cooked, add it here !
+  blacklist_cooked:
+  - WET_SPONGE
+
+harvesting:
+  enabled: true
+lifesteal:
+  enabled: true
+custom_blocks:
+  enabled: true
+  # Can be overriden for sub-mechanics by specifying it in them aswell
+  tool_types:
+  - WOODEN
+  - STONE
+  - IRON
+  - GOLDEN
+  - DIAMOND
+  - NETHERITE
+  noteblock:
+    tool_types:
+    - WOODEN
+    - STONE
+    - IRON
+    - GOLDEN
+    - DIAMOND
+    - NETHERITE
+    - null
+    farmblock_check_delay: 1000
+    # Removes the mineable/axe tag from noteblocks for player
+    # This is to prevent axes from breaking custom-blocks in normal speed
+    remove_mineable_tag: false
+    enabled: false
+    reimplement_noteblock_features: false
+    custom_block_sounds:
+      enabled: false
+      # If false, plays for animals stepping/falling on blocks aswell
+      # Enable this if you are experiencing lag with noteblock-sounds
+      players_only: true
+  stringblock:
+    tool_types:
+    - WOODEN
+    - STONE
+    - IRON
+    - GOLDEN
+    - DIAMOND
+    - NETHERITE
+    sapling_growth_check_delay: 4000
+    disable_vanilla_strings: false
+    enabled: true
+    custom_block_sounds:
+      enabled: false
+      # If false, plays for animals stepping/falling on blocks aswell
+      # Enable this if you are experiencing lag with stringblock-sounds
+      players_only: true
+  chorusblock:
+    tool_types:
+    - WOODEN
+    - STONE
+    - IRON
+    - GOLDEN
+    - DIAMOND
+    - NETHERITE
+    enabled: true
+  custom_block_sounds:
+    enabled: false
+    # If false, plays for animals stepping/falling on blocks aswell
+    # Enable this if you are experiencing lag with noteblock-sounds
+    players_only: true

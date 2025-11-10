@@ -1,0 +1,288 @@
+# #### Models made by Workshop Six
+# #### Looking for more cool assets for your server?
+# #### Check out the Workshop Six MCModels store: https://mcmodels.net/vendors/18/workshop-six
+
+arm_chair:
+  itemname: Arm Chair
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/arm_chair
+    custom_model_data: 1000
+  Mechanics:
+    furniture:
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+      seats:
+      - 0,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: arm_chair
+          probability: 1.0
+coffee_table:
+  itemname: Coffee Table
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/coffee_table
+    custom_model_data: 1001
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+        - 1,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: coffee_table
+          probability: 1.0
+end_table:
+  itemname: End Table
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/end_table
+    custom_model_data: 1002
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: end_table
+          probability: 1.0
+sofa:
+  itemname: Sofa
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/sofa
+    custom_model_data: 1003
+  Mechanics:
+    furniture:
+      seats:
+      - -0.7,0.0,0
+      - 0.7,0.0,0
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+        - 1,0,0
+        - -1,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: sofa
+          probability: 1.0
+storage_chest:
+  itemname: Storage Chest
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/storage_chest
+    custom_model_data: 1004
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+        - 1,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: storage_chest
+          probability: 1.0
+      storage:
+        type: STORAGE
+        rows: 6
+        title: Storage Chest
+        open_sound: entity.chest.open
+        close_sound: entity.chest.close
+table_lamp:
+  itemname: Table Lamp
+  material: PAPER
+  Pack:
+    model: nexo:item/nexo_furniture/table_lamp
+    custom_model_data: 1005
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+      lights:
+        toggleable: true
+        lights:
+        - 0,1,0 15
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: table_lamp
+          probability: 1.0
+arm_chair_dyeable:
+  itemname: Arm Chair
+  material: LEATHER_HORSE_ARMOR
+  color: 255, 255, 255
+  Pack:
+    model: nexo:item/nexo_furniture/arm_chair_dyeable
+    custom_model_data: 1000
+  Mechanics:
+    furniture:
+      seats:
+      - 0,0,0
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: arm_chair_dyeable
+          probability: 1.0
+coffee_table_dyeable:
+  itemname: Coffee Table
+  material: LEATHER_HORSE_ARMOR
+  color: 255, 255, 255
+  Pack:
+    model: nexo:item/nexo_furniture/coffee_table_dyeable
+    custom_model_data: 1001
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+        - 1,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: coffee_table_dyeable
+          probability: 1.0
+sofa_dyeable:
+  itemname: Sofa
+  material: LEATHER_HORSE_ARMOR
+  color: 255, 255, 255
+  Pack:
+    model: nexo:item/nexo_furniture/sofa_dyeable
+    custom_model_data: 1002
+  Mechanics:
+    furniture:
+      seats:
+      - -0.7,0,0
+      - 0.7,0,0
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+        - 1,0,0
+        - -1,0,0
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: sofa_dyeable
+          probability: 1.0
+table_lamp_dyeable:
+  itemname: Table Lamp
+  material: LEATHER_HORSE_ARMOR
+  color: 255, 255, 255
+  Pack:
+    model: nexo:item/nexo_furniture/table_lamp_dyeable
+    custom_model_data: 1003
+  Mechanics:
+    furniture:
+      rotatable: false
+      limited_placing:
+        roof: false
+        floor: true
+        wall: false
+      restricted_rotation: VERY_STRICT
+      block_sounds:
+        place_sound: block.wood.place
+        break_sound: block.wood.break
+      hitbox:
+        barriers:
+        - 0,0,0
+      lights:
+        toggleable: true
+        lights:
+        - 0,1,0 15
+      drop:
+        silktouch: false
+        loots:
+        - nexo_item: table_lamp_dyeable
+          probability: 1.0
