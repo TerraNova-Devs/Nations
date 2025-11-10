@@ -10,7 +10,8 @@ import de.terranova.nations.database.HikariCP;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
-import de.terranova.nations.discord.DiscordWebhook;
+import de.terranova.nations.discord.WebhookHandler;
+import de.terranova.nations.discord.WebhookMessage;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.pl3xmap.InfoLayer;
@@ -71,7 +72,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public static FileLogger nationsLogger;
   public static FileLogger nationsDebugger;
   public static NationManager nationManager;
-  public static DiscordWebhook professionsHook;
+  public static WebhookHandler professionsHook;
 
 
   @Override
@@ -85,8 +86,9 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
   @Override
   public void onEnable() {
-    professionsHook = new DiscordWebhook("https://discord.com/api/webhooks/1437200805051633694/rcF5Iu4VsVd0_j3p7snO0LWSmvqVlBL_2-b8-3FGpTUKVJSRdj6pVzpFJ_iBOihvTN-_");
-    professionsHook.sendMessage("Hallo ich bin der Nations Test-Server und kann jetzt Nachrichten in diesen Channel senden :)!");
+    professionsHook = new WebhookHandler("ohm here was never anything!");
+    WebhookMessage proffensionsTestMessage = WebhookMessage.builder().username("Professions Logger").avatarUrl("https://images.cults3d.com/DotiLBC_FTGfAPPgE-jcUnwKlZE=/516x516/filters:no_upscale()/https://fbi.cults3d.com/uploaders/14911877/illustration-file/543a8806-7c25-4259-8611-2b04fb5fe244/fat-2-by-insomnia-3d-2.png").content("This is and advanced Feature Test!");
+    professionsHook.send(proffensionsTestMessage);
     plugin = this;
     citizensTraitRegistry();
     worldguardHandlerRegistry();
