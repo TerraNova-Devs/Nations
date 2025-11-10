@@ -8,8 +8,8 @@ rootProject.name = "Nations"
 val localLib = file("../TerranovaLib")
 if (localLib.isDirectory) {
   includeBuild(localLib) {
+    name = "IMPORTED LIB"
     dependencySubstitution {
-      // substitute published module with the local project (root project of the lib)
       substitute(module("de.mcterranova:terranova-lib"))
         .using(project(":"))
     }
