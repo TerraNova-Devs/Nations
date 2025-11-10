@@ -7,7 +7,7 @@
     <option name="ALTERNATIVE_JRE_PATH" />
     <method v="2">
       <option name="Gradle.BeforeRunTask" enabled="true" tasks="shadowJar" externalProjectPath="$PROJECT_DIR$" vmOptions="" scriptParameters="" />
-      <option name="Gradle.BeforeRunTask" enabled="true" tasks="&quot;:IMPORTED LIB:shadowJar&quot;" externalProjectPath="$PROJECT_DIR$/../TerranovaLib" vmOptions="" scriptParameters="" />
+      <option name="Gradle.BeforeRunTask" enabled="true" tasks="shadowJar" externalProjectPath="$PROJECT_DIR$/../TerranovaLib" vmOptions="" scriptParameters="" />
     </method>
   </configuration>
 </component>
