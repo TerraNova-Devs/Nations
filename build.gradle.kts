@@ -79,7 +79,7 @@ tasks {
     options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
   }
   shadowJar{
-    destinationDirectory.set(file("./testserver/plugins"))
+    destinationDirectory.set(file("../Nations/testserver/plugins"))
     //relocate("kotlin.", "your.mod.package.kotlin.")
     relocate("org.yaml.snakeyaml", "de.terranova.nations.libs.yaml")
   }
