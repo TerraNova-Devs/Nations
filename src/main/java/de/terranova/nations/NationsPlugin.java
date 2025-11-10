@@ -44,6 +44,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.logging.Logger;
+
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
 import net.pl3x.map.core.markers.layer.Layer;
@@ -81,19 +83,24 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         new FileLogger(getDataFolder().getAbsolutePath() + "/logs/debug", "Nations_Debug");
     nationsLogger = new FileLogger(getDataFolder().getAbsolutePath() + "/logs", "Nations");
     worldguardFlagRegistry();
-    initDatabase();
   }
 
   @Override
   public void onEnable() {
-    professionsHook = new WebhookHandler(SecretsReader.DISCORD_WEBHOOK_URL);
-    WebhookMessage proffensionsTestMessage = WebhookMessage.builder().username("Professions Logger").avatarUrl("https://images.cults3d.com/DotiLBC_FTGfAPPgE-jcUnwKlZE=/516x516/filters:no_upscale()/https://fbi.cults3d.com/uploaders/14911877/illustration-file/543a8806-7c25-4259-8611-2b04fb5fe244/fat-2-by-insomnia-3d-2.png").content("This is and advanced Feature Test!");
-    professionsHook.send(proffensionsTestMessage);
     plugin = this;
+    saveDefaultConfig();
+    saveResource("secrets.env", false);
+    SecretsReader.init();
+    initDatabase();
+    professionsHook = new WebhookHandler(SecretsReader.DISCORD_WEBHOOK_URL);
+    WebhookMessage professionsTestMessage = WebhookMessage.builder()
+            .username("Professions Logger")
+            .avatarUrl("https://images.cults3d.com/DotiLBC_FTGfAPPgE-jcUnwKlZE=/516x516/filters:no_upscale()/https://fbi.cults3d.com/uploaders/14911877/illustration-file/543a8806-7c25-4259-8611-2b04fb5fe244/fat-2-by-insomnia-3d-2.png")
+            .content("This is the first message with a secret receiver");
+    professionsHook.send(professionsTestMessage);
     citizensTraitRegistry();
     worldguardHandlerRegistry();
     pl3xmapMarkerRegistry();
-    saveDefaultConfig();
     nationManager = new NationManager();
     RealEstateDAO.loadAllHoldings();
     commandRegistry();

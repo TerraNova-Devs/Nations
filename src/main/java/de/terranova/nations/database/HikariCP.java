@@ -22,6 +22,8 @@ public class HikariCP {
 
   public HikariCP(NationsPlugin plugin) throws SQLException {
     this.plugin = plugin;
+    System.out.println(SecretsReader.DATABASE_USERNAME);
+    System.out.println(SecretsReader.DATABASE_PASSWORD);
     user = SecretsReader.DATABASE_USERNAME;
     password = SecretsReader.DATABASE_PASSWORD;
     HikariConfig config = getHikariConfig();

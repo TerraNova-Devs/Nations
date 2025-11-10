@@ -39,3 +39,6 @@
 # Project exlude data types
 *.env
 *.properties
+
+#Nations secrets.env blueprint
+!src/main/resources/secrets.env
