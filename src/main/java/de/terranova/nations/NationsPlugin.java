@@ -11,7 +11,6 @@ import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.discord.WebhookHandler;
-import de.terranova.nations.discord.WebhookMessage;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.pl3xmap.InfoLayer;
@@ -44,7 +43,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import net.citizensnpcs.api.event.CitizensEnableEvent;
 import net.pl3x.map.core.Pl3xMap;
@@ -93,11 +91,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     SecretsReader.init();
     initDatabase();
     professionsHook = new WebhookHandler(SecretsReader.DISCORD_WEBHOOK_URL);
-    WebhookMessage professionsTestMessage = WebhookMessage.builder()
-            .username("Professions Logger")
-            .avatarUrl("https://images.cults3d.com/DotiLBC_FTGfAPPgE-jcUnwKlZE=/516x516/filters:no_upscale()/https://fbi.cults3d.com/uploaders/14911877/illustration-file/543a8806-7c25-4259-8611-2b04fb5fe244/fat-2-by-insomnia-3d-2.png")
-            .content("This is the first message with a secret receiver");
-    professionsHook.send(professionsTestMessage);
     citizensTraitRegistry();
     worldguardHandlerRegistry();
     pl3xmapMarkerRegistry();

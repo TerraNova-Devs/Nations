@@ -55,15 +55,15 @@ public class RealEstateBrowserGUI extends RoseGUI {
         pagination.registerPageSlotsBetween(28, 34);
         pagination.registerPageSlotsBetween(37, 43);
 
-        // Default cache time: 20s (region-specific) or 5min (global)
+        // Default cache time: 1min (region-specific) or 5min (global)
         OFFER_CACHE.computeIfAbsent(
                 agentUUID,
                 id -> {
                     if (id.equals(GLOBAL_UUID)) {
                         // Flatten all regions into one list
-                        return new CachedSupplier<>(RealEstateMarketCache::getAllListings, 60 * 5); // 5 minutes
+                        return new CachedSupplier<>(RealEstateMarketCache::getAllListings,20 * 60 * 5); // 5 minutes
                     } else {
-                        return new CachedSupplier<>(() -> RealEstateMarketCache.getListing(id), 20);
+                        return new CachedSupplier<>(() -> RealEstateMarketCache.getListing(id), 20 * 60);
                     }
                 });
     }
@@ -248,4 +248,9 @@ public class RealEstateBrowserGUI extends RoseGUI {
 
     @Override
     public void onClose(InventoryCloseEvent event) {}
+
+    public static void invalidateOffers(UUID agentId) {
+        OFFER_CACHE.remove(agentId);
+    }
+
 }

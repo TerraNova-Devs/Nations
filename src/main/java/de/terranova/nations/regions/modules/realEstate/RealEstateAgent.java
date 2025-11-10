@@ -7,6 +7,7 @@ import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.database.dao.RealEstateDAO;
+import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.modules.HasParent;
 import de.terranova.nations.regions.modules.access.AccessControlled;
@@ -127,76 +128,50 @@ public class RealEstateAgent {
   }
 
   public void buyEstate(Player buyer) {
-
     if (!data.isForBuy) {
-      buyer.sendMessage(
-          Chat.errorFade(
-              "Dieses Grundstück ist von "
-                  + Bukkit.getOfflinePlayer(data.landlord).getName()
-                  + " belegt."));
+      buyer.sendMessage(Chat.errorFade(
+              "Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.landlord).getName() + " belegt."));
       return;
     } else if (buyer.getUniqueId().equals(data.landlord)) {
-      buyer.sendMessage(
-          Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
+      buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben."));
       return;
     }
 
-    int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.buyPrice, true);
-    if (transfer == -1) {
-      buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+    if (!chargeAndCredit(buyer, data.buyPrice)) {
       return;
-    } else {
-      RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
-      RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
     }
-    clearOffer();
-    overwriteOwner(buyer.getUniqueId());
-    data.isForBuy = false;
-    data.isForRent = false;
-    data.landlord = buyer.getUniqueId();
-    data.timestamp = Instant.now();
 
-    stripmember();
-    RealEstateDAO.removeRealEstate(this);
-    RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
-
-    buyer.sendMessage(
-        Chat.greenFade(
-            String.format(
-                "Du hast soeben erfolgreich %s für %s Silber gekauft.",
-                region.getName(), transfer)));
+    finalizeBuy(buyer, data.buyPrice, false);
   }
 
-  public void rentEstate(Player buyer) {
 
+  public void rentEstate(Player buyer) {
     if (buyer.getUniqueId().equals(data.landlord)) {
-      buyer.sendMessage(
-          Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben. "));
+      buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben."));
       return;
-    } else if (isRented
-        && !region.getWorldguardRegion().getOwners().getUniqueIds().stream()
+    }
+
+    // extension path
+    if (isRented
+            && !region.getWorldguardRegion().getOwners().getUniqueIds().stream()
             .findFirst()
             .get()
             .equals(buyer.getUniqueId())) {
-      buyer.sendMessage(
-          Chat.errorFade(
-              "Dieses Grundstück ist von "
-                  + Bukkit.getOfflinePlayer(data.landlord).getName()
-                  + " belegt."));
+      buyer.sendMessage(Chat.errorFade(
+              "Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.landlord).getName() + " belegt."));
       return;
     }
 
-    int transfer = ItemTransfer.charge(buyer, "terranova_silver", data.rentPrice, true);
-    if (transfer == -1) {
-      buyer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
-      return;
-    } else {
+    // if already rented by this buyer → extend
+    if (isRented && region.getWorldguardRegion().getOwners().getUniqueIds().stream()
+            .findFirst()
+            .get()
+            .equals(buyer.getUniqueId())) {
 
-      RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
-      RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
-    }
+      if (!chargeAndCredit(buyer, data.rentPrice)) {
+        return;
+      }
 
-    if (isRented) {
       ZonedDateTime nowZdt = Instant.now().atZone(ZoneId.systemDefault());
       ZonedDateTime otherZdt = data.timestamp.atZone(ZoneId.systemDefault());
       long monthsBetween = ChronoUnit.MONTHS.between(nowZdt, otherZdt);
@@ -205,33 +180,23 @@ public class RealEstateAgent {
         buyer.sendMessage(Chat.errorFade("Du kannst nicht mehr als 2 Monate im voraus mieten."));
         return;
       }
+
       data.timestamp = data.timestamp.plus(14, ChronoUnit.DAYS);
-      RealEstateDAO.upsertRealEstate(this.getRegion().getId().toString(), data);
-      buyer.sendMessage(
-          Chat.greenFade(
-              String.format(
-                  "Du hast soeben erfolgreich %s für %s Silber 14 Tage verlängert, dein Mietvertrag läuft bis %s.",
-                  region.getName(), transfer, Chat.prettyInstant(data.timestamp))));
+      persistRented();
+      buyer.sendMessage(Chat.greenFade(String.format(
+              "Du hast soeben erfolgreich %s für %s Silber 14 Tage verlängert, dein Mietvertrag läuft bis %s.",
+              region.getName(), data.rentPrice, Chat.prettyInstant(data.timestamp))));
       return;
-
-    } else {
-      data.timestamp = Instant.now().plus(14, ChronoUnit.DAYS);
     }
-    clearOffer();
-    overwriteOwner(buyer.getUniqueId());
-    data.isForBuy = false;
-    data.isForRent = false;
-    isRented = true;
 
-    stripmember();
-    RealEstateDAO.upsertRealEstate(this.getRegion().getId().toString(), data);
-    RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
-    buyer.sendMessage(
-        Chat.greenFade(
-            String.format(
-                "Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.",
-                region.getName(), transfer)));
+    // normal first-time rent
+    if (!chargeAndCredit(buyer, data.rentPrice)) {
+      return;
+    }
+
+    finalizeRent(buyer, data.rentPrice);
   }
+
 
   public boolean withdrawEstate() {
     if (!RealEstateMarketCache.hasListing(parentRegion.getId(), region.getId())) {
@@ -243,7 +208,25 @@ public class RealEstateAgent {
     this.data.isForRent = false;
     this.data.isForBuy = false;
     RealEstateDAO.upsertRealEstate(this.getRegion().getId().toString(), data);
+    RealEstateBrowserGUI.invalidateOffers(this.parentRegion.getId());
     return true;
+  }
+
+  public void withdrawOffer() {
+    if (offeredPlayer == null) {
+      return;
+    }
+    List<RealEstateAgent> offers = offerCache.get(offeredPlayer);
+    if (offers == null) {
+      return;
+    }
+    offers.remove(this);
+    if (offers.isEmpty()) {
+      offerCache.remove(offeredPlayer);
+    }
+    offeredPlayer = null;
+    offeredAmount = 0;
+    offeredType = null;
   }
 
   public boolean sellEstate(Player seller, int buyAmount, int rentAmount) {
@@ -317,7 +300,7 @@ public class RealEstateAgent {
     }
 
     if (amount <= 0) {
-      clearOffer();
+      withdrawOffer();
     }
 
     offeredPlayer = user.getUniqueId();
@@ -344,84 +327,61 @@ public class RealEstateAgent {
     return true;
   }
 
-  public void clearOffer() {
-    if (offeredPlayer != null) {
-      List<RealEstateAgent> offers = offerCache.get(offeredPlayer);
-      if (offers != null) {
-        offers.remove(this);
-        if (offers.isEmpty()) {
-          offerCache.remove(offeredPlayer);
-        }
-      }
-    }
-    offeredPlayer = null;
-    offeredAmount = 0;
-    offeredType = null;
-  }
-
   public void acceptOffer(Player acquirer) {
     if (!acquirer.getUniqueId().equals(offeredPlayer)) {
       acquirer.sendMessage(Chat.errorFade("Du hast kein angebot von dieser Stadt vorliegen."));
       return;
     }
 
-    if (offeredType.equals("rent")) {
-
-      int transfer = ItemTransfer.charge(acquirer, "terranova_silver", offeredAmount, true);
-      if (transfer == -1) {
-        acquirer.sendMessage(
-            Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+    if ("rent".equalsIgnoreCase(offeredType)) {
+      if (!chargeAndCredit(acquirer, offeredAmount)) {
         return;
-      } else {
-        RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
-        RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
       }
-
-      clearOffer();
-      withdrawEstate();
-      overwriteOwner(acquirer.getUniqueId());
-
-      data.rentPrice = offeredAmount;
-      data.buyPrice = 0;
-      isRented = true;
-
-      stripmember();
-      RealEstateDAO.upsertRealEstate(this.getRegion().getId().toString(), data);
-      RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
-      acquirer.sendMessage(
-          Chat.greenFade(
-              String.format(
-                  "Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.",
-                  region.getName(), transfer)));
-    } else if (offeredType.equals("buy")) {
-
-      int transfer = ItemTransfer.charge(acquirer, "terranova_silver", offeredAmount, true);
-      if (transfer == -1) {
-        acquirer.sendMessage(
-            Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+      finalizeRent(acquirer, offeredAmount);
+    } else if ("buy".equalsIgnoreCase(offeredType)) {
+      if (!chargeAndCredit(acquirer, offeredAmount)) {
         return;
-      } else {
-        RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
-        RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
       }
-      clearOffer();
-      withdrawEstate();
-      overwriteOwner(acquirer.getUniqueId());
-      data.isForBuy = false;
-      data.isForRent = false;
-      data.landlord = acquirer.getUniqueId();
-      data.timestamp = Instant.now();
-
-      stripmember();
-      RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
-      RealEstateDAO.removeRealEstate(this);
-
-      acquirer.sendMessage(
-          Chat.greenFade(
-              String.format(
-                  "Du hast soeben erfolgreich %s für %s Silber gekauft.",
-                  region.getName(), transfer)));
+      finalizeBuy(acquirer, offeredAmount, true);
+    } else {
+      acquirer.sendMessage(Chat.errorFade("Ungültiger Angebotstyp."));
     }
+  }
+
+
+  private void finalizeBuy(Player buyer, int price, boolean cameFromOffer) {
+    withdrawOffer();              // in case there was a private offer
+    removeFromMarket();           // no longer listed
+    transferOwnership(buyer.getUniqueId());
+
+    data.isForBuy = false;
+    data.isForRent = false;
+    data.landlord = buyer.getUniqueId();
+    data.timestamp = Instant.now();
+
+    persistSold();
+
+    buyer.sendMessage(Chat.greenFade(
+            String.format("Du hast soeben erfolgreich %s für %s Silber gekauft.",
+                    region.getName(), price)));
+  }
+
+  private void finalizeRent(Player renter, int price) {
+    withdrawOffer();
+    removeFromMarket();
+    transferOwnership(renter.getUniqueId());
+
+    data.isForBuy = false;
+    data.isForRent = false;
+    data.rentPrice = price;
+    data.timestamp = Instant.now().plus(14, ChronoUnit.DAYS);
+    isRented = true;
+
+    persistRented();
+
+    renter.sendMessage(Chat.greenFade(
+            String.format("Du hast soeben erfolgreich %s für %s Silber 14 Tage gemietet.",
+                    region.getName(), price)));
   }
 
   public String overwriteOwner(UUID ownerUuid) {
@@ -535,6 +495,37 @@ public class RealEstateAgent {
       p.sendMessage(Chat.cottonCandy("Mietzeit:" + Chat.prettyInstant(time)));
     }
   }
+
+  private boolean chargeAndCredit(Player payer, int amount) {
+    int transfer = ItemTransfer.charge(payer, "terranova_silver", amount, true);
+    if (transfer == -1) {
+      payer.sendMessage(Chat.errorFade("Du hast leider nicht genug Silver in deinem Inventory"));
+      return false;
+    }
+    // credit landlord
+    RealEstateListing.holdings.merge(data.landlord, transfer, Integer::sum);
+    RealEstateDAO.upsertHolding(data.landlord, RealEstateListing.holdings.get(data.landlord));
+    return true;
+  }
+
+  private void removeFromMarket() {
+    RealEstateMarketCache.removeListing(parentRegion.getId(), region.getId());
+  }
+
+  private void transferOwnership(UUID newOwner) {
+    overwriteOwner(newOwner);
+    stripmember();
+  }
+
+  private void persistSold() {
+    // sold = no real estate entry needed
+    RealEstateDAO.removeRealEstate(this);
+  }
+
+  private void persistRented() {
+    RealEstateDAO.upsertRealEstate(this.getRegion().getId().toString(), data);
+  }
+
 
   public Region getRegion() {
     return region;
