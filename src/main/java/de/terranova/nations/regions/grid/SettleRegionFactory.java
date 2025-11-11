@@ -100,6 +100,7 @@ public class SettleRegionFactory implements RegionFactoryBase {
             "minecraft:river",
             "minecraft:beach",
             "minecraft:snowy_beach",
+            "minecraft:frozen_river",
             // Terralith biomes
             "terralith:gravel_beach",
             "terralith:snowy_beach",
