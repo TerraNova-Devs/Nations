@@ -62,5 +62,8 @@
 *.env
 *.properties
 
+# include gradle wrapper
+!/gradle/wrapper/gradle-wrapper.properties
+
 #Nations secrets.env blueprint
 !src/main/resources/secrets.env
