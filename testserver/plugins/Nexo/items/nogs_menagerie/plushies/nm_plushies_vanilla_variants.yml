@@ -22,7 +22,7 @@ nm_plushie_axolotl_blue:
         - 0,0,0 1.0,1.0
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl_blue
-    custom_model_data: 1000
+    custom_model_data: 1519
 nm_plushie_axolotl_brown:
   itemname: <white>Axolotl Plushie (Brown)
   material: PAPER

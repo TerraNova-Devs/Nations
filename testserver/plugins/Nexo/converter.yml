@@ -19,3 +19,7 @@ itemsadderConverter:
   # Used by Nexo to track modified item-ids
   # Mainly used for CustomArmor items that do not follow Nexo's hardcoded scheme
   changedItemIds: {}
+nexoConverter:
+  # Convert furniture in your world from one ItemID to another
+  # For example `arm_chair_dyeable` to `arm_chair`
+  furnitureConverter: []

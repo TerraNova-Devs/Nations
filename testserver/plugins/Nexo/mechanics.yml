@@ -6,6 +6,7 @@ commands:
 armor_effects:
   enabled: true
   delay_in_ticks: 20
+  delay: 1s
 
 custom:
   enabled: true
@@ -21,6 +22,7 @@ backpack:
 
 misc:
   enabled: true
+  default_allowed_in_vanilla_recipes: false
 
 furniture:
   default_furniture_type: DISPLAY_ENTITY # DISPLAY_ENTITY, ITEM_FRAME, GLOW_ITEM_FRAME
@@ -38,6 +40,8 @@ furniture:
   custom_block_sounds: false
   default_rotatable_on_sneak: false
   handle_non_player_barrier_collision: true
+  default_properties:
+    display_transform: NONE
 
 repair:
   enabled: true
@@ -115,6 +119,7 @@ custom_blocks:
       # If false, plays for animals stepping/falling on blocks aswell
       # Enable this if you are experiencing lag with stringblock-sounds
       players_only: true
+    default_require_supporting: true
   chorusblock:
     tool_types:
     - WOODEN
@@ -129,3 +134,5 @@ custom_blocks:
     # If false, plays for animals stepping/falling on blocks aswell
     # Enable this if you are experiencing lag with noteblock-sounds
     players_only: true
+trident:
+  enabled: true

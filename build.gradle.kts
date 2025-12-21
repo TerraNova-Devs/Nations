@@ -63,7 +63,7 @@ dependencies {
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.13")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("com.nexomc:nexo:1.1.0")
+  compileOnly("com.nexomc:nexo:1.16.1")
   implementation("org.yaml:snakeyaml:2.2")
   compileOnly("de.mcterranova:terranova-lib:1.0.1")
   implementation ("org.locationtech.jts:jts-core:1.20.0")

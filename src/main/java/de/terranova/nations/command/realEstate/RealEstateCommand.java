@@ -12,6 +12,8 @@ import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.gui.RealEstateBuyGUI;
 import de.terranova.nations.regions.base.Region;
+import de.terranova.nations.regions.base.RegionContext;
+import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
@@ -19,6 +21,8 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
 import java.util.*;
 import java.util.stream.Collectors;
+
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
@@ -79,6 +83,7 @@ public class RealEstateCommand extends AbstractCommand {
     registerSubCommand(this, "kick");
     registerSubCommand(this, "rename");
     registerSubCommand(this, "generaterandomname");
+    registerSubCommand(this, "create");
     setupHelpCommand();
     initialize();
   }
@@ -674,6 +679,35 @@ public class RealEstateCommand extends AbstractCommand {
       usage = "/realestate generaterandomname")
   public boolean generaterandomname(Player p, String[] args) {
     return generaterandomnamespecific(p, new String[] {"generaterandomnamespecific", "?:?:?"});
+  }
+  @CommandAnnotation(
+          domain = "create.$type.%name",
+          permission = "nations.realestate.create",
+          description = "Creates a realestate",
+          usage = "/realestate create <name> <type>")
+  public boolean create(Player p, String[] args) {
+    String type = args[1].toLowerCase();
+    String name =
+            MiniMessage.miniMessage()
+                    .stripTags(String.join("_", Arrays.copyOfRange(args, 2, args.length)));
+    List<String> allowedtypes = List.of("property");
+    if (!allowedtypes.contains(type)) {
+      p.sendMessage(
+              Chat.errorFade(
+                      String.format(
+                              "Bitte benutze nur folgende Regionstypen: %s",
+                              allowedtypes)));
+      return false;
+    }
+    Optional<Region> regionTypeOpt =
+            RegionRegistry.createWithContext(type, new RegionContext(p, name, Map.of()));
+    if (regionTypeOpt.isPresent()) {
+      p.sendMessage(Chat.greenFade("Region " + name + " wurde erfolgreich gegründet."));
+    } else {
+      p.sendMessage(Chat.errorFade("Die Erstellung der Region wurde abgebrochen."));
+    }
+
+    return true;
   }
 
   private String capitalize(String input) {

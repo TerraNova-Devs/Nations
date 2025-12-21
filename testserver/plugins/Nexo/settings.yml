@@ -1,11 +1,14 @@
+Recipes:
+  require_player_if_permission: true
+  furnace_cooldown_duration: 1s
 debug: false
 WorldEdit:
-  noteblock_mechanic: false
-  stringblock_mechanic: false
+  fawe_hook: false
+  customblock_mechanic: false
   furniture_mechanic: false
-Chat:
-  chat_handler: MODERN
 ConfigTools:
+  invalid_furniture_item:
+    material: BARRIER
   generate_default_configs: true
   disable_automatic_model_data: false
   disable_automatic_glyph_code: false
@@ -16,32 +19,12 @@ ConfigTools:
     excludeFromInventory: false
     injectId: false
   remove_invalid_furniture: false
-NexoInventory:
-  menu_layout:
-    nexo_armor:
-      slot: 1
-      icon: forest_helmet
-      displayname: <green>Nexo Armor</green>
-    nexo_furniture:
-      slot: 2
-      icon: arm_chair
-      displayname: <green>Nexo Furniture</green>
-    nexo_tools:
-      slot: 3
-      icon: forest_axe
-      displayname: <green>Nexo Tools</green>
-  menu_rows: 6
-  menu_size: 45
-  main_menu_title: <shift:-37><glyph:menu_items>
-  next_page_icon: next_page_icon
-  previous_page_icon: previous_page_icon
-  exit_icon: cancel_icon
-  recipe_showcase_title: <shift:-7><glyph:menu_recipe>
 Pack:
   obfuscation:
     type: SIMPLE
     cache: true
   validate:
+    languages: true
     models: true
     fonts: true
     atlas: true
@@ -56,20 +39,23 @@ Pack:
     lobfile:
       api_key: API-KEY
     s3:
+      url_expiration: 7d
       public_url: https://public_url.com
       region: EU_WEST_1
       bucket: packs
-      key: resource_pack
       secret_key: SECRET
       access_key: SECRET
   generation:
+    generate_pack: true
+    output_path: plugins/Nexo/pack/pack.zip
+    prefer_item_models: false
     read_lenient: true
-    generate_zip: true
     minimize_json: true
     excluded_file_extensions:
     - .zip
     - .tar.gz
     packsquash:
+      cache_size: 5
       enabled: false
       executable_path: plugins/Nexo/pack/packsquash/packsquash
       settings_path: plugins/Nexo/pack/packsquash/packsquash.toml
@@ -79,9 +65,7 @@ Pack:
     from_location: []
     from_url: []
     external_pack_order: []
-    model_engine:
-      import_pack: true
-      exclude_shaders: true
+    model_engine: true
   dispatch:
     send_pre_join: true
     send_on_join: false
@@ -97,6 +81,8 @@ ItemUpdater:
   update_items_on_reload: true
   override_item_lore: false
 Misc:
+  default_language_key: en_us
+  default_allow_in_vanilla_recipes: false
   reset_recipes: true
   add_recipes_to_book: true
   hide_scoreboard_numbers: false
@@ -104,19 +90,34 @@ Misc:
   hide_tablist_background: false
   block_other_resourcepacks: false
 Plugin:
+  packets:
+    disable_glyph_handler: false
   language: english
   keep_this_up_to_date: true
   formatting:
+    chat_standard_tags: false
+    translatable: false
+    tablist: true
+    bossbar: true
+    scoreboard: true
+    items: true
+    villagers: true
+    packet_events: true
+    entity_data: true
+    dialog: true
     anvil: true
     signs: true
     chat: true
     books: true
-    packets: true
 CustomArmor:
   type: COMPONENT
   auto_assign_settings: true
 Glyphs:
+  default_permission: nexo.glyphs.<glyphid>
+  default_font: nexo:default
+  default_shadow_color: '#00000000'
+  hover_text: ''
+  generate_gif_shaders: true
   emoji_list_permission_only: true
   unicode_completions: true
-  chat_hover_text: <glyph_placeholder>
   shift_font: nexo:shift

@@ -12,6 +12,7 @@ import de.terranova.nations.regions.base.RegionContext;
 import de.terranova.nations.regions.base.RegionFactoryBase;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.utils.terraRenderer.refactor.Listener.BreezeToolListener;
 import de.terranova.nations.worldguard.BoundaryClaimFunctions;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import java.util.List;
@@ -48,34 +49,32 @@ public class PropertyRegionFactory implements RegionFactoryBase {
     }
 
     SettleRegion settle = settleOpt.get();
+    Optional<BreezeToolListener.RegionSelection> selOpt =
+            BreezeToolListener.getSelection(p.getUniqueId());
 
-    com.sk89q.worldedit.entity.Player wePlayer = BukkitAdapter.adapt(p);
-    LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
-    RegionSelector selector = session.getRegionSelector(BukkitAdapter.adapt(p.getWorld()));
-    try {
-      com.sk89q.worldedit.regions.Region region = selector.getRegion();
-      ProtectedRegion tempRegion =
-          BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
-
-      if(settle.getAvaibleRegionPoints() < RegionClaimFunctions.getRegionVolume(tempRegion)) {
-        p.sendMessage(
-                Chat.errorFade("Deine Stadt hat nicht genügend Punkte zu verfügung."));
-        return null;
-      }
-      if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 24)) {
-        p.sendMessage(
-            Chat.errorFade("Die Region muss mindestens 2 Blöcke hoch und 24 blöcke Inhalt haben."));
-        return null;
-      }
-
-      if (!validate(ctx, name, tempRegion, settle)) {
-        return null;
-      }
-    } catch (IncompleteRegionException e) {
-      p.sendMessage(Chat.errorFade("Deine Worldeditauswahl ist unvollständig."));
+    if (selOpt.isEmpty()) {
+      p.sendMessage(Chat.errorFade("Du hast keine Region mit dem Breeze-Tool ausgewählt."));
       return null;
     }
 
+    com.sk89q.worldedit.regions.Region region = BreezeToolListener.toWorldEdit(selOpt.get());
+    ProtectedRegion tempRegion =
+        BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
+
+    if(settle.getAvaibleRegionPoints() < RegionClaimFunctions.getRegionVolume(tempRegion)) {
+      p.sendMessage(
+              Chat.errorFade("Deine Stadt hat nicht genügend Punkte zu verfügung."));
+      return null;
+    }
+    if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 24)) {
+      p.sendMessage(
+          Chat.errorFade("Die Region muss mindestens 2 Blöcke hoch und 24 blöcke Inhalt haben."));
+      return null;
+    }
+
+    if (!validate(ctx, name, tempRegion, settle)) {
+      return null;
+    }
 
 
     return new PropertyRegion(name, UUID.randomUUID(), settle);

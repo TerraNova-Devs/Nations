@@ -1,0 +1,43 @@
+mod_tag:
+  texture: medieval_ranks/mod
+  ascent: 8
+  height: 9
+  char: Ⱋ
+  placeholders:
+  - ':mod:'
+  permission: oraxen.emoji.god
+
+player_tag:
+  texture: medieval_ranks/member
+  ascent: 8
+  height: 9
+  char: ┬
+  placeholders:
+  - ':player:'
+  permission: oraxen.emoji.god
+
+helper_tag:
+  texture: medieval_ranks/team
+  ascent: 8
+  height: 9
+  char: Ⱟ
+  placeholders:
+  - ':sup:'
+  permission: oraxen.emoji.god
+
+admin_tag:
+  texture: medieval_ranks/admin
+  ascent: 8
+  height: 9
+  char: ♆
+  placeholders:
+  - ':admin:'
+  permission: oraxen.emoji.god
+dev_tag:
+  texture: medieval_ranks/dev
+  ascent: 8
+  height: 9
+  char: ꐖ
+  placeholders:
+  - ':dev:'
+  permission: oraxen.emoji.god
