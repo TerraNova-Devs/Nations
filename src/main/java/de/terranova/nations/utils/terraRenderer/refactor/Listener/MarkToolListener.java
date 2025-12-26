@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
@@ -21,13 +22,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-public final class BreezeToolListener implements Listener {
+public final class MarkToolListener implements Listener {
 
     /* ============================================================
        STATIC GLOBAL STATE
        ============================================================ */
 
     private static final Map<UUID, DisplayCube> ACTIVE_CUBES = new HashMap<>();
+    private static final Map<UUID, DisplayCube> CACHED_CUBES = new HashMap<>();
     private static final Map<UUID, List<BlockDisplayNode>> ACTIVE_MARKERS = new HashMap<>();
     private static final Map<UUID, RegionSelection> ACTIVE_REGIONS = new HashMap<>();
 
@@ -44,6 +46,7 @@ public final class BreezeToolListener implements Listener {
     public static void clearSelection(UUID playerId) {
         ACTIVE_REGIONS.remove(playerId);
         clearDisplays(playerId);
+        CACHED_CUBES.remove(playerId);
     }
 
     /* ============================================================
@@ -64,6 +67,17 @@ public final class BreezeToolListener implements Listener {
     }
 
     /* ============================================================
+       HELPER METHODS
+       ============================================================ */
+
+    private static boolean isTool(ItemStack item) {
+        if (item == null || item.getType() != Material.BLAZE_ROD) return false;
+        ItemMeta meta = item.getItemMeta();
+        if (meta == null || !meta.hasDisplayName()) return false;
+        return "tool".equalsIgnoreCase(ChatColor.stripColor(meta.getDisplayName()));
+    }
+
+    /* ============================================================
        EVENT HANDLERS
        ============================================================ */
 
@@ -76,12 +90,7 @@ public final class BreezeToolListener implements Listener {
 
         Player player = event.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
-        if (item.getType() != Material.BREEZE_ROD) return;
-
-        ItemMeta meta = item.getItemMeta();
-        if (meta == null || !meta.hasDisplayName()) return;
-
-        if (!"tool".equalsIgnoreCase(ChatColor.stripColor(meta.getDisplayName()))) return;
+        if (!isTool(item)) return;
 
         Block clicked = event.getClickedBlock();
         BlockFace face = event.getBlockFace();
@@ -114,6 +123,26 @@ public final class BreezeToolListener implements Listener {
     }
 
     @EventHandler
+    public void onItemHeldChange(PlayerItemHeldEvent event) {
+        Player player = event.getPlayer();
+        UUID uuid = player.getUniqueId();
+
+        ItemStack newItem = player.getInventory().getItem(event.getNewSlot());
+        ItemStack oldItem = player.getInventory().getItem(event.getPreviousSlot());
+
+        boolean wasHoldingTool = isTool(oldItem);
+        boolean isHoldingTool = isTool(newItem);
+
+        if (wasHoldingTool && !isHoldingTool) {
+            // Player switched away from tool - cache and hide the cube
+            hideCube(uuid, player);
+        } else if (!wasHoldingTool && isHoldingTool) {
+            // Player switched to tool - restore cached cube if exists
+            showCube(uuid, player);
+        }
+    }
+
+    @EventHandler
     public void onQuit(PlayerQuitEvent event) {
         clearSelection(event.getPlayer().getUniqueId());
     }
@@ -121,6 +150,28 @@ public final class BreezeToolListener implements Listener {
     @EventHandler
     public void onWorldChange(PlayerChangedWorldEvent event) {
         clearSelection(event.getPlayer().getUniqueId());
+    }
+
+    /* ============================================================
+       VISIBILITY MANAGEMENT
+       ============================================================ */
+
+    private static void hideCube(UUID uuid, Player player) {
+        DisplayCube cube = ACTIVE_CUBES.remove(uuid);
+        if (cube != null) {
+            cube.despawn(List.of(player));
+            CACHED_CUBES.put(uuid, cube);
+        }
+    }
+
+    private static void showCube(UUID uuid, Player player) {
+        DisplayCube cube = CACHED_CUBES.get(uuid);
+        RegionSelection region = ACTIVE_REGIONS.get(uuid);
+
+        if (cube != null && region != null) {
+            cube.spawn(List.of(player));
+            ACTIVE_CUBES.put(uuid, cube);
+        }
     }
 
     /* ============================================================
@@ -216,6 +267,10 @@ public final class BreezeToolListener implements Listener {
         Location to   = new Location(region.world, region.maxX + 1, region.maxY + 1, region.maxZ + 1);
 
         DisplayCube cube = ACTIVE_CUBES.get(uuid);
+        if (cube == null) {
+            cube = CACHED_CUBES.get(uuid);
+        }
+
         int ticks = interpolate ? INTERPOLATION_TICKS : 0;
 
         if (cube == null) {
@@ -224,6 +279,8 @@ public final class BreezeToolListener implements Listener {
             ACTIVE_CUBES.put(uuid, cube);
         } else {
             cube.update(from, to, viewers, ticks);
+            ACTIVE_CUBES.put(uuid, cube);
+            CACHED_CUBES.put(uuid, cube);
         }
     }
 
@@ -240,7 +297,7 @@ public final class BreezeToolListener implements Listener {
     }
 
     public static com.sk89q.worldedit.regions.Region toWorldEdit(
-            BreezeToolListener.RegionSelection sel
+            MarkToolListener.RegionSelection sel
     ) {
         return new CuboidRegion(
                 BukkitAdapter.adapt(sel.world),
