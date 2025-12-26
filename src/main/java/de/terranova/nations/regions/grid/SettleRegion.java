@@ -136,20 +136,40 @@ public class SettleRegion extends GridRegion
     int points = getMaximalRegionPoints();
     List<Region> propertyRegions = children.get("property");
 
-    if (propertyRegions != null) {
-      points -=
-          propertyRegions.stream()
-              .filter(r -> r instanceof BoundaryRegion)
-              .map(r -> (BoundaryRegion) r)
-              .mapToInt(br -> br.isPoly() ? RegionClaimFunctions.getRegionVolume(br.getWorldguardRegion()) * 3 : RegionClaimFunctions.getRegionVolume(br.getWorldguardRegion()))
-              .sum();
-    } else {
-      points = 0;
+    if (propertyRegions == null) {
+      return 0;
     }
-    return points;
+
+    points -= propertyRegions.stream()
+            .filter(r -> r instanceof BoundaryRegion)
+            .map(r -> (BoundaryRegion) r)
+            .mapToInt(br -> RegionClaimFunctions.getRegionVolume(br.getWorldguardRegion()))
+            .sum();
+
+    return Math.max(0,points);
   }
 
   public int getMaximalRegionPoints() {
     return getMaxClaims() * 5000;
   }
+
+  public int getAvaiblePolyRegions() {
+    int usedPolyRegions = 0;
+    List<Region> propertyRegions = children.get("property");
+
+    if (propertyRegions != null) {
+      usedPolyRegions = (int) propertyRegions.stream()
+              .filter(r -> r instanceof BoundaryRegion)
+              .map(r -> (BoundaryRegion) r)
+              .filter(BoundaryRegion::isPoly)
+              .count();
+    }
+
+    return Math.max(0, getMaximalPolyRegions() - usedPolyRegions);
+  }
+
+  public int getMaximalPolyRegions() {
+    return getMaxClaims() * 5;
+  }
+
 }

@@ -5,6 +5,7 @@ import com.sk89q.worldedit.LocalSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.bukkit.BukkitAdapter;
 import com.sk89q.worldedit.regions.RegionSelector;
+import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.Region;
@@ -65,6 +66,10 @@ public class PropertyRegionFactory implements RegionFactoryBase {
       p.sendMessage(
               Chat.errorFade("Deine Stadt hat nicht genügend Punkte zu verfügung."));
       return null;
+    }
+    if(tempRegion instanceof ProtectedPolygonalRegion && settle.getAvaiblePolyRegions() == 0) {
+      p.sendMessage(
+              Chat.errorFade("Deine Stadt hat keine Poly Regionen mehr übrig."));
     }
     if (!RegionClaimFunctions.checkRegionSize(tempRegion, 2, 24)) {
       p.sendMessage(

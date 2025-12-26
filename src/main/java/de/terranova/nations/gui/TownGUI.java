@@ -48,11 +48,9 @@ public class TownGUI extends RoseGUI {
         new RoseItem.Builder()
             .material(Material.NETHER_STAR)
             .displayName(Chat.redFade("<b>Stadtlevel: " + settle.getRank().getLevel()))
-            .addLore(
-                Chat.cottonCandy(
-                    String.format("<i>%s/%s Claims", settle.getClaims(), settle.getMaxClaims())))
-          .addLore(
-                    Chat.cottonCandy(String.format("<i>%s/%s Plot Volume", settle.getMaximalRegionPoints() - settle.getAvaibleRegionPoints(),settle.getMaximalRegionPoints())))
+            .addLore(Chat.cottonCandy(String.format("<i>%s/%s Claims", settle.getClaims(), settle.getMaxClaims())))
+            .addLore(Chat.cottonCandy(String.format("<i>%s/%s Plot Volume", settle.getMaximalRegionPoints() - settle.getAvaibleRegionPoints(),settle.getMaximalRegionPoints())))
+            .addLore(Chat.cottonCandy(String.format("<i>%s/%s Poly Regions", settle.getMaximalPolyRegions() - settle.getAvaiblePolyRegions(),settle.getMaximalPolyRegions())))
             .build();
 
     RoseItem skins =
