@@ -503,19 +503,19 @@ public class RealEstateCommand extends AbstractCommand {
       description = "Retrieves your holding from sales",
       usage = "/realestate rename <property> <name>")
   public boolean rename(Player p, String[] args) {
-    Optional<ProtectedRegion> Oregion = getRegionByName(p, args[2]);
+    Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
     if (Oregion.isEmpty()) {
-      p.sendMessage(Chat.errorFade("Die Region " + args[2] + " existiert nicht."));
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
       return false;
     }
     Optional<Region> region =
         de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
     if (region.isEmpty()) {
-      p.sendMessage(Chat.errorFade("Die Region " + args[2] + " ist keine Nations Region."));
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
       return false;
     }
     if (!(region.get() instanceof HasRealEstateAgent agent)) {
-      p.sendMessage(Chat.errorFade("Die Region " + args[2] + " hat kein RealEstate Modul."));
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
       return false;
     }
 
@@ -524,13 +524,13 @@ public class RealEstateCommand extends AbstractCommand {
           Chat.errorFade("Du kannst nicht auf Grundstücke zugreifen die dir nicht gehören!."));
       return false;
     }
-    String name = PropertyRegionFactory.buildRegionName(args[1], p);
+    String name = PropertyRegionFactory.buildRegionName(args[2], p);
     if (name == null) {
-      p.sendMessage(Chat.errorFade("Error bei benennung abbruch."));
+      p.sendMessage(Chat.errorFade("Error bei Benennung, abgebrochen."));
       return false;
     }
     agent.getAgent().getRegion().rename(name);
-    p.sendMessage(Chat.errorFade("Region erfolgreich umbenannt"));
+    p.sendMessage(Chat.greenFade("Region erfolgreich umbenannt"));
     return true;
   }
 

@@ -169,7 +169,7 @@ public class SettleRegion extends GridRegion
   }
 
   public int getMaximalPolyRegions() {
-    return getMaxClaims() * 5;
+    return getMaxClaims() * 2;
   }
 
 }
