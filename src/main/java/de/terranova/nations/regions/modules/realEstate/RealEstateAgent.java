@@ -269,6 +269,7 @@ public class RealEstateAgent {
   }
 
   public boolean hasOffer(Player p) {
+    if(offeredPlayer == null) return false;
     return offeredPlayer.equals(p.getUniqueId());
   }
 
@@ -300,7 +301,13 @@ public class RealEstateAgent {
     }
 
     if (amount <= 0) {
+      if (offeredPlayer == null) {
+        offerer.sendMessage(Chat.errorFade("Du kannst kein Angebot zurückziehen dass es nicht gibt!"));
+        return false;
+      }
       withdrawOffer();
+      offerer.sendMessage(Chat.cottonCandy("Du hast das Angebot zurückgezogen!"));
+      return false;
     }
 
     offeredPlayer = user.getUniqueId();

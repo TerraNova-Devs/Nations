@@ -11,6 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class RealEstateBuyGUI extends RoseGUI {
 
   RealEstateAgent agent;
@@ -24,7 +26,7 @@ public class RealEstateBuyGUI extends RoseGUI {
 
   @Override
   public void onOpen(InventoryOpenEvent event) {
-
+    //if(!agent.isForRent() && !agent.isForBuy() && !agent.hasOffer(player)) this.getInventory().close();
     RoseItem fillerDark =
         new RoseItem.Builder()
             .showTooltip(false)
@@ -69,7 +71,7 @@ public class RealEstateBuyGUI extends RoseGUI {
                   }
                 });
     if(!isOffer) addItem(11, buy);
-    if(isOffer && agent.offeredType.equals("buy")) addItem(13, buy);
+    if(isOffer && Objects.equals(agent.offeredType, "buy")) addItem(13, buy);
 
     material = Material.RED_STAINED_GLASS_PANE;
     lore = null;
@@ -106,6 +108,6 @@ public class RealEstateBuyGUI extends RoseGUI {
                 });
 
     if(!isOffer)addItem(15, rent);
-    if(isOffer && agent.offeredType.equals("rent")) addItem(13, rent);
+    if(isOffer && Objects.equals(agent.offeredType,"rent")) addItem(13, rent);
   }
 }
