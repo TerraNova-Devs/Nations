@@ -49,13 +49,14 @@ public class PropertyRegionFactory implements RegionFactoryBase {
             MarkToolListener.getSelection(p.getUniqueId());
 
     if (selOpt.isEmpty()) {
-      p.sendMessage(Chat.errorFade("Du hast keine Region mit dem Breeze-Tool ausgewählt."));
+      p.sendMessage(Chat.errorFade("Du hast keine Region mit dem Blaze-Tool ausgewählt."));
       return null;
     }
 
     com.sk89q.worldedit.regions.Region region = MarkToolListener.toWorldEdit(selOpt.get());
     ProtectedRegion tempRegion =
         BoundaryClaimFunctions.asProtectedRegion(region, UUID.randomUUID().toString());
+
 
     if(settle.getAvaibleRegionPoints() < RegionClaimFunctions.getRegionVolume(tempRegion)) {
       p.sendMessage(

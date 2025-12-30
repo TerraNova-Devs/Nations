@@ -136,8 +136,8 @@ public class SettleRegion extends GridRegion
     int points = getMaximalRegionPoints();
     List<Region> propertyRegions = children.get("property");
 
-    if (propertyRegions == null) {
-      return 0;
+    if (propertyRegions == null || propertyRegions.isEmpty()) {
+      return getMaximalRegionPoints();
     }
 
     points -= propertyRegions.stream()
