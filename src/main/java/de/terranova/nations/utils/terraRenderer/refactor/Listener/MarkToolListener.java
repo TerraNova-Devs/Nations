@@ -64,6 +64,10 @@ public final class MarkToolListener implements Listener {
             this.minY = this.maxY = y;
             this.minZ = this.maxZ = z;
         }
+
+        public boolean hasVolume() {
+            return minX != maxX || minY != maxY || minZ != maxZ;
+        }
     }
 
     /* ============================================================
@@ -104,6 +108,7 @@ public final class MarkToolListener implements Listener {
             RegionSelection region = createRegionFromClicked(clicked, face);
             ACTIVE_REGIONS.put(uuid, region);
             renderOrUpdate(player, region, false);
+            player.sendMessage(ChatColor.GOLD + "First position set. Right-click to expand your selection.");
             return;
         }
 
@@ -114,9 +119,15 @@ public final class MarkToolListener implements Listener {
         if (region == null || !region.world.equals(clicked.getWorld())) {
             region = createRegionFromClicked(clicked, face);
             ACTIVE_REGIONS.put(uuid, region);
+            player.sendMessage(ChatColor.GOLD + "First position set. Right-click to expand your selection.");
         } else {
             extended = extendRegion(region, clicked, player.isSneaking());
-            if (!extended) return;
+            if (extended) {
+                int volume = (Math.abs(region.maxX - region.minX) + 1) *
+                        (Math.abs(region.maxY - region.minY) + 1) *
+                        (Math.abs(region.maxZ - region.minZ) + 1);
+                player.sendMessage(ChatColor.GREEN + "Selection expanded! Volume: " + volume + " blocks");
+            }
         }
 
         renderOrUpdate(player, region, extended);

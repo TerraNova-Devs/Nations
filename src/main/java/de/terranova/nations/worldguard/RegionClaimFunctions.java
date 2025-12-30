@@ -19,6 +19,7 @@ import com.sk89q.worldguard.protection.flags.Flag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.*;
 import de.mcterranova.terranovaLib.utils.Chat;
+import de.terranova.nations.utils.terraRenderer.refactor.Listener.MarkToolListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.NationsRegionFlag.TypeFlag;
 import de.terranova.nations.worldguard.math.Vectore2;
@@ -66,19 +67,18 @@ public class RegionClaimFunctions {
   }
 
   public static ProtectedRegion createBoundaryClaim(String name, Player p, UUID uuid, String type) {
-    BukkitPlayer wePlayer = BukkitAdapter.adapt(p);
-    LocalSession session = WorldEdit.getInstance().getSessionManager().get(wePlayer);
-    Region selection;
-    try {
-      selection = session.getSelection(wePlayer.getWorld());
-    } catch (IncompleteRegionException e) {
-      p.sendMessage("You need to make a complete selection first.");
+
+    Optional<MarkToolListener.RegionSelection> selOpt =
+            MarkToolListener.getSelection(p.getUniqueId());
+
+    if (selOpt.isEmpty()) {
+      p.sendMessage(Chat.errorFade("Du hast keine Region mit dem Blaze-Tool ausgewählt."));
       return null;
     }
-    if (!(selection instanceof CuboidRegion || selection instanceof Polygonal2DRegion)) {
-      p.sendMessage("Only Cuboid and Polygonal2D regions are supported.");
-      return null;
-    }
+
+    com.sk89q.worldedit.regions.Region tempregion = MarkToolListener.toWorldEdit(selOpt.get());
+    ProtectedRegion region = BoundaryClaimFunctions.asProtectedRegion(tempregion, name);
+
     org.bukkit.World bukkitWorld = p.getWorld();
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
     com.sk89q.worldedit.world.World weWorld = BukkitAdapter.adapt(bukkitWorld);
@@ -88,15 +88,6 @@ public class RegionClaimFunctions {
       return null;
     }
 
-    ProtectedRegion region;
-    if (selection instanceof CuboidRegion cuboid) {
-      region = new ProtectedCuboidRegion(name, cuboid.getMinimumPoint(), cuboid.getMaximumPoint());
-    } else {
-      Polygonal2DRegion poly = (Polygonal2DRegion) selection;
-      region =
-          new ProtectedPolygonalRegion(
-              name, poly.getPoints(), poly.getMinimumY(), poly.getMaximumY());
-    }
     region.setFlag(RegionFlag.REGION_UUID_FLAG, uuid.toString());
     region.setFlag(TypeFlag.NATIONS_TYPE, type);
     DefaultDomain owners = region.getOwners();
