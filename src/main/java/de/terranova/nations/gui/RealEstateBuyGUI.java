@@ -26,7 +26,13 @@ public class RealEstateBuyGUI extends RoseGUI {
 
   @Override
   public void onOpen(InventoryOpenEvent event) {
-    //if(!agent.isForRent() && !agent.isForBuy() && !agent.hasOffer(player)) this.getInventory().close();
+
+    if (!agent.isForRent() && !agent.isForBuy() && !agent.hasOffer(player)) {
+      player.closeInventory();
+      player.sendMessage(Chat.errorFade("This property is not available."));
+      return;
+    }
+
     RoseItem fillerDark =
         new RoseItem.Builder()
             .showTooltip(false)

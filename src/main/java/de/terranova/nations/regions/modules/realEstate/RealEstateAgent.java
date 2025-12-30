@@ -6,6 +6,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.domains.DefaultDomain;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.gui.RealEstateBrowserGUI;
 import de.terranova.nations.regions.base.Region;
@@ -101,6 +102,7 @@ public class RealEstateAgent {
   }
 
   public void rentEnded() {
+    NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.getType() + ", RID: " + region.getId() + ", Name: " + region.getName() + ", User: " + Bukkit.getOfflinePlayer(getRegionUser()) + ", UUID: " + getRegionUser() + "Rent ended");
     overwriteOwner(data.landlord);
     RealEstateDAO.removeRealEstate(this);
     isRented = false;
@@ -117,6 +119,7 @@ public class RealEstateAgent {
       player.sendMessage(Chat.errorFade("Du kannst nur eigen angemietete Verträge kündigen."));
       return false;
     }
+    NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.getType() + ", RID: " + region.getId() + ", Name: " + region.getName() + ", User: " + player.getName() + ", UUID: " + player.getUniqueId() + "Resigned");
     rentEnded();
     return true;
   }
@@ -133,7 +136,7 @@ public class RealEstateAgent {
               "Dieses Grundstück ist von " + Bukkit.getOfflinePlayer(data.landlord).getName() + " belegt."));
       return;
     } else if (buyer.getUniqueId().equals(data.landlord)) {
-      buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundtstück nicht erwerben."));
+      buyer.sendMessage(Chat.errorFade("Du kannst dein eigen angebotenes Grundstück nicht erwerben."));
       return;
     }
 
@@ -141,7 +144,7 @@ public class RealEstateAgent {
       return;
     }
 
-    finalizeBuy(buyer, data.buyPrice, false);
+    finalizeBuy(buyer, data.buyPrice);
   }
 
 
@@ -183,6 +186,7 @@ public class RealEstateAgent {
 
       data.timestamp = data.timestamp.plus(14, ChronoUnit.DAYS);
       persistRented();
+      NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.getType() + ", RID: " + region.getId() + ", Name: " + region.getName() + ", User: " + buyer.getName() + ", UUID: " + buyer.getUniqueId() + "Rented until: " +  Chat.prettyInstant(data.timestamp));
       buyer.sendMessage(Chat.greenFade(String.format(
               "Du hast soeben erfolgreich %s für %s Silber 14 Tage verlängert, dein Mietvertrag läuft bis %s.",
               region.getName(), data.rentPrice, Chat.prettyInstant(data.timestamp))));
@@ -349,18 +353,18 @@ public class RealEstateAgent {
       if (!chargeAndCredit(acquirer, offeredAmount)) {
         return;
       }
-      finalizeBuy(acquirer, offeredAmount, true);
+      finalizeBuy(acquirer, offeredAmount);
     } else {
       acquirer.sendMessage(Chat.errorFade("Ungültiger Angebotstyp."));
     }
   }
 
 
-  private void finalizeBuy(Player buyer, int price, boolean cameFromOffer) {
+  private void finalizeBuy(Player buyer, int price) {
     withdrawOffer();              // in case there was a private offer
     removeFromMarket();           // no longer listed
     transferOwnership(buyer.getUniqueId());
-
+    NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.getType() + ", RID: " + region.getId() + ", Name: " + region.getName() + ", User: " + buyer.getName() + ", UUID: " + buyer.getUniqueId() + "Buy" + "From: " + data.landlord);
     data.isForBuy = false;
     data.isForRent = false;
     data.landlord = buyer.getUniqueId();
@@ -377,7 +381,7 @@ public class RealEstateAgent {
     withdrawOffer();
     removeFromMarket();
     transferOwnership(renter.getUniqueId());
-
+    NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.getType() + ", RID: " + region.getId() + ", Name: " + region.getName() + ", User: " + renter.getName() + ", UUID: " + renter.getUniqueId() + "Rent" + "From: " + data.landlord);
     data.isForBuy = false;
     data.isForRent = false;
     data.rentPrice = price;
@@ -477,6 +481,7 @@ public class RealEstateAgent {
     outside.setY(p.getWorld().getHighestBlockYAt(outside) + 1);
 
     p.teleport(outside);
+
     p.sendMessage(ChatColor.RED + "You have been kicked from region \"" + region.getId() + "\"!");
   }
 

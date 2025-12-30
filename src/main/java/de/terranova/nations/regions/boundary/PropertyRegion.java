@@ -36,7 +36,7 @@ public class PropertyRegion extends BoundaryRegion
     GridRegionDAO.insertParent(this.id, parent.getId());
     this.realEstateAgent =
         new RealEstateAgent(this, new RealEstateListing(null, false, 0, false, 0, null));
-    region.setPriority(getParent().getWorldguardRegion().getPriority() + 1);
+    region.setPriority(getParent().getWorldguardRegion().getPriority() + 50);
     p.sendMessage(Chat.greenFade("Dein Grundstück " + name + " wurde erfolgreich erstellt."));
   }
 

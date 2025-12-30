@@ -5,6 +5,7 @@ import com.sk89q.worldguard.WorldGuard;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
+import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.command.commands.AbstractCommand;
 import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
@@ -492,6 +493,7 @@ public class RealEstateCommand extends AbstractCommand {
           Chat.errorFade("Der von dir erwähnte Spieler " + args[2] + " ist nicht Online."));
       return false;
     }
+    NationsPlugin.nationsLogger.logInfo("(RealEstate) Type: " + region.get().getType() + ", RID: " + region.get().getId() + ", Name: " + target.getName() + "Action: kick" + "by " + p.getName());
     agent.getAgent().kick(target);
 
     return false;
