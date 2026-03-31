@@ -1,11 +1,13 @@
 package de.terranova.nations.utils.terraRenderer.refactor;
 
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientboundAddEntityPacket;
 import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket;
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket;
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket;
 import net.minecraft.server.level.ServerEntity;
 import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.PositionMoveRotation;
 import net.minecraft.world.entity.Relative;
@@ -33,18 +35,19 @@ public final class DisplayPackets {
     public static void spawn(Entity nmsEntity, Collection<Player> players) {
         if (nmsEntity == null || players == null || players.isEmpty()) return;
 
-        ServerLevel nmsWorld = (ServerLevel) nmsEntity.level();
-
-        ServerEntity serverEntity = new ServerEntity(
-                nmsWorld,
-                nmsEntity,
+        Packet<?> spawnPacket = new ClientboundAddEntityPacket(
+                nmsEntity.getId(),
+                nmsEntity.getUUID(),
+                nmsEntity.getX(),
+                nmsEntity.getY(),
+                nmsEntity.getZ(),
+                nmsEntity.getXRot(),
+                nmsEntity.getYRot(),
+                nmsEntity.getType(),
                 0,
-                false,
-                packet -> {},
-                Collections.emptySet()
+                nmsEntity.getDeltaMovement(),
+                nmsEntity.getYHeadRot()
         );
-
-        Packet<?> spawnPacket = nmsEntity.getAddEntityPacket(serverEntity);
 
         var dataItems = nmsEntity.getEntityData().packAll();
         ClientboundSetEntityDataPacket dataPacket =
@@ -52,7 +55,6 @@ public final class DisplayPackets {
 
         for (Player p : players) {
             if (p == null || !p.isOnline()) continue;
-
             var handle = ((CraftPlayer) p).getHandle();
             handle.connection.send(spawnPacket);
             handle.connection.send(dataPacket);

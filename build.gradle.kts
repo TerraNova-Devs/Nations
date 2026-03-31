@@ -1,11 +1,9 @@
-import java.util.*
-
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "2.0.0-beta.14"
+  id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
   id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
-  id("io.github.goooler.shadow") version "8.1.8"
+  id("com.gradleup.shadow") version "9.0.0"
   id("com.diffplug.spotless") version "6.25.0"
 }
 
@@ -15,7 +13,7 @@ description = "Nations Plugin tailored & written by & for TerraNova."
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
-  toolchain.languageVersion = JavaLanguageVersion.of(21)
+  toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
 repositories {
@@ -54,17 +52,17 @@ repositories {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-  paperweight.paperDevBundle("1.21.4-R0.1-SNAPSHOT")
-  implementation("com.zaxxer:HikariCP:6.2.1")
-  compileOnly("net.citizensnpcs:citizens-main:2.0.37-SNAPSHOT"){
+  paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+  implementation("com.zaxxer:HikariCP:7.0.2")
+  compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  compileOnly("maven.modrinth:pl3xmap:1.21.4-522")
-  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.13")
+  compileOnly("maven.modrinth:pl3xmap:1.21.11-544")
+  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.16")
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
-  implementation("io.github.cdimascio:dotenv-java:3.0.0")
-  compileOnly("com.nexomc:nexo:1.16.1")
-  implementation("org.yaml:snakeyaml:2.2")
+  implementation("io.github.cdimascio:dotenv-java:3.2.0")
+  compileOnly("com.nexomc:nexo:1.21.0")
+  implementation("org.yaml:snakeyaml:2.6")
   compileOnly("de.mcterranova:terranova-lib:1.0.1")
   implementation ("org.locationtech.jts:jts-core:1.20.0")
 }

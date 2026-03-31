@@ -168,6 +168,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   private void worldguardFlagRegistry() {
     RegionFlag.registerRegionFlag(this);
     TypeFlag.registerRegionFlag(this);
+    ElytraFlag.registerElytraFlag(this);
   }
 
   private void worldguardHandlerRegistry() {

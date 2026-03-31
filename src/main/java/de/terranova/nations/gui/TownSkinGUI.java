@@ -9,7 +9,9 @@ import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.mcterranova.terranovaLib.roseGUI.RosePagination;
 import java.lang.reflect.Method;
-import org.apache.commons.lang.WordUtils;
+
+import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.apache.commons.lang3.text.WordUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -58,9 +60,14 @@ public class TownSkinGUI extends RoseGUI {
       RoseItem skull =
           new RoseItem.Builder()
               .setSkull(skin.getSkinTexture())
-              .displayName(
-                  Chat.yellowFade(
-                      "<b>" + WordUtils.capitalize(skin.name().replaceAll("_", " ").toLowerCase())))
+              .displayName(Chat.yellowFade(
+                      "<b>" + skin.name().replaceAll("_", " ").toLowerCase()
+                              .chars()
+                              .collect(StringBuilder::new,
+                                      (sb, c) -> sb.append(sb.isEmpty() || sb.charAt(sb.length()-1) == ' '
+                                              ? Character.toUpperCase(c) : (char) c),
+                                      StringBuilder::append)
+                              .toString()))
               .addLore(
                   settle.getRank().getLevel() >= skin.getLEVEL()
                       ? Chat.greenFade("Level: " + skin.getLEVEL())
