@@ -1,7 +1,7 @@
 name: Nations
 version: 1.0.0-SNAPSHOT
 main: de.terranova.nations.NationsPlugin
-api-version: '1.21.4'
+api-version: '1.21.11'
 authors: [gerryxn, bastizeit]
 prefix: Nations
 website: mcterranova.de
@@ -22,6 +22,6 @@ commands:
     aliases: [ re ]
     permission: nations.use
     permission-message: You do not have permission to use this command.
-depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, WorldGuardExtraFlags, Nexo]
+depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, Nexo]
 
 

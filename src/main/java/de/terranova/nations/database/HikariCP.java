@@ -33,7 +33,7 @@ public class HikariCP {
 
   private @NotNull HikariConfig getHikariConfig() {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl("jdbc:mysql://localhost/nations");
+    config.setJdbcUrl("jdbc:mysql://mariadb/nations");
     config.setUsername(user);
     config.setPassword(password);
     config.setPoolName("NationsHikariPool");
