@@ -175,6 +175,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     SessionManager sessionManager = WorldGuard.getInstance().getPlatform().getSessionManager();
     sessionManager.registerHandler(RegionHandler.FACTORY, null);
     sessionManager.registerHandler(TypeHandler.FACTORY, null);
+    sessionManager.registerHandler(ElytraHandler.FACTORY, null);
   }
 
   public void commandRegistry() {
@@ -192,6 +193,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public void listenerRegistry() {
     Bukkit.getPluginManager().registerEvents(this, this);
     Bukkit.getPluginManager().registerEvents(new MarkToolListener(), this);
+    Bukkit.getPluginManager().registerEvents(new ElytraListener(), this);
   }
 
   public void serilizationRegistry() {}
