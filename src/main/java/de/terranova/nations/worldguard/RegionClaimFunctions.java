@@ -167,14 +167,19 @@ public class RegionClaimFunctions {
     return new Vectore2(x + 24, z + 24);
   }
 
-  public static boolean checkAreaForSettles(Player p) {
-    LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
+  public static boolean checkAreaForSettles(org.bukkit.Location location) {
     RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionManager regions = container.get(lp.getWorld());
-    assert regions != null;
+
+    RegionManager regions = container.get(BukkitAdapter.adapt(location.getWorld()));
+    if (regions == null) {
+      return false;
+    }
+
     RegionQuery query = container.createQuery();
-    ApplicableRegionSet set = query.getApplicableRegions(lp.getLocation());
-    return !(set.size() == 0);
+
+    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(location));
+
+    return set.size() != 0;
   }
 
   public static int getClaimAnzahl(UUID settle) {

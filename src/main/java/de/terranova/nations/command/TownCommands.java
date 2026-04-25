@@ -16,10 +16,7 @@ import de.terranova.nations.nations.Nation;
 import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
-import de.terranova.nations.regions.base.GridRegion;
-import de.terranova.nations.regions.base.Region;
-import de.terranova.nations.regions.base.RegionContext;
-import de.terranova.nations.regions.base.RegionRegistry;
+import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
@@ -135,6 +132,8 @@ public class TownCommands extends AbstractCommand {
     );
 
     registerSubCommand(this, "create");
+    registerSubCommand(this, "remove");
+    registerSubCommand(this, "application");
     registerSubCommand(this, "claim");
     registerSubCommand(this, "rename");
     registerSubCommand(this, "invite");
@@ -148,7 +147,7 @@ public class TownCommands extends AbstractCommand {
     registerSubCommand(this, "leave");
     registerSubCommand(this, "npc");
     registerSubCommand(this, "trust");
-    registerSubCommand(this, "application");
+    registerSubCommand(this, "admin");
     registerSubCommand(new BuildingCommands(), "building");
     registerSubCommand(RegionCommands.class, "admin");
 
@@ -637,13 +636,12 @@ public class TownCommands extends AbstractCommand {
     }
 
     String name = args[1].toLowerCase();
+    RegionContext context = new RegionContext(p, name, Map.of());
 
-    if (Region.isNameCached(name)) {
-      p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
+    RegionFactoryBase factory = RegionRegistry.getFactory("settle");
+    if (!factory.dryRunCreate(context)) {
       return false;
     }
-
-    RegionContext context = new RegionContext(p, name, Map.of());
 
     int id = nextCreateApplicationId++;
 
@@ -681,7 +679,12 @@ public class TownCommands extends AbstractCommand {
     }
 
     if (settle.hasChildren()) {
-      p.sendMessage(Chat.errorFade("Bitte mache ein Ticket auf und kontaktiere einen Administrator!"));
+      p.sendMessage(Chat.errorFade("Deine Stadt hat Unterregionen die Spielern gehören könnten!"));
+      return false;
+    }
+    Optional<Nation> nation = NationsPlugin.nationManager.getNationByRegionId(settle.getId());
+    if (nation.isPresent() && nation.get().getCapital().equals(settle.getId())) {
+      p.sendMessage(Chat.errorFade("Deine Stadt muss erst ihre Nation auflösen!"));
       return false;
     }
 
@@ -735,9 +738,11 @@ public class TownCommands extends AbstractCommand {
         return false;
       }
 
-      if (Region.isNameCached(application.townName())) {
+      RegionFactoryBase factory = RegionRegistry.getFactory("settle");
+
+      if (!factory.dryRunCreate(application.context())) {
         createApplications.remove(id);
-        p.sendMessage(Chat.errorFade("Der Stadtname ist inzwischen vergeben. Antrag wurde entfernt."));
+        p.sendMessage(Chat.errorFade("Der Stadtantrag ist nicht mehr gültig und wurde entfernt."));
         return false;
       }
 
@@ -797,7 +802,179 @@ public class TownCommands extends AbstractCommand {
     return false;
   }
 
+  @CommandAnnotation(
+          domain = "application.view.$TOWN_APPLICATIONS",
+          permission = "nations.town.application.view",
+          description = "Zeigt einen Stadt-Antrag an",
+          usage = "/town application view <application>")
+  public boolean viewTownApplication(Player p, String[] args) {
 
+    if (args.length < 3) {
+      p.sendMessage(Chat.errorFade("Bitte gebe einen Antrag an."));
+      return false;
+    }
+
+    String[] split = args[2].split(":");
+
+    if (split.length < 2) {
+      p.sendMessage(Chat.errorFade("Ungültiges Antragsformat."));
+      return false;
+    }
+
+    int id;
+    try {
+      id = Integer.parseInt(split[0]);
+    } catch (NumberFormatException e) {
+      p.sendMessage(Chat.errorFade("Die ID muss eine Zahl sein."));
+      return false;
+    }
+
+    String type = split[1];
+
+    if (type.equalsIgnoreCase("CREATE")) {
+      TownCreateApplication app = createApplications.get(id);
+
+      if (app == null) {
+        p.sendMessage(Chat.errorFade("Dieser Erstellungsantrag existiert nicht mehr."));
+        return false;
+      }
+
+      p.sendMessage(Chat.greenFade("Stadt-Erstellungsantrag #" + app.id()));
+      p.sendMessage(Chat.yellowFade("Stadt: " + app.townName()));
+      p.sendMessage(Chat.yellowFade("Spieler: " + Bukkit.getOfflinePlayer(app.creatorId()).getName()));
+
+      return true;
+    }
+
+    if (type.equalsIgnoreCase("REMOVE")) {
+      TownRemoveApplication app = removeApplications.get(id);
+
+      if (app == null) {
+        p.sendMessage(Chat.errorFade("Dieser Löschantrag existiert nicht mehr."));
+        return false;
+      }
+
+      p.sendMessage(Chat.greenFade("Stadt-Löschantrag #" + app.id()));
+      p.sendMessage(Chat.yellowFade("Stadt: " + app.settleName()));
+      p.sendMessage(Chat.yellowFade("Spieler: " + Bukkit.getOfflinePlayer(app.playerId()).getName()));
+      p.sendMessage(Chat.yellowFade("Region: " + app.settleId()));
+
+      return true;
+    }
+
+    p.sendMessage(Chat.errorFade("Unbekannter Antragstyp."));
+    return false;
+  }
+  private static final Map<UUID, TownAdminRemoveApplication> adminRemoveApplications = new HashMap<>();
+
+  private record TownAdminRemoveApplication(
+          UUID firstAdminId,
+          String firstAdminName,
+          UUID settleId,
+          String settleName
+  ) {}
+
+  @CommandAnnotation(
+          domain = "admin.remove.$0",
+          permission = "nations.town.admin.remove",
+          description = "Hard removes a settlement after two admin confirmations",
+          usage = "/town admin remove <town>")
+  public boolean adminRemoveTown(Player p, String[] args) {
+
+    if (args.length < 3) {
+      p.sendMessage(Chat.errorFade("Bitte nutze /town admin remove <stadt>."));
+      return false;
+    }
+
+    String townName = args[2].toLowerCase();
+
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", townName);
+    if (settleOpt.isEmpty()) {
+      p.sendMessage(Chat.errorFade("Diese Stadt existiert nicht."));
+      return false;
+    }
+
+    SettleRegion settle = settleOpt.get();
+
+    if (settle.hasChildren()) {
+      p.sendMessage(Chat.errorFade("Diese Stadt hat Unterregionen und kann nicht gelöscht werden."));
+      return false;
+    }
+
+    Optional<Nation> nation = NationsPlugin.nationManager.getNationByRegionId(settle.getId());
+    if (nation.isPresent() && nation.get().getCapital().equals(settle.getId())) {
+      p.sendMessage(Chat.errorFade("Diese Stadt ist Hauptstadt einer Nation. Die Nation muss zuerst aufgelöst werden."));
+      return false;
+    }
+
+    UUID settleId = settle.getId();
+
+    TownAdminRemoveApplication application = adminRemoveApplications.get(settleId);
+
+    if (application == null) {
+      adminRemoveApplications.put(
+              settleId,
+              new TownAdminRemoveApplication(
+                      p.getUniqueId(),
+                      p.getName(),
+                      settleId,
+                      settle.getName()
+              )
+      );
+
+      p.sendMessage(Chat.greenFade(
+              "Admin-Löschung für Stadt " + settle.getName()
+                      + " vorgemerkt. Ein zweiter Admin muss denselben Befehl ausführen."
+      ));
+      return true;
+    }
+
+    if (application.firstAdminId().equals(p.getUniqueId())) {
+      p.sendMessage(Chat.errorFade(
+              "Du kannst deine eigene Admin-Löschung nicht bestätigen. Ein zweiter Admin ist erforderlich."
+      ));
+      return false;
+    }
+
+    Optional<SettleRegion> freshSettleOpt =
+            RegionManager.retrieveRegion("settle", application.settleId());
+
+    if (freshSettleOpt.isEmpty()) {
+      adminRemoveApplications.remove(settleId);
+      p.sendMessage(Chat.errorFade("Die Stadt existiert nicht mehr. Admin-Löschung wurde entfernt."));
+      return false;
+    }
+
+    SettleRegion freshSettle = freshSettleOpt.get();
+
+    if (freshSettle.hasChildren()) {
+      p.sendMessage(Chat.errorFade(
+              "Die Stadt hat inzwischen Unterregionen und kann nicht gelöscht werden."
+      ));
+      return false;
+    }
+
+    Optional<Nation> freshNation =
+            NationsPlugin.nationManager.getNationByRegionId(freshSettle.getId());
+
+    if (freshNation.isPresent() && freshNation.get().getCapital().equals(freshSettle.getId())) {
+      p.sendMessage(Chat.errorFade(
+              "Diese Stadt ist inzwischen Hauptstadt einer Nation und kann nicht gelöscht werden."
+      ));
+      return false;
+    }
+
+    freshSettle.remove();
+    adminRemoveApplications.remove(settleId);
+
+    p.sendMessage(Chat.greenFade(
+            "Stadt " + freshSettle.getName()
+                    + " wurde administrativ gelöscht. Bestätigt durch "
+                    + application.firstAdminName() + " und " + p.getName() + "."
+    ));
+
+    return true;
+  }
 
   @CommandAnnotation(
       domain = "claim",

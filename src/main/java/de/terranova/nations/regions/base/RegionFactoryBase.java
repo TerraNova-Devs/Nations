@@ -8,14 +8,16 @@ public interface RegionFactoryBase {
 
   String getType();
 
-  // For new Creations facilitates more information
   Region createWithContext(RegionContext ctx);
 
-  // To load least necessary from saved data
   Region createFromArgs(List<String> args);
 
+  default boolean dryRunCreate(RegionContext ctx) {
+    return validate(ctx, ctx.name, null, null);
+  }
+
   default boolean validate(
-      RegionContext ctx, String name, ProtectedRegion fakeRegion, Region parent) {
+          RegionContext ctx, String name, ProtectedRegion fakeRegion, Region parent) {
     return RuleValidator.validate(ctx.player, getType(), name, fakeRegion, parent);
   }
 }

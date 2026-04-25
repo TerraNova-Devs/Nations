@@ -6,6 +6,8 @@ settings:
     invisible: true
     # Should spectators be hidden from the map.
     spectators: true
+    # Should hidden players be shown in the sidebar.
+    show-hidden-players-in-sidebar: false
   layer:
     # How often (in seconds) to update the marker.
     update-interval: 0

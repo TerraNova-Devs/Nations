@@ -32,7 +32,7 @@ public class SelfOverlap implements RegionRule {
   ) {
     // 1) Grid occupancy check (unchanged)
     if (explicitParent == null && isGrid) {
-      return !RegionClaimFunctions.checkAreaForSettles(p);
+      return !RegionClaimFunctions.checkAreaForSettles(p.getLocation());
     }
 
     // 2) Build inner geometry (XZ plane)

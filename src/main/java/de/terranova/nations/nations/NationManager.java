@@ -149,14 +149,25 @@ public class NationManager {
 
 
   public boolean removeSettlementFromNation(UUID settlementId) {
-    NationsDAO.removeSettlementFromNation(settlementId);
     Nation nation = getNationBySettlement(settlementId);
-    if(nation.getCapital().equals(settlementId)) return false;
+
+    if (nation == null) {
+      NationsDAO.removeSettlementFromNation(settlementId);
+      return true;
+    }
+
+    if (settlementId.equals(nation.getCapital())) {
+      return false;
+    }
+
+    NationsDAO.removeSettlementFromNation(settlementId);
     nation.removeSettlement(settlementId);
 
-    // Update region layer
-    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
-    RegionLayer.updateRegion(settleRegion.get());
+    RegionManager.retrieveRegion("settle", settlementId)
+            .filter(SettleRegion.class::isInstance)
+            .map(SettleRegion.class::cast)
+            .ifPresent(RegionLayer::updateRegion);
+
     return true;
   }
 }

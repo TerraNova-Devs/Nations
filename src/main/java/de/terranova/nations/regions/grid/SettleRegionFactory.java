@@ -22,45 +22,55 @@ public class SettleRegionFactory implements RegionFactoryBase {
 
   @Override
   public Region createWithContext(RegionContext ctx) {
+    if (!dryRunCreate(ctx)) {
+      return null;
+    }
+
+    return new SettleRegion(
+            ctx.name,
+            UUID.randomUUID(),
+            RegionClaimFunctions.getSChunkMiddle(ctx.location)
+    );
+  }
+
+  @Override
+  public boolean dryRunCreate(RegionContext ctx) {
     Player p = ctx.player;
     String name = ctx.name;
 
     if (!validate(ctx, name, null, null)) {
-      return null;
+      return false;
     }
 
-    if (isInBlacklistedBiome(p)) {
-      p.sendMessage(
-          Chat.errorFade(
-              "Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"));
-      return null;
+    if (isInBlacklistedBiome(ctx.location)) {
+      p.sendMessage(Chat.errorFade(
+              "Bitte platziere deinen ersten Claim auf Festland oder Inseln. (Strand ausgenommen)"
+      ));
+      return false;
     }
 
     if (Region.isNameCached(name)) {
       p.sendMessage(Chat.errorFade("Der Name ist leider bereits vergeben."));
-      return null;
+      return false;
     }
 
-    if (RegionClaimFunctions.checkAreaForSettles(p)) {
+    if (RegionClaimFunctions.checkAreaForSettles(ctx.location)) {
       p.sendMessage(Chat.errorFade("Der Claim ist bereits in Besitz eines anderen Spielers."));
-      return null;
+      return false;
     }
 
-    if (isTooCloseToAnotherSettlement(p)) {
-      p.sendMessage(
-          Chat.errorFade(
-              "Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden."));
-      p.sendMessage(
-          Chat.errorFade(
-              String.format(
-                  "Die nächste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.",
-                  (int) Math.floor(getClosestSettlementDistance(p)))));
-      return null;
+    if (isTooCloseToAnotherSettlement(ctx.location)) {
+      p.sendMessage(Chat.errorFade(
+              "Du bist zu nah an einer anderen Stadt, mindestens <#8769FF>2000<#FFD7FE> Blöcke Abstand muss eingehalten werden."
+      ));
+      p.sendMessage(Chat.errorFade(String.format(
+              "Die nächste Stadt ist <#8769FF>%s<#FFD7FE> meter von dir entfernt.",
+              (int) Math.floor(getClosestSettlementDistance(ctx.location))
+      )));
+      return false;
     }
 
-    // If all conditions are met, create the new SettleRegionType instance
-    return new SettleRegion(
-        name, UUID.randomUUID(), RegionClaimFunctions.getSChunkMiddle(p.getLocation()));
+    return true;
   }
 
   @Override
@@ -69,47 +79,47 @@ public class SettleRegionFactory implements RegionFactoryBase {
         args.getFirst(), UUID.fromString(args.get(1)), new Vectore2(args.get(2)));
   }
 
-  private static boolean isTooCloseToAnotherSettlement(Player p) {
-    return getClosestSettlementDistance(p) < 2000;
+  private static boolean isTooCloseToAnotherSettlement(org.bukkit.Location location) {
+    return getClosestSettlementDistance(location) < 2000;
   }
 
-  private static double getClosestSettlementDistance(Player p) {
-    double minDistance = Integer.MAX_VALUE;
-    for (Vectore2 location : GridRegion.locationCache) {
-      double distance = claimCalc.abstand(location, new Vectore2(p.getLocation()));
+  private static double getClosestSettlementDistance(org.bukkit.Location location) {
+    double minDistance = Double.MAX_VALUE;
+
+    for (Vectore2 cached : GridRegion.locationCache) {
+      double distance = claimCalc.abstand(cached, new Vectore2(location));
       if (distance < minDistance) {
         minDistance = distance;
       }
     }
+
     return minDistance;
   }
 
-  public static boolean isInBlacklistedBiome(Player player) {
+  public static boolean isInBlacklistedBiome(org.bukkit.Location location) {
     List<String> biomeTranslationKeys =
-        List.of(
-            // Minecraft biomes
-            "minecraft:deep_ocean",
-            "minecraft:ocean",
-            "minecraft:warm_ocean",
-            "minecraft:frozen_ocean",
-            "minecraft:lukewarm_ocean",
-            "minecraft:cold_ocean",
-            "minecraft:deep_frozen_ocean",
-            "minecraft:deep_lukewarm_ocean",
-            "minecraft:deep_cold_ocean",
-            "minecraft:river",
-            "minecraft:beach",
-            "minecraft:snowy_beach",
-            "minecraft:frozen_river",
-            // Terralith biomes
-            "terralith:gravel_beach",
-            "terralith:snowy_beach",
-            "terralith:oceanic_plateau",
-            "terralith:tropical_bay",
-            "terralith:rocky_coast",
-            "terralith:white_cliffs",
-            "terralith:sandstone_valley");
+            List.of(
+                    "minecraft:deep_ocean",
+                    "minecraft:ocean",
+                    "minecraft:warm_ocean",
+                    "minecraft:frozen_ocean",
+                    "minecraft:lukewarm_ocean",
+                    "minecraft:cold_ocean",
+                    "minecraft:deep_frozen_ocean",
+                    "minecraft:deep_lukewarm_ocean",
+                    "minecraft:deep_cold_ocean",
+                    "minecraft:river",
+                    "minecraft:beach",
+                    "minecraft:snowy_beach",
+                    "minecraft:frozen_river",
+                    "terralith:gravel_beach",
+                    "terralith:snowy_beach",
+                    "terralith:oceanic_plateau",
+                    "terralith:tropical_bay",
+                    "terralith:rocky_coast",
+                    "terralith:white_cliffs",
+                    "terralith:sandstone_valley");
 
-    return BiomeUtil.isBiomeInList(player.getLocation(), biomeTranslationKeys);
+    return BiomeUtil.isBiomeInList(location, biomeTranslationKeys);
   }
 }

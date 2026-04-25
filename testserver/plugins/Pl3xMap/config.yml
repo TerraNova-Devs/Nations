@@ -62,10 +62,12 @@ settings:
       # Whether or not the real-time marker system should run.
       enabled: true
       # The number of process-threads to use for real-time marker updates on the map.
-      # Value of -1 will use 50% of the available cpu-threads. (recommended)
+      # Value of -1 will use half of the available cpu-threads. (recommended)
+      # Warning: Using all available cpu-threads may cause thread starvation and impact system performance.
       threads: -1
     # The number of process-threads to use for loading and scanning chunks.
-    # Value of -1 will use 50% of the available cpu-threads. (recommended)
+    # Value of -1 will use half of the available cpu-threads. (recommended)
+    # Warning: Using all available cpu-threads may cause thread starvation and impact system performance.
     render-threads: -1
     gc:
       # Runs the JVM GC after a render job stops to free up memory immediately.

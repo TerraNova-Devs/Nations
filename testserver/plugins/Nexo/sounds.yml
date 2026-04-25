@@ -1,6 +1,0 @@
-settings:
-  generate_sounds: true
-sounds:
-  welcome:
-    category: record
-    sound: welcome.ogg

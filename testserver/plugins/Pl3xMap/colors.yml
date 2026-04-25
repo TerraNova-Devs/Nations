@@ -1083,6 +1083,11 @@ blocks:
     - minecraft:warped_trapdoor
     - minecraft:white_carpet
     - minecraft:yellow_carpet
+  # List of blocks that are considered dry foliage when it comes
+  # to coloring. Blocks listed here will use the biome's
+  # dry foliage color when rendering.
+  dry-foliage:
+    - minecraft:leaf_litter
 biomes:
   # Each biome has a specific color assigned to it. You can
   # pick your own color here for any biomes you want to change.
@@ -1190,3 +1195,6 @@ biomes:
       minecraft:eroded_badlands: '#90814D'
     # Override water colors per biome.
     water: {}
+    # Override foliage colors per biome.
+    dry-foliage:
+      minecraft:badlands: '#9E814D'
