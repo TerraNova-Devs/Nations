@@ -42,6 +42,22 @@ public class SettlementProfessionRelationDAO {
                WHERE RUUID=? AND Status='ACTIVE'
             """;
 
+  private static final String DELETE_BY_SETTLEMENT =
+      """
+             DELETE FROM settlement_profession_relation
+             WHERE RUUID=?
+          """;
+
+  private static final String DELETE_RELATIONS =
+          "DELETE FROM settlement_profession_relation WHERE RUUID=?";
+
+  private static final String DELETE_OBJECTIVES =
+          "DELETE FROM settlement_objective_progress WHERE RUUID=?";
+
+  private static final String DELETE_BUILDINGS =
+          "DELETE FROM settlement_buildings WHERE RUUID=?";
+
+
   /**
    * Liefert den Status einer konkreten Profession in einer Stadt. Falls nichts in DB steht,
    * interpretieren wir das als LOCKED.
@@ -108,4 +124,38 @@ public class SettlementProfessionRelationDAO {
     }
     return null;
   }
+  
+  public static void removeSettlementProfessionData(String ruuid) {
+    try (Connection con = NationsPlugin.hikari.dataSource.getConnection()) {
+      con.setAutoCommit(false);
+
+      try (
+              PreparedStatement psObjectives = con.prepareStatement(DELETE_OBJECTIVES);
+              PreparedStatement psBuildings = con.prepareStatement(DELETE_BUILDINGS);
+              PreparedStatement psRelations = con.prepareStatement(DELETE_RELATIONS)
+      ) {
+        psObjectives.setString(1, ruuid);
+        psObjectives.executeUpdate();
+
+        psBuildings.setString(1, ruuid);
+        psBuildings.executeUpdate();
+
+        psRelations.setString(1, ruuid);
+        psRelations.executeUpdate();
+
+        con.commit();
+      } catch (SQLException e) {
+        con.rollback();
+        throw e;
+      }
+
+    } catch (SQLException e) {
+      NationsPlugin.plugin
+              .getLogger()
+              .severe("Failed to fully remove profession data for settlement: " + ruuid);
+      e.printStackTrace();
+    }
+  }
 }
+
+

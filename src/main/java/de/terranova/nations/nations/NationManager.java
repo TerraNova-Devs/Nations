@@ -46,6 +46,12 @@ public class NationManager {
     return nations.get(nationId);
   }
 
+  public Optional<Nation> getNationByRegionId(UUID regionId) {
+    return nations.values().stream()
+            .filter(nation -> nation.getSettlements().containsKey(regionId))
+            .findFirst();
+  }
+
   // Get a nation by name
   public Nation getNationByName(String name) {
     for (Nation nation : nations.values()) {
@@ -139,5 +145,18 @@ public class NationManager {
     // Update region layer
     Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
     RegionLayer.updateRegion(settleRegion.get());
+  }
+
+
+  public boolean removeSettlementFromNation(UUID settlementId) {
+    NationsDAO.removeSettlementFromNation(settlementId);
+    Nation nation = getNationBySettlement(settlementId);
+    if(nation.getCapital().equals(settlementId)) return false;
+    nation.removeSettlement(settlementId);
+
+    // Update region layer
+    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+    RegionLayer.updateRegion(settleRegion.get());
+    return true;
   }
 }

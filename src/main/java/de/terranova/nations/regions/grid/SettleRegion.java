@@ -3,7 +3,10 @@ package de.terranova.nations.regions.grid;
 import com.sk89q.worldedit.world.entity.EntityType;
 import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
+import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.nations.Nation;
 import de.terranova.nations.pl3xmap.RegionLayer;
+import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.BoundaryRegion;
 import de.terranova.nations.regions.base.GridRegion;
@@ -70,6 +73,10 @@ public class SettleRegion extends GridRegion
         .collect(Collectors.toSet());
   }
 
+  public boolean hasChildren() {
+    return children.values().stream().anyMatch(list -> !list.isEmpty());
+  }
+
   // GridRegionType
   @Override
   public void onGridCreation(Player p) {
@@ -93,6 +100,8 @@ public class SettleRegion extends GridRegion
 
   @Override
   public void onGridRemove() {
+    ProfessionManager.removeSettlement(this.id);
+    NationsPlugin.nationManager.removeSettlementFromNation(this.id);
     RegionManager.removeRegion(type, id);
     RegionLayer.removeRegion(this.id);
   }

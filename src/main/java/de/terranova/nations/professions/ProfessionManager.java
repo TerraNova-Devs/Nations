@@ -1,6 +1,7 @@
 package de.terranova.nations.professions;
 
 import de.terranova.nations.NationsPlugin;
+import de.terranova.nations.database.dao.SettlementProfessionRelationDAO;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
@@ -66,5 +67,9 @@ public class ProfessionManager {
       result.add(p.type);
     }
     return new ArrayList<>(result);
+  }
+
+  public static void removeSettlement(UUID settlementId) {
+    SettlementProfessionRelationDAO.removeSettlementProfessionData(settlementId.toString());
   }
 }
