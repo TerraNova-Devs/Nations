@@ -585,4 +585,10 @@ public class RealEstateAgent {
     if (!isRented) return null;
     return data.timestamp;
   }
+  public boolean isInUse() {
+    return isRented
+            || data.isForBuy
+            || data.isForRent
+            || offeredPlayer != null;
+  }
 }

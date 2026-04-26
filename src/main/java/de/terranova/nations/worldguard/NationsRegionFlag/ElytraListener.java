@@ -6,12 +6,20 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import com.sk89q.worldguard.protection.managers.RegionManager;
 import de.mcterranova.terranovaLib.utils.Chat;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityToggleGlideEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 
 public class ElytraListener implements Listener {
+
+    public ElytraListener(JavaPlugin plugin) {
+        ElytraHandler.init(plugin);
+    }
 
     @EventHandler
     public void onToggleGlide(EntityToggleGlideEvent event) {
@@ -20,8 +28,24 @@ public class ElytraListener implements Listener {
 
         if (isElytraAllowed(player)) return;
 
+        ElytraHandler.startLimiting(player);
+    }
+
+    @EventHandler
+    public void onRocketUse(PlayerInteractEvent event) {
+        Player player = event.getPlayer();
+
+        if (!player.isGliding()) return;
+
+        ItemStack item = event.getItem();
+        if (item == null || item.getType() != Material.FIREWORK_ROCKET) return;
+
+        if (isElytraAllowed(player)) return;
+
         event.setCancelled(true);
-        player.sendActionBar(Chat.yellowFade("Elytra ist in dieser Region verboten!"));
+        ElytraHandler.startLimiting(player);
+
+        player.sendActionBar(Chat.yellowFade("Raketen sind in dieser Region verboten!"));
     }
 
     private boolean isElytraAllowed(Player player) {

@@ -704,7 +704,7 @@ public class TownCommands extends AbstractCommand {
 
   @CommandAnnotation(
           domain = "application.accept.$TOWN_APPLICATIONS",
-          permission = "nations.town.application.accept",
+          permission = "nations.admin.town.application.accept",
           description = "Accepts a town application",
           usage = "/town application accept <application>")
   public boolean acceptTownApplication(Player p, String[] args) {
@@ -804,7 +804,7 @@ public class TownCommands extends AbstractCommand {
 
   @CommandAnnotation(
           domain = "application.view.$TOWN_APPLICATIONS",
-          permission = "nations.town.application.view",
+          permission = "nations.admin.town.application.view",
           description = "Zeigt einen Stadt-Antrag an",
           usage = "/town application view <application>")
   public boolean viewTownApplication(Player p, String[] args) {
@@ -876,7 +876,7 @@ public class TownCommands extends AbstractCommand {
 
   @CommandAnnotation(
           domain = "admin.remove.$0",
-          permission = "nations.town.admin.remove",
+          permission = "nations.admin.town.admin.remove",
           description = "Hard removes a settlement after two admin confirmations",
           usage = "/town admin remove <town>")
   public boolean adminRemoveTown(Player p, String[] args) {

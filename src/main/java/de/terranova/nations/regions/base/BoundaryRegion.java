@@ -2,6 +2,7 @@ package de.terranova.nations.regions.base;
 
 import com.sk89q.worldguard.protection.regions.ProtectedPolygonalRegion;
 import de.terranova.nations.database.dao.BoundaryRegionDAO;
+import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import java.util.UUID;
 import org.bukkit.entity.Player;

@@ -13,6 +13,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
+import de.terranova.nations.worldguard.NationsRegionFlag.ElytraFlag;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -84,6 +86,7 @@ public class TownSettingsGUI extends RoseGUI {
                 EntityType.REGISTRY.get("minecraft:pillager"),
                 com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
                 EntityType.REGISTRY.get("minecraft:creeper"))));
+    addStateFlag(ElytraFlag.ELYTRA_FLAG,20,Material.ELYTRA,"Soll eine Elytra benutzbar sein?");
 
     RoseItem back =
         new RoseItem.Builder()

@@ -17,6 +17,7 @@ import de.terranova.nations.regions.base.RegionContext;
 import de.terranova.nations.regions.base.RegionRegistry;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
+import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
@@ -85,6 +86,7 @@ public class RealEstateCommand extends AbstractCommand {
     registerSubCommand(this, "rename");
     registerSubCommand(this, "generaterandomname");
     registerSubCommand(this, "create");
+    registerSubCommand(this, "delete");
     setupHelpCommand();
     initialize();
   }
@@ -533,6 +535,60 @@ public class RealEstateCommand extends AbstractCommand {
     }
     agent.getAgent().getRegion().rename(name);
     p.sendMessage(Chat.greenFade("Region erfolgreich umbenannt"));
+    return true;
+  }
+
+  @CommandAnnotation(
+          domain = "delete.$properties",
+          permission = "nations.realestate.remove",
+          description = "Deletes your realestate region",
+          usage = "/realestate delete <region>")
+  public boolean delete(Player p, String[] args) {
+
+    if (args.length < 2) {
+      p.sendMessage(Chat.errorFade("Bitte nutze /realestate delete <region>."));
+      return false;
+    }
+
+    Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
+    if (Oregion.isEmpty()) {
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
+      return false;
+    }
+
+    Optional<Region> region =
+            de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
+
+    if (region.isEmpty()) {
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " ist keine Nations Region."));
+      return false;
+    }
+
+    Region realRegion = region.get();
+
+    if (!(realRegion instanceof HasRealEstateAgent agent)) {
+      p.sendMessage(Chat.errorFade("Die Region " + args[1] + " hat kein RealEstate Modul."));
+      return false;
+    }
+
+    RealEstateAgent realEstateAgent = agent.getAgent();
+
+    if (!realEstateAgent.isOwner(p.getUniqueId())) {
+      p.sendMessage(Chat.errorFade("Du kannst nur Regionen löschen, die dir gehören."));
+      return false;
+    }
+
+    if (realEstateAgent.isInUse()) {
+      p.sendMessage(Chat.errorFade("Die Region ist in Benutzung."));
+      return false;
+    }
+
+    realRegion.remove();
+
+    p.sendMessage(Chat.greenFade(
+            "Region " + realRegion.getName() + " wurde gelöscht."
+    ));
+
     return true;
   }
 

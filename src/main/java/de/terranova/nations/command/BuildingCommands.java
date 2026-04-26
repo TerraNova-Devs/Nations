@@ -14,7 +14,7 @@ public class BuildingCommands {
 
   @CommandAnnotation(
       domain = "building.confirm.$REGION_NAMES.$BUILDINGS",
-      permission = "nations.town.building.confirm",
+      permission = "nations.admin.town.building.confirm",
       description = "Bestätigt den Bau eines Gebäudes.",
       usage = "/town building confirm <settlement> <buildingId>")
   public boolean confirmBuilding(Player p, String[] args) {
@@ -56,7 +56,7 @@ public class BuildingCommands {
 
   @CommandAnnotation(
       domain = "building.cancel.$REGION_NAMES.$BUILDINGS",
-      permission = "nations.town.building.cancel",
+      permission = "nations.admin.town.building.cancel",
       description = "Cancels the construction of a building.",
       usage = "/town building cancel <settlement> <buildingId>")
   public boolean cancelBuilding(Player p, String[] args) {

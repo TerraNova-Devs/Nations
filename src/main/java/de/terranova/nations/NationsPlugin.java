@@ -193,7 +193,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public void listenerRegistry() {
     Bukkit.getPluginManager().registerEvents(this, this);
     Bukkit.getPluginManager().registerEvents(new MarkToolListener(), this);
-    Bukkit.getPluginManager().registerEvents(new ElytraListener(), this);
+    Bukkit.getPluginManager().registerEvents(new ElytraListener(this), this);
   }
 
   public void serilizationRegistry() {}
