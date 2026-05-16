@@ -371,7 +371,7 @@ public class RegionLayer extends WorldLayer implements RegionListener {
 
   @Override
   public void onRegionRenamed(String newRegionName) {
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", newRegionName);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, newRegionName);
 
     if (settleOpt.isEmpty()) {
       return;

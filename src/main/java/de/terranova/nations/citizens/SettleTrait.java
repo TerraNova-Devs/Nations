@@ -38,7 +38,7 @@ public class SettleTrait extends Trait {
     if (player == null) return;
     if (!player.hasPermission("nations.menu")) return;
 
-    Optional<SettleRegion> osettle = RegionManager.retrieveRegion("settle", settlement_uuid);
+    Optional<SettleRegion> osettle = RegionManager.retrieveRegion(SettleRegion.class, settlement_uuid);
     if (osettle.isEmpty()) return;
     new TownGUI(player, osettle.get()).open();
   }

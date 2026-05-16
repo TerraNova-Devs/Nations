@@ -26,6 +26,11 @@ public class PropertyRegionFactory implements RegionFactoryBase {
   }
 
   @Override
+  public Class<? extends Region> getRegionClass() {
+    return PropertyRegion.class;
+  }
+
+  @Override
   public Region createWithContext(RegionContext ctx) {
 
     Player p = ctx.player;
@@ -86,7 +91,7 @@ public class PropertyRegionFactory implements RegionFactoryBase {
     return new PropertyRegion(
         args.getFirst(),
         UUID.fromString(args.get(1)),
-        (SettleRegion) RegionManager.retrieveRegion("settle", UUID.fromString(args.get(2))).get());
+        (SettleRegion) RegionManager.retrieveRegion(SettleRegion.class, UUID.fromString(args.get(2))).get());
   }
 
   public static String buildRegionName(String name, Player player) {

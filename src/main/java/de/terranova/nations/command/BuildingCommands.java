@@ -32,7 +32,7 @@ public class BuildingCommands {
     }
 
     // 1) Finde Stadt
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", args[2]);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, args[2]);
     if (settleOpt.isEmpty()) {
       p.sendMessage("Die Stadt existiert nicht.");
       return false;
@@ -74,7 +74,7 @@ public class BuildingCommands {
     }
 
     // 1) Finde Stadt
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", args[2]);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, args[2]);
     if (settleOpt.isEmpty()) {
       p.sendMessage(Chat.errorFade("Die Stadt existiert nicht."));
       return false;

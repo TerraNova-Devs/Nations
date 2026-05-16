@@ -78,9 +78,9 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
     if (entered.isEmpty()) {
       for (ProtectedRegion region : exited) {
         String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-        if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
+        if (flag == null || flag.equals(RegionFlag.DEFAULT_VALUE)) return true;
         Optional<SettleRegion> osettle =
-            RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+            RegionManager.retrieveRegion(SettleRegion.class, UUID.fromString(flag));
         if (osettle.isEmpty()) return true;
         SettleRegion settle = osettle.get();
         p.sendActionBar(
@@ -91,9 +91,9 @@ public class RegionHandler extends FlagValueChangeHandler<String> {
     } else {
       for (ProtectedRegion region : entered) {
         String flag = region.getFlag(RegionFlag.REGION_UUID_FLAG);
-        if (flag == null || flag.equals(RegionFlag.DefaultValue)) return true;
+        if (flag == null || flag.equals(RegionFlag.DEFAULT_VALUE)) return true;
         Optional<SettleRegion> osettle =
-            RegionManager.retrieveRegion("settle", UUID.fromString(flag));
+            RegionManager.retrieveRegion(SettleRegion.class, UUID.fromString(flag));
         if (osettle.isEmpty()) return true;
         SettleRegion settle = osettle.get();
         p.sendActionBar(

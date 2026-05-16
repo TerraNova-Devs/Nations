@@ -57,7 +57,7 @@ public class TownCommands extends AbstractCommand {
             (UUID uuid) -> {
               return pendingInvites.entrySet().stream()
                   .filter(entry -> entry.getKey().equals(uuid))
-                  .map(entry -> RegionManager.retrieveRegion("settle", entry.getValue()))
+                  .map(entry -> RegionManager.retrieveRegion(SettleRegion.class, entry.getValue()))
                   .filter(Optional::isPresent)
                   .map(optionalRegion -> optionalRegion.get().getName())
                   .collect(Collectors.toList());
@@ -231,7 +231,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     String townName = args[1].toLowerCase();
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", townName);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, townName);
     if (settleOpt.isEmpty()) {
       p.sendMessage(Chat.errorFade("Die angegebene Stadt existiert nicht."));
       return false;
@@ -771,7 +771,7 @@ public class TownCommands extends AbstractCommand {
       }
 
       Optional<SettleRegion> settleOpt =
-              RegionManager.retrieveRegion("settle", application.settleId());
+              RegionManager.retrieveRegion(SettleRegion.class, application.settleId());
 
       if (settleOpt.isEmpty()) {
         removeApplications.remove(id);
@@ -888,7 +888,7 @@ public class TownCommands extends AbstractCommand {
 
     String townName = args[2].toLowerCase();
 
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", townName);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, townName);
     if (settleOpt.isEmpty()) {
       p.sendMessage(Chat.errorFade("Diese Stadt existiert nicht."));
       return false;
@@ -937,7 +937,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     Optional<SettleRegion> freshSettleOpt =
-            RegionManager.retrieveRegion("settle", application.settleId());
+            RegionManager.retrieveRegion(SettleRegion.class, application.settleId());
 
     if (freshSettleOpt.isEmpty()) {
       adminRemoveApplications.remove(settleId);
@@ -1079,7 +1079,7 @@ public class TownCommands extends AbstractCommand {
       p.sendMessage(Chat.errorFade("Du bist in keiner Stadt."));
       return false;
     }
-    Optional<SettleRegion> settle = RegionManager.retrieveRegion("settle", p.getLocation());
+    Optional<SettleRegion> settle = RegionManager.retrieveRegion(SettleRegion.class, p.getLocation());
     if (settle.isEmpty()) {
       p.sendMessage(
           Chat.errorFade(

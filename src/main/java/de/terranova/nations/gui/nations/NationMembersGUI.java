@@ -55,7 +55,7 @@ public class NationMembersGUI extends RoseGUI {
     // Fetch all access levels for each settlement which are at least CITIZEN
     for (Map.Entry<UUID, SettlementRank> settlement : nation.getSettlements().entrySet()) {
       UUID settleId = settlement.getKey();
-      Optional<SettleRegion> settle = RegionManager.retrieveRegion("settle", settleId);
+      Optional<SettleRegion> settle = RegionManager.retrieveRegion(SettleRegion.class, settleId);
       if (settle.isPresent()) {
         Access access = settle.get().getAccess();
         if (access != null) {

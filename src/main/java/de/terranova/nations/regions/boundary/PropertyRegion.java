@@ -42,7 +42,7 @@ public class PropertyRegion extends BoundaryRegion
       hasChildren.removeChild(this);
     }
 
-    RegionManager.removeRegion(type, id);
+    RegionManager.removeRegion(getClass(), id);
   }
 
   @Override

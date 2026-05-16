@@ -8,6 +8,8 @@ public interface RegionFactoryBase {
 
   String getType();
 
+  Class<? extends Region> getRegionClass();
+
   Region createWithContext(RegionContext ctx);
 
   Region createFromArgs(List<String> args);

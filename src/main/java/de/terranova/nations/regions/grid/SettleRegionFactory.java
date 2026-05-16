@@ -21,6 +21,11 @@ public class SettleRegionFactory implements RegionFactoryBase {
   }
 
   @Override
+  public Class<? extends Region> getRegionClass() {
+    return SettleRegion.class;
+  }
+
+  @Override
   public Region createWithContext(RegionContext ctx) {
     if (!dryRunCreate(ctx)) {
       return null;

@@ -24,7 +24,7 @@ public class NationManager {
     nations.put(nation.getId(), nation);
     NationsDAO.createNation(nation);
     for (UUID settlementId : nation.getSettlements().keySet()) {
-      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
       RegionLayer.updateRegion(settleRegion.get());
     }
   }
@@ -33,7 +33,7 @@ public class NationManager {
   public void removeNation(UUID nationId) {
     Nation nation = nations.get(nationId);
     for (UUID settlementId : nation.getSettlements().keySet()) {
-      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
       RegionLayer.updateRegion(settleRegion.get());
     }
 
@@ -121,7 +121,7 @@ public class NationManager {
     NationsDAO.saveNation(nation);
     nations.put(nation.getId(), nation);
     for (UUID settlementId : nation.getSettlements().keySet()) {
-      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+      Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
       RegionLayer.updateRegion(settleRegion.get());
     }
   }
@@ -133,7 +133,7 @@ public class NationManager {
     nation.addSettlement(settlementId, SettlementRank.CITY);
 
     // Update region layer
-    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
     RegionLayer.updateRegion(settleRegion.get());
   }
 
@@ -143,7 +143,7 @@ public class NationManager {
     nation.removeSettlement(settlementId);
 
     // Update region layer
-    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion("settle", settlementId);
+    Optional<SettleRegion> settleRegion = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
     RegionLayer.updateRegion(settleRegion.get());
   }
 
@@ -163,7 +163,7 @@ public class NationManager {
     NationsDAO.removeSettlementFromNation(settlementId);
     nation.removeSettlement(settlementId);
 
-    RegionManager.retrieveRegion("settle", settlementId)
+    RegionManager.retrieveRegion(SettleRegion.class, settlementId)
             .filter(SettleRegion.class::isInstance)
             .map(SettleRegion.class::cast)
             .ifPresent(RegionLayer::updateRegion);

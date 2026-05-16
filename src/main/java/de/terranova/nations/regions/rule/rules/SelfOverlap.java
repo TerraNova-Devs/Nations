@@ -50,7 +50,9 @@ public class SelfOverlap implements RegionRule {
     if (hasInsideParentRule && explicitParent instanceof HasChildren hasChildren) {
       relevantRegions = hasChildren.getChildrenByType(type);
     } else {
-      relevantRegions = new ArrayList<>(RegionManager.retrieveAllCachedRegions(type).values());
+      relevantRegions = RegionRegistry.getRegionClass(type)
+              .map(cls -> new ArrayList<Region>(RegionManager.retrieveAllCachedRegions(cls).values()))
+              .orElseGet(ArrayList::new);
     }
 
     // 4) Disallow on ANY overlap (including containment and boundary touch)

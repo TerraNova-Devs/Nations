@@ -61,31 +61,31 @@ public class BoundaryRegionDAO {
     }
   }
 
-  public static Map<UUID, Region> fetchRegionsByType(String type) {
+  public static <T extends Region> Map<UUID, T> fetchRegionsByType(Class<T> type, String typeKey) {
     String sql = queries.get("fetchByType");
-    Map<UUID, Region> gridRegions = new HashMap<>();
+    Map<UUID, T> gridRegions = new HashMap<>();
     try (Connection conn = NationsPlugin.hikari.dataSource.getConnection();
-        PreparedStatement ps = conn.prepareStatement(sql)) {
-      ps.setString(1, type);
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+      ps.setString(1, typeKey);
       ResultSet rs = ps.executeQuery();
       while (rs.next()) {
         String id = rs.getString("RUUID");
         UUID uuid = UUID.fromString(id);
         UUID parentId = fetchParent(uuid);
+
+        Region region;
         if (parentId == null) {
-          gridRegions.put(
-              UUID.fromString(id),
-              RegionRegistry.createFromArgs(
-                  rs.getString("type"), List.of(rs.getString("name"), id)));
+          region = RegionRegistry.createFromArgs(
+                  rs.getString("type"), List.of(rs.getString("name"), id));
         } else {
-          gridRegions.put(
-              UUID.fromString(id),
-              RegionRegistry.createFromArgs(
-                  rs.getString("type"), List.of(rs.getString("name"), id, parentId.toString())));
+          region = RegionRegistry.createFromArgs(
+                  rs.getString("type"), List.of(rs.getString("name"), id, parentId.toString()));
         }
+
+        gridRegions.put(uuid, type.cast(region));
       }
     } catch (SQLException e) {
-      NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + type);
+      NationsPlugin.plugin.getLogger().severe("Failed to fetch regions by type: " + typeKey);
     }
     return gridRegions;
   }

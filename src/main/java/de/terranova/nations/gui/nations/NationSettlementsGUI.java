@@ -39,7 +39,7 @@ public class NationSettlementsGUI extends RoseGUI {
 
     for (Map.Entry<UUID, SettlementRank> settlement : nation.getSettlements().entrySet()) {
       UUID settlementId = settlement.getKey();
-      Optional<SettleRegion> settle = RegionManager.retrieveRegion("settle", settlementId);
+      Optional<SettleRegion> settle = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
 
       if (settle.isPresent()) {
         String displayName = StringUtils.capitalise(settle.get().getName());

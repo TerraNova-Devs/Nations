@@ -33,7 +33,7 @@ public abstract class Region {
     this.type = type.toLowerCase();
     if (name == null) return;
     this.name = name;
-    de.terranova.nations.regions.RegionManager.addRegion(getType(), getId(), this);
+    de.terranova.nations.regions.RegionManager.registerSelf(this);
   }
 
   public Location getRegionCenter() {

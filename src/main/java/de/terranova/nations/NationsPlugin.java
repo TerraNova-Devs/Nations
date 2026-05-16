@@ -108,9 +108,8 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
 
   @EventHandler
   public void onCitizensEnable(CitizensEnableEvent event) {
-    // Citizens muss vor den Regionen geladen sein
-    RegionManager.cacheRegions("settle", GridRegionDAO.fetchRegionsByType("settle"));
-    RegionManager.cacheRegions("property", BoundaryRegionDAO.fetchRegionsByType("property"));
+    RegionManager.addAllRegions(SettleRegion.class, GridRegionDAO.fetchRegionsByType(SettleRegion.class, "settle"));
+    RegionManager.addAllRegions(PropertyRegion.class, BoundaryRegionDAO.fetchRegionsByType(PropertyRegion.class, "property"));
   }
 
   private void nationsRegionTypeRegistry() {

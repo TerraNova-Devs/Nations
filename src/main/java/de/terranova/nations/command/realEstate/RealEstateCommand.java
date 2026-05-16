@@ -15,7 +15,9 @@ import de.terranova.nations.gui.RealEstateBuyGUI;
 import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.base.RegionContext;
 import de.terranova.nations.regions.base.RegionRegistry;
+import de.terranova.nations.regions.boundary.PropertyRegion;
 import de.terranova.nations.regions.boundary.PropertyRegionFactory;
+import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.realEstate.HasRealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateAgent;
 import de.terranova.nations.regions.modules.realEstate.RealEstateListing;
@@ -45,7 +47,7 @@ public class RealEstateCommand extends AbstractCommand {
         "$settles",
         new CachedSupplier<>(
             () ->
-                de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("settle")
+                de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions(SettleRegion.class)
                     .values()
                     .stream()
                     .map(Region::getName)
@@ -57,7 +59,7 @@ public class RealEstateCommand extends AbstractCommand {
             new CachedSupplier<List<String>>(
                     () -> {
                       List<String> list = new ArrayList<>(
-                              de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions("property")
+                              de.terranova.nations.regions.RegionManager.retrieveAllCachedRegions(PropertyRegion.class)
                                       .values()
                                       .stream()
                                       .map(Region::getName)
@@ -109,8 +111,8 @@ public class RealEstateCommand extends AbstractCommand {
       description = "Opens the Realestate Browser",
       usage = "/realestate browser <Stadt>")
   public boolean openBrowser(Player p, String[] args) {
-    Optional<Region> osettle =
-        de.terranova.nations.regions.RegionManager.retrieveRegion("settle", args[1]);
+    Optional<SettleRegion> osettle =
+            de.terranova.nations.regions.RegionManager.retrieveRegion(SettleRegion.class, args[1]);
     if (osettle.isEmpty()) {
       p.sendMessage(Chat.errorFade("Die von dir genannte Stadt konnte nicht gefunden werden."));
       return false;
@@ -136,18 +138,20 @@ public class RealEstateCommand extends AbstractCommand {
       usage = "/realestate info <name>")
   public boolean info(Player p, String[] args) {
     Optional<ProtectedRegion> Oregion = getRegionByName(p, args[1]);
-    Optional<Region> region;
 
     if (Oregion.isEmpty() && !args[1].equals("#block")) {
       p.sendMessage(Chat.errorFade("Die Region " + args[1] + " existiert nicht."));
       return false;
-    } else if(args[1].equals("#block")) {
-        Block block = p.getTargetBlockExact(10);
-        if(block == null) {
-          p.sendMessage(Chat.errorFade("Es konnte kein Block gefunden werden."));
-          return false;
-        }
-       region = de.terranova.nations.regions.RegionManager.retrieveRegion("property", block.getLocation());
+    }
+
+    Optional<? extends Region> region;
+    if (args[1].equals("#block")) {
+      Block block = p.getTargetBlockExact(10);
+      if (block == null) {
+        p.sendMessage(Chat.errorFade("Es konnte kein Block gefunden werden."));
+        return false;
+      }
+      region = de.terranova.nations.regions.RegionManager.retrieveRegion(PropertyRegion.class, block.getLocation());
     } else {
       region = de.terranova.nations.regions.RegionManager.retrieveRegion(Oregion.get());
     }

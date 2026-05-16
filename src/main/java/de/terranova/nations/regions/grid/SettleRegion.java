@@ -102,7 +102,7 @@ public class SettleRegion extends GridRegion
   public void onGridRemove() {
     ProfessionManager.removeSettlement(this.id);
     NationsPlugin.nationManager.removeSettlementFromNation(this.id);
-    RegionManager.removeRegion(type, id);
+    RegionManager.removeRegion(getClass(), id);
     RegionLayer.removeRegion(this.id);
   }
 

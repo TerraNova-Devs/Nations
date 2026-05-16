@@ -39,10 +39,10 @@ public class TerraSelectCache {
     if (selectCache.containsKey(p.getUniqueId())) {
       TerraSelectCache oldCache = selectCache.get(p.getUniqueId());
       selectCache.remove(p.getUniqueId());
-      Optional<Region> updatedRegion =
-          RegionManager.retrieveRegion(oldCache.region.type, oldCache.region.id);
+      Optional<? extends Region> updatedRegion =
+              RegionManager.retrieveRegion(oldCache.region.getClass(), oldCache.region.id);
       updatedRegion.ifPresent(
-          regionType -> selectCache.put(p.getUniqueId(), new TerraSelectCache(regionType, p)));
+              regionType -> selectCache.put(p.getUniqueId(), new TerraSelectCache(regionType, p)));
     }
     return null;
   }

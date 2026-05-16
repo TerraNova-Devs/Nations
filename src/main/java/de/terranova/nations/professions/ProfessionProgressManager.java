@@ -133,7 +133,7 @@ public class ProfessionProgressManager {
         return false;
       }
     }
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settlementId);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
 
     if (settleOpt.isEmpty()) {
       return false;

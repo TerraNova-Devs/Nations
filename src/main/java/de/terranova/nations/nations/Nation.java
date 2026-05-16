@@ -149,7 +149,7 @@ public class Nation {
   public void broadcast(String message) {
     settlements.forEach(
         (settlementId, rank) -> {
-          Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settlementId);
+          Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, settlementId);
           if (settleOpt.isEmpty()) return;
           SettleRegion settle = settleOpt.get();
           settle.getAccess().broadcast(message, AccessLevel.CITIZEN);

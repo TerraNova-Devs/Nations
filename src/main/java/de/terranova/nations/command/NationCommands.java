@@ -49,11 +49,11 @@ public class NationCommands extends AbstractCommand {
                 .map(Nation::getName)
                 .collect(Collectors.toList()));
     addPlaceholder(
-        "$SETTLEMENTS",
-        () ->
-            RegionManager.retrieveAllCachedRegions("settle").values().stream()
-                .map(Region::getName)
-                .collect(Collectors.toList()));
+            "$SETTLEMENTS",
+            () ->
+                    RegionManager.retrieveAllCachedRegions(SettleRegion.class).values().stream()
+                            .map(Region::getName)
+                            .collect(Collectors.toList()));
 
     registerSubCommand(this, "create");
     registerSubCommand(this, "delete");
@@ -243,7 +243,7 @@ public class NationCommands extends AbstractCommand {
     }
 
     String settleName = args[1].toLowerCase();
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settleName);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, settleName);
     if (settleOpt.isEmpty()) {
       p.sendMessage(
           Chat.errorFade("Die Stadt " + StringUtils.capitalise(settleName) + " existiert nicht."));
@@ -337,7 +337,7 @@ public class NationCommands extends AbstractCommand {
     }
 
     Optional<SettleRegion> settleOpt =
-        RegionManager.retrieveRegion("settle", pendingInvites.get(nation.getId()));
+        RegionManager.retrieveRegion(SettleRegion.class, pendingInvites.get(nation.getId()));
 
     if (settleOpt.isEmpty()) {
       p.sendMessage(Chat.errorFade("Fehler: Die Stadt existiert nicht."));
@@ -429,7 +429,7 @@ public class NationCommands extends AbstractCommand {
     }
 
     String settleName = args[1].toLowerCase();
-    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion("settle", settleName);
+    Optional<SettleRegion> settleOpt = RegionManager.retrieveRegion(SettleRegion.class, settleName);
     if (settleOpt.isEmpty()) {
       p.sendMessage(
           Chat.errorFade("Die Stadt " + StringUtils.capitalise(settleName) + " existiert nicht."));

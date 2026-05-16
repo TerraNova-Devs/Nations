@@ -38,4 +38,9 @@ public class RegionRegistry {
     }
     return Optional.empty();
   }
+
+  public static Optional<Class<? extends Region>> getRegionClass(String type) {
+    RegionFactoryBase factory = factories.get(type);
+    return factory == null ? Optional.empty() : Optional.of(factory.getRegionClass());
+  }
 }

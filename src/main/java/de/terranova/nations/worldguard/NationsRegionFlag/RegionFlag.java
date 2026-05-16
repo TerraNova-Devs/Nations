@@ -8,17 +8,20 @@ import com.sk89q.worldguard.protection.flags.registry.FlagRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 
+import java.util.UUID;
+
 public class RegionFlag {
   // Muss StringFlag sein, da UUIDs von WorldGuards SnakeYML nicht gespeichert werden können
   public static StringFlag REGION_UUID_FLAG;
-  public static String DefaultValue = "00000000-0000-0000-0000-000000000000";
-
+  public static String DEFAULT_VALUE = "00000000-0000-0000-0000-000000000000";
+  public static final UUID NULL_UUID = UUID.fromString(DEFAULT_VALUE);
+  
   public static void registerRegionFlag(Plugin plugin) {
 
     FlagRegistry registry = WorldGuard.getInstance().getFlagRegistry();
     try {
       // create a flag with the name "my-custom-flag", defaulting to true
-      StringFlag flag = new StringFlag("nations-settlement-uuid", DefaultValue);
+      StringFlag flag = new StringFlag("nations-settlement-uuid", DEFAULT_VALUE);
       registry.register(flag);
       REGION_UUID_FLAG = flag; // only set our field if there was no error
     } catch (FlagConflictException e) {
