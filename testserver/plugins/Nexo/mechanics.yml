@@ -42,8 +42,18 @@ furniture:
   handle_non_player_barrier_collision: true
   default_properties:
     display_transform: NONE
+    culling: NOT_SET
   try_preventing_barrier_kick: false
   lookup_block_on_light_remove: true
+  culling:
+    enabled: true
+    interval: 1t
+    force_culling: true
+    distance: 0..64
+    padding_width: 0.0
+    padding_height: 0.0
+    ignore_width: 0.0
+    ignore_height: 0.0
 
 repair:
   enabled: true

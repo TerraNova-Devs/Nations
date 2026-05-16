@@ -20,6 +20,7 @@ nm_plushie_cupid:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cupid
     custom_model_data: 1040

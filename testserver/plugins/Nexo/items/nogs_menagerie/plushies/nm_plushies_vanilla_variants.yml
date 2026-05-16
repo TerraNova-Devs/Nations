@@ -22,6 +22,7 @@ nm_plushie_axolotl_blue:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl_blue
     custom_model_data: 1519
@@ -49,6 +50,7 @@ nm_plushie_axolotl_brown:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl_brown
     custom_model_data: 1020
@@ -76,6 +78,7 @@ nm_plushie_axolotl_cyan:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl_cyan
     custom_model_data: 1021
@@ -103,6 +106,7 @@ nm_plushie_axolotl_gold:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl_gold
     custom_model_data: 1022
@@ -130,6 +134,7 @@ nm_plushie_cat_black:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_black
     custom_model_data: 1023
@@ -157,6 +162,7 @@ nm_plushie_cat_british_shorthair:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_british_shorthair
     custom_model_data: 1024
@@ -184,6 +190,7 @@ nm_plushie_cat_calico:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_calico
     custom_model_data: 1025
@@ -211,6 +218,7 @@ nm_plushie_cat_jellie:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_jellie
     custom_model_data: 1026
@@ -238,6 +246,7 @@ nm_plushie_cat_persian:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_persian
     custom_model_data: 1027
@@ -265,6 +274,7 @@ nm_plushie_cat_ragdoll:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_ragdoll
     custom_model_data: 1028
@@ -292,6 +302,7 @@ nm_plushie_cat_siamese:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_siamese
     custom_model_data: 1029
@@ -319,6 +330,7 @@ nm_plushie_cat_tabby:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_tabby
     custom_model_data: 1030
@@ -346,6 +358,7 @@ nm_plushie_cat_tuxedo:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_tuxedo
     custom_model_data: 1031
@@ -373,6 +386,7 @@ nm_plushie_cat_white:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat_white
     custom_model_data: 1032
@@ -400,6 +414,7 @@ nm_plushie_fox_snow:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_fox_snow
     custom_model_data: 1033
@@ -427,6 +442,7 @@ nm_plushie_frog_temperate:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_frog_temperate
     custom_model_data: 1034
@@ -454,6 +470,7 @@ nm_plushie_frog_warm:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_frog_warm
     custom_model_data: 1035
@@ -481,6 +498,7 @@ nm_plushie_horse_black:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_horse_black
     custom_model_data: 1036
@@ -508,6 +526,7 @@ nm_plushie_horse_chestnut:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_horse_chestnut
     custom_model_data: 1037
@@ -535,6 +554,7 @@ nm_plushie_horse_gray:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_horse_gray
     custom_model_data: 1038
@@ -562,6 +582,7 @@ nm_plushie_horse_white:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_horse_white
     custom_model_data: 1039
@@ -589,6 +610,7 @@ nm_plushie_parrot_blue:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_parrot_blue
     custom_model_data: 1062
@@ -616,6 +638,7 @@ nm_plushie_parrot_cyan:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_parrot_cyan
     custom_model_data: 1063
@@ -643,6 +666,7 @@ nm_plushie_parrot_gray:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_parrot_gray
     custom_model_data: 1064
@@ -670,6 +694,7 @@ nm_plushie_parrot_green:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_parrot_green
     custom_model_data: 1065
@@ -697,6 +722,7 @@ nm_plushie_rabbit_black:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_black
     custom_model_data: 1066
@@ -724,6 +750,7 @@ nm_plushie_rabbit_black_white:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_black_white
     custom_model_data: 1067
@@ -751,6 +778,7 @@ nm_plushie_rabbit_gold:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_gold
     custom_model_data: 1068
@@ -778,6 +806,7 @@ nm_plushie_rabbit_salt_pepper:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_salt_pepper
     custom_model_data: 1069
@@ -805,6 +834,7 @@ nm_plushie_rabbit_toast:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_toast
     custom_model_data: 1070
@@ -832,6 +862,7 @@ nm_plushie_rabbit_white:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit_white
     custom_model_data: 1071

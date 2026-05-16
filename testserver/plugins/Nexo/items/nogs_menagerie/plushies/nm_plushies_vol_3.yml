@@ -22,6 +22,7 @@ nm_plushie_creeper:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_creeper
     custom_model_data: 1092
@@ -49,6 +50,7 @@ nm_plushie_donkey:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_donkey
     custom_model_data: 1093
@@ -76,6 +78,7 @@ nm_plushie_enderdragon:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_enderdragon
     custom_model_data: 1094
@@ -103,6 +106,7 @@ nm_plushie_enderman:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_enderman
     custom_model_data: 1095
@@ -130,6 +134,7 @@ nm_plushie_ghast:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_ghast
     custom_model_data: 1096
@@ -157,6 +162,7 @@ nm_plushie_goat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_goat
     custom_model_data: 1097
@@ -184,6 +190,7 @@ nm_plushie_polar_bear:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_polar_bear
     custom_model_data: 1098
@@ -211,6 +218,7 @@ nm_plushie_pufferfish:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_pufferfish
     custom_model_data: 1099
@@ -238,6 +246,7 @@ nm_plushie_skeleton_horse:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_skeleton_horse
     custom_model_data: 1110
@@ -265,6 +274,7 @@ nm_plushie_squid:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_squid
     custom_model_data: 1111

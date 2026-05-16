@@ -20,6 +20,7 @@ nm_plushie_golden_armadillo:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_armadillo
     custom_model_data: 1100
@@ -46,6 +47,7 @@ nm_plushie_golden_axolotl:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_axolotl
     custom_model_data: 1101
@@ -72,6 +74,7 @@ nm_plushie_golden_cat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_cat
     custom_model_data: 1102
@@ -98,6 +101,7 @@ nm_plushie_golden_cow:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_cow
     custom_model_data: 1103
@@ -124,6 +128,7 @@ nm_plushie_golden_creeper:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_creeper
     custom_model_data: 1104
@@ -150,6 +155,7 @@ nm_plushie_golden_dolphin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_dolphin
     custom_model_data: 1105
@@ -176,6 +182,7 @@ nm_plushie_golden_goat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_goat
     custom_model_data: 1106
@@ -202,6 +209,7 @@ nm_plushie_golden_pig:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_pig
     custom_model_data: 1107
@@ -228,6 +236,7 @@ nm_plushie_golden_rabbit:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_rabbit
     custom_model_data: 1108
@@ -254,6 +263,7 @@ nm_plushie_golden_wolf:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_golden_wolf
     custom_model_data: 1109

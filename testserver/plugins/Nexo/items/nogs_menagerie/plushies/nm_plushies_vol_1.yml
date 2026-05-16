@@ -22,6 +22,7 @@ nm_plushie_allay:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_allay
     custom_model_data: 1072
@@ -49,6 +50,7 @@ nm_plushie_axolotl:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_axolotl
     custom_model_data: 1073
@@ -76,6 +78,7 @@ nm_plushie_bee:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_bee
     custom_model_data: 1074
@@ -103,6 +106,7 @@ nm_plushie_chicken:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_chicken
     custom_model_data: 1075
@@ -130,6 +134,7 @@ nm_plushie_cow:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cow
     custom_model_data: 1076
@@ -157,6 +162,7 @@ nm_plushie_fox:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_fox
     custom_model_data: 1077
@@ -184,6 +190,7 @@ nm_plushie_parrot:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_parrot
     custom_model_data: 1078
@@ -211,6 +218,7 @@ nm_plushie_pig:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_pig
     custom_model_data: 1079
@@ -238,6 +246,7 @@ nm_plushie_sheep:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_sheep
     custom_model_data: 1080
@@ -265,6 +274,7 @@ nm_plushie_turtle:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_turtle
     custom_model_data: 1081

@@ -22,6 +22,7 @@ nm_plushie_big_eared_rapscallion:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_big_eared_rapscallion
     custom_model_data: 1010
@@ -49,6 +50,7 @@ nm_plushie_black_scowling_penguin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_black_scowling_penguin
     custom_model_data: 1011
@@ -76,6 +78,7 @@ nm_plushie_couscous:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_couscous
     custom_model_data: 1012
@@ -103,6 +106,7 @@ nm_plushie_darnell:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_darnell
     custom_model_data: 1013
@@ -130,6 +134,7 @@ nm_plushie_eindhoven_frog:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_eindhoven_frog
     custom_model_data: 1014
@@ -157,6 +162,7 @@ nm_plushie_floppy_eared_dog:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_floppy_eared_dog
     custom_model_data: 1015
@@ -184,6 +190,7 @@ nm_plushie_pink_hat_rabbit:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_pink_hat_rabbit
     custom_model_data: 1016
@@ -211,6 +218,7 @@ nm_plushie_silly_little_penguin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_silly_little_penguin
     custom_model_data: 1017
@@ -238,6 +246,7 @@ nm_plushie_small_white_cat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_small_white_cat
     custom_model_data: 1018
@@ -265,6 +274,7 @@ nm_plushie_spikey_eared_rascal:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_spikey_eared_rascal
     custom_model_data: 1019

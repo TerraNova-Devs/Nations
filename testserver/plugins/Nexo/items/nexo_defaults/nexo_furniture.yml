@@ -30,6 +30,7 @@ arm_chair:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 coffee_table:
   itemname: Coffee Table
   material: PAPER
@@ -58,6 +59,7 @@ coffee_table:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 end_table:
   itemname: End Table
   material: PAPER
@@ -85,6 +87,7 @@ end_table:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 sofa:
   itemname: Sofa
   material: PAPER
@@ -117,6 +120,7 @@ sofa:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 storage_chest:
   itemname: Storage Chest
   material: PAPER
@@ -151,6 +155,7 @@ storage_chest:
         close_sound: entity.chest.close
       properties:
         display_transform: NONE
+        culling: NOT_SET
 table_lamp:
   itemname: Table Lamp
   material: PAPER
@@ -182,6 +187,7 @@ table_lamp:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 arm_chair_dyeable:
   itemname: Arm Chair
   material: LEATHER_HORSE_ARMOR
@@ -212,6 +218,7 @@ arm_chair_dyeable:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 coffee_table_dyeable:
   itemname: Coffee Table
   material: LEATHER_HORSE_ARMOR
@@ -241,6 +248,7 @@ coffee_table_dyeable:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 sofa_dyeable:
   itemname: Sofa
   material: LEATHER_HORSE_ARMOR
@@ -274,6 +282,7 @@ sofa_dyeable:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
 table_lamp_dyeable:
   itemname: Table Lamp
   material: LEATHER_HORSE_ARMOR
@@ -306,3 +315,4 @@ table_lamp_dyeable:
           probability: 1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET

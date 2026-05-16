@@ -22,6 +22,7 @@ nm_plushie_blaze:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_blaze
     custom_model_data: 1132
@@ -49,6 +50,7 @@ nm_plushie_drowned:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_drowned
     custom_model_data: 1133
@@ -76,6 +78,7 @@ nm_plushie_hoglin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_hoglin
     custom_model_data: 1134
@@ -103,6 +106,7 @@ nm_plushie_husk:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_husk
     custom_model_data: 1135
@@ -130,6 +134,7 @@ nm_plushie_magma_cube:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_magma_cube
     custom_model_data: 1136
@@ -157,6 +162,7 @@ nm_plushie_piglin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_piglin
     custom_model_data: 1137
@@ -184,6 +190,7 @@ nm_plushie_piglin_brute:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_piglin_brute
     custom_model_data: 1138
@@ -211,6 +218,7 @@ nm_plushie_stray:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_stray
     custom_model_data: 1139
@@ -238,6 +246,7 @@ nm_plushie_strider:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_strider
     custom_model_data: 1140
@@ -265,6 +274,7 @@ nm_plushie_zombified_piglin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_zombified_piglin
     custom_model_data: 1141

@@ -22,6 +22,7 @@ nm_plushie_camel:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_camel
     custom_model_data: 1082
@@ -49,6 +50,7 @@ nm_plushie_cat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_cat
     custom_model_data: 1083
@@ -76,6 +78,7 @@ nm_plushie_dolphin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_dolphin
     custom_model_data: 1084
@@ -103,6 +106,7 @@ nm_plushie_frog:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_frog
     custom_model_data: 1085
@@ -130,6 +134,7 @@ nm_plushie_horse:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_horse
     custom_model_data: 1086
@@ -157,6 +162,7 @@ nm_plushie_mooshroom:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_mooshroom
     custom_model_data: 1087
@@ -184,6 +190,7 @@ nm_plushie_panda:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_panda
     custom_model_data: 1088
@@ -211,6 +218,7 @@ nm_plushie_rabbit:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_rabbit
     custom_model_data: 1089
@@ -238,6 +246,7 @@ nm_plushie_sniffer:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_sniffer
     custom_model_data: 1090
@@ -265,6 +274,7 @@ nm_plushie_wolf:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_wolf
     custom_model_data: 1091

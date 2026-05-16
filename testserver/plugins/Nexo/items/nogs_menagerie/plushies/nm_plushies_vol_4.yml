@@ -22,6 +22,7 @@ nm_plushie_bat:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_bat
     custom_model_data: 1112
@@ -49,6 +50,7 @@ nm_plushie_phantom:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_phantom
     custom_model_data: 1113
@@ -76,6 +78,7 @@ nm_plushie_skeleton:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_skeleton
     custom_model_data: 1114
@@ -103,6 +106,7 @@ nm_plushie_spider:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_spider
     custom_model_data: 1115
@@ -130,6 +134,7 @@ nm_plushie_warden:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_warden
     custom_model_data: 1116
@@ -157,6 +162,7 @@ nm_plushie_witch:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_witch
     custom_model_data: 1117
@@ -184,6 +190,7 @@ nm_plushie_wither:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_wither
     custom_model_data: 1118
@@ -211,6 +218,7 @@ nm_plushie_wither_skeleton:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_wither_skeleton
     custom_model_data: 1119
@@ -238,6 +246,7 @@ nm_plushie_zoglin:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_zoglin
     custom_model_data: 1120
@@ -265,6 +274,7 @@ nm_plushie_zombie:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_zombie
     custom_model_data: 1121

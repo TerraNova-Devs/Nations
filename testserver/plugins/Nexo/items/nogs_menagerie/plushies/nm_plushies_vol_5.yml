@@ -22,6 +22,7 @@ nm_plushie_evoker:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_evoker
     custom_model_data: 1122
@@ -49,6 +50,7 @@ nm_plushie_iron_golem:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_iron_golem
     custom_model_data: 1123
@@ -76,6 +78,7 @@ nm_plushie_pillager:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_pillager
     custom_model_data: 1124
@@ -103,6 +106,7 @@ nm_plushie_ravager:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_ravager
     custom_model_data: 1125
@@ -130,6 +134,7 @@ nm_plushie_trader_llama:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_trader_llama
     custom_model_data: 1126
@@ -157,6 +162,7 @@ nm_plushie_vex:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_vex
     custom_model_data: 1127
@@ -184,6 +190,7 @@ nm_plushie_villager:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_villager
     custom_model_data: 1128
@@ -211,6 +218,7 @@ nm_plushie_vindicator:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_vindicator
     custom_model_data: 1129
@@ -238,6 +246,7 @@ nm_plushie_wandering_trader:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_wandering_trader
     custom_model_data: 1130
@@ -265,6 +274,7 @@ nm_plushie_zombie_villager:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_zombie_villager
     custom_model_data: 1131

@@ -20,6 +20,7 @@ nm_plushie_teddy_pink:
         - 0,0,0 1.0,1.0
       properties:
         display_transform: NONE
+        culling: NOT_SET
   Pack:
     model: nogs_menagerie/plushies/nm_plushie_teddy_pink
     custom_model_data: 1061

@@ -64,6 +64,7 @@ Pack:
       secret_key: SECRET
       access_key: SECRET
   generation:
+    merge_textures: NONE
     legacy_atlas: true
     force_oversized_in_gui: false
     generate_pack: true

@@ -24,23 +24,7 @@ public class RegionManager {
   private static final Map<String, Map<UUID, ? extends Region>> regionCache = new HashMap<>();
 
   public static <T extends Region> void cacheRegions(String type, Map<UUID, T> regions) {
-    for (T region : regions.values()) {
-      applyNationTypeFlagIfMissing(region.getWorldguardRegion(), type);
-    }
     regionCache.put(type, regions);
-  }
-
-  // remove next update since its only a run once type of thing to make capatability with old
-  // versions
-  @Deprecated
-  public static void applyNationTypeFlagIfMissing(ProtectedRegion region, String type) {
-    if (region == null || NATIONS_TYPE == null) return;
-
-    // If region doesn't have the flag set, set it
-    String existing = region.getFlag(NATIONS_TYPE);
-    if (existing == null || existing.isEmpty()) {
-      region.setFlag(NATIONS_TYPE, type);
-    }
   }
 
   @SuppressWarnings("unchecked")
