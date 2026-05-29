@@ -1,279 +1,78 @@
 package de.terranova.nations.worldguard.math;
 
-import de.terranova.nations.NationsPlugin;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Queue;
+import java.util.Set;
 
 public class claimCalc {
 
-  static boolean debug = NationsPlugin.debug;
+  private static final int SUPERCHUNK_SIZE = 48;
+  private static final double WORLDGUARD_OFFSET = 0.5;
 
   public static Optional<List<Vectore2>> dothatshitforme(
       List<Vectore2> oldlist, List<Vectore2> newlist) {
-
-    if (debug) {
-      System.out.println(".");
-      System.out.println("OLDLIST");
-      for (Vectore2 v : oldlist) {
-        System.out.println("x: " + v.x + ", z: " + v.z);
-      }
-      System.out.println("NEWLIST");
-      for (Vectore2 v : newlist) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
-    }
-
-    List<Vectore2> normedold = normalisieren(oldlist);
-
-    if (debug) {
-      System.out.println("OLD NORMED");
-      for (Vectore2 v : normedold) {
-        System.out.println("x: " + v.x + ", z: " + v.z);
-      }
-    }
-
-    List<Vectore2> oldaufplustern = aufplustern(normedold);
-    List<Vectore2> newaufplustern = aufplustern(newlist);
-
-    if (debug) {
-      System.out.println("ALT PLUSTERED");
-      for (Vectore2 v : oldaufplustern) {
-        System.out.println("x: " + v.x + ", z: " + v.z);
-      }
-      System.out.println("NEW PLUSTERED");
-      for (Vectore2 v : newaufplustern) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
-    }
-
-    List<Vectore2> oldproj = projezieren(oldaufplustern);
-    List<Vectore2> newproj = projezieren(newaufplustern);
-
-    if (debug) {
-      System.out.println("ALT PROJ");
-      for (Vectore2 v : oldproj) {
-        System.out.println("x: " + v.x + ", z: " + v.z);
-      }
-      System.out.println("NEW PROJ");
-      for (Vectore2 v : newproj) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
-    }
-
-    Optional<List<Vectore2>> merged = mergen(oldproj, newproj);
-
-    if (merged.isEmpty()) {
+    if (oldlist == null || oldlist.size() < 4 || newlist == null || newlist.size() < 4) {
       return Optional.empty();
     }
 
-    if (debug) {
-      System.out.println("MERGED");
-      for (Vectore2 v : merged.get()) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
+    Set<Cell> cells = cellsFromWorldGuardRegion(oldlist);
+    Set<Cell> newCells = cellsFromClaimRegion(newlist);
+    if (newCells.isEmpty()) {
+      return Optional.empty();
     }
 
-    List<Vectore2> entproj = entprojezieren(merged.get());
-
-    if (debug) {
-      System.out.println("ENTPROJ");
-      for (Vectore2 v : entproj) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
+    cells.addAll(newCells);
+    if (!isConnected(cells)) {
+      return Optional.empty();
     }
 
-    List<Vectore2> entplustern = reverseaufplustern(entproj);
-
-    if (debug) {
-      System.out.println("ENTPLUSTERT");
-      for (Vectore2 v : entplustern) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
+    Optional<List<GridPoint>> outline = traceSingleOutline(cells);
+    if (outline.isEmpty()) {
+      return Optional.empty();
     }
 
-    List<Vectore2> entnormalisieren = entnormalisieren(entplustern);
-
-    if (debug) {
-      System.out.println("ENTNORMALISIEREN");
-      for (Vectore2 v : entnormalisieren) {
-        System.out.println("x: " + v.x + ", z " + v.z);
-      }
-    }
-    return Optional.of(entnormalisieren);
+    List<Vectore2> compactOutline = entprojezieren(toVectors(outline.get()));
+    List<Vectore2> centered = reverseaufplustern(compactOutline);
+    return Optional.of(entnormalisieren(centered));
   }
 
   public static double area(Vectore2[] vertices) {
     double sum = 0;
     for (int i = 0; i < vertices.length; i++) {
-      if (i == 0) {
-        // System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" +
-        // vertices[vertices.length - 1].z));
-        sum += vertices[i].x * (vertices[i + 1].z - vertices[vertices.length - 1].z);
-      } else if (i == vertices.length - 1) {
-        // System.out.println(vertices[i].x + "x" + (vertices[0].z + "-" + vertices[i - 1].z));
-        sum += vertices[i].x * (vertices[0].z - vertices[i - 1].z);
-      } else {
-        // System.out.println(vertices[i].x + "x" + (vertices[i + 1].z + "-" + vertices[i - 1].z));
-        sum += vertices[i].x * (vertices[i + 1].z - vertices[i - 1].z);
-      }
+      Vectore2 current = vertices[i];
+      Vectore2 next = vertices[(i + 1) % vertices.length];
+      sum += current.x * next.z - next.x * current.z;
     }
-
-    double area = 0.5 * Math.abs(sum);
-    return area;
+    return Math.abs(sum) / 2;
   }
 
   public static List<Vectore2> normalisieren(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
-
     for (Vectore2 v : current) {
-      output.add(new Vectore2(v.x + 0.5, v.z + 0.5));
+      output.add(new Vectore2(v.x + WORLDGUARD_OFFSET, v.z + WORLDGUARD_OFFSET));
     }
-
     return output;
   }
 
   static List<Vectore2> entnormalisieren(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
-
     for (Vectore2 v : current) {
-      output.add(new Vectore2(v.x - 0.5, v.z - 0.5));
+      output.add(new Vectore2(v.x - WORLDGUARD_OFFSET, v.z - WORLDGUARD_OFFSET));
     }
     return output;
   }
 
   static Optional<List<Vectore2>> mergen(List<Vectore2> oldRegion, List<Vectore2> newRegion) {
-
-    List<Vectore2> output = new ArrayList<>();
-
-    List<Vectore2> oldr = oldRegion;
-    List<Vectore2> newr = newRegion;
-
-    List<MarkedVectore2> markedOld = new ArrayList<>();
-    List<Vectore2> newk = newRegion;
-
-    // MARKIEREN DER GLEICHEN WERTE
-    boolean nomark = true;
-    for (int i = 0; i < oldr.size(); i++) {
-      for (int j = 0; j < newr.size(); j++) {
-        if (oldr.get(i).z == newr.get(j).z && oldr.get(i).x == newr.get(j).x) {
-          markedOld.add(new MarkedVectore2(oldr.get(i), true));
-          // newk.remove(j);
-          nomark = false;
-        }
-      }
-      if (nomark) {
-        markedOld.add(new MarkedVectore2(oldr.get(i), false));
-      }
-      nomark = true;
-    }
-
-    MarkedVectore2 last2 = markedOld.getLast();
-    MarkedVectore2 current2;
-    MarkedVectore2 next2;
-    int k = 0;
-
-    // ENTFERNEN DER DOPPELTEN ECKEN AUS newk
-    for (MarkedVectore2 v : markedOld) {
-
-      current2 = markedOld.get(k);
-      if (k == markedOld.size() - 1) {
-        k = -1;
-      }
-      next2 = markedOld.get(k + 1);
-      if (current2.bool) {
-        if ((next2.bool || last2.bool)) {
-          if (v.v2.equals(current2.v2)) {
-            for (int o = 0; o < newk.size(); o++) {
-              if (newk.get(o).equals(current2.v2)) {
-                newk.remove(o);
-              }
-            }
-          }
-        }
-      }
-      last2 = current2;
-      k++;
-    }
-
-    // BETRACHTUNG
-
-    int marker = -1;
-    int index = 0;
-
-    MarkedVectore2 last = markedOld.getLast();
-    MarkedVectore2 current;
-    MarkedVectore2 next;
-    int pairs = 0;
-
-    for (MarkedVectore2 v : markedOld) {
-
-      current = v;
-      index++;
-      if (index >= markedOld.size()) {
-        index = 0;
-      }
-
-      next = markedOld.get(index);
-
-      if (current.bool) {
-
-        if (!last.bool || !next.bool) {
-          pairs++;
-        }
-
-        if (!last.bool && next.bool) {
-          marker = index;
-        }
-      }
-
-      // xon
-      if (last.bool) {
-        if (current.bool) {
-          // xxx
-          if (next.bool) {
-            last = current;
-            continue;
-          }
-        }
-        output.add(current.v2);
-      } else {
-        // ooo
-        output.add(current.v2);
-      }
-
-      last = current;
-    }
-
-    if (pairs >= 4) return Optional.empty();
-
-    if (marker >= 0 && !newRegion.isEmpty()) {
-      if (newRegion.size() == 2 && (newRegion.get(0).x == newRegion.get(1).x)) {
-
-        double abstand;
-        if (marker == 0) {
-          abstand = abstand(output.getLast(), newRegion.getFirst());
-          // abstand = (Math.sqrt((Math.pow((output.getLast().x - newRegion.getFirst().x), 2) +
-          // Math.pow((output.getLast().z - newRegion.getFirst().z), 2))));
-        } else {
-          abstand = abstand(output.get(marker - 1), newRegion.getFirst());
-          // abstand = (Math.sqrt((Math.pow((output.get(marker - 1).x - newRegion.getFirst().x), 2)
-          // + Math.pow((output.get(marker - 1).z - newRegion.getFirst().z), 2))));
-        }
-        if (!(abstand == 48)) {
-          Collections.rotate(newRegion, 1);
-        }
-      }
-
-      Collections.rotate(output, output.size() - marker);
-      output.addAll(newRegion);
-      Collections.rotate(output, marker + newRegion.size());
-    }
-
-    return Optional.of(output);
+    Set<Cell> cells = cellsFromClaimRegion(reverseaufplustern(entprojezieren(oldRegion)));
+    cells.addAll(cellsFromClaimRegion(reverseaufplustern(entprojezieren(newRegion))));
+    Optional<List<GridPoint>> outline = traceSingleOutline(cells);
+    return outline.map(claimCalc::toVectors);
   }
 
   public static double abstand(Vectore2 a, Vectore2 b) {
@@ -281,331 +80,255 @@ public class claimCalc {
   }
 
   static List<Vectore2> projezieren(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
-
-    int index = 1;
-    Vectore2 next;
-
-    for (Vectore2 list : current) {
-
-      if (index == current.size()) {
-        index = 0;
-      }
-
-      next = current.get(index);
-
-      if (list.z == next.z) {
-
-        if (list.x > next.x) {
-          if (Math.abs(next.x - list.x) == 48) {
-            output.add(new Vectore2(list.x, list.z));
-            index++;
-            continue;
-          }
-          output.add(new Vectore2(list.x, list.z));
-          for (int i = 0; i < Math.abs(next.x - list.x) / 48 - 1; i++) {
-
-            output.add(new Vectore2(list.x - 48 * (i + 1), list.z));
-          }
-          index++;
-        }
-        if (list.x < next.x) {
-          if (Math.abs(next.x - list.x) == 48) {
-            output.add(new Vectore2(list.x, list.z));
-            index++;
-            continue;
-          }
-          output.add(new Vectore2(list.x, list.z));
-          for (int i = 0; i < Math.abs(list.x - next.x) / 48 - 1; i++) {
-            output.add(new Vectore2(list.x + 48 * (i + 1), list.z));
-          }
-
-          index++;
-        }
-      }
-
-      if (list.x == next.x) {
-
-        if (list.z > next.z) {
-          if (Math.abs(next.z - list.z) == 48) {
-            output.add(new Vectore2(list.x, list.z));
-            index++;
-            continue;
-          }
-          output.add(new Vectore2(list.x, list.z));
-          for (int i = 0; i < Math.abs(next.z - list.z) / 48 - 1; i++) {
-
-            output.add(new Vectore2(list.x, list.z - 48 * (i + 1)));
-          }
-          index++;
-        }
-        if (list.z < next.z) {
-          if (Math.abs(next.z - list.z) == 48) {
-            output.add(new Vectore2(list.x, list.z));
-            index++;
-            continue;
-          }
-          output.add(new Vectore2(list.x, list.z));
-          for (int i = 0; i < Math.abs(list.z - next.z) / 48 - 1; i++) {
-
-            output.add(new Vectore2(list.x, list.z + 48 * (i + 1)));
-          }
-          index++;
-        }
-      }
+    if (current.isEmpty()) {
+      return output;
     }
 
+    for (int i = 0; i < current.size(); i++) {
+      Vectore2 start = current.get(i);
+      Vectore2 end = current.get((i + 1) % current.size());
+      output.add(new Vectore2(start.x, start.z));
+
+      double dx = end.x - start.x;
+      double dz = end.z - start.z;
+      int steps = (int) (Math.max(Math.abs(dx), Math.abs(dz)) / SUPERCHUNK_SIZE);
+      for (int step = 1; step < steps; step++) {
+        output.add(
+            new Vectore2(
+                start.x + Math.signum(dx) * SUPERCHUNK_SIZE * step,
+                start.z + Math.signum(dz) * SUPERCHUNK_SIZE * step));
+      }
+    }
     return output;
   }
 
   static List<Vectore2> entprojezieren(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
-
-    Vectore2 last = current.getLast();
-    Vectore2 next;
-    int i = 0;
-
-    for (Vectore2 curr : current) {
-
-      if (i == current.size() - 1) {
-        i = -1;
-      }
-
-      next = current.get(i + 1);
-
-      if (curr.z == last.z) {
-        if (curr.z == next.z) {
-          i++;
-          continue;
-        }
-      }
-      if (curr.x == last.x) {
-        if (curr.x == next.x) {
-          i++;
-          continue;
-        }
-      }
-      output.add(curr);
-      last = curr;
-      i++;
+    if (current.size() < 3) {
+      output.addAll(current);
+      return output;
     }
 
+    for (int i = 0; i < current.size(); i++) {
+      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
+      Vectore2 point = current.get(i);
+      Vectore2 next = current.get((i + 1) % current.size());
+      if ((last.x == point.x && point.x == next.x) || (last.z == point.z && point.z == next.z)) {
+        continue;
+      }
+      output.add(point);
+    }
     return output;
   }
 
   public static List<Vectore2> aufplustern(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
+    if (current.size() < 3) {
+      return output;
+    }
 
-    boolean firstValue = true;
-    int index = 1;
-    Vectore2 last = current.getLast();
-    Vectore2 next = current.get(1);
-
-    for (Vectore2 list : current) {
-
-      if (index == current.size() - 1) {
-        index = 0;
-      }
-
-      if (last.z == list.z) {
-        // Bewegung auf der Z Achse (= bei x erste spalte und = bei z zweite spalte)
-        if (list.x > last.x) {
-          // Bewegung in den + Bereich (+ z erste spalte)
-          if (list.z < next.z) {
-            // Bewegung in den + Bereich (+ x zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.z > next.z) {
-            // Bewegung in den - Bereich (- x zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-        if (list.x < last.x) {
-          // Bewegung in den - Bereich (- z erste spalte)
-          if (list.z < next.z) {
-            // Bewegung in den + Bereich (+ x zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.z > next.z) {
-            // Bewegung in den - Bereich (- x zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-      }
-      if (last.x == list.x) {
-        // Bewegung auf der X Achse (= bei z erste spalte und = bei x zweite spalte)
-        if (list.z > last.z) {
-          // Bewegung in den + Bereich (+ x erste spalte)
-          if (list.x < next.x) {
-            // Bewegung in den + Bereich (+ z zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.x > next.x) {
-            // Bewegung in den - Bereich (- z zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-        if (list.z < last.z) {
-          // Bewegung in den - Bereich (- x erste spalte)
-          if (list.x < next.x) {
-            // Bewegung in den + Bereich (+ z zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-            continue;
-          }
-          if (list.x > next.x) {
-            // Bewegung in den - Bereich (- z zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-            continue;
-          }
-        }
-      }
+    for (int i = 0; i < current.size(); i++) {
+      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
+      Vectore2 point = current.get(i);
+      Vectore2 next = current.get((i + 1) % current.size());
+      output.add(offsetCorner(point, last, next, WORLDGUARD_OFFSET));
     }
     return output;
   }
 
   static List<Vectore2> reverseaufplustern(List<Vectore2> current) {
-
     List<Vectore2> output = new ArrayList<>();
+    if (current.size() < 3) {
+      return output;
+    }
 
-    boolean firstValue = true;
-    int index = 1;
-    Vectore2 last = current.getLast();
-    Vectore2 next = current.get(1);
-
-    for (Vectore2 list : current) {
-
-      if (index == current.size() - 1) {
-        index = 0;
-      }
-
-      if (last.z == list.z) {
-        // Bewegung auf der Z Achse (= bei x erste spalte und = bei z zweite spalte)
-        if (list.x > last.x) {
-          // Bewegung in den + Bereich (+ z erste spalte)
-          if (list.z < next.z) {
-            // Bewegung in den + Bereich (+ x zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.z > next.z) {
-            // Bewegung in den - Bereich (- x zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-        if (list.x < last.x) {
-          // Bewegung in den - Bereich (- z erste spalte)
-          if (list.z < next.z) {
-            // Bewegung in den + Bereich (+ x zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.z > next.z) {
-            // Bewegung in den - Bereich (- x zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-      }
-      if (last.x == list.x) {
-        // Bewegung auf der X Achse (= bei z erste spalte und = bei x zweite spalte)
-        if (list.z > last.z) {
-          // Bewegung in den + Bereich (+ x erste spalte)
-          if (list.x < next.x) {
-            // Bewegung in den + Bereich (+ z zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-          if (list.x > next.x) {
-            // Bewegung in den - Bereich (- z zweite spalte)
-            output.add(new Vectore2(list.x - 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-
-            continue;
-          }
-        }
-        if (list.z < last.z) {
-          // Bewegung in den - Bereich (- x erste spalte)
-          if (list.x < next.x) {
-            // Bewegung in den + Bereich (+ z zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z + 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-            continue;
-          }
-          if (list.x > next.x) {
-            // Bewegung in den - Bereich (- z zweite spalte)
-            output.add(new Vectore2(list.x + 0.5f, list.z - 0.5f));
-            last = list;
-            index++;
-            next = current.get(index);
-            continue;
-          }
-        }
-      }
+    for (int i = 0; i < current.size(); i++) {
+      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
+      Vectore2 point = current.get(i);
+      Vectore2 next = current.get((i + 1) % current.size());
+      output.add(offsetCorner(point, last, next, -WORLDGUARD_OFFSET));
     }
     return output;
   }
+
+  private static Vectore2 offsetCorner(Vectore2 point, Vectore2 last, Vectore2 next, double offset) {
+    double previousDirectionX = Math.signum(point.x - last.x);
+    double previousDirectionZ = Math.signum(point.z - last.z);
+    double nextDirectionX = Math.signum(next.x - point.x);
+    double nextDirectionZ = Math.signum(next.z - point.z);
+
+    double xOffset = offset * (previousDirectionX - nextDirectionX);
+    double zOffset = offset * (previousDirectionZ - nextDirectionZ);
+    return new Vectore2(point.x + xOffset, point.z + zOffset);
+  }
+
+  private static Set<Cell> cellsFromWorldGuardRegion(List<Vectore2> points) {
+    return cellsInsideBoundary(aufplustern(normalisieren(points)));
+  }
+
+  private static Set<Cell> cellsFromClaimRegion(List<Vectore2> points) {
+    return cellsInsideBoundary(aufplustern(points));
+  }
+
+  private static Set<Cell> cellsInsideBoundary(List<Vectore2> boundary) {
+    Set<Cell> cells = new HashSet<>();
+    if (boundary.size() < 4) {
+      return cells;
+    }
+
+    long minX = Long.MAX_VALUE;
+    long minZ = Long.MAX_VALUE;
+    long maxX = Long.MIN_VALUE;
+    long maxZ = Long.MIN_VALUE;
+    for (Vectore2 point : boundary) {
+      minX = Math.min(minX, gridFloor(point.x));
+      minZ = Math.min(minZ, gridFloor(point.z));
+      maxX = Math.max(maxX, gridCeil(point.x));
+      maxZ = Math.max(maxZ, gridCeil(point.z));
+    }
+
+    for (long x = minX; x < maxX; x += SUPERCHUNK_SIZE) {
+      for (long z = minZ; z < maxZ; z += SUPERCHUNK_SIZE) {
+        if (containsPoint(boundary, x + SUPERCHUNK_SIZE / 2.0, z + SUPERCHUNK_SIZE / 2.0)) {
+          cells.add(new Cell(x, z));
+        }
+      }
+    }
+    return cells;
+  }
+
+  private static boolean containsPoint(List<Vectore2> polygon, double x, double z) {
+    boolean inside = false;
+    for (int i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
+      Vectore2 a = polygon.get(i);
+      Vectore2 b = polygon.get(j);
+      if (((a.z > z) != (b.z > z))
+          && (x < (b.x - a.x) * (z - a.z) / (b.z - a.z) + a.x)) {
+        inside = !inside;
+      }
+    }
+    return inside;
+  }
+
+  private static boolean isConnected(Set<Cell> cells) {
+    if (cells.isEmpty()) {
+      return false;
+    }
+
+    Queue<Cell> queue = new ArrayDeque<>();
+    Set<Cell> seen = new HashSet<>();
+    Cell first = cells.iterator().next();
+    queue.add(first);
+    seen.add(first);
+
+    while (!queue.isEmpty()) {
+      Cell cell = queue.remove();
+      for (Cell neighbor : cell.neighbors()) {
+        if (cells.contains(neighbor) && seen.add(neighbor)) {
+          queue.add(neighbor);
+        }
+      }
+    }
+    return seen.size() == cells.size();
+  }
+
+  private static Optional<List<GridPoint>> traceSingleOutline(Set<Cell> cells) {
+    Set<Edge> edges = boundaryEdges(cells);
+    if (edges.isEmpty()) {
+      return Optional.empty();
+    }
+
+    Map<GridPoint, GridPoint> nextByPoint = new HashMap<>();
+    for (Edge edge : edges) {
+      if (nextByPoint.put(edge.from(), edge.to()) != null) {
+        return Optional.empty();
+      }
+    }
+
+    GridPoint start = startPoint(edges);
+    List<GridPoint> outline = new ArrayList<>();
+    GridPoint current = start;
+
+    do {
+      outline.add(current);
+      current = nextByPoint.get(current);
+      if (current == null || outline.size() > edges.size()) {
+        return Optional.empty();
+      }
+    } while (!current.equals(start));
+
+    if (outline.size() != edges.size()) {
+      return Optional.empty();
+    }
+    return Optional.of(outline);
+  }
+
+  private static Set<Edge> boundaryEdges(Set<Cell> cells) {
+    Set<Edge> edges = new HashSet<>();
+    for (Cell cell : cells) {
+      long x = cell.x();
+      long z = cell.z();
+      GridPoint nw = new GridPoint(x, z);
+      GridPoint ne = new GridPoint(x + SUPERCHUNK_SIZE, z);
+      GridPoint se = new GridPoint(x + SUPERCHUNK_SIZE, z + SUPERCHUNK_SIZE);
+      GridPoint sw = new GridPoint(x, z + SUPERCHUNK_SIZE);
+
+      addBoundaryEdge(edges, new Edge(nw, ne));
+      addBoundaryEdge(edges, new Edge(ne, se));
+      addBoundaryEdge(edges, new Edge(se, sw));
+      addBoundaryEdge(edges, new Edge(sw, nw));
+    }
+    return edges;
+  }
+
+  private static void addBoundaryEdge(Set<Edge> edges, Edge edge) {
+    Edge reverse = new Edge(edge.to(), edge.from());
+    if (!edges.remove(reverse)) {
+      edges.add(edge);
+    }
+  }
+
+  private static GridPoint startPoint(Set<Edge> edges) {
+    GridPoint start = null;
+    for (Edge edge : edges) {
+      GridPoint point = edge.from();
+      if (start == null
+          || point.z() < start.z()
+          || (point.z() == start.z() && point.x() < start.x())) {
+        start = point;
+      }
+    }
+    return start;
+  }
+
+  private static List<Vectore2> toVectors(List<GridPoint> points) {
+    List<Vectore2> output = new ArrayList<>();
+    for (GridPoint point : points) {
+      output.add(new Vectore2(point.x(), point.z()));
+    }
+    return output;
+  }
+
+  private static long gridFloor(double value) {
+    return (long) Math.floor(value / SUPERCHUNK_SIZE) * SUPERCHUNK_SIZE;
+  }
+
+  private static long gridCeil(double value) {
+    return (long) Math.ceil(value / SUPERCHUNK_SIZE) * SUPERCHUNK_SIZE;
+  }
+
+  private record Cell(long x, long z) {
+    List<Cell> neighbors() {
+      return List.of(
+          new Cell(x + SUPERCHUNK_SIZE, z),
+          new Cell(x - SUPERCHUNK_SIZE, z),
+          new Cell(x, z + SUPERCHUNK_SIZE),
+          new Cell(x, z - SUPERCHUNK_SIZE));
+    }
+  }
+
+  private record GridPoint(long x, long z) {}
+
+  private record Edge(GridPoint from, GridPoint to) {}
 }

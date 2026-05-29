@@ -34,10 +34,13 @@ public class SettleRegion extends GridRegion
     implements BankHolder, AccessControlled, NPCHolder, RankedRegion, HasChildren {
 
   public static final String REGION_TYPE = "settle";
-  public static List<Integer> claimsPerLevel =
-      new ArrayList<>(
-          Arrays.asList(
-              3, 3, 3, 3, 5, 3, 3, 3, 3, 5, 4, 4, 4, 4, 7, 4, 4, 4, 4, 10, 5, 5, 5, 5, 10));
+  public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(
+                  10, 10, 10, 10, 20,
+                  10, 10, 10, 10, 20,
+                  20, 20, 20, 20, 40,
+                  20, 20, 20, 20, 40,
+                  30, 30, 30, 30, 60,
+                  30, 30, 30, 30, 60));
   private final Rank rank;
   private final NPCr npc;
   private final Access access;

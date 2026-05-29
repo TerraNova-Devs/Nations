@@ -13,6 +13,7 @@ import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import org.bukkit.Location;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.Collections;
 import java.util.Map;
