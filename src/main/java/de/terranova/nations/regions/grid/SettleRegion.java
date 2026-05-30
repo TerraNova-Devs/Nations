@@ -34,13 +34,6 @@ public class SettleRegion extends GridRegion
     implements BankHolder, AccessControlled, NPCHolder, RankedRegion, HasChildren {
 
   public static final String REGION_TYPE = "settle";
-  public static List<Integer> claimsPerLevel = new ArrayList<>(Arrays.asList(
-                  10, 10, 10, 10, 20,
-                  10, 10, 10, 10, 20,
-                  20, 20, 20, 20, 40,
-                  20, 20, 20, 20, 40,
-                  30, 30, 30, 30, 60,
-                  30, 30, 30, 30, 60));
   private final Rank rank;
   private final NPCr npc;
   private final Access access;
@@ -93,12 +86,19 @@ public class SettleRegion extends GridRegion
 
   @Override
   public int getMaxClaims() {
-    int claims = 9;
-    if (rank.getLevel() <= 1) return claims;
-    for (int i = 0; i <= rank.getLevel() - 2 && i < claimsPerLevel.size(); i++) {
-      claims += claimsPerLevel.get(i);
+    int claims = 20;
+
+    for (int level = 2; level <= rank.getLevel(); level++) {
+      claims += getClaimGainForLevel(level);
     }
+
     return claims;
+  }
+
+  private static int getClaimGainForLevel(int level) {
+    int baseGain = 10 + ((level - 2) / 10) * 10;
+
+    return level % 5 == 0 ? baseGain * 2 : baseGain;
   }
 
   @Override
