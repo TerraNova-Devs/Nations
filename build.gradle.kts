@@ -1,6 +1,6 @@
 plugins {
   `java-library`
-  id("io.papermc.paperweight.userdev") version "2.0.0-beta.19"
+  id("io.papermc.paperweight.userdev") version "2.0.0-beta.23"
   id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
   id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("com.gradleup.shadow") version "9.0.0"
@@ -10,6 +10,11 @@ plugins {
 group = "de.terranova.nations"
 version = "1.0.0-SNAPSHOT"
 description = "Nations Plugin tailored & written by & for TerraNova."
+
+val minecraftVersion = "26.2"
+val nexoVersion = "1.27.0"
+val pl3xMapVersion = "26.2-553"
+val worldGuardVersion = "7.0.18"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -52,16 +57,19 @@ repositories {
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION
 
 dependencies {
-  paperweight.paperDevBundle("1.21.11-R0.1-SNAPSHOT")
+  paperweight.paperDevBundle("$minecraftVersion.build.+")
   implementation("com.zaxxer:HikariCP:7.0.2")
   compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  compileOnly("maven.modrinth:pl3xmap:1.21.11-544")
-  compileOnly("com.sk89q.worldguard:worldguard-bukkit:7.0.16")
+  compileOnly("maven.modrinth:pl3xmap:$pl3xMapVersion")
+  compileOnly("com.sk89q.worldguard:worldguard-bukkit:$worldGuardVersion") {
+    exclude(group = "com.google.code.gson", module = "gson")
+    exclude(group = "com.google.guava", module = "guava")
+  }
   compileOnly(fileTree(mapOf("dir" to "jars", "include" to listOf("*.jar"))))
   implementation("io.github.cdimascio:dotenv-java:3.2.0")
-  compileOnly("com.nexomc:nexo:1.21.0")
+  compileOnly("com.nexomc:nexo:$nexoVersion")
   implementation("org.yaml:snakeyaml:2.6")
   compileOnly("de.mcterranova:terranova-lib:1.0.1")
   implementation ("org.locationtech.jts:jts-core:1.20.0")
@@ -88,12 +96,12 @@ bukkitPluginYaml {
   name = "Nations"
   version = project.version.toString()
   main = "${project.group}.NationsPlugin"
-  apiVersion = "1.21"
+  apiVersion = minecraftVersion
   authors = listOf("gerryxn", "bastizeit")
   prefix = "Nations"
   website = "https://mcterranova.de"
   description = project.description.toString()
-  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "Pl3xMap", "WorldGuardExtraFlags", "Oraxen")
+  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "Pl3xMap", "WorldGuardExtraFlags", "Nexo")
 
   commands {
     register("terra") {
@@ -115,12 +123,15 @@ spotless {
 }
 
 tasks.processResources {
-  val props = mapOf("version" to version)
+  val props = mapOf(
+    "version" to version,
+    "minecraftVersion" to minecraftVersion,
+  )
   filteringCharset = "UTF-8"
   duplicatesStrategy = DuplicatesStrategy.EXCLUDE
   inputs.properties(props)
   filteringCharset = "UTF-8"
-  filesMatching("plugin.yml") {
+  filesMatching(listOf("plugin.yml", "paper-plugin-x.yml")) {
     expand(props)
   }
 }

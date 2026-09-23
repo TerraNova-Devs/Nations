@@ -1,2 +1,12 @@
+database:
+  host: localhost
+  port: 3306
+  name: nations
+  username: minecraft
+  password: minecraft
+
+discord:
+  professions-webhook-url: https://discord.com/api/webhooks/SERVER_ID/WEBHOOK_URL
+
 nation:
   cost: 2000

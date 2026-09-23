@@ -32,7 +32,6 @@ import de.terranova.nations.regions.rule.rules.AccessLevelCheck;
 import de.terranova.nations.regions.rule.rules.SelfOverlap;
 import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.terranova.nations.regions.rule.rules.WithinParent;
-import de.terranova.nations.utils.SecretsReader;
 import de.terranova.nations.utils.terraRenderer.refactor.Listener.MarkToolListener;
 import de.terranova.nations.worldguard.NationsRegionFlag.*;
 import java.io.File;
@@ -88,10 +87,13 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public void onEnable() {
     plugin = this;
     saveDefaultConfig();
-    saveResource("secrets.env", false);
-    SecretsReader.init();
     initDatabase();
-    professionsHook = new WebhookHandler(SecretsReader.DISCORD_WEBHOOK_URL);
+    professionsHook =
+        new WebhookHandler(
+            getConfig()
+                .getString(
+                    "discord.professions-webhook-url",
+                    "https://discord.com/api/webhooks/SERVER_ID/WEBHOOK_URL"));
     citizensTraitRegistry();
     worldguardHandlerRegistry();
     pl3xmapMarkerRegistry();

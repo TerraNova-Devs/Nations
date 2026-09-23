@@ -20,7 +20,7 @@ professions:
       - objectiveId: "fishery_1_1"
         action: "FISH"
         object: "ANY_FISH"
-        amount: 5000
+        amount: 1000
 
   - professionId: "fishery_2"
     type: "FISHERY"
@@ -42,14 +42,14 @@ professions:
       - objectiveId: "fishery_2_1"
         action: "FISH"
         object: "ANY_FISH"
-        amount: 12000
+        amount: 3000
 
   - professionId: "fishery_3"
     type: "FISHERY"
     prettyName: "Fischerei"
     icon: "FISHING_ROD"
     level: 3
-    score: 100
+    score: 200
     price: 1000
 
     buildings:
@@ -67,14 +67,14 @@ professions:
       - objectiveId: "fishery_3_1"
         action: "FISH"
         object: "ANY_FISH"
-        amount: 30000
+        amount: 10000
 
   - professionId: "fishery_4"
     type: "FISHERY"
     prettyName: "Fischerei"
     icon: "FISHING_ROD"
     level: 4
-    score: 250
+    score: 500
     price: 2500
 
     buildings:
@@ -89,7 +89,7 @@ professions:
       - objectiveId: "fishery_4_1"
         action: "FISH"
         object: "ANY_FISH"
-        amount: 80000
+        amount: 50000
 
 
   ############################################################################
@@ -170,7 +170,7 @@ professions:
     objectives:
       - objectiveId: "mining_3_diamond"
         action: "DESTROY"
-        object: "DIAMOND_ORE"
+        object: "DEEPSLATE_DIAMOND_ORE"
         amount: 2500
       - objectiveId: "mining_3_gold"
         action: "DESTROY"
@@ -204,7 +204,7 @@ professions:
     objectives:
       - objectiveId: "mining_4_diamond"
         action: "DESTROY"
-        object: "DIAMOND_ORE"
+        object: "DEEPSLATE_DIAMOND_ORE"
         amount: 5000
       - objectiveId: "mining_4_gold"
         action: "DESTROY"
@@ -335,11 +335,11 @@ professions:
       - objectiveId: "ranching_1_breed"
         action: "BREED"
         object: "ANY_ANIMAL"
-        amount: 5000
+        amount: 500
       - objectiveId: "ranching_1_kill"
         action: "KILL"
         object: "ANY_ANIMAL"
-        amount: 4500
+        amount: 450
 
   - professionId: "ranching_2"
     type: "RANCHING"
@@ -358,11 +358,11 @@ professions:
       - objectiveId: "ranching_2_breed"
         action: "BREED"
         object: "ANY_ANIMAL"
-        amount: 10000
+        amount: 2000
       - objectiveId: "ranching_2_kill"
         action: "KILL"
         object: "ANY_ANIMAL"
-        amount: 9500
+        amount: 1500
 
   - professionId: "ranching_3"
     type: "RANCHING"
@@ -384,11 +384,11 @@ professions:
       - objectiveId: "ranching_3_breed"
         action: "BREED"
         object: "ANY_ANIMAL"
-        amount: 24000
+        amount: 10000
       - objectiveId: "ranching_3_kill"
         action: "KILL"
         object: "ANY_ANIMAL"
-        amount: 23500
+        amount: 9500
 
   - professionId: "ranching_4"
     type: "RANCHING"
@@ -410,11 +410,11 @@ professions:
       - objectiveId: "ranching_4_breed"
         action: "BREED"
         object: "ANY_ANIMAL"
-        amount: 60000
+        amount: 30000
       - objectiveId: "ranching_4_kill"
         action: "KILL"
         object: "ANY_ANIMAL"
-        amount: 59500
+        amount: 29500
 
 
   ############################################################################
@@ -437,6 +437,10 @@ professions:
       - objectiveId: "brewing_1_potions"
         action: "BREW"
         object: "ANY_POTION"
+        amount: 250
+      - objectiveId: "brewing_1_netherwart"
+        action: "HARVEST"
+        object: "NETHER_WART"
         amount: 5000
 
   - professionId: "brewing_2"
@@ -459,6 +463,10 @@ professions:
       - objectiveId: "brewing_2_potions"
         action: "BREW"
         object: "ANY_POTION"
+        amount: 500
+      - objectiveId: "brewing_2_netherwart"
+        action: "HARVEST"
+        object: "NETHER_WART"
         amount: 10000
 
   - professionId: "brewing_3"
@@ -481,6 +489,10 @@ professions:
       - objectiveId: "brewing_3_potions"
         action: "BREW"
         object: "ANY_POTION"
+        amount: 1000
+      - objectiveId: "brewing_3_netherwart"
+        action: "HARVEST"
+        object: "NETHER_WART"
         amount: 25000
 
   - professionId: "brewing_4"
@@ -503,6 +515,10 @@ professions:
       - objectiveId: "brewing_4_potions"
         action: "BREW"
         object: "ANY_POTION"
+        amount: 1000
+      - objectiveId: "brewing_4_netherwart"
+        action: "HARVEST"
+        object: "NETHER_WART"
         amount: 60000
 
 
@@ -526,7 +542,11 @@ professions:
       - objectiveId: "smithing_1_tools"
         action: "CRAFT"
         object: "IRON_TOOL"
-        amount: 5000
+        amount: 500
+      - objectiveId: "smithing_1_repair"
+        action: "REPAIR"
+        object: "ANY_TOOL"
+        amount: 1000
 
   - professionId: "smithing_2"
     type: "SMITHING"
@@ -548,7 +568,11 @@ professions:
       - objectiveId: "smithing_2_diamond"
         action: "CRAFT"
         object: "DIAMOND_TOOL"
-        amount: 10000
+        amount: 1000
+      - objectiveId: "smithing_2_repair"
+        action: "REPAIR"
+        object: "ANY_TOOL"
+        amount: 2500
 
   - professionId: "smithing_3"
     type: "SMITHING"
@@ -569,12 +593,12 @@ professions:
     objectives:
       - objectiveId: "smithing_3_tools"
         action: "CRAFT"
-        object: "NETHERITE_TOOL"
-        amount: 500
-      - objectiveId: "smithing_3_diamond"
-        action: "CRAFT"
         object: "DIAMOND_TOOL"
-        amount: 20000
+        amount: 2000
+      - objectiveId: "smithing_3_repair"
+        action: "REPAIR"
+        object: "ANY_TOOL"
+        amount: 6000
 
   - professionId: "smithing_4"
     type: "SMITHING"
@@ -596,11 +620,11 @@ professions:
       - objectiveId: "smithing_4_tools"
         action: "CRAFT"
         object: "NETHERITE_TOOL"
-        amount: 2000
-      - objectiveId: "smithing_4_diamond"
-        action: "CRAFT"
-        object: "DIAMOND_TOOL"
-        amount: 40000
+        amount: 100
+      - objectiveId: "smithing_4_repair"
+        action: "REPAIR"
+        object: "ANY_TOOL"
+        amount: 12000
 
 
   ############################################################################
@@ -608,7 +632,7 @@ professions:
   ############################################################################
   - professionId: "magic_1"
     type: "MAGIC"
-    prettyName: "Magie & Verzauberung"
+    prettyName: "Magie"
     icon: "ENCHANTING_TABLE"
     level: 1
     score: 20
@@ -623,11 +647,11 @@ professions:
       - objectiveId: "magic_1_enchants"
         action: "ENCHANT"
         object: "ANY_ITEM"
-        amount: 2500
+        amount: 1500
 
   - professionId: "magic_2"
     type: "MAGIC"
-    prettyName: "Magie & Verzauberung"
+    prettyName: "Magie"
     icon: "ENCHANTING_TABLE"
     level: 2
     score: 50
@@ -649,7 +673,7 @@ professions:
 
   - professionId: "magic_3"
     type: "MAGIC"
-    prettyName: "Magie & Verzauberung"
+    prettyName: "Magie"
     icon: "ENCHANTING_TABLE"
     level: 3
     score: 100
@@ -671,7 +695,7 @@ professions:
 
   - professionId: "magic_4"
     type: "MAGIC"
-    prettyName: "Magie & Verzauberung"
+    prettyName: "Magie"
     icon: "ENCHANTING_TABLE"
     level: 4
     score: 250
@@ -697,7 +721,7 @@ professions:
   ############################################################################
   - professionId: "woodcutting_1"
     type: "WOODCUTTING"
-    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    prettyName: "Holzverarbeitung"
     icon: "IRON_AXE"
     level: 1
     score: 20
@@ -716,7 +740,7 @@ professions:
 
   - professionId: "woodcutting_2"
     type: "WOODCUTTING"
-    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    prettyName: "Holzverarbeitung"
     icon: "IRON_AXE"
     level: 2
     score: 50
@@ -738,7 +762,7 @@ professions:
 
   - professionId: "woodcutting_3"
     type: "WOODCUTTING"
-    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    prettyName: "Holzverarbeitung"
     icon: "IRON_AXE"
     level: 3
     score: 100
@@ -760,7 +784,7 @@ professions:
 
   - professionId: "woodcutting_4"
     type: "WOODCUTTING"
-    prettyName: "Holzverarbeitung & Forstwirtschaft"
+    prettyName: "Holzverarbeitung"
     icon: "IRON_AXE"
     level: 4
     score: 250
@@ -786,7 +810,7 @@ professions:
   ############################################################################
   - professionId: "military_1"
     type: "MILITARY"
-    prettyName: "Militär / Verteidigung"
+    prettyName: "Militär"
     icon: "IRON_SWORD"
     level: 1
     score: 20
@@ -805,7 +829,7 @@ professions:
 
   - professionId: "military_2"
     type: "MILITARY"
-    prettyName: "Militär / Verteidigung"
+    prettyName: "Militär"
     icon: "IRON_SWORD"
     level: 2
     score: 50
@@ -826,11 +850,11 @@ professions:
       - objectiveId: "military_2_mobs"
         action: "KILL"
         object: "HOSTILE_MOB"
-        amount: 10000
+        amount: 20000
 
   - professionId: "military_3"
     type: "MILITARY"
-    prettyName: "Militär / Verteidigung"
+    prettyName: "Militär"
     icon: "IRON_SWORD"
     level: 3
     score: 100
@@ -845,11 +869,11 @@ professions:
       - objectiveId: "military_3_mobs"
         action: "KILL"
         object: "HOSTILE_MOB"
-        amount: 25000
+        amount: 75000
 
   - professionId: "military_4"
     type: "MILITARY"
-    prettyName: "Militär / Verteidigung"
+    prettyName: "Militär"
     icon: "IRON_SWORD"
     level: 4
     score: 250
@@ -864,7 +888,7 @@ professions:
       - objectiveId: "military_4_mobs"
         action: "KILL"
         object: "HOSTILE_MOB"
-        amount: 60000
+        amount: 150000
 
 
   ############################################################################
@@ -872,7 +896,7 @@ professions:
   ############################################################################
   - professionId: "stonework_1"
     type: "STONEWORK"
-    prettyName: "Steinbruch / Steinmetz"
+    prettyName: "Steinverarbeitung"
     icon: "STONE_PICKAXE"
     level: 1
     score: 20
@@ -891,7 +915,7 @@ professions:
 
   - professionId: "stonework_2"
     type: "STONEWORK"
-    prettyName: "Steinbruch / Steinmetz"
+    prettyName: "Steinverarbeitung"
     icon: "STONE_PICKAXE"
     level: 2
     score: 50
@@ -913,7 +937,7 @@ professions:
 
   - professionId: "stonework_3"
     type: "STONEWORK"
-    prettyName: "Steinbruch / Steinmetz"
+    prettyName: "Steinverarbeitung"
     icon: "STONE_PICKAXE"
     level: 3
     score: 100
@@ -938,7 +962,7 @@ professions:
 
   - professionId: "stonework_4"
     type: "STONEWORK"
-    prettyName: "Steinbruch / Steinmetz"
+    prettyName: "Steinverarbeitung"
     icon: "STONE_PICKAXE"
     level: 4
     score: 250
@@ -980,7 +1004,7 @@ professions:
     objectives:
       - objectiveId: "trade_1_villager"
         action: "TRADE"
-        object: "VILLAGER"
+        object: "ANY_ITEM"
         amount: 4000
 
   - professionId: "trade_2"
@@ -1002,7 +1026,7 @@ professions:
     objectives:
       - objectiveId: "trade_2_villager"
         action: "TRADE"
-        object: "VILLAGER"
+        object: "ANY_ITEM"
         amount: 10000
 
   - professionId: "trade_3"
@@ -1024,7 +1048,7 @@ professions:
     objectives:
       - objectiveId: "trade_3_villager"
         action: "TRADE"
-        object: "VILLAGER"
+        object: "ANY_ITEM"
         amount: 24000
 
   - professionId: "trade_4"
@@ -1046,7 +1070,7 @@ professions:
     objectives:
       - objectiveId: "trade_4_villager"
         action: "TRADE"
-        object: "VILLAGER"
+        object: "ANY_ITEM"
         amount: 50000
 
   ############################################################################
@@ -1062,14 +1086,14 @@ professions:
 
     buildings:
       - buildingId: "faith_1_1"
-        name: "Kleine Kapelle"
+        name: "Kleine Kapelle/Tempel"
         description: "Ein simpler Andachtsraum mit wenigen Sitzplätzen."
 
     objectives:
       - objectiveId: "faith_1_witches"
         action: "KILL"
         object: "WITCH"
-        amount: 500
+        amount: 100
 
   - professionId: "faith_2"
     type: "FAITH"
@@ -1091,7 +1115,7 @@ professions:
       - objectiveId: "faith_2_witches"
         action: "KILL"
         object: "WITCH"
-        amount: 2000
+        amount: 500
 
   - professionId: "faith_3"
     type: "FAITH"
@@ -1103,7 +1127,7 @@ professions:
 
     buildings:
       - buildingId: "faith_3_1"
-        name: "Kloster"
+        name: "Kloster/Glaubensbezirk ähnlicher Größe"
         description: "Ein weitläufiger Klosterkomplex mit Schlafräumen und Bibliothek."
       - buildingId: "faith_3_2"
         name: "Große Kirchenglocke"
@@ -1113,7 +1137,7 @@ professions:
       - objectiveId: "faith_3_witches"
         action: "KILL"
         object: "WITCH"
-        amount: 5000
+        amount: 1500
 
   - professionId: "faith_4"
     type: "FAITH"
@@ -1125,7 +1149,7 @@ professions:
 
     buildings:
       - buildingId: "faith_4_1"
-        name: "Große Kathedrale"
+        name: "Große Kathedrale/Tempel ähnlicher Größe"
         description: "Imposantes Bauwerk mit hoher Decke, Altar und aufwändiger Deko."
       - buildingId: "faith_4_2"
         name: "Pilgerstätte"
@@ -1135,4 +1159,4 @@ professions:
       - objectiveId: "faith_4_witches"
         action: "KILL"
         object: "WITCH"
-        amount: 15000
+        amount: 5000

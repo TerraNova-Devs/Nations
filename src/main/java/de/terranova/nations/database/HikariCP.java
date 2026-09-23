@@ -10,22 +10,25 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Objects;
 
-import de.terranova.nations.utils.SecretsReader;
 import org.jetbrains.annotations.NotNull;
 
 public class HikariCP {
 
   private final NationsPlugin plugin;
+  private final String host;
+  private final int port;
+  private final String database;
   private final String user;
   private final String password;
   public HikariDataSource dataSource;
 
   public HikariCP(NationsPlugin plugin) throws SQLException {
     this.plugin = plugin;
-    System.out.println(SecretsReader.DATABASE_USERNAME);
-    System.out.println(SecretsReader.DATABASE_PASSWORD);
-    user = SecretsReader.DATABASE_USERNAME;
-    password = SecretsReader.DATABASE_PASSWORD;
+    host = plugin.getConfig().getString("database.host", "localhost");
+    port = plugin.getConfig().getInt("database.port", 3306);
+    database = plugin.getConfig().getString("database.name", "nations");
+    user = plugin.getConfig().getString("database.username", "minecraft");
+    password = plugin.getConfig().getString("database.password", "minecraft");
     HikariConfig config = getHikariConfig();
     dataSource = new HikariDataSource(config);
     prepareTables();
@@ -33,7 +36,7 @@ public class HikariCP {
 
   private @NotNull HikariConfig getHikariConfig() {
     HikariConfig config = new HikariConfig();
-    config.setJdbcUrl("jdbc:mysql://localhost/nations");
+    config.setJdbcUrl("jdbc:mysql://" + host + ":" + port + "/" + database);
     config.setUsername(user);
     config.setPassword(password);
     config.setPoolName("NationsHikariPool");

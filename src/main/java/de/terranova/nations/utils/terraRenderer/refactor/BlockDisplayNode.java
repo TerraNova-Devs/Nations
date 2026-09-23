@@ -3,7 +3,7 @@ package de.terranova.nations.utils.terraRenderer.refactor;
 import com.mojang.math.Transformation;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.entity.Display;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.Interaction;
 import org.bukkit.Color;
 import org.bukkit.Location;
@@ -244,7 +244,7 @@ public class BlockDisplayNode {
 
         ServerLevel nmsWorld = ((CraftWorld) location.getWorld()).getHandle();
         Display.BlockDisplay nmsDisplay =
-                new Display.BlockDisplay(EntityType.BLOCK_DISPLAY, nmsWorld);
+                new Display.BlockDisplay(EntityTypes.BLOCK_DISPLAY, nmsWorld);
 
         // Initial configuration (no interpolation on initial spawn)
         applySettingsToDisplay(nmsDisplay, 0);
@@ -331,7 +331,7 @@ public class BlockDisplayNode {
         float width  = Math.max(0.1f, scale.x);
         float height = Math.max(0.1f, scale.y);
 
-        Interaction hitbox = new Interaction(EntityType.INTERACTION, nmsWorld);
+        Interaction hitbox = new Interaction(EntityTypes.INTERACTION, nmsWorld);
 
         // Interaction-BB geht typischerweise von (x, y, z) nach oben.
         // Wir wollen, dass der Mittelpunkt der BB bei der Display-Mitte liegt.

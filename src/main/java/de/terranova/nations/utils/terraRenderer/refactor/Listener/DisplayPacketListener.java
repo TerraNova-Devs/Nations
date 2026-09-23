@@ -48,7 +48,7 @@ public class DisplayPacketListener implements Listener {
             @Override
             public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
                 if (msg instanceof ServerboundInteractPacket packet) {
-                    int entityId = packet.getEntityId();
+                    int entityId = packet.entityId();
                     BlockDisplayNode.handlePacketClick(entityId, player);
                 }
                 super.channelRead(ctx, msg);
