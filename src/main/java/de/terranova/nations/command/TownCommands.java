@@ -13,7 +13,6 @@ import de.terranova.nations.command.commands.CachedSupplier;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.command.commands.PlayerAwarePlaceholder;
 import de.terranova.nations.nations.Nation;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.*;
@@ -1056,7 +1055,6 @@ public class TownCommands extends AbstractCommand {
     RegionClaimFunctions.addToExistingClaim(p, settle.getWorldguardRegion());
 
     settle.setClaims(RegionClaimFunctions.getClaimAnzahl(settle.getId()));
-    RegionLayer.updateRegion(settle);
     p.sendMessage(
         Chat.greenFade(
             "Deine Stadt wurde erfolgreich erweitert. ("

@@ -345,7 +345,7 @@ public class BlockDisplayNode {
         hitbox.setWidth(width);
         hitbox.setHeight(height);
 
-        hitbox.setInvulnerable(true);
+        hitbox.setPermanentlyInvulnerable(true);
         hitbox.noPhysics = true;
 
         return hitbox;

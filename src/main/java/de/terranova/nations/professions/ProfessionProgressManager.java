@@ -3,7 +3,6 @@ package de.terranova.nations.professions;
 import de.terranova.nations.database.dao.SettlementBuildingsDAO;
 import de.terranova.nations.database.dao.SettlementObjectiveProgressDAO;
 import de.terranova.nations.database.dao.SettlementProfessionRelationDAO;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.pojo.BuildingConfig;
 import de.terranova.nations.professions.pojo.ObjectiveConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
@@ -151,7 +150,6 @@ public class ProfessionProgressManager {
     }
     settle.getBank().cashTransfer("Profession " + prof.professionId, -prof.price);
     setProfessionStatus(professionId, ProfessionStatus.COMPLETED);
-    RegionLayer.updateRegion(settle);
     return true;
   }
 

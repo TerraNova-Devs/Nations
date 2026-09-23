@@ -6,7 +6,6 @@ import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.RegionContainer;
 import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.command.commands.CommandAnnotation;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
@@ -140,9 +139,6 @@ public class RegionCommands {
     RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
 
     region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
-    if (cache.getRegion() instanceof SettleRegion settle) {
-      RegionLayer.updateRegion(settle);
-    }
     p.sendMessage(
         Chat.greenFade(
             "Deine Stadt wurde erfolgreich erweitert. ("

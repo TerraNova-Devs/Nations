@@ -3,7 +3,6 @@ package de.terranova.nations.regions.boundary;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.BoundaryRegion;

@@ -3,7 +3,6 @@ package de.terranova.nations.worldguard.math;
 import com.sk89q.worldedit.math.BlockVector2;
 import java.util.ArrayList;
 import java.util.Collection;
-import net.pl3x.map.core.markers.Point;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -52,10 +51,6 @@ public class Vectore2 {
 
   public String asString() {
     return this.x + "," + this.z;
-  }
-
-  public Point asPoint() {
-    return new Point((int) this.x, (int) this.z);
   }
 
   public Location asLocation() {

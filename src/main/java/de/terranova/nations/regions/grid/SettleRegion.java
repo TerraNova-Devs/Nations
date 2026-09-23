@@ -5,7 +5,6 @@ import com.sk89q.worldguard.protection.flags.Flags;
 import com.sk89q.worldguard.protection.flags.StateFlag;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.nations.Nation;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.regions.RegionManager;
 import de.terranova.nations.regions.base.BoundaryRegion;
@@ -48,7 +47,6 @@ public class SettleRegion extends GridRegion
     this.npc = new NPCr(this);
     npc.hologramNPC(new String[] {String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
     this.bank = new Bank(this);
-    RegionLayer.updateRegion(this);
     this.region = getWorldguardRegion();
   }
 
@@ -80,7 +78,6 @@ public class SettleRegion extends GridRegion
     region.setFlag(Flags.DENY_SPAWN, set);
     region.setFlag(Flags.PVP, StateFlag.State.DENY);
     access.setAccessLevel(p.getUniqueId(), AccessLevel.MAJOR);
-    RegionLayer.updateRegion(this);
     p.sendMessage(Chat.greenFade("Deine Stadt " + name + " wurde erfolgreich gegründet."));
   }
 
@@ -106,7 +103,6 @@ public class SettleRegion extends GridRegion
     ProfessionManager.removeSettlement(this.id);
     NationsPlugin.nationManager.removeSettlementFromNation(this.id);
     RegionManager.removeRegion(getClass(), id);
-    RegionLayer.removeRegion(this.id);
   }
 
   // Bank
@@ -135,7 +131,6 @@ public class SettleRegion extends GridRegion
 
   @Override
   public void onLevelUP() {
-    RegionLayer.updateRegion(this);
     npc.hologramNPC(new String[] {String.format("<#B0EB94>Level: [%s]", rank.getLevel())});
   }
 

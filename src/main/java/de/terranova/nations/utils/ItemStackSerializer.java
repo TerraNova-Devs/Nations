@@ -2,7 +2,6 @@ package de.terranova.nations.utils;
 
 
 import it.unimi.dsi.fastutil.io.FastByteArrayInputStream;
-import libs.org.simpleyaml.configuration.implementation.snakeyaml.lib.external.biz.base64Coder.Base64Coder;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.io.BukkitObjectInputStream;
 
@@ -22,7 +21,7 @@ public class ItemStackSerializer {
 
         // Fallback: legacy BukkitObjectInputStream + Base64Coder format
         try {
-            FastByteArrayInputStream inputStream = new FastByteArrayInputStream(Base64Coder.decodeLines(base64));
+            FastByteArrayInputStream inputStream = new FastByteArrayInputStream(Base64.getMimeDecoder().decode(base64));
             BukkitObjectInputStream dataInput = new BukkitObjectInputStream(inputStream);
             ItemStack item = (ItemStack) dataInput.readObject();
             dataInput.close();

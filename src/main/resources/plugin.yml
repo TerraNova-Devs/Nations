@@ -22,6 +22,6 @@ commands:
     aliases: [ re ]
     permission: nations.use
     permission-message: You do not have permission to use this command.
-depend: [WorldGuard, Citizens, TerranovaLib, Pl3xMap, Nexo]
+depend: [WorldGuard, Citizens, TerranovaLib, Nexo]
 
 

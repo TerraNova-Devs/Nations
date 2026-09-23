@@ -11,9 +11,8 @@ group = "de.terranova.nations"
 version = "1.0.0-SNAPSHOT"
 description = "Nations Plugin tailored & written by & for TerraNova."
 
-val minecraftVersion = "26.2"
+val minecraftVersion = "26.3"
 val nexoVersion = "1.27.0"
-val pl3xMapVersion = "26.2-553"
 val worldGuardVersion = "7.0.18"
 
 java {
@@ -62,7 +61,6 @@ dependencies {
   compileOnly("net.citizensnpcs:citizens-main:2.0.41-SNAPSHOT"){
     exclude(group = "*", module = "*")
   }
-  compileOnly("maven.modrinth:pl3xmap:$pl3xMapVersion")
   compileOnly("com.sk89q.worldguard:worldguard-bukkit:$worldGuardVersion") {
     exclude(group = "com.google.code.gson", module = "gson")
     exclude(group = "com.google.guava", module = "guava")
@@ -101,7 +99,7 @@ bukkitPluginYaml {
   prefix = "Nations"
   website = "https://mcterranova.de"
   description = project.description.toString()
-  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "Pl3xMap", "WorldGuardExtraFlags", "Nexo")
+  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "WorldGuardExtraFlags", "Nexo")
 
   commands {
     register("terra") {

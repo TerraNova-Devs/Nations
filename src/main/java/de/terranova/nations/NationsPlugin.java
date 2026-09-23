@@ -13,8 +13,6 @@ import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.discord.WebhookHandler;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
-import de.terranova.nations.pl3xmap.InfoLayer;
-import de.terranova.nations.pl3xmap.RegionLayer;
 import de.terranova.nations.professions.ProfessionManager;
 import de.terranova.nations.professions.pojo.ProfessionConfig;
 import de.terranova.nations.professions.pojo.ProfessionConfigLoader;
@@ -45,9 +43,6 @@ import java.util.Map;
 import java.util.Objects;
 
 import net.citizensnpcs.api.event.CitizensEnableEvent;
-import net.pl3x.map.core.Pl3xMap;
-import net.pl3x.map.core.markers.layer.Layer;
-import net.pl3x.map.core.registry.Registry;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -96,7 +91,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
                     "https://discord.com/api/webhooks/SERVER_ID/WEBHOOK_URL"));
     citizensTraitRegistry();
     worldguardHandlerRegistry();
-    pl3xmapMarkerRegistry();
     nationManager = new NationManager();
     RealEstateDAO.loadAllHoldings();
     commandRegistry();
@@ -140,17 +134,6 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
       throw new RuntimeException(e);
     }
     nationsLogger.close();
-  }
-
-  private void pl3xmapMarkerRegistry() {
-    Registry<@NotNull Layer> layerRegistry;
-    layerRegistry = Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world")).getLayerRegistry();
-    layerRegistry.register(
-            "settlement-layer",
-            new RegionLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
-    layerRegistry.register(
-            "settlement-info",
-            new InfoLayer(Objects.requireNonNull(Pl3xMap.api().getWorldRegistry().get("world"))));
   }
 
   private void initDatabase() {
