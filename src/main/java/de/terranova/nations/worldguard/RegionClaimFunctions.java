@@ -108,59 +108,69 @@ public class RegionClaimFunctions {
     }
   }
 
-  /** Adds the cell the player stands in to the region; tells the player if that is refused. */
-  public static boolean claim(Player p, ProtectedRegion oldRegion) {
-    if (oldRegion == null) {
-      return false;
-    }
-    return apply(p, oldRegion, claimCalc.claim(points(oldRegion), cellOf(p)));
-  }
-
-  /** Removes the cell the player stands in from the region; tells the player if that is refused. */
-  public static boolean unclaim(Player p, ProtectedRegion oldRegion, claimCalc.Cell founding) {
-    if (oldRegion == null) {
-      return false;
-    }
-    return apply(p, oldRegion, claimCalc.unclaim(points(oldRegion), cellOf(p), founding));
-  }
+  public static final String MISSING_REGION =
+      "Die WorldGuard-Region fehlt oder ist kaputt; ein Admin muss sie anlegen.";
 
   /** The cells of the region. */
   public static Set<claimCalc.Cell> cells(ProtectedRegion region) {
-    return claimCalc.cellsOf(points(region));
+    return claimCalc.cellsOf(List.copyOf(Vectore2.fromBlockVectorList(region.getPoints())));
   }
 
   public static claimCalc.Cell cellOf(Player p) {
     return claimCalc.Cell.at(p.getLocation().x(), p.getLocation().z());
   }
 
-  private static List<Vectore2> points(ProtectedRegion region) {
-    List<Vectore2> points = new ArrayList<>();
-    for (BlockVector2 v : region.getPoints()) {
-      points.add(new Vectore2(v.x(), v.z()));
+  /** The ids of the regions in the cell at any height, without those with the id {@code own}. */
+  public static List<String> foreignRegions(Player p, claimCalc.Cell cell, UUID own) {
+    World world = p.getWorld();
+    RegionManager regions =
+        WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+    if (regions == null) {
+      return List.of();
     }
-    return points;
+    ProtectedCuboidRegion box =
+        new ProtectedCuboidRegion(
+            "nations_cell",
+            BlockVector3.at(cell.x(), world.getMinHeight(), cell.z()),
+            BlockVector3.at(cell.x() + 47, world.getMaxHeight() - 1, cell.z() + 47));
+    return regions.getApplicableRegions(box).getRegions().stream()
+        .filter(r -> !ProtectedRegion.GLOBAL_REGION.equals(r.getId()))
+        .filter(r -> !own.toString().equals(r.getFlag(RegionFlag.REGION_UUID_FLAG)))
+        .map(ProtectedRegion::getId)
+        .toList();
   }
 
-  private static boolean apply(Player p, ProtectedRegion oldRegion, claimCalc.Change change) {
+  /** Whether the region reaches into the cell, by its bounding box. */
+  public static boolean reachesInto(ProtectedRegion region, claimCalc.Cell cell) {
+    BlockVector3 min = region.getMinimumPoint();
+    BlockVector3 max = region.getMaximumPoint();
+    return cell.overlaps(min.x(), min.z(), max.x(), max.z());
+  }
+
+  /**
+   * Writes the change as the new WorldGuard region of {@code owner}; tells the player if the change
+   * is refused.
+   */
+  public static boolean write(
+      Player p,
+      de.terranova.nations.regions.base.Region owner,
+      ProtectedRegion oldRegion,
+      claimCalc.Change change) {
     if (change.refusal() != null) {
       p.sendMessage(Chat.errorFade(change.refusal()));
       return false;
     }
-    if (!(oldRegion instanceof ProtectedPolygonalRegion oldPolygonalRegion)) {
-      return false;
-    }
 
-    List<BlockVector2> finalNewRegion = new ArrayList<>();
+    List<BlockVector2> points = new ArrayList<>();
     for (Vectore2 v : change.points()) {
-      finalNewRegion.add(BlockVector2.at(v.x, v.z));
+      points.add(BlockVector2.at(v.x, v.z));
     }
-
     ProtectedPolygonalRegion region =
         new ProtectedPolygonalRegion(
             oldRegion.getId(),
-            finalNewRegion,
-            oldPolygonalRegion.getMinimumPoint().y(),
-            oldPolygonalRegion.getMaximumPoint().y());
+            points,
+            oldRegion.getMinimumPoint().y(),
+            oldRegion.getMaximumPoint().y());
     region.copyFrom(oldRegion);
 
     LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
@@ -168,6 +178,7 @@ public class RegionClaimFunctions {
     RegionManager regions = container.get(lp.getWorld());
     assert regions != null;
     regions.addRegion(region);
+    owner.setWorldguardRegion(region);
     return true;
   }
 

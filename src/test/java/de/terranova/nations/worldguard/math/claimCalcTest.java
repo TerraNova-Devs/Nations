@@ -1,6 +1,7 @@
 package de.terranova.nations.worldguard.math;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 class claimCalcTest {
 
   private static final Cell HOME = new Cell(0, 0);
+  private static final int MAX = 1000;
 
   /** Cells by their column and row, in steps of 48 blocks. */
   private static Set<Cell> cells(int[]... colRow) {
@@ -61,7 +63,8 @@ class claimCalcTest {
         List.of(
             new Vectore2(0, 0), new Vectore2(47, 0), new Vectore2(47, 47), new Vectore2(0, 47));
 
-    Change change = claimCalc.claim(founding.reversed(), new Cell(48, 0));
+    Change change =
+        claimCalc.claim(claimCalc.cellsOf(founding.reversed()), new Cell(48, 0), MAX);
 
     assertEquals(text("(0,0)", "(95,0)", "(95,47)", "(0,47)"), text(change.points()));
   }
@@ -82,6 +85,17 @@ class claimCalcTest {
                     new int[] {1, 0},
                     new int[] {2, 0},
                     new int[] {0, 1},
+                    new int[] {2, 1}))));
+    // U open to the north: the outside blocks lie to the north-east and north-west
+    assertEquals(
+        text("(0,0)", "(47,0)", "(47,48)", "(96,48)", "(96,0)", "(143,0)", "(143,95)", "(0,95)"),
+        text(
+            points(
+                cells(
+                    new int[] {0, 0},
+                    new int[] {2, 0},
+                    new int[] {0, 1},
+                    new int[] {1, 1},
                     new int[] {2, 1}))));
   }
 
@@ -135,17 +149,18 @@ class claimCalcTest {
     for (Set<Cell> shape : shapes) {
       List<Vectore2> before = points(shape);
       for (Cell cell : around(shape)) {
-        Change claimed = claimCalc.claim(before, cell);
+        Change claimed = claimCalc.claim(claimCalc.cellsOf(before), cell, MAX);
         if (claimed.refusal() == null) {
-          Change back = claimCalc.unclaim(claimed.points(), cell, HOME);
+          Change back =
+              claimCalc.unclaim(claimCalc.cellsOf(claimed.points()), cell, HOME, MAX);
           assertEquals(text(before), text(back.points()), shape + " + " + cell);
           checked++;
         }
       }
       for (Cell cell : shape) {
-        Change unclaimed = claimCalc.unclaim(before, cell, HOME);
+        Change unclaimed = claimCalc.unclaim(claimCalc.cellsOf(before), cell, HOME, MAX);
         if (unclaimed.refusal() == null) {
-          Change back = claimCalc.claim(unclaimed.points(), cell);
+          Change back = claimCalc.claim(claimCalc.cellsOf(unclaimed.points()), cell, MAX);
           assertEquals(text(before), text(back.points()), shape + " - " + cell);
           checked++;
         }
@@ -170,52 +185,61 @@ class claimCalcTest {
 
   @Test
   void refusedClaims() {
-    List<Vectore2> row = points(cells(new int[] {0, 0}, new int[] {1, 0}));
+    Set<Cell> row = cells(new int[] {0, 0}, new int[] {1, 0});
 
-    assertEquals(claimCalc.ALREADY_CLAIMED, claimCalc.claim(row, new Cell(48, 0)).refusal());
+    assertEquals(claimCalc.ALREADY_CLAIMED, claimCalc.claim(row, new Cell(48, 0), MAX).refusal());
     // not next to the town: the old claimCalc said "erweitert" and changed nothing
-    assertEquals(claimCalc.NOT_CONNECTED, claimCalc.claim(row, new Cell(144, 0)).refusal());
-    assertEquals(claimCalc.NOT_CONNECTED, claimCalc.claim(row, new Cell(96, 48)).refusal());
+    assertEquals(claimCalc.NOT_CONNECTED, claimCalc.claim(row, new Cell(144, 0), MAX).refusal());
+    assertEquals(claimCalc.NOT_CONNECTED, claimCalc.claim(row, new Cell(96, 48), MAX).refusal());
+    // a region that holds no cell, as after /rg redefine, is not replaced by the new cell
+    assertEquals(claimCalc.NOT_CONNECTED, claimCalc.claim(Set.of(), HOME, MAX).refusal());
+    assertEquals(claimCalc.TOO_MANY, claimCalc.claim(row, new Cell(96, 0), 2).refusal());
+    assertNull(claimCalc.claim(row, new Cell(96, 0), 3).refusal());
 
     // closing a ring leaves a hole
-    List<Vectore2> ring =
-        points(
-            cells(
-                new int[] {0, 0},
-                new int[] {1, 0},
-                new int[] {2, 0},
-                new int[] {2, 1},
-                new int[] {2, 2},
-                new int[] {1, 2},
-                new int[] {0, 2}));
-    assertEquals(claimCalc.NO_SINGLE_OUTLINE, claimCalc.claim(ring, new Cell(0, 48)).refusal());
+    Set<Cell> ring =
+        cells(
+            new int[] {0, 0},
+            new int[] {1, 0},
+            new int[] {2, 0},
+            new int[] {2, 1},
+            new int[] {2, 2},
+            new int[] {1, 2},
+            new int[] {0, 2});
+    assertEquals(
+        claimCalc.NO_SINGLE_OUTLINE, claimCalc.claim(ring, new Cell(0, 48), MAX).refusal());
 
-    // touching the town also at a corner only, at 96,48
-    List<Vectore2> hook =
-        points(
-            cells(
-                new int[] {0, 0},
-                new int[] {1, 0},
-                new int[] {0, 1},
-                new int[] {0, 2},
-                new int[] {1, 2},
-                new int[] {2, 2}));
-    assertEquals(claimCalc.NO_SINGLE_OUTLINE, claimCalc.claim(hook, new Cell(96, 48)).refusal());
+    // also a hole: 96,48 touches 48,0 at a corner and closes the cell 48,48 in
+    Set<Cell> hook =
+        cells(
+            new int[] {0, 0},
+            new int[] {1, 0},
+            new int[] {0, 1},
+            new int[] {0, 2},
+            new int[] {1, 2},
+            new int[] {2, 2});
+    assertEquals(
+        claimCalc.NO_SINGLE_OUTLINE, claimCalc.claim(hook, new Cell(96, 48), MAX).refusal());
   }
 
   @Test
   void refusedUnclaims() {
-    List<Vectore2> row = points(cells(new int[] {0, 0}, new int[] {1, 0}, new int[] {2, 0}));
-    assertEquals(claimCalc.NOT_CLAIMED, claimCalc.unclaim(row, new Cell(0, 48), HOME).refusal());
-    assertEquals(claimCalc.FOUNDING_CELL, claimCalc.unclaim(row, HOME, HOME).refusal());
+    Set<Cell> row = cells(new int[] {0, 0}, new int[] {1, 0}, new int[] {2, 0});
+    assertEquals(
+        claimCalc.NOT_CLAIMED, claimCalc.unclaim(row, new Cell(0, 48), HOME, MAX).refusal());
+    assertEquals(claimCalc.FOUNDING_CELL, claimCalc.unclaim(row, HOME, HOME, MAX).refusal());
     // splitting the town: the old claimCalc wrote a broken ring
     assertEquals(
-        claimCalc.NOT_CONNECTED, claimCalc.unclaim(row, new Cell(48, 0), HOME).refusal());
+        claimCalc.NOT_CONNECTED, claimCalc.unclaim(row, new Cell(48, 0), HOME, MAX).refusal());
+    // a town larger than its level allows, as after /rg, is not written smaller than that
+    assertEquals(
+        claimCalc.OVER_LEVEL, claimCalc.unclaim(row, new Cell(96, 0), HOME, 1).refusal());
+    assertNull(claimCalc.unclaim(row, new Cell(96, 0), HOME, 2).refusal());
 
     // only a corner left between the two parts
-    List<Vectore2> step = points(cells(new int[] {0, 0}, new int[] {1, 0}, new int[] {1, 1}));
+    Set<Cell> step = cells(new int[] {0, 0}, new int[] {1, 0}, new int[] {1, 1});
     assertEquals(
-        claimCalc.NOT_CONNECTED, claimCalc.unclaim(step, new Cell(48, 0), HOME).refusal());
+        claimCalc.NOT_CONNECTED, claimCalc.unclaim(step, new Cell(48, 0), HOME, MAX).refusal());
 
     // a hole in the middle
     Set<Cell> square = new HashSet<>();
@@ -226,11 +250,22 @@ class claimCalcTest {
     }
     assertEquals(
         claimCalc.NO_SINGLE_OUTLINE,
-        claimCalc.unclaim(points(square), new Cell(48, 48), HOME).refusal());
+        claimCalc.unclaim(square, new Cell(48, 48), HOME, MAX).refusal());
 
     // the last cell is the founding cell
     assertEquals(
-        claimCalc.FOUNDING_CELL, claimCalc.unclaim(points(Set.of(HOME)), HOME, HOME).refusal());
+        claimCalc.FOUNDING_CELL, claimCalc.unclaim(Set.of(HOME), HOME, HOME, MAX).refusal());
+  }
+
+  @Test
+  void propertyReachesIntoACell() {
+    // a property from x 80 to 110 lies in the cells 48 and 96, though its middle is 95
+    assertTrue(new Cell(96, 0).overlaps(80, 10, 110, 20));
+    assertTrue(new Cell(48, 0).overlaps(80, 10, 110, 20));
+    assertFalse(new Cell(0, 0).overlaps(80, 10, 110, 20));
+    // a property on block 48 does not keep the cell 0 from being given back
+    assertFalse(new Cell(0, 0).overlaps(48, 0, 48, 0));
+    assertTrue(new Cell(-48, -48).overlaps(-1, -1, -1, -1));
   }
 
   /**
@@ -249,8 +284,9 @@ class claimCalcTest {
       for (int step = 0; step < 15; step++) {
         Cell cell = new Cell((random.nextInt(5) - 2) * 48L, (random.nextInt(5) - 2) * 48L);
         boolean unclaim = cells.contains(cell);
+        Set<Cell> read = claimCalc.cellsOf(points);
         Change change =
-            unclaim ? claimCalc.unclaim(points, cell, HOME) : claimCalc.claim(points, cell);
+            unclaim ? claimCalc.unclaim(read, cell, HOME, MAX) : claimCalc.claim(read, cell, MAX);
         Set<Cell> want = new HashSet<>(cells);
         if (unclaim) {
           want.remove(cell);
@@ -266,10 +302,11 @@ class claimCalcTest {
         assertNull(expectedRefusal(want, cell, unclaim), want.toString());
         assertEquals(want, claimCalc.cellsOf(change.points()));
         assertStraight(change.points());
+        Set<Cell> after = claimCalc.cellsOf(change.points());
         Change back =
             unclaim
-                ? claimCalc.claim(change.points(), cell)
-                : claimCalc.unclaim(change.points(), cell, HOME);
+                ? claimCalc.claim(after, cell, MAX)
+                : claimCalc.unclaim(after, cell, HOME, MAX);
         assertEquals(text(points), text(back.points()));
         cells = want;
         points = change.points();
@@ -287,7 +324,8 @@ class claimCalcTest {
     if (!connected(want)) {
       return claimCalc.NOT_CONNECTED;
     }
-    if (hasHole(want) || touchesAtACorner(want)) {
+    // Cells that touch at a corner and are connected otherwise always close a hole in.
+    if (hasHole(want)) {
       return claimCalc.NO_SINGLE_OUTLINE;
     }
     return null;
@@ -332,21 +370,6 @@ class claimCalcTest {
     long free = (maxX - minX) / 48 + 1;
     free = free * ((maxZ - minZ) / 48 + 1) - cells.size();
     return outside.size() != free;
-  }
-
-  /** Two cells meeting only at a corner, with neither of the other two cells there. */
-  private static boolean touchesAtACorner(Set<Cell> cells) {
-    for (Cell c : cells) {
-      for (long dx : new long[] {-48, 48}) {
-        Cell diagonal = new Cell(c.x() + dx, c.z() + 48);
-        boolean side1 = cells.contains(new Cell(c.x() + dx, c.z()));
-        boolean side2 = cells.contains(new Cell(c.x(), c.z() + 48));
-        if (cells.contains(diagonal) && !side1 && !side2) {
-          return true;
-        }
-      }
-    }
-    return false;
   }
 
   private static void assertStraight(List<Vectore2> points) {

@@ -111,6 +111,11 @@ public abstract class Region {
     }
   }
 
+  /** After a claim the WorldGuard region is a new object; this keeps the cached one current. */
+  public void setWorldguardRegion(ProtectedRegion region) {
+    this.region = region;
+  }
+
   public ProtectedRegion getWorldguardRegion() {
     World world = Bukkit.getWorld("world");
     if (world == null) {

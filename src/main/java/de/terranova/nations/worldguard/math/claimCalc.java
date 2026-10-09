@@ -25,6 +25,10 @@ public class claimCalc {
       "Die Stadt muss zusammenhängen, über eine Kante, nicht nur über eine Ecke.";
   static final String NO_SINGLE_OUTLINE =
       "So entstünde ein Loch oder eine Berührung nur über eine Ecke.";
+  static final String TOO_MANY =
+      "Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht.";
+  static final String OVER_LEVEL =
+      "Deine Stadt hat mehr Claims, als ihr Level erlaubt. Ein Admin muss die Region anpassen.";
 
   /** A cell of the grid by its corner with the smallest x and z. */
   public record Cell(long x, long z) {
@@ -32,6 +36,12 @@ public class claimCalc {
     /** The cell of the block at {@code x}, {@code z}. */
     public static Cell at(double x, double z) {
       return new Cell(gridFloor(x), gridFloor(z));
+    }
+
+    /** Whether the blocks from min to max, both included, reach into this cell. */
+    public boolean overlaps(long minX, long minZ, long maxX, long maxZ) {
+      long last = SUPERCHUNK_SIZE - 1;
+      return maxX >= x && minX <= x + last && maxZ >= z && minZ <= z + last;
     }
 
     List<Cell> neighbors() {
@@ -50,23 +60,32 @@ public class claimCalc {
     }
   }
 
-  /** The region of {@code points} with {@code cell} added. */
-  public static Change claim(List<Vectore2> points, Cell cell) {
-    Set<Cell> cells = cellsOf(points);
+  /** The region of these cells with {@code cell} added, at most {@code max} cells. */
+  public static Change claim(Set<Cell> region, Cell cell, int max) {
+    if (region.isEmpty()) {
+      return Change.refused(NOT_CONNECTED);
+    }
+    Set<Cell> cells = new HashSet<>(region);
     if (!cells.add(cell)) {
       return Change.refused(ALREADY_CLAIMED);
+    }
+    if (cells.size() > max) {
+      return Change.refused(TOO_MANY);
     }
     return outline(cells);
   }
 
-  /** The region of {@code points} without {@code cell}; the founding cell always stays. */
-  public static Change unclaim(List<Vectore2> points, Cell cell, Cell founding) {
+  /** The region of these cells without {@code cell}; the founding cell always stays. */
+  public static Change unclaim(Set<Cell> region, Cell cell, Cell founding, int max) {
     if (cell.equals(founding)) {
       return Change.refused(FOUNDING_CELL);
     }
-    Set<Cell> cells = cellsOf(points);
+    Set<Cell> cells = new HashSet<>(region);
     if (!cells.remove(cell)) {
       return Change.refused(NOT_CLAIMED);
+    }
+    if (cells.size() > max) {
+      return Change.refused(OVER_LEVEL);
     }
     return outline(cells);
   }
@@ -74,6 +93,7 @@ public class claimCalc {
   /**
    * The cells of a region from its WorldGuard points. The middle of each cell decides, 24 blocks
    * from any edge, so the direction of the points and the corners old versions wrote do not matter.
+   * A region off the grid, as after {@code /rg redefine}, snaps to the cells whose middle it holds.
    */
   public static Set<Cell> cellsOf(List<Vectore2> points) {
     Set<Cell> cells = new HashSet<>();
