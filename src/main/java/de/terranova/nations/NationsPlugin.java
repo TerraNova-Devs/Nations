@@ -11,6 +11,7 @@ import de.terranova.nations.database.dao.BoundaryRegionDAO;
 import de.terranova.nations.database.dao.GridRegionDAO;
 import de.terranova.nations.database.dao.RealEstateDAO;
 import de.terranova.nations.discord.WebhookHandler;
+import de.terranova.nations.heroicmap.TownMap;
 import de.terranova.nations.logging.FileLogger;
 import de.terranova.nations.nations.NationManager;
 import de.terranova.nations.professions.ProfessionManager;
@@ -100,6 +101,14 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
     loadConfigs();
     ProfessionManager.loadAll();
     getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    // TownMap names the API of HeroicMap; without HeroicMap only the map layers are missing.
+    if (getServer().getPluginManager().isPluginEnabled("HeroicMap")) {
+      try {
+        TownMap.start(this);
+      } catch (LinkageError | Exception e) {
+        getLogger().warning("HeroicMap: Städte nicht auf der Karte: " + e);
+      }
+    }
   }
 
   @EventHandler
