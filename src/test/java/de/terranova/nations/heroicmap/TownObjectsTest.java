@@ -31,6 +31,7 @@ class TownObjectsTest {
 
   private static final UUID ID = UUID.fromString("00000000-0000-0000-0000-000000000017");
   private static final UUID OTHER = UUID.fromString("00000000-0000-0000-0000-000000000018");
+  private static final UUID NATION = UUID.fromString("00000000-0000-0000-0000-0000000000aa");
 
   private static Town town(UUID id, boolean capital, String banner, List<Point> corners) {
     return new Town(
@@ -40,6 +41,7 @@ class TownObjectsTest {
         -340.5,
         corners,
         "Nordreich",
+        NATION,
         capital,
         "#AABBCC",
         banner,
@@ -50,6 +52,28 @@ class TownObjectsTest {
         List.of("Ben"),
         List.of("Cara", "Dario"),
         List.of(new Panel.Row("Bergbau", 2, 4, "#7F8C8D")));
+  }
+
+  /** A town of the nation at x, z. */
+  private static Town member(int n, double x, double z) {
+    return new Town(
+        new UUID(0, n),
+        "Stadt " + n,
+        x,
+        z,
+        List.of(),
+        "Nordreich",
+        NATION,
+        false,
+        "#AABBCC",
+        null,
+        1,
+        1,
+        20,
+        null,
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static List<Point> square(int x, int z) {
@@ -226,6 +250,107 @@ class TownObjectsTest {
     assertEquals(List.of(), layer.puts, "unchanged objects go out again");
     assertEquals(
         objects(a).stream().map(MapObject::id).toList(), List.copyOf(layer.objects.keySet()));
+  }
+
+  @Test
+  void townNameGrowsWithTheLevelUpToALimit() {
+    assertEquals(12, TownObjects.townNameSize(0));
+    assertEquals(12, TownObjects.townNameSize(1));
+    assertEquals(16, TownObjects.townNameSize(3));
+    assertEquals(30, TownObjects.townNameSize(10));
+    assertEquals(30, TownObjects.townNameSize(50));
+  }
+
+  @Test
+  void townNameLiesLevelJustNorthOfTheTown() {
+    MapObject.Label label = TownObjects.townName(town(ID, false, null, List.of()));
+
+    assertEquals(ID.toString(), label.id());
+    assertEquals("Hafen Stadt", label.text());
+    // level 3: capitals 16 blocks high, centred 4 + 8 blocks north, so the lower edge stays
+    // 4 blocks clear for the banner
+    assertEquals(List.of(new Point(120.5, -352.5)), label.path());
+    assertEquals(16.0, label.size());
+    assertEquals(new MapObject.Outline(null, 2.0), label.outline());
+  }
+
+  @Test
+  void nameOfANationWithOneTown() {
+    MapObject.Label label =
+        (MapObject.Label) TownObjects.nationNames(List.of(member(1, 100, 200))).getFirst();
+
+    assertEquals("nation-" + NATION, label.id());
+    assertEquals("Nordreich", label.text());
+    assertEquals(List.of(new Point(100, 120)), label.path());
+    assertEquals(40.0, label.size());
+    assertEquals(0.3, label.spacing());
+    assertEquals("#AABBCC", label.color());
+  }
+
+  @Test
+  void nameOfANationAlongItsLongestExtent() {
+    // listed from east to west; the name still runs from west to east, arched to the north
+    List<Point> path =
+        TownObjects.nationPath(
+            List.of(member(1, 1000, 0), member(2, 500, 60), member(3, 0, 0)));
+
+    assertEquals(9, path.size());
+    assertEquals(new Point(0, 20), path.getFirst());
+    assertEquals(new Point(1000, 20), path.getLast());
+    assertEquals(new Point(500, -80), path.get(4));
+  }
+
+  /**
+   * In every direction, also due north and south in both orders, the letters stand on the side
+   * that is not south, and the arc bulges to that side.
+   */
+  @Test
+  void theNameOfANationNeverStandsOnItsHead() {
+    List<double[]> directions = new ArrayList<>();
+    for (int degrees = 0; degrees < 360; degrees += 15) {
+      double r = Math.toRadians(degrees);
+      directions.add(new double[] {Math.cos(r), Math.sin(r)});
+    }
+    directions.add(new double[] {0, 1});
+    directions.add(new double[] {0, -1});
+    for (double[] d : directions) {
+      List<Point> path =
+          TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 1000 * d[0], 1000 * d[1])));
+      Point start = path.getFirst();
+      Point end = path.getLast();
+      double dx = end.x() - start.x();
+      double dz = end.z() - start.z();
+      // the letters stand on (dz, -dx): never south
+      assertTrue(-dx <= 1e-9, "letters face south for " + d[0] + "," + d[1]);
+      Point apex = path.get(4);
+      double outwards =
+          (apex.x() - (start.x() + end.x()) / 2) * dz - (apex.z() - (start.z() + end.z()) / 2) * dx;
+      assertTrue(outwards > 0, "arc bulges away from the letters for " + d[0] + "," + d[1]);
+    }
+    // due north and south: from south to north, whichever town comes first
+    List<Point> up = TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 0, 1000)));
+    List<Point> down = TownObjects.nationPath(List.of(member(1, 0, 1000), member(2, 0, 0)));
+    assertEquals(new Point(0, 1000), up.getFirst());
+    assertEquals(up, down);
+  }
+
+  @Test
+  void townsOfANationAtOnePlaceAreLikeOne() {
+    assertEquals(
+        List.of(new Point(10, -70)),
+        TownObjects.nationPath(List.of(member(1, 10, 10), member(2, 10, 10))));
+  }
+
+  @Test
+  void theNameOfANationGoesWithIt() {
+    FakeLayer layer = new FakeLayer();
+    Synced synced = new Synced(layer, Logger.getAnonymousLogger());
+    synced.sync(TownObjects.nationNames(List.of(member(1, 0, 0), member(2, 96, 0))));
+    assertEquals(List.of("nation-" + NATION), List.copyOf(layer.objects.keySet()));
+
+    synced.sync(TownObjects.nationNames(List.of()));
+
+    assertEquals(List.of(), List.copyOf(layer.objects.keySet()));
   }
 
   @Test

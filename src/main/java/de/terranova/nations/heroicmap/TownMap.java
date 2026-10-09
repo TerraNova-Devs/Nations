@@ -59,6 +59,7 @@ public final class TownMap {
   private final Synced towns;
   private final Synced areas;
   private final Synced circles;
+  private final Synced lettering;
   private final Map<UUID, Professions> professions = new ConcurrentHashMap<>();
   // nation id -> banner (Base64 of the item) last uploaded as its image
   private final Map<UUID, String> banners = new HashMap<>();
@@ -70,6 +71,7 @@ public final class TownMap {
     towns = synced(api, "staedte", "Städte", "Towns", true, 102);
     areas = synced(api, "regionen", "Regionen", "Regions", true, 101);
     circles = synced(api, "kreise", "Kreise", "Circles", false, 100);
+    lettering = synced(api, "namen", "Namen", "Names", true, 103);
   }
 
   /** Creates the layers and syncs them every 30 seconds. */
@@ -125,6 +127,10 @@ public final class TownMap {
       towns.sync(all.stream().map(TownObjects::pin).toList());
       areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
       circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
+      List<MapObject> labels = new ArrayList<>();
+      all.forEach(t -> labels.add(TownObjects.townName(t)));
+      labels.addAll(TownObjects.nationNames(all));
+      lettering.sync(labels);
       removeBannersExcept(usedBanners);
     } catch (IllegalStateException e) {
       // Only after the layers are gone, as while Nations itself is being disabled.
@@ -170,6 +176,7 @@ public final class TownMap {
         s.getLocation().z,
         corners,
         nation == null ? null : nation.getName(),
+        nation == null ? null : nation.getId(),
         nation != null && s.getId().equals(nation.getCapital()),
         color,
         banner,
