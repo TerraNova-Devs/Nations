@@ -9,7 +9,6 @@ import de.terranova.nations.regions.grid.SettleRegion;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -73,19 +72,7 @@ public class TownSettingsGUI extends RoseGUI {
         EntityType.REGISTRY.get("minecraft:phantom"), // used to check if it's "enabled"
         new HashSet<>(
             Collections.singletonList(EntityType.REGISTRY.get("minecraft:zombie_villager"))),
-        new HashSet<>(
-            Arrays.asList(
-                EntityType.REGISTRY.get("minecraft:zombie_villager"),
-                EntityType.REGISTRY.get("minecraft:zombie"),
-                EntityType.REGISTRY.get("minecraft:spider"),
-                EntityType.REGISTRY.get("minecraft:skeleton"),
-                EntityType.REGISTRY.get("minecraft:enderman"),
-                EntityType.REGISTRY.get("minecraft:phantom"),
-                EntityType.REGISTRY.get("minecraft:drowned"),
-                EntityType.REGISTRY.get("minecraft:witch"),
-                EntityType.REGISTRY.get("minecraft:pillager"),
-                com.sk89q.worldedit.world.entity.EntityType.REGISTRY.get("minecraft:husk"),
-                EntityType.REGISTRY.get("minecraft:creeper"))));
+        SettleRegion.getDeniedSpawnEntityTypes());
     addStateFlag(ElytraFlag.ELYTRA_FLAG,20,Material.ELYTRA,"Soll eine Elytra benutzbar sein?");
 
     RoseItem back =

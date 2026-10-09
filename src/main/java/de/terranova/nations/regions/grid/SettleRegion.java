@@ -50,7 +50,8 @@ public class SettleRegion extends GridRegion
     this.region = getWorldguardRegion();
   }
 
-  private Set<EntityType> getDeniedSpawnEntityTypes() {
+  /** The monsters a town denies while monsters are off, see TownSettingsGUI. */
+  public static Set<EntityType> getDeniedSpawnEntityTypes() {
     return Stream.of(
             "zombie_villager",
             "zombie",
@@ -62,9 +63,27 @@ public class SettleRegion extends GridRegion
             "witch",
             "pillager",
             "husk",
-            "creeper")
+            "creeper",
+            "bogged",
+            "parched",
+            "creaking",
+            "stray",
+            "slime",
+            "zombified_piglin")
         .map(EntityType::new)
         .collect(Collectors.toSet());
+  }
+
+  /** A town with monsters off also denies the monsters added to the list since. */
+  public void addNewDeniedSpawns() {
+    Set<EntityType> denied = region == null ? null : region.getFlag(Flags.DENY_SPAWN);
+    if (denied == null || !denied.contains(new EntityType("phantom"))) {
+      return;
+    }
+    Set<EntityType> all = new HashSet<>(denied);
+    if (all.addAll(getDeniedSpawnEntityTypes())) {
+      region.setFlag(Flags.DENY_SPAWN, all);
+    }
   }
 
   public boolean hasChildren() {

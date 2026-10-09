@@ -106,6 +106,8 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
   public void onCitizensEnable(CitizensEnableEvent event) {
     RegionManager.addAllRegions(SettleRegion.class, GridRegionDAO.fetchRegionsByType(SettleRegion.class, "settle"));
     RegionManager.addAllRegions(PropertyRegion.class, BoundaryRegionDAO.fetchRegionsByType(PropertyRegion.class, "property"));
+    RegionManager.retrieveAllCachedRegions(SettleRegion.class).values()
+        .forEach(SettleRegion::addNewDeniedSpawns);
   }
 
   private void nationsRegionTypeRegistry() {
