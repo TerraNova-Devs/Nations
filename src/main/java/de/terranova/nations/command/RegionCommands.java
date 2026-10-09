@@ -136,7 +136,9 @@ public class RegionCommands {
       return false;
     }
 
-    RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
+    if (!RegionClaimFunctions.claim(p, cache.getRegion().getWorldguardRegion())) {
+      return false;
+    }
 
     region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
     p.sendMessage(

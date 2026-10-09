@@ -6,191 +6,94 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.Queue;
 import java.util.Set;
 
+/**
+ * Claims of grid regions in cells of 48 × 48 blocks. The cells are the truth: claim and unclaim
+ * read the cells from the WorldGuard points, add or remove one and build the outline anew, so an
+ * unclaim undoes a claim point for point.
+ */
 public class claimCalc {
 
   private static final int SUPERCHUNK_SIZE = 48;
-  private static final double WORLDGUARD_OFFSET = 0.5;
 
-  public static Optional<List<Vectore2>> dothatshitforme(
-      List<Vectore2> oldlist, List<Vectore2> newlist) {
-    if (oldlist == null || oldlist.size() < 4 || newlist == null || newlist.size() < 4) {
-      return Optional.empty();
+  static final String ALREADY_CLAIMED = "Diese Fläche gehört schon zu deiner Stadt.";
+  static final String NOT_CLAIMED = "Diese Fläche gehört nicht zu deiner Stadt.";
+  static final String FOUNDING_CELL = "Du kannst den Initialclaim nicht entfernen!";
+  static final String NOT_CONNECTED =
+      "Die Stadt muss zusammenhängen, über eine Kante, nicht nur über eine Ecke.";
+  static final String NO_SINGLE_OUTLINE =
+      "So entstünde ein Loch oder eine Berührung nur über eine Ecke.";
+
+  /** A cell of the grid by its corner with the smallest x and z. */
+  public record Cell(long x, long z) {
+
+    /** The cell of the block at {@code x}, {@code z}. */
+    public static Cell at(double x, double z) {
+      return new Cell(gridFloor(x), gridFloor(z));
     }
 
-    Set<Cell> cells = cellsFromWorldGuardRegion(oldlist);
-    Set<Cell> newCells = cellsFromClaimRegion(newlist);
-    if (newCells.isEmpty()) {
-      return Optional.empty();
+    List<Cell> neighbors() {
+      return List.of(
+          new Cell(x + SUPERCHUNK_SIZE, z),
+          new Cell(x - SUPERCHUNK_SIZE, z),
+          new Cell(x, z + SUPERCHUNK_SIZE),
+          new Cell(x, z - SUPERCHUNK_SIZE));
     }
-
-    cells.addAll(newCells);
-    if (!isConnected(cells)) {
-      return Optional.empty();
-    }
-
-    Optional<List<GridPoint>> outline = traceSingleOutline(cells);
-    if (outline.isEmpty()) {
-      return Optional.empty();
-    }
-
-    List<Vectore2> compactOutline = entprojezieren(toVectors(outline.get()));
-    List<Vectore2> centered = reverseaufplustern(compactOutline);
-    return Optional.of(entnormalisieren(centered));
   }
 
-  public static double area(Vectore2[] vertices) {
-    double sum = 0;
-    for (int i = 0; i < vertices.length; i++) {
-      Vectore2 current = vertices[i];
-      Vectore2 next = vertices[(i + 1) % vertices.length];
-      sum += current.x * next.z - next.x * current.z;
+  /** The new WorldGuard points of a region, or the reason, for the player, why not. */
+  public record Change(List<Vectore2> points, String refusal) {
+    static Change refused(String refusal) {
+      return new Change(null, refusal);
     }
-    return Math.abs(sum) / 2;
   }
 
-  public static List<Vectore2> normalisieren(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    for (Vectore2 v : current) {
-      output.add(new Vectore2(v.x + WORLDGUARD_OFFSET, v.z + WORLDGUARD_OFFSET));
+  /** The region of {@code points} with {@code cell} added. */
+  public static Change claim(List<Vectore2> points, Cell cell) {
+    Set<Cell> cells = cellsOf(points);
+    if (!cells.add(cell)) {
+      return Change.refused(ALREADY_CLAIMED);
     }
-    return output;
+    return outline(cells);
   }
 
-  static List<Vectore2> entnormalisieren(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    for (Vectore2 v : current) {
-      output.add(new Vectore2(v.x - WORLDGUARD_OFFSET, v.z - WORLDGUARD_OFFSET));
+  /** The region of {@code points} without {@code cell}; the founding cell always stays. */
+  public static Change unclaim(List<Vectore2> points, Cell cell, Cell founding) {
+    if (cell.equals(founding)) {
+      return Change.refused(FOUNDING_CELL);
     }
-    return output;
-  }
-
-  static Optional<List<Vectore2>> mergen(List<Vectore2> oldRegion, List<Vectore2> newRegion) {
-    Set<Cell> cells = cellsFromClaimRegion(reverseaufplustern(entprojezieren(oldRegion)));
-    cells.addAll(cellsFromClaimRegion(reverseaufplustern(entprojezieren(newRegion))));
-    Optional<List<GridPoint>> outline = traceSingleOutline(cells);
-    return outline.map(claimCalc::toVectors);
-  }
-
-  public static double abstand(Vectore2 a, Vectore2 b) {
-    return Math.sqrt((Math.pow(a.x - b.x, 2) + Math.pow(a.z - b.z, 2)));
-  }
-
-  static List<Vectore2> projezieren(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    if (current.isEmpty()) {
-      return output;
+    Set<Cell> cells = cellsOf(points);
+    if (!cells.remove(cell)) {
+      return Change.refused(NOT_CLAIMED);
     }
-
-    for (int i = 0; i < current.size(); i++) {
-      Vectore2 start = current.get(i);
-      Vectore2 end = current.get((i + 1) % current.size());
-      output.add(new Vectore2(start.x, start.z));
-
-      double dx = end.x - start.x;
-      double dz = end.z - start.z;
-      int steps = (int) (Math.max(Math.abs(dx), Math.abs(dz)) / SUPERCHUNK_SIZE);
-      for (int step = 1; step < steps; step++) {
-        output.add(
-            new Vectore2(
-                start.x + Math.signum(dx) * SUPERCHUNK_SIZE * step,
-                start.z + Math.signum(dz) * SUPERCHUNK_SIZE * step));
-      }
-    }
-    return output;
+    return outline(cells);
   }
 
-  static List<Vectore2> entprojezieren(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    if (current.size() < 3) {
-      output.addAll(current);
-      return output;
-    }
-
-    for (int i = 0; i < current.size(); i++) {
-      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
-      Vectore2 point = current.get(i);
-      Vectore2 next = current.get((i + 1) % current.size());
-      if ((last.x == point.x && point.x == next.x) || (last.z == point.z && point.z == next.z)) {
-        continue;
-      }
-      output.add(point);
-    }
-    return output;
-  }
-
-  public static List<Vectore2> aufplustern(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    if (current.size() < 3) {
-      return output;
-    }
-
-    for (int i = 0; i < current.size(); i++) {
-      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
-      Vectore2 point = current.get(i);
-      Vectore2 next = current.get((i + 1) % current.size());
-      output.add(offsetCorner(point, last, next, WORLDGUARD_OFFSET));
-    }
-    return output;
-  }
-
-  static List<Vectore2> reverseaufplustern(List<Vectore2> current) {
-    List<Vectore2> output = new ArrayList<>();
-    if (current.size() < 3) {
-      return output;
-    }
-
-    for (int i = 0; i < current.size(); i++) {
-      Vectore2 last = current.get((i - 1 + current.size()) % current.size());
-      Vectore2 point = current.get(i);
-      Vectore2 next = current.get((i + 1) % current.size());
-      output.add(offsetCorner(point, last, next, -WORLDGUARD_OFFSET));
-    }
-    return output;
-  }
-
-  private static Vectore2 offsetCorner(Vectore2 point, Vectore2 last, Vectore2 next, double offset) {
-    double previousDirectionX = Math.signum(point.x - last.x);
-    double previousDirectionZ = Math.signum(point.z - last.z);
-    double nextDirectionX = Math.signum(next.x - point.x);
-    double nextDirectionZ = Math.signum(next.z - point.z);
-
-    double xOffset = offset * (previousDirectionX - nextDirectionX);
-    double zOffset = offset * (previousDirectionZ - nextDirectionZ);
-    return new Vectore2(point.x + xOffset, point.z + zOffset);
-  }
-
-  private static Set<Cell> cellsFromWorldGuardRegion(List<Vectore2> points) {
-    return cellsInsideBoundary(aufplustern(normalisieren(points)));
-  }
-
-  private static Set<Cell> cellsFromClaimRegion(List<Vectore2> points) {
-    return cellsInsideBoundary(aufplustern(points));
-  }
-
-  private static Set<Cell> cellsInsideBoundary(List<Vectore2> boundary) {
+  /**
+   * The cells of a region from its WorldGuard points. The middle of each cell decides, 24 blocks
+   * from any edge, so the direction of the points and the corners old versions wrote do not matter.
+   */
+  public static Set<Cell> cellsOf(List<Vectore2> points) {
     Set<Cell> cells = new HashSet<>();
-    if (boundary.size() < 4) {
+    if (points.size() < 3) {
       return cells;
     }
-
-    long minX = Long.MAX_VALUE;
-    long minZ = Long.MAX_VALUE;
-    long maxX = Long.MIN_VALUE;
-    long maxZ = Long.MIN_VALUE;
-    for (Vectore2 point : boundary) {
-      minX = Math.min(minX, gridFloor(point.x));
-      minZ = Math.min(minZ, gridFloor(point.z));
-      maxX = Math.max(maxX, gridCeil(point.x));
-      maxZ = Math.max(maxZ, gridCeil(point.z));
+    double minX = Double.MAX_VALUE;
+    double minZ = Double.MAX_VALUE;
+    double maxX = -Double.MAX_VALUE;
+    double maxZ = -Double.MAX_VALUE;
+    for (Vectore2 p : points) {
+      minX = Math.min(minX, p.x);
+      minZ = Math.min(minZ, p.z);
+      maxX = Math.max(maxX, p.x);
+      maxZ = Math.max(maxZ, p.z);
     }
-
-    for (long x = minX; x < maxX; x += SUPERCHUNK_SIZE) {
-      for (long z = minZ; z < maxZ; z += SUPERCHUNK_SIZE) {
-        if (containsPoint(boundary, x + SUPERCHUNK_SIZE / 2.0, z + SUPERCHUNK_SIZE / 2.0)) {
+    for (long x = gridFloor(minX); x <= maxX; x += SUPERCHUNK_SIZE) {
+      for (long z = gridFloor(minZ); z <= maxZ; z += SUPERCHUNK_SIZE) {
+        double half = SUPERCHUNK_SIZE / 2.0;
+        if (containsPoint(points, x + half, z + half)) {
           cells.add(new Cell(x, z));
         }
       }
@@ -198,13 +101,66 @@ public class claimCalc {
     return cells;
   }
 
+  /**
+   * The WorldGuard points of exactly these cells: one ring along the outline, a point at each
+   * corner. Refused if the cells do not touch along edges or the outline is not a single ring, as
+   * with a hole or cells that touch only at a corner.
+   */
+  static Change outline(Set<Cell> cells) {
+    if (!isConnected(cells)) {
+      return Change.refused(NOT_CONNECTED);
+    }
+    List<GridPoint> ring = traceSingleOutline(cells);
+    if (ring == null) {
+      return Change.refused(NO_SINGLE_OUTLINE);
+    }
+    List<Vectore2> points = new ArrayList<>();
+    for (int i = 0; i < ring.size(); i++) {
+      GridPoint last = ring.get((i - 1 + ring.size()) % ring.size());
+      GridPoint point = ring.get(i);
+      GridPoint next = ring.get((i + 1) % ring.size());
+      boolean straight =
+          (last.x() == point.x() && point.x() == next.x())
+              || (last.z() == point.z() && point.z() == next.z());
+      if (!straight) {
+        points.add(block(point, cells));
+      }
+    }
+    return new Change(points, null);
+  }
+
+  /**
+   * The block WorldGuard stores for a corner of the outline. Of the four blocks around the corner,
+   * a convex corner has one inside: that one. A concave corner has one outside: the block
+   * diagonal to it. Neither depends on the direction of the ring.
+   */
+  private static Vectore2 block(GridPoint corner, Set<Cell> cells) {
+    long x = corner.x();
+    long z = corner.z();
+    boolean nw = inside(cells, x - 1, z - 1);
+    boolean ne = inside(cells, x, z - 1);
+    boolean sw = inside(cells, x - 1, z);
+    boolean se = inside(cells, x, z);
+    boolean convex = (nw ? 1 : 0) + (ne ? 1 : 0) + (sw ? 1 : 0) + (se ? 1 : 0) == 1;
+    boolean east = convex ? ne || se : ne && se;
+    boolean south = convex ? sw || se : sw && se;
+    return new Vectore2(east ? x : x - 1, south ? z : z - 1);
+  }
+
+  private static boolean inside(Set<Cell> cells, long blockX, long blockZ) {
+    return cells.contains(Cell.at(blockX, blockZ));
+  }
+
+  public static double abstand(Vectore2 a, Vectore2 b) {
+    return Math.sqrt((Math.pow(a.x - b.x, 2) + Math.pow(a.z - b.z, 2)));
+  }
+
   private static boolean containsPoint(List<Vectore2> polygon, double x, double z) {
     boolean inside = false;
     for (int i = 0, j = polygon.size() - 1; i < polygon.size(); j = i++) {
       Vectore2 a = polygon.get(i);
       Vectore2 b = polygon.get(j);
-      if (((a.z > z) != (b.z > z))
-          && (x < (b.x - a.x) * (z - a.z) / (b.z - a.z) + a.x)) {
+      if (((a.z > z) != (b.z > z)) && (x < (b.x - a.x) * (z - a.z) / (b.z - a.z) + a.x)) {
         inside = !inside;
       }
     }
@@ -233,16 +189,17 @@ public class claimCalc {
     return seen.size() == cells.size();
   }
 
-  private static Optional<List<GridPoint>> traceSingleOutline(Set<Cell> cells) {
+  /** The outline as one ring of grid corners, or null if it is not one ring. */
+  private static List<GridPoint> traceSingleOutline(Set<Cell> cells) {
     Set<Edge> edges = boundaryEdges(cells);
     if (edges.isEmpty()) {
-      return Optional.empty();
+      return null;
     }
 
     Map<GridPoint, GridPoint> nextByPoint = new HashMap<>();
     for (Edge edge : edges) {
       if (nextByPoint.put(edge.from(), edge.to()) != null) {
-        return Optional.empty();
+        return null;
       }
     }
 
@@ -254,14 +211,14 @@ public class claimCalc {
       outline.add(current);
       current = nextByPoint.get(current);
       if (current == null || outline.size() > edges.size()) {
-        return Optional.empty();
+        return null;
       }
     } while (!current.equals(start));
 
     if (outline.size() != edges.size()) {
-      return Optional.empty();
+      return null;
     }
-    return Optional.of(outline);
+    return outline;
   }
 
   private static Set<Edge> boundaryEdges(Set<Cell> cells) {
@@ -302,30 +259,8 @@ public class claimCalc {
     return start;
   }
 
-  private static List<Vectore2> toVectors(List<GridPoint> points) {
-    List<Vectore2> output = new ArrayList<>();
-    for (GridPoint point : points) {
-      output.add(new Vectore2(point.x(), point.z()));
-    }
-    return output;
-  }
-
   private static long gridFloor(double value) {
     return (long) Math.floor(value / SUPERCHUNK_SIZE) * SUPERCHUNK_SIZE;
-  }
-
-  private static long gridCeil(double value) {
-    return (long) Math.ceil(value / SUPERCHUNK_SIZE) * SUPERCHUNK_SIZE;
-  }
-
-  private record Cell(long x, long z) {
-    List<Cell> neighbors() {
-      return List.of(
-          new Cell(x + SUPERCHUNK_SIZE, z),
-          new Cell(x - SUPERCHUNK_SIZE, z),
-          new Cell(x, z + SUPERCHUNK_SIZE),
-          new Cell(x, z - SUPERCHUNK_SIZE));
-    }
   }
 
   private record GridPoint(long x, long z) {}

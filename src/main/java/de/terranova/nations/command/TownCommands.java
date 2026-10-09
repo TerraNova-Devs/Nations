@@ -993,6 +993,15 @@ public class TownCommands extends AbstractCommand {
       return false;
     }
 
+    // The same command gives a cell of the town back.
+    ProtectedRegion region = settle.getWorldguardRegion();
+    if (region == null) {
+      return false;
+    }
+    if (RegionClaimFunctions.cells(region).contains(RegionClaimFunctions.cellOf(p))) {
+      return unclaimRegion(p, settle, region);
+    }
+
     double abstand = Integer.MAX_VALUE;
     for (Vectore2 location : GridRegion.locationCache) {
       if (settle.getLocation().equals(location)) continue;
@@ -1037,6 +1046,23 @@ public class TownCommands extends AbstractCommand {
       return false;
     }
 
+    if (!RegionClaimFunctions.claim(p, region)) {
+      return false;
+    }
+
+    settle.setClaims(RegionClaimFunctions.getClaimAnzahl(settle.getId()));
+    p.sendMessage(
+        Chat.greenFade(
+            "Deine Stadt wurde erfolgreich erweitert. ("
+                + settle.getClaims()
+                + "/"
+                + settle.getMaxClaims()
+                + ")"));
+
+    return true;
+  }
+
+  private boolean unclaimRegion(Player p, SettleRegion settle, ProtectedRegion region) {
     int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
     int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
     if (BoundaryClaimFunctions.propertyPointInside2DBox(
@@ -1044,20 +1070,16 @@ public class TownCommands extends AbstractCommand {
       p.sendMessage(Chat.errorFade("In dem Claim befindet sich noch mindestens ein Grundstück."));
       return false;
     }
-    System.out.println(
-        nx + " | " + nz + " <> " + settle.getLocation().x + " | " + settle.getLocation().z);
-    if (BoundaryClaimFunctions.isPointIn2DBox(
-        new Vectore2(nx, nz), new Vectore2(nx + 48, nz + 48), settle.getLocation())) {
-      p.sendMessage(Chat.errorFade("Du kannst den Initialclaim nicht entfernen!"));
+
+    Vectore2 home = settle.getLocation();
+    if (!RegionClaimFunctions.unclaim(p, region, claimCalc.Cell.at(home.x, home.z))) {
       return false;
     }
-
-    RegionClaimFunctions.addToExistingClaim(p, settle.getWorldguardRegion());
 
     settle.setClaims(RegionClaimFunctions.getClaimAnzahl(settle.getId()));
     p.sendMessage(
         Chat.greenFade(
-            "Deine Stadt wurde erfolgreich erweitert. ("
+            "Deine Stadt wurde erfolgreich verkleinert. ("
                 + settle.getClaims()
                 + "/"
                 + settle.getMaxClaims()
