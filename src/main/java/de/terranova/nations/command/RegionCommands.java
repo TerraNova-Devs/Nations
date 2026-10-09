@@ -1,10 +1,6 @@
 package de.terranova.nations.command;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
+import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 import de.terranova.nations.command.commands.CommandAnnotation;
 import de.terranova.nations.regions.base.*;
 import de.terranova.nations.regions.grid.SettleRegion;
@@ -15,8 +11,10 @@ import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.entity.Player;
 
@@ -119,26 +117,27 @@ public class RegionCommands {
       return false;
     }
 
-    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionQuery query = container.createQuery();
-    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
-    if (set.size() != 0) {
+    ProtectedRegion wg = region.getWorldguardRegion();
+    if (wg == null) {
+      p.sendMessage(Chat.errorFade(RegionClaimFunctions.MISSING_REGION));
+      return false;
+    }
+    claimCalc.Cell cell = RegionClaimFunctions.cellOf(p);
+    List<String> foreign = RegionClaimFunctions.foreignRegions(p, cell, region.getId());
+    if (!foreign.isEmpty()) {
       p.sendMessage(
           Chat.errorFade("Du kannst nicht auf der Region eines anderen Spielers claimen!."));
-      p.sendMessage(Chat.errorFade("Überlappende Regionen: " + set));
+      p.sendMessage(Chat.errorFade("Überlappende Regionen: " + foreign));
       return false;
     }
 
-    if (region.getClaims() >= region.getMaxClaims()) {
-      p.sendMessage(
-          Chat.errorFade(
-              "Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
+    Set<claimCalc.Cell> cells = RegionClaimFunctions.cells(wg);
+    claimCalc.Change change = claimCalc.claim(cells, cell, region.getMaxClaims());
+    if (!RegionClaimFunctions.write(p, region, wg, change)) {
       return false;
     }
 
-    RegionClaimFunctions.addToExistingClaim(p, cache.getRegion().getWorldguardRegion());
-
-    region.setClaims(RegionClaimFunctions.getClaimAnzahl(cache.getRegion().getId()));
+    region.setClaims(cells.size() + 1);
     p.sendMessage(
         Chat.greenFade(
             "Deine Stadt wurde erfolgreich erweitert. ("

@@ -135,9 +135,9 @@ class TownObjectsTest {
 
   @Test
   void areaOfAnLShapedTownFromClaimCalc() {
-    // The first claim as RegionClaimFunctions stores it, then two cells as addToExistingClaim adds
+    // The founding cell as createGridClaim stores it, then two cells claimed as /town claim does
     List<Vectore2> claim =
-        List.of(new Vectore2(0, 0), new Vectore2(0, 47), new Vectore2(47, 47), new Vectore2(47, 0));
+        List.of(new Vectore2(0, 0), new Vectore2(47, 0), new Vectore2(47, 47), new Vectore2(0, 47));
     claim = addCell(claim, 48, 0);
     claim = addCell(claim, 0, 48);
     List<Point> corners = claim.stream().map(v -> new Point(v.x, v.z)).toList();
@@ -156,18 +156,12 @@ class TownObjectsTest {
         area.polygons().getFirst().outer());
   }
 
-  /** Like RegionClaimFunctions.addToExistingClaim for a player in the cell at x, z. */
+  /** Like /town claim for a player in the cell at x, z. */
   private static List<Vectore2> addCell(List<Vectore2> claim, int x, int z) {
-    List<Vectore2> cell =
-        List.of(
-            new Vectore2(x + 0.5, z + 0.5),
-            new Vectore2(x + 47.5, z + 0.5),
-            new Vectore2(x + 47.5, z + 47.5),
-            new Vectore2(x + 0.5, z + 47.5));
-    return claimCalc.dothatshitforme(new ArrayList<>(claim), new ArrayList<>(cell)).orElseThrow()
-        .stream()
-        .map(v -> new Vectore2(Math.floor(v.x), Math.floor(v.z))) // as BlockVector2.at does
-        .toList();
+    claimCalc.Change change =
+        claimCalc.claim(claimCalc.cellsOf(claim), claimCalc.Cell.at(x, z), Integer.MAX_VALUE);
+    assertEquals(null, change.refusal());
+    return change.points();
   }
 
   /** The same points in the same cyclic order, in either direction. */

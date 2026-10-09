@@ -1,12 +1,6 @@
 package de.terranova.nations.command;
 
-import com.sk89q.worldedit.bukkit.BukkitAdapter;
-import com.sk89q.worldedit.math.BlockVector2;
-import com.sk89q.worldguard.WorldGuard;
-import com.sk89q.worldguard.protection.ApplicableRegionSet;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
-import com.sk89q.worldguard.protection.regions.RegionContainer;
-import com.sk89q.worldguard.protection.regions.RegionQuery;
 import de.terranova.nations.NationsPlugin;
 import de.terranova.nations.command.commands.AbstractCommand;
 import de.terranova.nations.command.commands.CachedSupplier;
@@ -22,8 +16,6 @@ import de.terranova.nations.regions.modules.access.AccessLevel;
 import de.terranova.nations.regions.modules.bank.Transaction;
 import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.InventoryUtil.ItemTransfer;
-import de.terranova.nations.worldguard.BoundaryClaimFunctions;
-import de.terranova.nations.worldguard.NationsRegionFlag.RegionFlag;
 import de.terranova.nations.worldguard.RegionClaimFunctions;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
@@ -978,7 +970,8 @@ public class TownCommands extends AbstractCommand {
   @CommandAnnotation(
       domain = "claim",
       permission = "nations.town.claim",
-      description = "Claims a region for your town",
+      description =
+          "Claims the cell you stand in for your town, or gives it back if it is the town's",
       usage = "/town claim")
   public boolean claimRegion(Player p, String[] args) {
     Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
@@ -989,8 +982,22 @@ public class TownCommands extends AbstractCommand {
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
     if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
-      p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung, um diese Stadt zu erweitern."));
+      p.sendMessage(
+          Chat.errorFade(
+              "Du hast nicht die Berechtigung, um diese Stadt zu erweitern oder zu verkleinern."));
       return false;
+    }
+
+    ProtectedRegion region = settle.getWorldguardRegion();
+    if (region == null) {
+      p.sendMessage(Chat.errorFade(RegionClaimFunctions.MISSING_REGION));
+      return false;
+    }
+    Set<claimCalc.Cell> cells = RegionClaimFunctions.cells(region);
+    claimCalc.Cell cell = RegionClaimFunctions.cellOf(p);
+    // The same command gives a cell of the town back.
+    if (cells.contains(cell)) {
+      return unclaimRegion(p, settle, region, cells, cell);
     }
 
     double abstand = Integer.MAX_VALUE;
@@ -1013,51 +1020,57 @@ public class TownCommands extends AbstractCommand {
       return false;
     }
 
-    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-    RegionQuery query = container.createQuery();
-    ApplicableRegionSet set = query.getApplicableRegions(BukkitAdapter.adapt(p.getLocation()));
-    if (set.getRegions().stream().findFirst().isPresent()) {
-      if (!Objects.equals(
-          set.getRegions().stream().findFirst().get().getFlag(RegionFlag.REGION_UUID_FLAG),
-          settle.getId().toString())) {
+    List<String> foreign = RegionClaimFunctions.foreignRegions(p, cell, settle.getId());
+    if (!foreign.isEmpty()) {
+      p.sendMessage(
+          Chat.errorFade("Du kannst nicht auf der Region eines anderen Spielers claimen!."));
+      p.sendMessage(Chat.errorFade("Überlappende Regionen: " + foreign));
+      return false;
+    }
+
+    claimCalc.Change change = claimCalc.claim(cells, cell, settle.getMaxClaims());
+    if (!RegionClaimFunctions.write(p, settle, region, change)) {
+      return false;
+    }
+
+    settle.setClaims(cells.size() + 1);
+    p.sendMessage(
+        Chat.greenFade(
+            "Deine Stadt wurde erfolgreich erweitert. ("
+                + settle.getClaims()
+                + "/"
+                + settle.getMaxClaims()
+                + ")"));
+
+    return true;
+  }
+
+  private boolean unclaimRegion(
+      Player p,
+      SettleRegion settle,
+      ProtectedRegion region,
+      Set<claimCalc.Cell> cells,
+      claimCalc.Cell cell) {
+    for (Region property : settle.getChildrenByType("property")) {
+      ProtectedRegion wg = property.getWorldguardRegion();
+      if (wg != null && RegionClaimFunctions.reachesInto(wg, cell)) {
         p.sendMessage(
-            Chat.errorFade("Du kannst nicht auf der Region eines anderen Spielers claimen!."));
-        p.sendMessage(
-            Chat.errorFade(
-                "Überlappende Regionen: "
-                    + set.getRegions().stream().map(ProtectedRegion::getId).toList()));
+            Chat.errorFade("In dem Claim befindet sich noch mindestens ein Grundstück."));
         return false;
       }
     }
 
-    if (settle.getClaims() >= settle.getMaxClaims()) {
-      p.sendMessage(
-          Chat.errorFade(
-              "Du hast bereits die maximale Anzahl an Claims für dein Stadtlevel erreicht."));
+    Vectore2 home = settle.getLocation();
+    claimCalc.Change change =
+        claimCalc.unclaim(cells, cell, claimCalc.Cell.at(home.x, home.z), settle.getMaxClaims());
+    if (!RegionClaimFunctions.write(p, settle, region, change)) {
       return false;
     }
 
-    int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
-    int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
-    if (BoundaryClaimFunctions.propertyPointInside2DBox(
-        p.getWorld(), BlockVector2.at(nx, nz), BlockVector2.at(nx + 48, nz + 48), "property")) {
-      p.sendMessage(Chat.errorFade("In dem Claim befindet sich noch mindestens ein Grundstück."));
-      return false;
-    }
-    System.out.println(
-        nx + " | " + nz + " <> " + settle.getLocation().x + " | " + settle.getLocation().z);
-    if (BoundaryClaimFunctions.isPointIn2DBox(
-        new Vectore2(nx, nz), new Vectore2(nx + 48, nz + 48), settle.getLocation())) {
-      p.sendMessage(Chat.errorFade("Du kannst den Initialclaim nicht entfernen!"));
-      return false;
-    }
-
-    RegionClaimFunctions.addToExistingClaim(p, settle.getWorldguardRegion());
-
-    settle.setClaims(RegionClaimFunctions.getClaimAnzahl(settle.getId()));
+    settle.setClaims(cells.size() - 1);
     p.sendMessage(
         Chat.greenFade(
-            "Deine Stadt wurde erfolgreich erweitert. ("
+            "Deine Stadt wurde erfolgreich verkleinert. ("
                 + settle.getClaims()
                 + "/"
                 + settle.getMaxClaims()

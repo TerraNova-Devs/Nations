@@ -108,51 +108,78 @@ public class RegionClaimFunctions {
     }
   }
 
-  public static void addToExistingClaim(Player p, ProtectedRegion oldRegion) {
-    if (oldRegion instanceof ProtectedPolygonalRegion oldPolygonalRegion) {
+  public static final String MISSING_REGION =
+      "Die WorldGuard-Region fehlt oder ist kaputt; ein Admin muss sie anlegen.";
 
-      int nx = (int) (Math.floor(p.getLocation().x() / 48) * 48);
-      int nz = (int) (Math.floor(p.getLocation().z() / 48) * 48);
+  /** The cells of the region. */
+  public static Set<claimCalc.Cell> cells(ProtectedRegion region) {
+    return claimCalc.cellsOf(List.copyOf(Vectore2.fromBlockVectorList(region.getPoints())));
+  }
 
-      Vectore2 nw = new Vectore2(nx + 0.5, nz + 0.5);
-      Vectore2 ne = new Vectore2(nx + 0.5 + 47, nz + 0.5);
-      Vectore2 sw = new Vectore2(nx + 0.5, nz + 47 + 0.5);
-      Vectore2 se = new Vectore2(nx + 47 + 0.5, nz + 47 + 0.5);
+  public static claimCalc.Cell cellOf(Player p) {
+    return claimCalc.Cell.at(p.getLocation().x(), p.getLocation().z());
+  }
 
-      List<Vectore2> newPoints = Arrays.asList(nw, ne, se, sw);
-      List<Vectore2> oldPoints = new ArrayList<>();
-
-      for (BlockVector2 v : oldPolygonalRegion.getPoints()) {
-        oldPoints.add(new Vectore2(v.x(), v.z()));
-      }
-
-      Optional<List<Vectore2>> claims = claimCalc.dothatshitforme(oldPoints, newPoints);
-      if (claims.isEmpty()) {
-        p.sendMessage(Chat.errorFade("Bitte keine leeren flächen umclaimen."));
-        return;
-      }
-
-      List<BlockVector2> finalNewRegion = new ArrayList<>();
-
-      for (Vectore2 v : claims.get()) {
-        finalNewRegion.add(BlockVector2.at(v.x, v.z));
-        // p.sendMessage(String.valueOf(BlockVector2.at(v.x, v.z)));
-      }
-
-      ProtectedPolygonalRegion region =
-          new ProtectedPolygonalRegion(
-              oldRegion.getId(),
-              finalNewRegion,
-              oldPolygonalRegion.getMinimumPoint().y(),
-              oldPolygonalRegion.getMaximumPoint().y());
-      region.copyFrom(oldRegion);
-
-      LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
-      RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
-      RegionManager regions = container.get(lp.getWorld());
-      assert regions != null;
-      regions.addRegion(region);
+  /** The ids of the regions in the cell at any height, without those with the id {@code own}. */
+  public static List<String> foreignRegions(Player p, claimCalc.Cell cell, UUID own) {
+    World world = p.getWorld();
+    RegionManager regions =
+        WorldGuard.getInstance().getPlatform().getRegionContainer().get(BukkitAdapter.adapt(world));
+    if (regions == null) {
+      return List.of();
     }
+    ProtectedCuboidRegion box =
+        new ProtectedCuboidRegion(
+            "nations_cell",
+            BlockVector3.at(cell.x(), world.getMinHeight(), cell.z()),
+            BlockVector3.at(cell.x() + 47, world.getMaxHeight() - 1, cell.z() + 47));
+    return regions.getApplicableRegions(box).getRegions().stream()
+        .filter(r -> !ProtectedRegion.GLOBAL_REGION.equals(r.getId()))
+        .filter(r -> !own.toString().equals(r.getFlag(RegionFlag.REGION_UUID_FLAG)))
+        .map(ProtectedRegion::getId)
+        .toList();
+  }
+
+  /** Whether the region reaches into the cell, by its bounding box. */
+  public static boolean reachesInto(ProtectedRegion region, claimCalc.Cell cell) {
+    BlockVector3 min = region.getMinimumPoint();
+    BlockVector3 max = region.getMaximumPoint();
+    return cell.overlaps(min.x(), min.z(), max.x(), max.z());
+  }
+
+  /**
+   * Writes the change as the new WorldGuard region of {@code owner}; tells the player if the change
+   * is refused.
+   */
+  public static boolean write(
+      Player p,
+      de.terranova.nations.regions.base.Region owner,
+      ProtectedRegion oldRegion,
+      claimCalc.Change change) {
+    if (change.refusal() != null) {
+      p.sendMessage(Chat.errorFade(change.refusal()));
+      return false;
+    }
+
+    List<BlockVector2> points = new ArrayList<>();
+    for (Vectore2 v : change.points()) {
+      points.add(BlockVector2.at(v.x, v.z));
+    }
+    ProtectedPolygonalRegion region =
+        new ProtectedPolygonalRegion(
+            oldRegion.getId(),
+            points,
+            oldRegion.getMinimumPoint().y(),
+            oldRegion.getMaximumPoint().y());
+    region.copyFrom(oldRegion);
+
+    LocalPlayer lp = WorldGuardPlugin.inst().wrapPlayer(p);
+    RegionContainer container = WorldGuard.getInstance().getPlatform().getRegionContainer();
+    RegionManager regions = container.get(lp.getWorld());
+    assert regions != null;
+    regions.addRegion(region);
+    owner.setWorldguardRegion(region);
+    return true;
   }
 
   public static Vectore2 getSChunkMiddle(Location location) {
@@ -192,12 +219,7 @@ public class RegionClaimFunctions {
 
       if (!Objects.equals(region.getFlag(RegionFlag.REGION_UUID_FLAG), settle.toString())) continue;
 
-      List<Vectore2> list2 = new ArrayList();
-      list2.addAll(Vectore2.fromBlockVectorList(region.getPoints()));
-      List<Vectore2> list3;
-      list3 = claimCalc.aufplustern(claimCalc.normalisieren(list2));
-
-      return (int) claimCalc.area(list3.toArray(new Vectore2[list3.size()])) / 2304;
+      return cells(region).size();
     }
     return 1;
   }
