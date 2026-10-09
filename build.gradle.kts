@@ -2,7 +2,6 @@ plugins {
   `java-library`
   id("io.papermc.paperweight.userdev") version "2.0.0-beta.23"
   id("xyz.jpenilla.run-paper") version "2.3.1" // Adds runServer and runMojangMappedServer tasks for testing
-  id("xyz.jpenilla.resource-factory-bukkit-convention") version "1.1.1" // Generates plugin.yml based on the Gradle config
   id("com.gradleup.shadow") version "9.0.0"
   id("com.diffplug.spotless") version "6.25.0"
 }
@@ -14,6 +13,9 @@ description = "Nations Plugin tailored & written by & for TerraNova."
 val minecraftVersion = "26.3"
 val nexoVersion = "1.27.0"
 val worldGuardVersion = "7.0.18"
+// HeroicMap-API, vorerst lokal aus :api:publishToMavenLocal. Vor dem Push JitPack v0.3.0:
+// "com.github.VonNekyia:heroic-map-renderer-plugin:v0.3.0"
+val heroicMapApi = "com.nekyia:api:0.3.0-SNAPSHOT"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.
@@ -71,6 +73,11 @@ dependencies {
   implementation("org.yaml:snakeyaml:2.6")
   compileOnly("de.mcterranova:terranova-lib:1.0.1")
   implementation ("org.locationtech.jts:jts-core:1.20.0")
+  compileOnly(heroicMapApi)
+  testImplementation(heroicMapApi)
+  testImplementation(platform("org.junit:junit-bom:6.1.3"))
+  testImplementation("org.junit.jupiter:junit-jupiter")
+  testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 
 tasks {
@@ -78,6 +85,9 @@ tasks {
     // Setgvb gb the release flag. This configures what version bytecode the compiler will emit, as well as what JDK APIs are usable.
     // See https://openjdk.java.net/jeps/247 for more information.
     options.release = 25
+  }
+  test {
+    useJUnitPlatform()
   }
   javadoc {
     options.encoding = Charsets.UTF_8.name() // We want UTF-8 for everything
@@ -88,28 +98,6 @@ tasks {
     relocate("org.yaml.snakeyaml", "de.terranova.nations.libs.yaml")
   }
 
-}
-
-bukkitPluginYaml {
-  name = "Nations"
-  version = project.version.toString()
-  main = "${project.group}.NationsPlugin"
-  apiVersion = minecraftVersion
-  authors = listOf("gerryxn", "bastizeit")
-  prefix = "Nations"
-  website = "https://mcterranova.de"
-  description = project.description.toString()
-  depend = listOf("WorldGuard", "Citizens", "TerranovaLib", "WorldGuardExtraFlags", "Nexo")
-
-  commands {
-    register("terra") {
-      description = "The main command for TerraNova Nations."
-      usage = "/terra <region|bank> <subcommand>"
-      aliases = listOf("t")
-      permission = "nations.use"
-      permissionMessage = "You do not have permission to use this command."
-    }
-  }
 }
 
 spotless {
