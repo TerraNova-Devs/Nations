@@ -8,6 +8,9 @@ import org.bukkit.entity.Player;
 
 public class RegionNameValidationRule implements RegionRule {
 
+  /** Names of towns and nations: 3 to 20 letters, digits and single _ inside. */
+  public static final String NAME = "^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$";
+
   String regex;
 
   public RegionNameValidationRule(String regex) {

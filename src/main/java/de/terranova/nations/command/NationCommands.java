@@ -14,6 +14,7 @@ import de.terranova.nations.regions.base.Region;
 import de.terranova.nations.regions.grid.SettleRegion;
 import de.terranova.nations.regions.modules.access.Access;
 import de.terranova.nations.regions.modules.access.AccessLevel;
+import de.terranova.nations.regions.rule.rules.RegionNameValidationRule;
 import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,6 +81,14 @@ public class NationCommands extends AbstractCommand {
     }
 
     String nationName = args[1];
+    if (!nationName.matches(RegionNameValidationRule.NAME)) {
+      p.sendMessage(
+          Chat.errorFade(
+              "Bitte verwende keine Sonderzeichen im Namen der Nation. Statt Leerzeichen _"
+                  + " verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
+      return false;
+    }
+
     Nation nation = nationManager.getNationByMember(p.getUniqueId());
     if (nation == null) {
       p.sendMessage(Chat.errorFade("Du bist in keiner Nation."));
@@ -120,6 +129,14 @@ public class NationCommands extends AbstractCommand {
     }
 
     String nationName = args[1].toLowerCase();
+    if (!nationName.matches(RegionNameValidationRule.NAME)) {
+      p.sendMessage(
+          Chat.errorFade(
+              "Bitte verwende keine Sonderzeichen im Namen der Nation. Statt Leerzeichen _"
+                  + " verwenden. Nicht weniger als 3 oder mehr als 20 Zeichen verwenden."));
+      return false;
+    }
+
     if (nationManager.getNationByName(nationName) != null) {
       p.sendMessage(Chat.errorFade("Der Name ist bereits vergeben."));
       return false;

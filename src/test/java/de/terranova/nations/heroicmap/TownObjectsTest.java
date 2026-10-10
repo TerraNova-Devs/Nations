@@ -31,6 +31,7 @@ class TownObjectsTest {
 
   private static final UUID ID = UUID.fromString("00000000-0000-0000-0000-000000000017");
   private static final UUID OTHER = UUID.fromString("00000000-0000-0000-0000-000000000018");
+  private static final UUID NATION = UUID.fromString("00000000-0000-0000-0000-0000000000aa");
 
   private static Town town(UUID id, boolean capital, String banner, List<Point> corners) {
     return new Town(
@@ -40,6 +41,7 @@ class TownObjectsTest {
         -340.5,
         corners,
         "Nordreich",
+        NATION,
         capital,
         "#AABBCC",
         banner,
@@ -50,6 +52,33 @@ class TownObjectsTest {
         List.of("Ben"),
         List.of("Cara", "Dario"),
         List.of(new Panel.Row("Bergbau", 2, 4, "#7F8C8D")));
+  }
+
+  /** A town of the nation at x, z. */
+  private static Town member(int n, double x, double z) {
+    return member(n, x, z, NATION, "Nordreich");
+  }
+
+  /** A town of any nation, or of none with null. */
+  private static Town member(int n, double x, double z, UUID nation, String nationName) {
+    return new Town(
+        new UUID(0, n),
+        "Stadt " + n,
+        x,
+        z,
+        List.of(),
+        nationName,
+        nation,
+        false,
+        "#AABBCC",
+        null,
+        1,
+        1,
+        20,
+        null,
+        List.of(),
+        List.of(),
+        List.of());
   }
 
   private static List<Point> square(int x, int z) {
@@ -226,6 +255,133 @@ class TownObjectsTest {
     assertEquals(List.of(), layer.puts, "unchanged objects go out again");
     assertEquals(
         objects(a).stream().map(MapObject::id).toList(), List.copyOf(layer.objects.keySet()));
+  }
+
+  @Test
+  void nameOfANationWithOneTown() {
+    MapObject.Label label =
+        (MapObject.Label) TownObjects.nationNames(List.of(member(1, 100, 200))).getFirst();
+
+    assertEquals("nation-" + NATION, label.id());
+    assertEquals("Nordreich", label.text());
+    assertEquals(List.of(new Point(100, 120)), label.path());
+    assertEquals(40.0, label.size());
+    assertEquals(0.3, label.spacing());
+    assertEquals(TownObjects.letteringColor("#AABBCC"), label.color());
+    assertEquals(new MapObject.Outline(null, 3.0), label.outline());
+  }
+
+  @Test
+  void namesOfTheNationsOnly() {
+    UUID a = new UUID(1, 0xa);
+    UUID b = new UUID(1, 0xb);
+    List<MapObject> labels =
+        TownObjects.nationNames(
+            List.of(
+                member(1, 0, 0, a, "Nordreich"),
+                member(2, 3000, 0, null, null),
+                member(3, 0, 5000, b, "Westmark"),
+                member(4, 2000, 0, a, "Nordreich")));
+
+    assertEquals(2, labels.size());
+    MapObject.Label first = (MapObject.Label) labels.get(0);
+    MapObject.Label second = (MapObject.Label) labels.get(1);
+    assertEquals("nation-" + a, first.id());
+    assertEquals("Nordreich", first.text());
+    assertEquals(List.of(new Point(0, -80), new Point(2000, -80)), first.path());
+    assertEquals("nation-" + b, second.id());
+    assertEquals("Westmark", second.text());
+    assertEquals(new MapObject.Outline(null, 3.0), first.outline());
+    assertEquals(new MapObject.Outline(null, 3.0), second.outline());
+  }
+
+  @Test
+  void aNationWithoutANameGetsNone() {
+    UUID a = new UUID(1, 0xa);
+    assertEquals(
+        List.of(),
+        TownObjects.nationNames(
+            List.of(member(1, 0, 0, a, null), member(2, 96, 0, new UUID(1, 0xb), " "))));
+  }
+
+  @Test
+  void nameOfANationAlongItsLongestExtent() {
+    List<Point> path =
+        TownObjects.nationPath(
+            List.of(member(1, 1000, 0), member(2, 500, 60), member(3, 0, 0)));
+
+    // a straight line through the middle (500, 20), 80 north, from town 1 to town 3
+    assertEquals(List.of(new Point(1000, -60), new Point(0, -60)), path);
+  }
+
+  @Test
+  void ofPairsEquallyFarApartTheIdsDecide() {
+    List<Town> square =
+        List.of(member(1, 0, 0), member(2, 1000, 0), member(3, 0, 1000), member(4, 1000, 1000));
+    List<Town> shuffled = List.of(square.get(3), square.get(1), square.get(2), square.get(0));
+
+    List<Point> path = TownObjects.nationPath(square);
+
+    assertEquals(List.of(new Point(0, -80), new Point(1000, 920)), path);
+    assertEquals(path, TownObjects.nationPath(shuffled));
+  }
+
+  @Test
+  void theNameOfANationLiesClearOfItsTowns() {
+    // three towns in a row: the middle of the line would lie on the middle town
+    assertEquals(
+        List.of(new Point(0, -80), new Point(2000, -80)),
+        TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 1000, 0), member(3, 2000, 0))));
+  }
+
+  @Test
+  void townsOfANationAtOnePlaceAreLikeOne() {
+    assertEquals(
+        List.of(new Point(10, -70)),
+        TownObjects.nationPath(List.of(member(1, 10, 10), member(2, 10, 10))));
+  }
+
+  /** In every hue of ColorUtils the lettering reads on the contour #F2E8D0 at 4:1 or better. */
+  @Test
+  void letteringReadsInEveryHue() {
+    double contour = luminance(0xF2E8D0);
+    for (int hue = 0; hue < 360; hue++) {
+      int rgb = java.awt.Color.HSBtoRGB(hue / 360f, 0.6f, 0.8f) & 0xFFFFFF;
+      String lettering = TownObjects.letteringColor(String.format("#%06X", rgb));
+      double l = luminance(Integer.parseInt(lettering.substring(1), 16));
+      double contrast = (contour + 0.05) / (l + 0.05);
+      assertTrue(contrast >= 4, "hue " + hue + ": " + lettering + " only " + contrast);
+    }
+  }
+
+  /** Relative luminance as in WCAG 2. */
+  private static double luminance(int rgb) {
+    double[] c = {rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF};
+    for (int i = 0; i < 3; i++) {
+      double v = c[i] / 255;
+      c[i] = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    }
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  @Test
+  void displayNameOfANation() {
+    assertEquals("Nord reich", TownObjects.displayName("nord_reich"));
+    assertEquals("Äpfelland", TownObjects.displayName("äpfelland"));
+    assertEquals(64, TownObjects.displayName("a".repeat(70)).length());
+    assertEquals(null, TownObjects.displayName(null));
+  }
+
+  @Test
+  void theNameOfANationGoesWithIt() {
+    FakeLayer layer = new FakeLayer();
+    Synced synced = new Synced(layer, Logger.getAnonymousLogger());
+    synced.sync(TownObjects.nationNames(List.of(member(1, 0, 0), member(2, 96, 0))));
+    assertEquals(List.of("nation-" + NATION), List.copyOf(layer.objects.keySet()));
+
+    synced.sync(TownObjects.nationNames(List.of()));
+
+    assertEquals(List.of(), List.copyOf(layer.objects.keySet()));
   }
 
   @Test

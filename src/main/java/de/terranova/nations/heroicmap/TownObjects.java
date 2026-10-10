@@ -4,9 +4,13 @@ import com.nekyia.heroicmap.api.Layer;
 import com.nekyia.heroicmap.api.MapObject;
 import com.nekyia.heroicmap.api.MapObject.Point;
 import com.nekyia.heroicmap.api.Panel;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -21,7 +25,8 @@ final class TownObjects {
 
   /**
    * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
-   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code banner} may be null.
+   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation}, {@code nationId} and
+   * {@code banner} may be null.
    */
   record Town(
       UUID id,
@@ -30,6 +35,7 @@ final class TownObjects {
       double z,
       List<Point> corners,
       String nation,
+      UUID nationId,
       boolean capital,
       String color,
       String banner,
@@ -74,6 +80,92 @@ final class TownObjects {
         MapObject.Circle.around(id + "-2000", t.x(), t.z(), 2000)
             .withFill("#FADE6E44")
             .withStroke(MapObject.Stroke.of("#FA6E6EDD").withDash(10, 10)));
+  }
+
+  static final double NATION_SIZE = 40;
+  static final double NATION_SPACING = 0.3;
+
+  /**
+   * The name of each nation over the middle of its towns, larger and spaced out. Towns are named
+   * by their pins; this lettering holds the nations only. A nation without a name gets none.
+   */
+  static List<MapObject> nationNames(List<Town> towns) {
+    Map<UUID, List<Town>> byNation = new LinkedHashMap<>();
+    for (Town t : towns) {
+      if (t.nationId() != null && t.nation() != null && !t.nation().isBlank()) {
+        byNation.computeIfAbsent(t.nationId(), id -> new ArrayList<>()).add(t);
+      }
+    }
+    List<MapObject> labels = new ArrayList<>();
+    for (List<Town> members : byNation.values()) {
+      Town first = members.getFirst();
+      labels.add(
+          MapObject.Label.along("nation-" + first.nationId(), first.nation(), nationPath(members))
+              .withSize(NATION_SIZE)
+              .withSpacing(NATION_SPACING)
+              .withColor(letteringColor(first.color()))
+              .withOutline(new MapObject.Outline(null, 3.0)));
+    }
+    return labels;
+  }
+
+  /**
+   * Where the name of a nation runs, always {@code 2 * NATION_SIZE} north, so that it lies clear of
+   * the towns and their pins. Over a lone town, one point. Over several, a straight line through
+   * their middle, as long as the two towns farthest apart and in their direction; the view turns
+   * the letters upright. Of pairs equally far apart, the first by the ids of the towns counts.
+   */
+  static List<Point> nationPath(List<Town> members) {
+    List<Town> byId = members.stream().sorted(Comparator.comparing(Town::id)).toList();
+    double cx = byId.stream().mapToDouble(Town::x).average().orElseThrow();
+    double cz = byId.stream().mapToDouble(Town::z).average().orElseThrow();
+    Town a = byId.getFirst();
+    Town b = a;
+    double longest = 0;
+    for (Town p : byId) {
+      for (Town q : byId) {
+        double d = Math.hypot(q.x() - p.x(), q.z() - p.z());
+        if (d > longest) {
+          longest = d;
+          a = p;
+          b = q;
+        }
+      }
+    }
+    cz -= 2 * NATION_SIZE;
+    if (longest < 1) {
+      return List.of(new Point(cx, cz));
+    }
+    double hx = (b.x() - a.x()) / 2;
+    double hz = (b.z() - a.z()) / 2;
+    return List.of(new Point(cx - hx, cz - hz), new Point(cx + hx, cz + hz));
+  }
+
+  /**
+   * The colour of the lettering of a nation: its hue and saturation at brightness 0.45, so it
+   * reads on the light contour of the map, {@code #F2E8D0}, in every hue.
+   */
+  static String letteringColor(String color) {
+    int rgb = Integer.parseInt(color.substring(1, 7), 16);
+    float[] hsb = Color.RGBtoHSB(rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF, null);
+    return String.format("#%06X", Color.HSBtoRGB(hsb[0], hsb[1], 0.45f) & 0xFFFFFF);
+  }
+
+  /**
+   * The name of a nation as shown: {@code _} as spaces, the first letter a capital, at most 64
+   * characters; null stays null.
+   */
+  static String displayName(String raw) {
+    if (raw == null || raw.isEmpty()) {
+      return raw;
+    }
+    String name = raw.replace('_', ' ');
+    int first = name.offsetByCodePoints(0, 1);
+    name = name.substring(0, first).toUpperCase(Locale.ROOT) + name.substring(first);
+    if (name.codePointCount(0, name.length()) > 64) {
+      name = name.substring(0, name.offsetByCodePoints(0, 64));
+    }
+    return name;
   }
 
   /**
