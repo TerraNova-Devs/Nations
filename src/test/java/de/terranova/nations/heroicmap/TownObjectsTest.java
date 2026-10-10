@@ -3,6 +3,7 @@ package de.terranova.nations.heroicmap;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.nekyia.heroicmap.api.BannerDesign;
 import com.nekyia.heroicmap.api.Layer;
 import com.nekyia.heroicmap.api.MapObject;
 import com.nekyia.heroicmap.api.MapObject.Point;
@@ -39,6 +40,7 @@ class TownObjectsTest {
         capital,
         "#AABBCC",
         banner,
+        null,
         3,
         12,
         40,
@@ -59,6 +61,7 @@ class TownObjectsTest {
         null,
         false,
         "#AABBCC",
+        null,
         null,
         1,
         1,
@@ -103,6 +106,49 @@ class TownObjectsTest {
             Panel.Heading.image("images/statistiken.png", 200, 50, "Statistiken"),
             List.of(new Panel.Rating(List.of(new Panel.Row("Bergbau", 2, 4, "#7F8C8D"))))),
         blocks.get(2));
+  }
+
+  @Test
+  void aBannerFromTheDesignOfItsNationWithACrownForTheCapital() {
+    Town t = town(ID, true, "images/banner-n.png", square(0, 0));
+    Town capital = withDesign(t, "nation-id");
+
+    MapObject.Banner banner = TownObjects.banner(capital);
+
+    assertEquals("nation-id", banner.design());
+    assertEquals(true, banner.capital());
+    // the image stays as the stand-in
+    assertEquals("images/banner-n.png", banner.image());
+    assertEquals(false, TownObjects.banner(withDesign(town(ID, false, null, square(0, 0)), "white"))
+        .capital());
+  }
+
+  @Test
+  void withoutDesignsTheBannerKeepsItsImageOnly() {
+    MapObject.Banner banner =
+        TownObjects.banner(town(ID, true, "images/banner-n.png", square(0, 0)));
+
+    assertEquals(null, banner.design());
+    assertEquals(false, banner.capital());
+    assertEquals("images/banner-n.png", banner.image());
+  }
+
+  @Test
+  void designsFromHeroicMapZeroSixOn() {
+    assertEquals(false, TownObjects.hasDesigns("0.5.0"));
+    assertEquals(false, TownObjects.hasDesigns("0.4.0-SNAPSHOT"));
+    assertEquals(true, TownObjects.hasDesigns("0.6.0"));
+    assertEquals(true, TownObjects.hasDesigns("0.6.0-SNAPSHOT"));
+    assertEquals(true, TownObjects.hasDesigns("0.10.1"));
+    assertEquals(true, TownObjects.hasDesigns("1.0"));
+    assertEquals(false, TownObjects.hasDesigns("dev"));
+    assertEquals(false, TownObjects.hasDesigns(null));
+  }
+
+  private static Town withDesign(Town t, String design) {
+    return new Town(t.id(), t.name(), t.x(), t.z(), t.corners(), t.nation(), t.capital(),
+        t.color(), t.banner(), design, t.level(), t.claims(), t.maxClaims(), t.major(), t.vices(),
+        t.council(), t.professions());
   }
 
   @Test
@@ -245,7 +291,7 @@ class TownObjectsTest {
     Town t = loner(1, 0, 0);
     Town town =
         new Town(t.id(), t.name(), t.x(), t.z(), t.corners(), "nord_reich", false, t.color(),
-            null, 1, 1, 20, null, List.of(), List.of(), List.of());
+            null, null, 1, 1, 20, null, List.of(), List.of(), List.of());
 
     Panel.Lines info = (Panel.Lines) TownObjects.panel(town).blocks().get(1);
 
@@ -334,6 +380,12 @@ class TownObjectsTest {
 
     @Override
     public void removeImage(String path) {}
+
+    @Override
+    public void design(String name, BannerDesign design) {}
+
+    @Override
+    public void removeDesign(String name) {}
 
     @Override
     public void put(MapObject object) {

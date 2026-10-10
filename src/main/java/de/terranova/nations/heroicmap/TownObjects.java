@@ -21,7 +21,8 @@ final class TownObjects {
 
   /**
    * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
-   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code banner} may be null.
+   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code banner} may be null;
+   * {@code design} names the banner design of the layer, null with a HeroicMap without designs.
    */
   record Town(
       UUID id,
@@ -33,6 +34,7 @@ final class TownObjects {
       boolean capital,
       String color,
       String banner,
+      String design,
       int level,
       int claims,
       int maxClaims,
@@ -49,9 +51,27 @@ final class TownObjects {
    */
   static MapObject.Banner banner(Town t) {
     String image = t.banner() == null ? WHITE_BANNER : t.banner();
-    return MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
-        .withName(t.name())
-        .withPanel(panel(t));
+    MapObject.Banner banner =
+        MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
+            .withName(t.name())
+            .withPanel(panel(t));
+    // the image stays as the stand-in until the views draw banners from the design
+    return t.design() == null ? banner : banner.withDesign(t.design()).withCapital(t.capital());
+  }
+
+  /**
+   * Whether a HeroicMap of this version takes banner designs: from 0.6 on. The API has no version
+   * of its own; it follows the version of the plugin.
+   */
+  static boolean hasDesigns(String version) {
+    String[] parts = version == null ? new String[0] : version.split("[.-]");
+    try {
+      int major = Integer.parseInt(parts[0]);
+      int minor = parts.length > 1 ? Integer.parseInt(parts[1]) : 0;
+      return major > 0 || minor >= 6;
+    } catch (RuntimeException e) {
+      return false;
+    }
   }
 
   /** The area of the town, or nothing without a WorldGuard region. */
