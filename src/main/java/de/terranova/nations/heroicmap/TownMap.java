@@ -35,15 +35,17 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
- * Shows the towns on HeroicMap: pins, areas and circles. Names the API of HeroicMap, so
- * NationsPlugin loads it only when HeroicMap is enabled. If HeroicMap is disabled while Nations
- * runs, the calls go nowhere without an error; a restarted HeroicMap gets the layers only with
- * the next start of Nations.
+ * Shows the towns on HeroicMap: banners, areas, circles and the names of the nations. Names the
+ * API of HeroicMap, so NationsPlugin loads it only when HeroicMap is enabled. If HeroicMap is
+ * disabled while Nations runs, the calls go nowhere without an error; a restarted HeroicMap gets
+ * the layers only with the next start of Nations.
  */
 public final class TownMap {
 
@@ -63,6 +65,8 @@ public final class TownMap {
   private final Map<UUID, Professions> professions = new ConcurrentHashMap<>();
   // nation id -> banner (Base64 of the item) last uploaded as its image
   private final Map<UUID, String> banners = new HashMap<>();
+  // nation id -> banner that could not be drawn; tried again only when the banner changes
+  private final Map<UUID, String> failed = new HashMap<>();
   private final Map<UUID, Name> names = new HashMap<>();
   private BukkitTask task;
 
@@ -80,12 +84,16 @@ public final class TownMap {
     if (api == null) {
       throw new IllegalStateException("HeroicMap bietet keinen HeroicMapApi-Service an");
     }
+    // drawn before any layer exists, so that a failure leaves no empty layers behind
+    String white = BannerRenderer.renderBannerToDataURI(new ItemStack(Material.WHITE_BANNER));
+    if (white == null) {
+      throw new IOException("Das weisse Banner liess sich nicht zeichnen");
+    }
     TownMap map = new TownMap(plugin, api);
     Layer images = map.towns.layer; // all layers of Nations share their images
     images.image(TownObjects.MEMBERS_IMAGE, resource(plugin, "heroicmap/mitglieder.png"));
     images.image(TownObjects.STATS_IMAGE, resource(plugin, "heroicmap/statistiken.png"));
-    images.image(TownObjects.CASTLE.large(), resource(plugin, "heroicmap/burg_16.png"));
-    images.image(TownObjects.CASTLE.medium(), resource(plugin, "heroicmap/burg_9.png"));
+    images.image(TownObjects.WHITE_BANNER, png(white));
     // Professions come from the database, so off the main thread; everything else on it.
     map.task =
         Bukkit.getScheduler()
@@ -124,7 +132,7 @@ public final class TownMap {
     try {
       Set<UUID> usedBanners = new HashSet<>();
       List<Town> all = snapshot(usedBanners, regionsByTown(), System.currentTimeMillis());
-      towns.sync(all.stream().map(TownObjects::pin).toList());
+      towns.sync(all.stream().map(TownObjects::banner).toList());
       areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
       circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
       lettering.sync(TownObjects.nationNames(all));
@@ -240,23 +248,34 @@ public final class TownMap {
     if (base64.equals(banners.get(nation.getId()))) {
       return path;
     }
-    // HeroicMap keeps 200 images per owner: 2 headings, 2 castles and banners of 196 nations;
-    // more nations get none.
-    if (!banners.containsKey(nation.getId()) && banners.size() >= 196) {
+    if (base64.equals(failed.get(nation.getId()))) {
+      return null;
+    }
+    // HeroicMap keeps 200 images per owner: 2 headings, the white banner and banners of 197
+    // nations; more nations get the white one.
+    if (!banners.containsKey(nation.getId()) && banners.size() >= 197) {
       return null;
     }
     String uri = BannerRenderer.renderBannerToDataURI(nation.getBanner());
     if (uri == null) {
+      failed.put(nation.getId(), base64);
       return null;
     }
     try {
-      towns.layer.image(path, Base64.getDecoder().decode(uri.substring(uri.indexOf(',') + 1)));
+      towns.layer.image(path, png(uri));
     } catch (IllegalArgumentException e) {
       plugin.getLogger().warning("HeroicMap: Banner von " + nation.getName() + ": " + e);
+      failed.put(nation.getId(), base64);
       return null;
     }
+    failed.remove(nation.getId());
     banners.put(nation.getId(), base64);
     return path;
+  }
+
+  /** The PNG in a data URI of the BannerRenderer: 20 × 40 pixels, the front of the banner. */
+  private static byte[] png(String dataUri) {
+    return Base64.getDecoder().decode(dataUri.substring(dataUri.indexOf(',') + 1));
   }
 
   private static String bannerPath(UUID nationId) {

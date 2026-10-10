@@ -20,8 +20,7 @@ final class TownObjects {
 
   static final String MEMBERS_IMAGE = "images/mitglieder.png";
   static final String STATS_IMAGE = "images/statistiken.png";
-  static final MapObject.Symbol CASTLE =
-      new MapObject.Symbol("images/burg_16.png", "images/burg_9.png");
+  static final String WHITE_BANNER = "images/banner-white.png";
 
   /**
    * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
@@ -49,12 +48,14 @@ final class TownObjects {
 
   private TownObjects() {}
 
-  static MapObject.Pin pin(Town t) {
-    return MapObject.Pin.at(t.id().toString(), t.x(), t.z())
+  /**
+   * The town as the banner of its nation, a white one without a nation or a banner, with its name
+   * and panel. The name stays plain: ✪ marks a capital in the title of the panel only.
+   */
+  static MapObject.Banner banner(Town t) {
+    String image = t.banner() == null ? WHITE_BANNER : t.banner();
+    return MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
         .withName(t.name())
-        .withSize(t.capital() ? MapObject.Size.LARGE : MapObject.Size.MEDIUM)
-        .withSymbol(CASTLE)
-        .withColor(t.color())
         .withPanel(panel(t));
   }
 
@@ -87,7 +88,7 @@ final class TownObjects {
 
   /**
    * The name of each nation over the middle of its towns, larger and spaced out. Towns are named
-   * by their pins; this lettering holds the nations only. A nation without a name gets none.
+   * by their banners; this lettering holds the nations only. A nation without a name gets none.
    */
   static List<MapObject> nationNames(List<Town> towns) {
     Map<UUID, List<Town>> byNation = new LinkedHashMap<>();
@@ -111,7 +112,7 @@ final class TownObjects {
 
   /**
    * Where the name of a nation runs, always {@code 2 * NATION_SIZE} north, so that it lies clear of
-   * the towns and their pins. Over a lone town, one point. Over several, a straight line through
+   * the towns and their banners. Over a lone town, one point. Over several, a straight line through
    * their middle, as long as the two towns farthest apart and in their direction; the view turns
    * the letters upright. Of pairs equally far apart, the first by the ids of the towns counts.
    */
@@ -188,7 +189,7 @@ final class TownObjects {
     if (t.banner() == null) {
       blocks.addAll(head);
     } else {
-      blocks.add(new Panel.Columns(head, List.of(new Panel.Image(t.banner(), 44, 80, null))));
+      blocks.add(new Panel.Columns(head, List.of(new Panel.Image(t.banner(), 40, 80, null))));
     }
 
     List<String> members = new ArrayList<>();

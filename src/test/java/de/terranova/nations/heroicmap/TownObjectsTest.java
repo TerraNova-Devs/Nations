@@ -11,9 +11,6 @@ import de.terranova.nations.heroicmap.TownObjects.Synced;
 import de.terranova.nations.heroicmap.TownObjects.Town;
 import de.terranova.nations.worldguard.math.Vectore2;
 import de.terranova.nations.worldguard.math.claimCalc;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -24,7 +21,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
 import java.util.stream.Stream;
-import javax.imageio.ImageIO;
 import org.junit.jupiter.api.Test;
 
 class TownObjectsTest {
@@ -87,23 +83,23 @@ class TownObjectsTest {
   }
 
   @Test
-  void pinOfACapital() {
-    MapObject.Pin pin = TownObjects.pin(town(ID, true, "images/banner-n.png", square(0, 0)));
+  void bannerOfACapital() {
+    MapObject.Banner banner =
+        TownObjects.banner(town(ID, true, "images/banner-n.png", square(0, 0)));
 
-    assertEquals(ID.toString(), pin.id());
-    assertEquals(new Point(120.5, -340.5), pin.at());
-    assertEquals("Hafen Stadt", pin.name());
-    assertEquals(MapObject.Size.LARGE, pin.size());
-    assertEquals("#AABBCC", pin.color());
-    assertEquals(new MapObject.Symbol("images/burg_16.png", "images/burg_9.png"), pin.symbol());
+    assertEquals(ID.toString(), banner.id());
+    assertEquals(new Point(120.5, -340.5), banner.at());
+    assertEquals("images/banner-n.png", banner.image());
+    // ✪ marks the capital in the panel only; the lettering of the map has no ✪
+    assertEquals("Hafen Stadt", banner.name());
 
-    List<Panel.Block> blocks = pin.panel().blocks();
+    List<Panel.Block> blocks = banner.panel().blocks();
     assertEquals(
         new Panel.Columns(
             List.of(
                 new Panel.Title("✪ Hafen Stadt", "#AABBCC"),
                 Panel.Lines.of("Nation: Nordreich", "Level: 3", "Claims: 12/40")),
-            List.of(new Panel.Image("images/banner-n.png", 44, 80, null))),
+            List.of(new Panel.Image("images/banner-n.png", 40, 80, null))),
         blocks.get(0));
     assertEquals(
         new Panel.Section(
@@ -118,24 +114,19 @@ class TownObjectsTest {
   }
 
   @Test
-  void castlesHaveTheSizesOfASymbol() throws IOException {
-    assertEquals(List.of(16, 16), size("heroicmap/burg_16.png"));
-    assertEquals(List.of(9, 9), size("heroicmap/burg_9.png"));
-  }
+  void aTownWithoutANationFliesAWhiteBanner() {
+    MapObject.Banner banner = TownObjects.banner(member(1, 0, 0, null, null));
 
-  private static List<Integer> size(String resource) throws IOException {
-    try (InputStream in = TownObjectsTest.class.getClassLoader().getResourceAsStream(resource)) {
-      BufferedImage image = ImageIO.read(in);
-      return List.of(image.getWidth(), image.getHeight());
-    }
+    assertEquals("images/banner-white.png", banner.image());
+    assertEquals("Stadt 1", banner.name());
   }
 
   @Test
-  void pinOfATownWithoutBanner() {
-    MapObject.Pin pin = TownObjects.pin(town(ID, false, null, square(0, 0)));
+  void aNationWithoutBannerFliesAWhiteOne() {
+    MapObject.Banner banner = TownObjects.banner(town(ID, false, null, square(0, 0)));
 
-    assertEquals(MapObject.Size.MEDIUM, pin.size());
-    List<Panel.Block> blocks = pin.panel().blocks();
+    assertEquals("images/banner-white.png", banner.image());
+    List<Panel.Block> blocks = banner.panel().blocks();
     assertEquals(new Panel.Title("Hafen Stadt", "#AABBCC"), blocks.get(0));
     assertEquals(Panel.Lines.of("Nation: Nordreich", "Level: 3", "Claims: 12/40"), blocks.get(1));
   }
@@ -388,8 +379,8 @@ class TownObjectsTest {
   void aChangedObjectGoesOutOnce() {
     FakeLayer layer = new FakeLayer();
     Synced synced = new Synced(layer, Logger.getAnonymousLogger());
-    MapObject.Pin a = TownObjects.pin(town(ID, false, null, square(0, 0)));
-    MapObject.Pin b = TownObjects.pin(town(OTHER, false, null, square(96, 0)));
+    MapObject.Banner a = TownObjects.banner(town(ID, false, null, square(0, 0)));
+    MapObject.Banner b = TownObjects.banner(town(OTHER, false, null, square(96, 0)));
     synced.sync(List.of(a, b));
     layer.puts.clear();
 
@@ -402,8 +393,8 @@ class TownObjectsTest {
   void aRefusedObjectStaysAndGoesOutAgain() {
     FakeLayer layer = new FakeLayer();
     Synced synced = new Synced(layer, Logger.getAnonymousLogger());
-    MapObject.Pin old = TownObjects.pin(town(ID, false, null, square(0, 0)));
-    MapObject.Pin changed = old.withName("Neu");
+    MapObject.Banner old = TownObjects.banner(town(ID, false, null, square(0, 0)));
+    MapObject.Banner changed = old.withName("Neu");
     synced.sync(List.of(old));
 
     layer.refused.add(old.id());
@@ -419,10 +410,11 @@ class TownObjectsTest {
     assertEquals(changed, layer.objects.get(old.id()));
   }
 
-  /** Pin and circles; in Nations the area has a layer of its own, with the id of the pin. */
+  /** Banner and circles; in Nations the area has a layer of its own, with the id of the banner. */
   private static List<MapObject> objects(Town... towns) {
     return Stream.of(towns)
-        .flatMap(t -> Stream.concat(Stream.of(TownObjects.pin(t)), TownObjects.circles(t).stream()))
+        .flatMap(
+            t -> Stream.concat(Stream.of(TownObjects.banner(t)), TownObjects.circles(t).stream()))
         .toList();
   }
 

@@ -14,8 +14,8 @@ val minecraftVersion = "26.3"
 val nexoVersion = "1.27.0"
 val worldGuardVersion = "7.0.18"
 // HeroicMap-API über JitPack, nur zum Übersetzen; das Jar von HeroicMap bringt die Klassen mit.
-// = v0.3.1 (Release-Commit auf main; JitPack baut Tags derzeit nicht)
-val heroicMapApi = "com.github.VonNekyia:heroic-map-renderer-plugin:9f5a87a857"
+// = v0.4.0 (Release-Commit auf main; JitPack baut Tags derzeit nicht)
+val heroicMapApi = "com.github.VonNekyia:heroic-map-renderer-plugin:6f3a3c6b"
 
 java {
   // Configure the java toolchain. This allows gradle to auto-provision JDK 21 on systems that only have JDK 11 installed for example.

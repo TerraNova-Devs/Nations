@@ -102,7 +102,8 @@ public class BannerRenderer {
       // Done layering
       g.dispose();
 
-      BufferedImage frontOnly = finalImage.getSubimage(0, 0, 22, 40);
+      // the front of the vanilla layout: 20 x 40 at (1, 1); x 0 and 21 are the sides, row 0 the top
+      BufferedImage frontOnly = finalImage.getSubimage(1, 1, 20, 40);
 
       ByteArrayOutputStream baos = new ByteArrayOutputStream();
       ImageIO.write(frontOnly, "png", baos);
