@@ -66,11 +66,17 @@ public final class TownMap {
   private final Map<UUID, String> banners = new HashMap<>();
   // nation id -> banner that could not be drawn; tried again only when the banner changes
   private final Map<UUID, String> failed = new HashMap<>();
+  // whether HeroicMap takes banner designs (0.6 on); without, banners have images only
+  private final boolean designs;
+  // nation id -> banner (Base64 of the item) last set as its design, and those that failed
+  private final Map<UUID, String> designed = new HashMap<>();
+  private final Map<UUID, String> failedDesigns = new HashMap<>();
   private final Map<UUID, Name> names = new HashMap<>();
   private BukkitTask task;
 
-  private TownMap(Plugin plugin, HeroicMapApi api) {
+  private TownMap(Plugin plugin, HeroicMapApi api, boolean designs) {
     this.plugin = plugin;
+    this.designs = designs;
     towns = synced(api, "staedte", "Städte", "Towns", true, 102);
     areas = synced(api, "regionen", "Regionen", "Regions", true, 101);
     circles = synced(api, "kreise", "Kreise", "Circles", false, 100);
@@ -87,11 +93,17 @@ public final class TownMap {
     if (white == null) {
       throw new IOException("Das weisse Banner liess sich nicht zeichnen");
     }
-    TownMap map = new TownMap(plugin, api);
+    Plugin heroicMap = Bukkit.getPluginManager().getPlugin("HeroicMap");
+    boolean designs =
+        heroicMap != null && TownObjects.hasDesigns(heroicMap.getPluginMeta().getVersion());
+    TownMap map = new TownMap(plugin, api, designs);
     Layer images = map.towns.layer; // all layers of Nations share their images
     images.image(TownObjects.MEMBERS_IMAGE, resource(plugin, "heroicmap/mitglieder.png"));
     images.image(TownObjects.STATS_IMAGE, resource(plugin, "heroicmap/statistiken.png"));
     images.image(TownObjects.WHITE_BANNER, png(white));
+    if (designs) {
+      TownDesigns.putWhite(map.towns.layer);
+    }
     // Professions come from the database, so off the main thread; everything else on it.
     map.task =
         Bukkit.getScheduler()
@@ -134,6 +146,7 @@ public final class TownMap {
       areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
       circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
       removeBannersExcept(usedBanners);
+      removeDesignsExcept(usedBanners);
     } catch (IllegalStateException e) {
       // Only after the layers are gone, as while Nations itself is being disabled.
       plugin.getLogger().warning("HeroicMap: Ebenen von Nations sind weg: " + e);
@@ -157,7 +170,8 @@ public final class TownMap {
   private Town town(SettleRegion s, Set<UUID> usedBanners, ProtectedRegion wg, long now) {
     Nation nation = NationsPlugin.nationManager.getNationBySettlement(s.getId());
     String banner = nation == null ? null : banner(nation);
-    if (banner != null) {
+    String design = designs ? design(nation) : null;
+    if (banner != null || (design != null && !design.equals(TownDesigns.WHITE))) {
       usedBanners.add(nation.getId());
     }
     List<MapObject.Point> corners =
@@ -181,6 +195,7 @@ public final class TownMap {
         nation != null && s.getId().equals(nation.getCapital()),
         color,
         banner,
+        design,
         s.getRank().getLevel(),
         s.getClaims(),
         s.getMaxClaims(),
@@ -276,6 +291,55 @@ public final class TownMap {
 
   private static String bannerPath(UUID nationId) {
     return "images/banner-" + nationId + ".png";
+  }
+
+  /**
+   * The design of the nation's banner, set on the layer when the banner changed, under the UUID of
+   * the nation; the white one without a nation, without a banner, when it cannot be read, or when
+   * the layer holds 200 designs already. Called only when HeroicMap takes designs.
+   */
+  private String design(Nation nation) {
+    if (nation == null || nation.getBannerBase64() == null) {
+      return TownDesigns.WHITE;
+    }
+    UUID id = nation.getId();
+    String base64 = nation.getBannerBase64();
+    if (base64.equals(designed.get(id))) {
+      return id.toString();
+    }
+    // 200 designs per layer: the white one and those of 197 nations, as with the images
+    if (base64.equals(failedDesigns.get(id))
+        || (!designed.containsKey(id) && designed.size() >= 197)) {
+      return TownDesigns.WHITE;
+    }
+    try {
+      if (!TownDesigns.put(towns.layer, id.toString(), nation.getBanner())) {
+        failedDesigns.put(id, base64);
+        return TownDesigns.WHITE;
+      }
+    } catch (IllegalArgumentException e) {
+      plugin.getLogger().warning("HeroicMap: Entwurf des Banners " + nation.getName() + ": " + e);
+      failedDesigns.put(id, base64);
+      return TownDesigns.WHITE;
+    }
+    failedDesigns.remove(id);
+    designed.put(id, base64);
+    return id.toString();
+  }
+
+  /** Removes the designs no town names any more, after the sync took them off. */
+  private void removeDesignsExcept(Set<UUID> used) {
+    for (UUID id : new ArrayList<>(designed.keySet())) {
+      if (used.contains(id)) {
+        continue;
+      }
+      try {
+        TownDesigns.remove(towns.layer, id.toString());
+        designed.remove(id);
+      } catch (IllegalArgumentException e) {
+        // still named by a banner the layer refused to replace; try again next time
+      }
+    }
   }
 
   /** Removes the banner images no town shows any more, after the sync took them off. */
