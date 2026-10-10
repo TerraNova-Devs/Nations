@@ -127,10 +127,7 @@ public final class TownMap {
       towns.sync(all.stream().map(TownObjects::pin).toList());
       areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
       circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
-      List<MapObject> labels = new ArrayList<>();
-      all.forEach(t -> labels.add(TownObjects.townName(t)));
-      labels.addAll(TownObjects.nationNames(all));
-      lettering.sync(labels);
+      lettering.sync(TownObjects.nationNames(all));
       removeBannersExcept(usedBanners);
     } catch (IllegalStateException e) {
       // Only after the layers are gone, as while Nations itself is being disabled.
@@ -175,7 +172,7 @@ public final class TownMap {
         s.getLocation().x,
         s.getLocation().z,
         corners,
-        nation == null ? null : nation.getName(),
+        nation == null ? null : TownObjects.displayName(nation.getName()),
         nation == null ? null : nation.getId(),
         nation != null && s.getId().equals(nation.getCapital()),
         color,

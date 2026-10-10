@@ -4,10 +4,13 @@ import com.nekyia.heroicmap.api.Layer;
 import com.nekyia.heroicmap.api.MapObject;
 import com.nekyia.heroicmap.api.MapObject.Point;
 import com.nekyia.heroicmap.api.Panel;
+import java.awt.Color;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -79,37 +82,17 @@ final class TownObjects {
             .withStroke(MapObject.Stroke.of("#FA6E6EDD").withDash(10, 10)));
   }
 
-  /**
-   * Blocks kept free north of a town for its banner, 40 pixels high at the bottom of the town:
-   * a good 3 blocks at the finest zoom.
-   */
-  static final double BANNER_BLOCKS = 4;
-
-  /**
-   * The name of the town in the lettering of the map, level, north of the town. The text is
-   * centred on its point, so its lower edge stays {@link #BANNER_BLOCKS} clear of the town.
-   */
-  static MapObject.Label townName(Town t) {
-    double size = townNameSize(t.level());
-    Point above = new Point(t.x(), t.z() - BANNER_BLOCKS - size / 2);
-    return MapObject.Label.along(t.id().toString(), t.name(), List.of(above))
-        .withSize(size)
-        .withOutline(new MapObject.Outline(null, 2.0));
-  }
-
-  /** Capitals this high in blocks: 12 at level 1, two more per level, at most 30. */
-  static double townNameSize(int level) {
-    return Math.min(10 + 2 * Math.max(level, 1), 30);
-  }
-
   static final double NATION_SIZE = 40;
   static final double NATION_SPACING = 0.3;
 
-  /** The name of each nation over the middle of its towns, larger and spaced out. */
+  /**
+   * The name of each nation over the middle of its towns, larger and spaced out. Towns are named
+   * by their pins; this lettering holds the nations only. A nation without a name gets none.
+   */
   static List<MapObject> nationNames(List<Town> towns) {
     Map<UUID, List<Town>> byNation = new LinkedHashMap<>();
     for (Town t : towns) {
-      if (t.nationId() != null) {
+      if (t.nationId() != null && t.nation() != null && !t.nation().isBlank()) {
         byNation.computeIfAbsent(t.nationId(), id -> new ArrayList<>()).add(t);
       }
     }
@@ -120,27 +103,27 @@ final class TownObjects {
           MapObject.Label.along("nation-" + first.nationId(), first.nation(), nationPath(members))
               .withSize(NATION_SIZE)
               .withSpacing(NATION_SPACING)
-              .withColor(first.color())
+              .withColor(letteringColor(first.color()))
               .withOutline(new MapObject.Outline(null, 3.0)));
     }
     return labels;
   }
 
   /**
-   * Where the name of a nation runs. Over a lone town, one point well north of it, clear of the
-   * name of the town. Over several, a slight arc through their middle, as long as the two towns
-   * farthest apart and in their direction, bulging by a tenth of its length to the side the
-   * letters stand on. It runs from west to east, so the letters never stand on their head; due
-   * north and south it runs from south to north, like the spine of a book.
+   * Where the name of a nation runs. Over a lone town, one point well north of it. Over several, a
+   * straight line through their middle, as long as the two towns farthest apart and in their
+   * direction; the view turns the letters upright. Of pairs equally far apart, the first by the
+   * ids of the towns counts.
    */
   static List<Point> nationPath(List<Town> members) {
-    double cx = members.stream().mapToDouble(Town::x).average().orElseThrow();
-    double cz = members.stream().mapToDouble(Town::z).average().orElseThrow();
-    Town a = members.getFirst();
+    List<Town> byId = members.stream().sorted(Comparator.comparing(Town::id)).toList();
+    double cx = byId.stream().mapToDouble(Town::x).average().orElseThrow();
+    double cz = byId.stream().mapToDouble(Town::z).average().orElseThrow();
+    Town a = byId.getFirst();
     Town b = a;
     double longest = 0;
-    for (Town p : members) {
-      for (Town q : members) {
+    for (Town p : byId) {
+      for (Town q : byId) {
         double d = Math.hypot(q.x() - p.x(), q.z() - p.z());
         if (d > longest) {
           longest = d;
@@ -152,30 +135,36 @@ final class TownObjects {
     if (longest < 1) {
       return List.of(new Point(cx, cz - 2 * NATION_SIZE));
     }
-    double dx = (b.x() - a.x()) / longest;
-    double dz = (b.z() - a.z()) / longest;
-    // due north and south, within rounding: from south to north
-    boolean flip = Math.abs(dx) < 1e-9 ? dz > 0 : dx < 0;
-    if (flip) {
-      dx = -dx;
-      dz = -dz;
+    double hx = (b.x() - a.x()) / 2;
+    double hz = (b.z() - a.z()) / 2;
+    return List.of(new Point(cx - hx, cz - hz), new Point(cx + hx, cz + hz));
+  }
+
+  /**
+   * The colour of the lettering of a nation: its hue and saturation at brightness 0.45, so it
+   * reads on the light contour of the map, {@code #F2E8D0}, in every hue.
+   */
+  static String letteringColor(String color) {
+    int rgb = Integer.parseInt(color.substring(1, 7), 16);
+    float[] hsb = Color.RGBtoHSB(rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF, null);
+    return String.format("#%06X", Color.HSBtoRGB(hsb[0], hsb[1], 0.45f) & 0xFFFFFF);
+  }
+
+  /**
+   * The name of a nation as shown: {@code _} as spaces, the first letter a capital, at most 64
+   * characters; null stays null.
+   */
+  static String displayName(String raw) {
+    if (raw == null || raw.isEmpty()) {
+      return raw;
     }
-    // the letters stand on the normal (dz, -dx), never to the south since dx >= 0; the control
-    // point lies twice as far out as the apex
-    double bulge = longest / 10;
-    Point start = new Point(cx - dx * longest / 2, cz - dz * longest / 2);
-    Point end = new Point(cx + dx * longest / 2, cz + dz * longest / 2);
-    Point control = new Point(cx + dz * 2 * bulge, cz - dx * 2 * bulge);
-    List<Point> path = new ArrayList<>();
-    for (int i = 0; i <= 8; i++) {
-      double t = i / 8.0;
-      double u = 1 - t;
-      path.add(
-          new Point(
-              u * u * start.x() + 2 * u * t * control.x() + t * t * end.x(),
-              u * u * start.z() + 2 * u * t * control.z() + t * t * end.z()));
+    String name = raw.replace('_', ' ');
+    int first = name.offsetByCodePoints(0, 1);
+    name = name.substring(0, first).toUpperCase(Locale.ROOT) + name.substring(first);
+    if (name.codePointCount(0, name.length()) > 64) {
+      name = name.substring(0, name.offsetByCodePoints(0, 64));
     }
-    return path;
+    return name;
   }
 
   /**

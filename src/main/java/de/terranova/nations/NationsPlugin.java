@@ -124,8 +124,7 @@ public final class NationsPlugin extends JavaPlugin implements Listener {
         new SettleRegionFactory(),
         RuleSet.defaultRules()
             .addRule(
-                new RegionNameValidationRule(
-                    "^(?!.*__)(?!_)(?!.*_$)(?!.*(.)\\1{3,})[a-zA-Z0-9_]{3,20}$"))
+                new RegionNameValidationRule(RegionNameValidationRule.NAME))
             .addRule(new SelfOverlap(true))
             .addRule(new AccessLevelCheck(null)));
 

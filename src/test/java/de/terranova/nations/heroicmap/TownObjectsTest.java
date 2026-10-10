@@ -56,14 +56,19 @@ class TownObjectsTest {
 
   /** A town of the nation at x, z. */
   private static Town member(int n, double x, double z) {
+    return member(n, x, z, NATION, "Nordreich");
+  }
+
+  /** A town of any nation, or of none with null. */
+  private static Town member(int n, double x, double z, UUID nation, String nationName) {
     return new Town(
         new UUID(0, n),
         "Stadt " + n,
         x,
         z,
         List.of(),
-        "Nordreich",
-        NATION,
+        nationName,
+        nation,
         false,
         "#AABBCC",
         null,
@@ -253,28 +258,6 @@ class TownObjectsTest {
   }
 
   @Test
-  void townNameGrowsWithTheLevelUpToALimit() {
-    assertEquals(12, TownObjects.townNameSize(0));
-    assertEquals(12, TownObjects.townNameSize(1));
-    assertEquals(16, TownObjects.townNameSize(3));
-    assertEquals(30, TownObjects.townNameSize(10));
-    assertEquals(30, TownObjects.townNameSize(50));
-  }
-
-  @Test
-  void townNameLiesLevelJustNorthOfTheTown() {
-    MapObject.Label label = TownObjects.townName(town(ID, false, null, List.of()));
-
-    assertEquals(ID.toString(), label.id());
-    assertEquals("Hafen Stadt", label.text());
-    // level 3: capitals 16 blocks high, centred 4 + 8 blocks north, so the lower edge stays
-    // 4 blocks clear for the banner
-    assertEquals(List.of(new Point(120.5, -352.5)), label.path());
-    assertEquals(16.0, label.size());
-    assertEquals(new MapObject.Outline(null, 2.0), label.outline());
-  }
-
-  @Test
   void nameOfANationWithOneTown() {
     MapObject.Label label =
         (MapObject.Label) TownObjects.nationNames(List.of(member(1, 100, 200))).getFirst();
@@ -284,54 +267,63 @@ class TownObjectsTest {
     assertEquals(List.of(new Point(100, 120)), label.path());
     assertEquals(40.0, label.size());
     assertEquals(0.3, label.spacing());
-    assertEquals("#AABBCC", label.color());
+    assertEquals(TownObjects.letteringColor("#AABBCC"), label.color());
+    assertEquals(new MapObject.Outline(null, 3.0), label.outline());
+  }
+
+  @Test
+  void namesOfTheNationsOnly() {
+    UUID a = new UUID(1, 0xa);
+    UUID b = new UUID(1, 0xb);
+    List<MapObject> labels =
+        TownObjects.nationNames(
+            List.of(
+                member(1, 0, 0, a, "Nordreich"),
+                member(2, 3000, 0, null, null),
+                member(3, 0, 5000, b, "Westmark"),
+                member(4, 2000, 0, a, "Nordreich")));
+
+    assertEquals(2, labels.size());
+    MapObject.Label first = (MapObject.Label) labels.get(0);
+    MapObject.Label second = (MapObject.Label) labels.get(1);
+    assertEquals("nation-" + a, first.id());
+    assertEquals("Nordreich", first.text());
+    assertEquals(List.of(new Point(0, 0), new Point(2000, 0)), first.path());
+    assertEquals("nation-" + b, second.id());
+    assertEquals("Westmark", second.text());
+    assertEquals(new MapObject.Outline(null, 3.0), first.outline());
+    assertEquals(new MapObject.Outline(null, 3.0), second.outline());
+  }
+
+  @Test
+  void aNationWithoutANameGetsNone() {
+    UUID a = new UUID(1, 0xa);
+    assertEquals(
+        List.of(),
+        TownObjects.nationNames(
+            List.of(member(1, 0, 0, a, null), member(2, 96, 0, new UUID(1, 0xb), " "))));
   }
 
   @Test
   void nameOfANationAlongItsLongestExtent() {
-    // listed from east to west; the name still runs from west to east, arched to the north
     List<Point> path =
         TownObjects.nationPath(
             List.of(member(1, 1000, 0), member(2, 500, 60), member(3, 0, 0)));
 
-    assertEquals(9, path.size());
-    assertEquals(new Point(0, 20), path.getFirst());
-    assertEquals(new Point(1000, 20), path.getLast());
-    assertEquals(new Point(500, -80), path.get(4));
+    // a straight line through the middle (500, 20), from town 1 to town 3
+    assertEquals(List.of(new Point(1000, 20), new Point(0, 20)), path);
   }
 
-  /**
-   * In every direction, also due north and south in both orders, the letters stand on the side
-   * that is not south, and the arc bulges to that side.
-   */
   @Test
-  void theNameOfANationNeverStandsOnItsHead() {
-    List<double[]> directions = new ArrayList<>();
-    for (int degrees = 0; degrees < 360; degrees += 15) {
-      double r = Math.toRadians(degrees);
-      directions.add(new double[] {Math.cos(r), Math.sin(r)});
-    }
-    directions.add(new double[] {0, 1});
-    directions.add(new double[] {0, -1});
-    for (double[] d : directions) {
-      List<Point> path =
-          TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 1000 * d[0], 1000 * d[1])));
-      Point start = path.getFirst();
-      Point end = path.getLast();
-      double dx = end.x() - start.x();
-      double dz = end.z() - start.z();
-      // the letters stand on (dz, -dx): never south
-      assertTrue(-dx <= 1e-9, "letters face south for " + d[0] + "," + d[1]);
-      Point apex = path.get(4);
-      double outwards =
-          (apex.x() - (start.x() + end.x()) / 2) * dz - (apex.z() - (start.z() + end.z()) / 2) * dx;
-      assertTrue(outwards > 0, "arc bulges away from the letters for " + d[0] + "," + d[1]);
-    }
-    // due north and south: from south to north, whichever town comes first
-    List<Point> up = TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 0, 1000)));
-    List<Point> down = TownObjects.nationPath(List.of(member(1, 0, 1000), member(2, 0, 0)));
-    assertEquals(new Point(0, 1000), up.getFirst());
-    assertEquals(up, down);
+  void ofPairsEquallyFarApartTheIdsDecide() {
+    List<Town> square =
+        List.of(member(1, 0, 0), member(2, 1000, 0), member(3, 0, 1000), member(4, 1000, 1000));
+    List<Town> shuffled = List.of(square.get(3), square.get(1), square.get(2), square.get(0));
+
+    List<Point> path = TownObjects.nationPath(square);
+
+    assertEquals(List.of(new Point(0, 0), new Point(1000, 1000)), path);
+    assertEquals(path, TownObjects.nationPath(shuffled));
   }
 
   @Test
@@ -339,6 +331,37 @@ class TownObjectsTest {
     assertEquals(
         List.of(new Point(10, -70)),
         TownObjects.nationPath(List.of(member(1, 10, 10), member(2, 10, 10))));
+  }
+
+  /** In every hue of ColorUtils the lettering reads on the contour #F2E8D0 at 4:1 or better. */
+  @Test
+  void letteringReadsInEveryHue() {
+    double contour = luminance(0xF2E8D0);
+    for (int hue = 0; hue < 360; hue++) {
+      int rgb = java.awt.Color.HSBtoRGB(hue / 360f, 0.6f, 0.8f) & 0xFFFFFF;
+      String lettering = TownObjects.letteringColor(String.format("#%06X", rgb));
+      double l = luminance(Integer.parseInt(lettering.substring(1), 16));
+      double contrast = (contour + 0.05) / (l + 0.05);
+      assertTrue(contrast >= 4, "hue " + hue + ": " + lettering + " only " + contrast);
+    }
+  }
+
+  /** Relative luminance as in WCAG 2. */
+  private static double luminance(int rgb) {
+    double[] c = {rgb >> 16 & 0xFF, rgb >> 8 & 0xFF, rgb & 0xFF};
+    for (int i = 0; i < 3; i++) {
+      double v = c[i] / 255;
+      c[i] = v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    }
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+
+  @Test
+  void displayNameOfANation() {
+    assertEquals("Nord reich", TownObjects.displayName("nord_reich"));
+    assertEquals("Äpfelland", TownObjects.displayName("äpfelland"));
+    assertEquals(64, TownObjects.displayName("a".repeat(70)).length());
+    assertEquals(null, TownObjects.displayName(null));
   }
 
   @Test
