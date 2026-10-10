@@ -99,7 +99,7 @@ class TownObjectsTest {
             List.of(
                 new Panel.Title("✪ Hafen Stadt", "#AABBCC"),
                 Panel.Lines.of("Nation: Nordreich", "Level: 3", "Claims: 12/40")),
-            List.of(new Panel.Image("images/banner-n.png", 44, 80, null))),
+            List.of(new Panel.Image("images/banner-n.png", 40, 80, null))),
         blocks.get(0));
     assertEquals(
         new Panel.Section(

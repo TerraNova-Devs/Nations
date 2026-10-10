@@ -88,7 +88,7 @@ final class TownObjects {
 
   /**
    * The name of each nation over the middle of its towns, larger and spaced out. Towns are named
-   * by their pins; this lettering holds the nations only. A nation without a name gets none.
+   * by their banners; this lettering holds the nations only. A nation without a name gets none.
    */
   static List<MapObject> nationNames(List<Town> towns) {
     Map<UUID, List<Town>> byNation = new LinkedHashMap<>();
@@ -112,7 +112,7 @@ final class TownObjects {
 
   /**
    * Where the name of a nation runs, always {@code 2 * NATION_SIZE} north, so that it lies clear of
-   * the towns and their pins. Over a lone town, one point. Over several, a straight line through
+   * the towns and their banners. Over a lone town, one point. Over several, a straight line through
    * their middle, as long as the two towns farthest apart and in their direction; the view turns
    * the letters upright. Of pairs equally far apart, the first by the ids of the towns counts.
    */
@@ -189,7 +189,7 @@ final class TownObjects {
     if (t.banner() == null) {
       blocks.addAll(head);
     } else {
-      blocks.add(new Panel.Columns(head, List.of(new Panel.Image(t.banner(), 44, 80, null))));
+      blocks.add(new Panel.Columns(head, List.of(new Panel.Image(t.banner(), 40, 80, null))));
     }
 
     List<String> members = new ArrayList<>();
