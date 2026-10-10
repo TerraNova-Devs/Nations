@@ -20,8 +20,7 @@ final class TownObjects {
 
   static final String MEMBERS_IMAGE = "images/mitglieder.png";
   static final String STATS_IMAGE = "images/statistiken.png";
-  static final MapObject.Symbol CASTLE =
-      new MapObject.Symbol("images/burg_16.png", "images/burg_9.png");
+  static final String WHITE_BANNER = "images/banner-white.png";
 
   /**
    * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
@@ -49,12 +48,14 @@ final class TownObjects {
 
   private TownObjects() {}
 
-  static MapObject.Pin pin(Town t) {
-    return MapObject.Pin.at(t.id().toString(), t.x(), t.z())
+  /**
+   * The town as the banner of its nation, a white one without a nation or a banner, with its name
+   * and panel. The name stays plain: ✪ marks a capital in the title of the panel only.
+   */
+  static MapObject.Banner banner(Town t) {
+    String image = t.banner() == null ? WHITE_BANNER : t.banner();
+    return MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
         .withName(t.name())
-        .withSize(t.capital() ? MapObject.Size.LARGE : MapObject.Size.MEDIUM)
-        .withSymbol(CASTLE)
-        .withColor(t.color())
         .withPanel(panel(t));
   }
 
