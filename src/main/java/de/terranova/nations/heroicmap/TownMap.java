@@ -71,7 +71,7 @@ public final class TownMap {
     towns = synced(api, "staedte", "Städte", "Towns", true, 102);
     areas = synced(api, "regionen", "Regionen", "Regions", true, 101);
     circles = synced(api, "kreise", "Kreise", "Circles", false, 100);
-    lettering = synced(api, "namen", "Namen", "Names", true, 103);
+    lettering = synced(api, "namen", "Nationen", "Nations", true, 103);
   }
 
   /** Creates the layers and syncs them every 30 seconds. */

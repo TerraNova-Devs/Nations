@@ -110,10 +110,10 @@ final class TownObjects {
   }
 
   /**
-   * Where the name of a nation runs. Over a lone town, one point well north of it. Over several, a
-   * straight line through their middle, as long as the two towns farthest apart and in their
-   * direction; the view turns the letters upright. Of pairs equally far apart, the first by the
-   * ids of the towns counts.
+   * Where the name of a nation runs, always {@code 2 * NATION_SIZE} north, so that it lies clear of
+   * the towns and their pins. Over a lone town, one point. Over several, a straight line through
+   * their middle, as long as the two towns farthest apart and in their direction; the view turns
+   * the letters upright. Of pairs equally far apart, the first by the ids of the towns counts.
    */
   static List<Point> nationPath(List<Town> members) {
     List<Town> byId = members.stream().sorted(Comparator.comparing(Town::id)).toList();
@@ -132,8 +132,9 @@ final class TownObjects {
         }
       }
     }
+    cz -= 2 * NATION_SIZE;
     if (longest < 1) {
-      return List.of(new Point(cx, cz - 2 * NATION_SIZE));
+      return List.of(new Point(cx, cz));
     }
     double hx = (b.x() - a.x()) / 2;
     double hz = (b.z() - a.z()) / 2;

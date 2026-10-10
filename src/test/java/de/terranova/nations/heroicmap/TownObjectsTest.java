@@ -288,7 +288,7 @@ class TownObjectsTest {
     MapObject.Label second = (MapObject.Label) labels.get(1);
     assertEquals("nation-" + a, first.id());
     assertEquals("Nordreich", first.text());
-    assertEquals(List.of(new Point(0, 0), new Point(2000, 0)), first.path());
+    assertEquals(List.of(new Point(0, -80), new Point(2000, -80)), first.path());
     assertEquals("nation-" + b, second.id());
     assertEquals("Westmark", second.text());
     assertEquals(new MapObject.Outline(null, 3.0), first.outline());
@@ -310,8 +310,8 @@ class TownObjectsTest {
         TownObjects.nationPath(
             List.of(member(1, 1000, 0), member(2, 500, 60), member(3, 0, 0)));
 
-    // a straight line through the middle (500, 20), from town 1 to town 3
-    assertEquals(List.of(new Point(1000, 20), new Point(0, 20)), path);
+    // a straight line through the middle (500, 20), 80 north, from town 1 to town 3
+    assertEquals(List.of(new Point(1000, -60), new Point(0, -60)), path);
   }
 
   @Test
@@ -322,8 +322,16 @@ class TownObjectsTest {
 
     List<Point> path = TownObjects.nationPath(square);
 
-    assertEquals(List.of(new Point(0, 0), new Point(1000, 1000)), path);
+    assertEquals(List.of(new Point(0, -80), new Point(1000, 920)), path);
     assertEquals(path, TownObjects.nationPath(shuffled));
+  }
+
+  @Test
+  void theNameOfANationLiesClearOfItsTowns() {
+    // three towns in a row: the middle of the line would lie on the middle town
+    assertEquals(
+        List.of(new Point(0, -80), new Point(2000, -80)),
+        TownObjects.nationPath(List.of(member(1, 0, 0), member(2, 1000, 0), member(3, 2000, 0))));
   }
 
   @Test
