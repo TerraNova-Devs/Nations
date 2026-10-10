@@ -42,10 +42,10 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
- * Shows the towns on HeroicMap: banners, areas, circles and the names of the nations. Names the
- * API of HeroicMap, so NationsPlugin loads it only when HeroicMap is enabled. If HeroicMap is
- * disabled while Nations runs, the calls go nowhere without an error; a restarted HeroicMap gets
- * the layers only with the next start of Nations.
+ * Shows the towns on HeroicMap: banners, areas and circles; a nation shows by its banner only.
+ * Names the API of HeroicMap, so NationsPlugin loads it only when HeroicMap is enabled. If
+ * HeroicMap is disabled while Nations runs, the calls go nowhere without an error; a restarted
+ * HeroicMap gets the layers only with the next start of Nations.
  */
 public final class TownMap {
 
@@ -61,7 +61,6 @@ public final class TownMap {
   private final Synced towns;
   private final Synced areas;
   private final Synced circles;
-  private final Synced lettering;
   private final Map<UUID, Professions> professions = new ConcurrentHashMap<>();
   // nation id -> banner (Base64 of the item) last uploaded as its image
   private final Map<UUID, String> banners = new HashMap<>();
@@ -75,7 +74,6 @@ public final class TownMap {
     towns = synced(api, "staedte", "Städte", "Towns", true, 102);
     areas = synced(api, "regionen", "Regionen", "Regions", true, 101);
     circles = synced(api, "kreise", "Kreise", "Circles", false, 100);
-    lettering = synced(api, "namen", "Nationen", "Nations", true, 103);
   }
 
   /** Creates the layers and syncs them every 30 seconds. */
@@ -135,7 +133,6 @@ public final class TownMap {
       towns.sync(all.stream().map(TownObjects::banner).toList());
       areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
       circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
-      lettering.sync(TownObjects.nationNames(all));
       removeBannersExcept(usedBanners);
     } catch (IllegalStateException e) {
       // Only after the layers are gone, as while Nations itself is being disabled.
@@ -180,8 +177,7 @@ public final class TownMap {
         s.getLocation().x,
         s.getLocation().z,
         corners,
-        nation == null ? null : TownObjects.displayName(nation.getName()),
-        nation == null ? null : nation.getId(),
+        nation == null ? null : nation.getName(),
         nation != null && s.getId().equals(nation.getCapital()),
         color,
         banner,
