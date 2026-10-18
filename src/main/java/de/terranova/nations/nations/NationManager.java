@@ -83,7 +83,7 @@ public class NationManager {
 
   public Nation getNationByLeader(UUID leaderId) {
     for (Nation nation : nations.values()) {
-      if (nation.getLeader().equals(leaderId)) {
+      if (nation.isLeader(leaderId)) {
         return nation;
       }
     }

@@ -12,7 +12,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import net.kyori.adventure.text.Component;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -54,8 +53,7 @@ public class NationSettlementsGUI extends RoseGUI {
                 .addLore(
                     Chat.cottonCandy(
                         "Bürgermeister: "
-                            + Bukkit.getOfflinePlayer(settle.get().getAccess().getMajor())
-                                .getName()))
+                            + NationGUI.getPlayerName(settle.get().getAccess().getMajor())))
                 .build();
 
         pagination.addItem(settlementItem);
