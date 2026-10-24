@@ -155,7 +155,7 @@ public class TownCommands extends AbstractCommand {
     }
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.COUNCIL)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.COUNCIL)) {
       p.sendMessage(
           Chat.errorFade("Du hast nicht die Berechtigung, um jemanden in diese Stadt einzuladen."));
       return false;
@@ -272,7 +272,7 @@ public class TownCommands extends AbstractCommand {
 
     if (access == null) return false;
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Vize sein um einen Spieler von der Stadt zu entfernen."));
@@ -289,7 +289,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     if (access.getAccessLevel(target).getWeight()
-        >= access.getAccessLevel(p.getUniqueId()).getWeight()) {
+        >= access.levelOf(p).getWeight()) {
       p.sendMessage(
           Chat.errorFade(
               "Du kannst keinen Spieler entfernen der einen höheren oder den gleichen Rang hat."));
@@ -327,7 +327,7 @@ public class TownCommands extends AbstractCommand {
     Access access = settle.getAccess();
     if (access == null) return false;
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Um die Ränge innerhalb der Stadt zu ändern musst du mindestens Vizeanführer sein."));
@@ -346,7 +346,7 @@ public class TownCommands extends AbstractCommand {
       return false;
     }
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(Chat.errorFade("Du musst mindestens Vize sein um Ränge ändern zu können."));
       return false;
     }
@@ -376,7 +376,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     if (access.getAccessLevel(target).getWeight()
-        >= access.getAccessLevel(p.getUniqueId()).getWeight()) {
+        >= access.levelOf(p).getWeight()) {
       p.sendMessage(
           Chat.errorFade(
               "Du kannst nicht den Rang eines Spielers ändern der höher oder gleich ist als deiner selbst."));
@@ -406,7 +406,7 @@ public class TownCommands extends AbstractCommand {
     Access access = settle.getAccess();
     if (access == null) return false;
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.CITIZEN)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.CITIZEN)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst ein Einwohner dieser Stadt sein um in die Stadtkasse einzahlen zu können"));
@@ -445,7 +445,7 @@ public class TownCommands extends AbstractCommand {
     Access access = settle.getAccess();
     if (access == null) return false;
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.COUNCIL)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.COUNCIL)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Council sein um von der Stadtkasse abheben zu können"));
@@ -501,7 +501,7 @@ public class TownCommands extends AbstractCommand {
     }
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.CITIZEN)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.CITIZEN)) {
       p.sendMessage(Chat.errorFade("Du musst ein Einwohner sein um die Historie sehen zu können."));
       return false;
     }
@@ -562,7 +562,7 @@ public class TownCommands extends AbstractCommand {
     }
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung, um diese Stadt zu erweitern."));
       return false;
     }
@@ -662,7 +662,7 @@ public class TownCommands extends AbstractCommand {
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
 
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.MAJOR)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.MAJOR)) {
       p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung, diese Stadt zu löschen."));
       return false;
     }
@@ -979,7 +979,7 @@ public class TownCommands extends AbstractCommand {
     }
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du hast nicht die Berechtigung, um diese Stadt zu erweitern oder zu verkleinern."));
@@ -1101,7 +1101,7 @@ public class TownCommands extends AbstractCommand {
     }
 
     if (!Access.hasAccess(
-        settleOpt.get().getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+        settleOpt.get().getAccess().levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(Chat.errorFade("Du hast nicht die Berechtigung den NPC zu verschieben."));
       return false;
     }
@@ -1123,7 +1123,7 @@ public class TownCommands extends AbstractCommand {
     }
     SettleRegion settle = settleOpt.get();
     Access access = settle.getAccess();
-    if (!Access.hasAccess(access.getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du hast nicht die Berechtigung, um jemanden in dieser Stadt zu trusten."));

@@ -77,7 +77,7 @@ public class TownSkinGUI extends RoseGUI {
       skull.onClick(
           e -> {
             if (!Access.hasAccess(
-                settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+                settle.getAccess().levelOf(player), AccessLevel.VICE)) {
               player.sendMessage(
                   Chat.errorFade("Du musst mindestens Vize sein um den Skin ändern zu können."));
               return;

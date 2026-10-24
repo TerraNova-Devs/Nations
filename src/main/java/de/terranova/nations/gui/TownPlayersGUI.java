@@ -136,7 +136,7 @@ public class TownPlayersGUI extends RoseGUI {
   private void handlePlayerClick(
       InventoryClickEvent e, Player player, AccessControlled access, AccessLevel level, UUID uuid) {
     if (!Access.hasAccess(
-        access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+        access.getAccess().levelOf(player), AccessLevel.VICE)) {
       player.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Vize sein um den Rang dieses Spielers ändern zu können."));
@@ -153,7 +153,7 @@ public class TownPlayersGUI extends RoseGUI {
       }
 
       if (Access.hasAccess(
-          access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.MAJOR)) {
+          access.getAccess().levelOf(player), AccessLevel.MAJOR)) {
         if (level == AccessLevel.VICE) {
           access.getAccess().setAccessLevel(uuid, AccessLevel.COUNCIL);
           player.sendMessage(Chat.greenFade("Der Spieler ist nun im Stadtrat."));
@@ -169,7 +169,7 @@ public class TownPlayersGUI extends RoseGUI {
       }
 
       if (Access.hasAccess(
-          access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.MAJOR)) {
+          access.getAccess().levelOf(player), AccessLevel.MAJOR)) {
         if (level == AccessLevel.COUNCIL) {
           access.getAccess().setAccessLevel(uuid, AccessLevel.VICE);
           player.sendMessage(Chat.greenFade("Der Spieler ist nun Vize."));

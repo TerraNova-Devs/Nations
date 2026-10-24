@@ -140,13 +140,13 @@ public class AccessCommands {
     }
 
     if (access.getAccess().getAccessLevel(target.getUniqueId()).getWeight()
-        >= access.getAccess().getAccessLevel(p.getUniqueId()).getWeight()) {
+        >= access.getAccess().levelOf(p).getWeight()) {
       p.sendMessage(
           Chat.errorFade("Du kannst keinen Spieler entfernen der höher gleich du im Rang ist."));
       return false;
     }
 
-    if (!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.getAccess().levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Vize sein um einen Spieler von der Stadt zu entfernen."));
@@ -249,14 +249,14 @@ public class AccessCommands {
     }
 
     if (access.getAccess().getAccessLevel(target.getUniqueId()).getWeight()
-        >= access.getAccess().getAccessLevel(p.getUniqueId()).getWeight()) {
+        >= access.getAccess().levelOf(p).getWeight()) {
       p.sendMessage(
           Chat.errorFade(
               "Du kannst nicht den Rang eines Spielers ändern der höher oder gleich ist als deiner selbst."));
       return false;
     }
 
-    if (!Access.hasAccess(access.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(access.getAccess().levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade("Du musst mindestens Vize sein um access level ändern zu können."));
       return false;

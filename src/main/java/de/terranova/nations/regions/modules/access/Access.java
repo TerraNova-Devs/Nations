@@ -7,6 +7,7 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import java.util.*;
 import java.util.stream.Collectors;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 public class Access implements RegionListener {
 
@@ -41,6 +42,14 @@ public class Access implements RegionListener {
 
   public AccessLevel getAccessLevel(UUID uuid) {
     return getAccessLevels().get(uuid);
+  }
+
+  /**
+   * The level the player acts with here: ADMIN for ops, else their own. Only for the acting
+   * player; getAccessLevel stays plain, or an op would be a citizen of every town.
+   */
+  public AccessLevel levelOf(Player p) {
+    return AccessLevel.acting(p.isOp(), getAccessLevel(p.getUniqueId()));
   }
 
   public void removeAccess(UUID uuid) {
