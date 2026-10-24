@@ -14,7 +14,6 @@ import de.mcterranova.terranovaLib.utils.Chat;
 import de.mcterranova.terranovaLib.roseGUI.RoseGUI;
 import de.mcterranova.terranovaLib.roseGUI.RoseItem;
 import de.terranova.nations.regions.modules.rank.Rank;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryCloseEvent;
@@ -174,9 +173,8 @@ public class TownGUI extends RoseGUI {
     farm.onClick(
         e -> {
           if (!player.hasPermission("nations.menu.farm")) return;
-          sendToServer(player, "farmwelt");
-          Bukkit.dispatchCommand(
-              Bukkit.getConsoleSender(), "send " + player.getName() + " farmwelt");
+          // default too in code: saveDefaultConfig adds no key to an existing config.yml
+          sendToServer(player, NationsPlugin.plugin.getConfig().getString("farm-server", "farm"));
         });
 
     nations.onClick(

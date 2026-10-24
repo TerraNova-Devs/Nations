@@ -10,3 +10,6 @@ discord:
 
 nation:
   cost: 2000
+
+# server of the farm world in velocity.toml, for the "Farmwelt" button of the town menu
+farm-server: farm
