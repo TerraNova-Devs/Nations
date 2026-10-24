@@ -20,15 +20,18 @@ final class TownObjects {
   static final String WHITE_BANNER = "images/banner-white.png";
 
   /**
-   * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
-   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code banner} may be null;
-   * {@code design} names the banner design of the layer, null with a HeroicMap without designs.
+   * What the map shows of a town. {@code x}, {@code z} is where the banner stands, {@code y} the
+   * block it stands on, null without a town NPC; {@code corners} are the WorldGuard points,
+   * inclusive block coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code
+   * banner} may be null; {@code design} names the banner design of the layer, null with a
+   * HeroicMap without designs.
    */
   record Town(
       UUID id,
       String name,
       double x,
       double z,
+      Integer y,
       List<Point> corners,
       String nation,
       boolean capital,
@@ -55,6 +58,9 @@ final class TownObjects {
         MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
             .withName(t.name())
             .withPanel(panel(t));
+    if (t.y() != null) {
+      banner = banner.withY(t.y());
+    }
     // the image stays as the stand-in until the views draw banners from the design
     return t.design() == null ? banner : banner.withDesign(t.design()).withCapital(t.capital());
   }

@@ -74,7 +74,12 @@ public class NPCr implements RegionListener {
         continue;
       }
       if (npc.getOrAddTrait(SettleTrait.class).getUUID().equals(regionType.getId())) {
-        npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
+        if (npc.isSpawned()) {
+          npc.teleport(location, PlayerTeleportEvent.TeleportCause.COMMAND);
+        } else {
+          // Citizens ignores teleport for a despawned NPC, as in an unloaded chunk
+          npc.spawn(location);
+        }
       }
     }
   }
