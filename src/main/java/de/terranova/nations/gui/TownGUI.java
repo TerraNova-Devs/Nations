@@ -128,25 +128,22 @@ public class TownGUI extends RoseGUI {
     upgrades.onClick(
         e -> {
           if (!player.hasPermission("nations.menu.upgrades")) return;
-          if (Access.hasAccess(
-                  access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL)
-              || player.isOp()) {
+          if (Access.hasAccess(access.getAccess().levelOf(player), AccessLevel.COUNCIL)) {
             new TownUpgradeGUI(player, settle).open();
           } else
             player.sendMessage(
-                Chat.errorFade(
-                    "Dein Rang in der Stadt ist leider nicht hoch genug um hierauf zuzugreifen."));
+                Chat.errorFade("Verbesserungen können nur Rat, Vize und Bürgermeister kaufen."));
         });
 
     settings.onClick(
         e -> {
           if (!player.hasPermission("nations.menu.settings")) return;
-          if (Access.hasAccess(
-                  access.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.COUNCIL)
-              || player.isOp()) {
+          if (Access.hasAccess(access.getAccess().levelOf(player), AccessLevel.COUNCIL)) {
             new TownSettingsGUI(player, settle).open();
           } else {
-            player.sendMessage(Chat.errorFade("Wende dich an den Besitzer major Error."));
+            player.sendMessage(
+                Chat.errorFade(
+                    "Die Einstellungen der Stadt können nur Rat, Vize und Bürgermeister ändern."));
           }
         });
 

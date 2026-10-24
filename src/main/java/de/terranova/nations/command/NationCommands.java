@@ -150,7 +150,7 @@ public class NationCommands extends AbstractCommand {
 
     SettleRegion settle = osettle.get();
 
-    if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.MAJOR)) {
+    if (!Access.hasAccess(settle.getAccess().levelOf(p), AccessLevel.MAJOR)) {
       p.sendMessage(Chat.errorFade("Du musst Bürgermeister deiner Stadt sein."));
       return false;
     }
@@ -363,7 +363,7 @@ public class NationCommands extends AbstractCommand {
 
     SettleRegion settle = settleOpt.get();
 
-    if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(settle.getAccess().levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Vize sein um mit deiner Stadt einer Nation beizutreten."));
@@ -394,7 +394,7 @@ public class NationCommands extends AbstractCommand {
     }
 
     SettleRegion settle = settleOpt.get();
-    if (!Access.hasAccess(settle.getAccess().getAccessLevel(p.getUniqueId()), AccessLevel.VICE)) {
+    if (!Access.hasAccess(settle.getAccess().levelOf(p), AccessLevel.VICE)) {
       p.sendMessage(
           Chat.errorFade(
               "Du musst mindestens Vize sein um deine Stadt aus der Nation zu entfernen."));

@@ -20,8 +20,7 @@ public class TerraSelectCache {
     this.region = region;
     if (region instanceof Selectable) {
       AccessControlled access = (AccessControlled) region;
-      if (p.isOp()) this.access = AccessLevel.ADMIN;
-      else this.access = access.getAccess().getAccessLevel(p.getUniqueId());
+      this.access = access.getAccess().levelOf(p);
     } else {
       this.access = null;
     }

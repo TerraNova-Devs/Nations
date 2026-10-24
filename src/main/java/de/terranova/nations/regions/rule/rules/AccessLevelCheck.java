@@ -25,6 +25,11 @@ public class AccessLevelCheck implements RegionRule {
       String regionName,
       ProtectedRegion regionBeingPlaced,
       Region explicitParent) {
+    // admins may create properties in every town, but no second town: a player in two towns
+    // breaks retrievePlayersSettlement
+    if (accessLevel != null && p.hasPermission(Access.BYPASS)) {
+      return true;
+    }
     Optional<SettleRegion> settleOpt = RegionManager.retrievePlayersSettlement(p.getUniqueId());
     if (!settleOpt.isPresent()) {
       return accessLevel == null;

@@ -197,13 +197,13 @@ public class TownProfessionGUI extends RoseGUI {
     Player player = (Player) e.getWhoClicked();
 
     if (!Access.hasAccess(
-        settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.CITIZEN)) {
+        settle.getAccess().levelOf(player), AccessLevel.CITIZEN)) {
       player.sendMessage(Chat.errorFade("Du bist kein Mitglied dieser Stadt!"));
       return;
     }
 
     if (!Access.hasAccess(
-        settle.getAccess().getAccessLevel(player.getUniqueId()), AccessLevel.VICE)) {
+        settle.getAccess().levelOf(player), AccessLevel.VICE)) {
       player.sendMessage(
           Chat.errorFade("Du hast nicht die nötigen Rechte, um Professions zu bearbeiten!"));
       return;
