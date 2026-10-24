@@ -59,21 +59,42 @@ public final class TownMap {
 
   private record Name(String name, long fetchedAt) {}
 
+  /** A nation's banner as drawn on the main thread; png and design null where that failed. */
+  private record Drawn(String name, String base64, byte[] png, Object design) {}
+
+  /** A town as read on the main thread, with the id of its nation, null for none. */
+  private record Entry(Town town, UUID nation) {}
+
+  /** What the main thread read for one sync; nations only with a banner. */
+  private record Snapshot(List<Entry> towns, Map<UUID, Drawn> nations) {}
+
   private final Plugin plugin;
+  // whether HeroicMap takes banner designs (0.6 on); without, banners have images only
+  private final boolean designs;
+  private final Map<UUID, Professions> professions = new ConcurrentHashMap<>();
+
+  // The main thread reads Bukkit, WorldGuard and Citizens into a Snapshot; apply takes it to
+  // HeroicMap on an async task, one at a time. Each state below belongs to one of the two.
+
+  // main thread only
+  private final Map<UUID, Name> names = new HashMap<>();
+  // nation id -> its banner as last drawn
+  private final Map<UUID, Drawn> drawn = new HashMap<>();
+
+  // apply only
   private final Synced towns;
   private final Synced areas;
   private final Synced circles;
-  private final Map<UUID, Professions> professions = new ConcurrentHashMap<>();
   // nation id -> banner (Base64 of the item) last uploaded as its image
   private final Map<UUID, String> banners = new HashMap<>();
-  // nation id -> banner that could not be drawn; tried again only when the banner changes
+  // nation id -> banner that could not be drawn or uploaded; tried again only when it changes
   private final Map<UUID, String> failed = new HashMap<>();
-  // whether HeroicMap takes banner designs (0.6 on); without, banners have images only
-  private final boolean designs;
   // nation id -> banner (Base64 of the item) last set as its design, and those that failed
   private final Map<UUID, String> designed = new HashMap<>();
   private final Map<UUID, String> failedDesigns = new HashMap<>();
-  private final Map<UUID, Name> names = new HashMap<>();
+
+  private final Latest<Snapshot> latest = new Latest<>();
+  private volatile boolean stopped;
   private BukkitTask task;
 
   private TownMap(Plugin plugin, HeroicMapApi api, boolean designs) {
@@ -106,17 +127,18 @@ public final class TownMap {
     if (designs) {
       TownDesigns.putWhite(map.towns.layer);
     }
-    // Professions come from the database, so off the main thread; everything else on it.
+    // Professions come from the database and the layers take objects on any thread, so both off
+    // the main thread; only reading Bukkit, WorldGuard and Citizens on it.
     map.task =
         Bukkit.getScheduler()
             .runTaskTimerAsynchronously(
                 plugin,
                 () -> {
                   map.refreshProfessions();
-                  if (!plugin.isEnabled()) {
+                  if (!plugin.isEnabled() || map.stopped) {
                     return;
                   }
-                  Bukkit.getScheduler().runTask(plugin, map::update);
+                  Bukkit.getScheduler().runTask(plugin, map::snapshot);
                 },
                 20L,
                 20L * 30);
@@ -140,42 +162,64 @@ public final class TownMap {
     }
   }
 
-  private void update() {
-    try {
-      Set<UUID> usedBanners = new HashSet<>();
-      List<Town> all = snapshot(usedBanners, regionsByTown(), System.currentTimeMillis());
-      towns.sync(all.stream().map(TownObjects::banner).toList());
-      areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
-      circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
-      removeBannersExcept(usedBanners);
-      removeDesignsExcept(usedBanners);
-    } catch (IllegalStateException e) {
-      // Only after the layers are gone, as while Nations itself is being disabled.
-      plugin.getLogger().warning("HeroicMap: Ebenen von Nations sind weg: " + e);
-      task.cancel();
+  /** Main thread: reads the towns, draws changed banners, and hands it all to apply. */
+  private void snapshot() {
+    if (stopped) {
+      return;
     }
-  }
-
-  private List<Town> snapshot(
-      Set<UUID> usedBanners, Map<UUID, ProtectedRegion> regions, long now) {
-    List<Town> all = new ArrayList<>();
+    long now = System.currentTimeMillis();
+    Map<UUID, ProtectedRegion> regions = regionsByTown();
+    List<Entry> entries = new ArrayList<>();
+    Map<UUID, Drawn> nations = new HashMap<>();
     for (SettleRegion s : RegionManager.retrieveAllCachedRegions(SettleRegion.class).values()) {
       try {
-        all.add(town(s, usedBanners, regions.get(s.getId()), now));
+        Nation nation = NationsPlugin.nationManager.getNationBySettlement(s.getId());
+        if (nation != null && nation.getBannerBase64() != null) {
+          nations.computeIfAbsent(nation.getId(), id -> draw(nation));
+        }
+        Town town = town(s, nation, regions.get(s.getId()), now);
+        entries.add(new Entry(town, nation == null ? null : nation.getId()));
       } catch (RuntimeException e) {
         plugin.getLogger().warning("HeroicMap: Stadt " + s.getId() + " fehlt auf der Karte: " + e);
       }
     }
-    return all;
+    drawn.keySet().retainAll(nations.keySet());
+    latest.offer(new Snapshot(List.copyOf(entries), Map.copyOf(nations)));
+    Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> latest.applyNewest(this::apply));
   }
 
-  private Town town(SettleRegion s, Set<UUID> usedBanners, ProtectedRegion wg, long now) {
-    Nation nation = NationsPlugin.nationManager.getNationBySettlement(s.getId());
-    String banner = nation == null ? null : banner(nation);
-    String design = designs ? design(nation) : null;
-    if (banner != null || (design != null && !design.equals(TownDesigns.WHITE))) {
-      usedBanners.add(nation.getId());
+  /** Async, one at a time: uploads changed banners, then brings the layers to the snapshot. */
+  private void apply(Snapshot s) {
+    if (stopped || !plugin.isEnabled()) {
+      return;
     }
+    try {
+      Set<UUID> used = new HashSet<>();
+      List<Town> all = new ArrayList<>();
+      for (Entry e : s.towns()) {
+        Drawn d = e.nation() == null ? null : s.nations().get(e.nation());
+        String banner = d == null ? null : upload(e.nation(), d);
+        String design = designs ? design(e.nation(), d) : null;
+        if (banner != null || (design != null && !design.equals(TownDesigns.WHITE))) {
+          used.add(e.nation());
+        }
+        all.add(e.town().withBanner(banner, design));
+      }
+      towns.sync(all.stream().map(TownObjects::banner).toList());
+      areas.sync(all.stream().flatMap(t -> TownObjects.area(t).stream()).toList());
+      circles.sync(all.stream().flatMap(t -> TownObjects.circles(t).stream()).toList());
+      removeBannersExcept(used);
+      removeDesignsExcept(used);
+    } catch (IllegalStateException e) {
+      // The layers are gone, as while Nations or HeroicMap is being disabled: stop with one line.
+      stopped = true;
+      task.cancel();
+      plugin.getLogger().warning("HeroicMap: Ebenen von Nations sind weg: " + e.getMessage());
+    }
+  }
+
+  /** What the map shows of the town; banner and design are added by apply. */
+  private Town town(SettleRegion s, Nation nation, ProtectedRegion wg, long now) {
     List<MapObject.Point> corners =
         wg == null
             ? List.of()
@@ -207,8 +251,8 @@ public final class TownMap {
         nation == null ? null : nation.getName(),
         nation != null && s.getId().equals(nation.getCapital()),
         color,
-        banner,
-        design,
+        null,
+        null,
         s.getRank().getLevel(),
         s.getClaims(),
         s.getMaxClaims(),
@@ -262,38 +306,58 @@ public final class TownMap {
     return byTown;
   }
 
-  /** The image of the nation's banner, uploaded when it changed; null without one. */
-  private String banner(Nation nation) {
+  /**
+   * Main thread: the nation's banner as image and design, drawn again only when it changed, since
+   * both read the item and the design also the registry of the server.
+   */
+  private Drawn draw(Nation nation) {
     String base64 = nation.getBannerBase64();
-    if (base64 == null) {
-      return null;
+    Drawn d = drawn.get(nation.getId());
+    if (d != null && d.base64().equals(base64)) {
+      return new Drawn(nation.getName(), base64, d.png(), d.design());
     }
-    String path = bannerPath(nation.getId());
-    if (base64.equals(banners.get(nation.getId()))) {
+    ItemStack item = nation.getBanner();
+    String uri = BannerRenderer.renderBannerToDataURI(item);
+    Object design = null;
+    if (designs) {
+      try {
+        design = TownDesigns.design(item);
+      } catch (RuntimeException e) {
+        plugin.getLogger().warning("HeroicMap: Entwurf des Banners " + nation.getName() + ": " + e);
+      }
+    }
+    d = new Drawn(nation.getName(), base64, uri == null ? null : png(uri), design);
+    drawn.put(nation.getId(), d);
+    return d;
+  }
+
+  /** Apply: the image of the nation's banner, uploaded when it changed; null if it fails. */
+  private String upload(UUID id, Drawn d) {
+    String path = bannerPath(id);
+    if (d.base64().equals(banners.get(id))) {
       return path;
     }
-    if (base64.equals(failed.get(nation.getId()))) {
+    if (d.base64().equals(failed.get(id))) {
       return null;
     }
     // HeroicMap keeps 200 images per owner: 2 headings, the white banner and banners of 197
     // nations; more nations get the white one.
-    if (!banners.containsKey(nation.getId()) && banners.size() >= 197) {
+    if (!banners.containsKey(id) && banners.size() >= 197) {
       return null;
     }
-    String uri = BannerRenderer.renderBannerToDataURI(nation.getBanner());
-    if (uri == null) {
-      failed.put(nation.getId(), base64);
+    if (d.png() == null) {
+      failed.put(id, d.base64());
       return null;
     }
     try {
-      towns.layer.image(path, png(uri));
+      towns.layer.image(path, d.png());
     } catch (IllegalArgumentException e) {
-      plugin.getLogger().warning("HeroicMap: Banner von " + nation.getName() + ": " + e);
-      failed.put(nation.getId(), base64);
+      plugin.getLogger().warning("HeroicMap: Banner von " + d.name() + ": " + e);
+      failed.put(id, d.base64());
       return null;
     }
-    failed.remove(nation.getId());
-    banners.put(nation.getId(), base64);
+    failed.remove(id);
+    banners.put(id, d.base64());
     return path;
   }
 
@@ -307,36 +371,35 @@ public final class TownMap {
   }
 
   /**
-   * The design of the nation's banner, set on the layer when the banner changed, under the UUID of
-   * the nation; the white one without a nation, without a banner, when it cannot be read, or when
-   * the layer holds 200 designs already. Called only when HeroicMap takes designs.
+   * Apply: the design of the nation's banner, set on the layer when the banner changed, under the
+   * UUID of the nation; the white one without a nation, without a banner ({@code d} null), when it
+   * cannot be read, or when the layer holds 200 designs already. Only when HeroicMap takes designs.
    */
-  private String design(Nation nation) {
-    if (nation == null || nation.getBannerBase64() == null) {
+  private String design(UUID id, Drawn d) {
+    if (d == null) {
       return TownDesigns.WHITE;
     }
-    UUID id = nation.getId();
-    String base64 = nation.getBannerBase64();
-    if (base64.equals(designed.get(id))) {
+    if (d.base64().equals(designed.get(id))) {
       return id.toString();
     }
     // 200 designs per layer: the white one and those of 197 nations, as with the images
-    if (base64.equals(failedDesigns.get(id))
+    if (d.base64().equals(failedDesigns.get(id))
         || (!designed.containsKey(id) && designed.size() >= 197)) {
       return TownDesigns.WHITE;
     }
+    if (d.design() == null) {
+      failedDesigns.put(id, d.base64());
+      return TownDesigns.WHITE;
+    }
     try {
-      if (!TownDesigns.put(towns.layer, id.toString(), nation.getBanner())) {
-        failedDesigns.put(id, base64);
-        return TownDesigns.WHITE;
-      }
+      TownDesigns.put(towns.layer, id.toString(), d.design());
     } catch (IllegalArgumentException e) {
-      plugin.getLogger().warning("HeroicMap: Entwurf des Banners " + nation.getName() + ": " + e);
-      failedDesigns.put(id, base64);
+      plugin.getLogger().warning("HeroicMap: Entwurf des Banners " + d.name() + ": " + e);
+      failedDesigns.put(id, d.base64());
       return TownDesigns.WHITE;
     }
     failedDesigns.remove(id);
-    designed.put(id, base64);
+    designed.put(id, d.base64());
     return id.toString();
   }
 

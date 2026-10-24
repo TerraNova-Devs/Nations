@@ -78,14 +78,17 @@ final class TownDesigns {
     layer.design(WHITE, BannerDesign.of(DyeColor.WHITE));
   }
 
-  /** Sets the design of the banner under this name; false if it is no banner. */
-  static boolean put(Layer layer, String name, ItemStack banner) {
-    BannerDesign design = designOf(banner);
-    if (design == null) {
-      return false;
-    }
-    layer.design(name, design);
-    return true;
+  /**
+   * The design of a banner item, read on the main thread; null if it is no banner. Typed as Object
+   * so that TownMap names no class of the design API.
+   */
+  static Object design(ItemStack banner) {
+    return designOf(banner);
+  }
+
+  /** Sets a design from {@link #design(ItemStack)} under this name; any thread. */
+  static void put(Layer layer, String name, Object design) {
+    layer.design(name, (BannerDesign) design);
   }
 
   /** Removes the design under this name; throws while a banner of the layer names it. */
