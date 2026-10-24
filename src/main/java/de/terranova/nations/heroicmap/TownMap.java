@@ -34,7 +34,9 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.inventory.ItemStack;
@@ -185,11 +187,22 @@ public final class TownMap {
     Access access = s.getAccess();
     UUID major = access.getMajor();
     Professions p = professions.get(s.getId());
+    // The banner stands at the town NPC and follows it within one sync when it is moved; the
+    // stored location of the town is the anchor of the grid and stays the fallback.
+    NPC npc = s.getNPC() == null ? null : s.getNPC().getNPC();
+    Location at = npc == null ? null : npc.getStoredLocation();
+    TownObjects.Place place =
+        at == null || at.getWorld() == null
+            ? TownObjects.place(null, 0, 0, 0, s.getLocation().x, s.getLocation().z)
+            : TownObjects.place(
+                at.getWorld().getName(), at.getX(), at.getY(), at.getZ(),
+                s.getLocation().x, s.getLocation().z);
     return new Town(
         s.getId(),
         s.getName().replace("_", " "),
-        s.getLocation().x,
-        s.getLocation().z,
+        place.x(),
+        place.z(),
+        place.y(),
         corners,
         nation == null ? null : nation.getName(),
         nation != null && s.getId().equals(nation.getCapital()),

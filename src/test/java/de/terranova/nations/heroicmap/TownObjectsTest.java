@@ -35,6 +35,7 @@ class TownObjectsTest {
         "Hafen Stadt",
         120.5,
         -340.5,
+        null,
         corners,
         "Nordreich",
         capital,
@@ -57,6 +58,7 @@ class TownObjectsTest {
         "Stadt " + n,
         x,
         z,
+        null,
         List.of(),
         null,
         false,
@@ -146,9 +148,39 @@ class TownObjectsTest {
   }
 
   private static Town withDesign(Town t, String design) {
-    return new Town(t.id(), t.name(), t.x(), t.z(), t.corners(), t.nation(), t.capital(),
+    return new Town(t.id(), t.name(), t.x(), t.z(), t.y(), t.corners(), t.nation(), t.capital(),
         t.color(), t.banner(), design, t.level(), t.claims(), t.maxClaims(), t.major(), t.vices(),
         t.council(), t.professions());
+  }
+
+  @Test
+  void theBannerStandsOnTheBlockOfTheTownNpc() {
+    Town t = town(ID, false, null, square(0, 0));
+    Town atNpc =
+        new Town(t.id(), t.name(), 30.7, 12.3, 63, t.corners(), t.nation(), t.capital(),
+            t.color(), t.banner(), t.design(), t.level(), t.claims(), t.maxClaims(), t.major(),
+            t.vices(), t.council(), t.professions());
+
+    MapObject.Banner banner = TownObjects.banner(atNpc);
+
+    assertEquals(new Point(30.7, 12.3), banner.at());
+    assertEquals(63, banner.y());
+    // without a town NPC the banner has no height, as before
+    assertEquals(null, TownObjects.banner(t).y());
+  }
+
+  @Test
+  void theBannerStandsAtTheNpcInTheWorldOfTheTowns() {
+    // on a full block the feet are at 64.0, the block below is 63; on a slab at 64.5 it is 64
+    assertEquals(
+        new TownObjects.Place(30.7, 12.3, 63), TownObjects.place("world", 30.7, 64.0, 12.3, 24, 24));
+    assertEquals(
+        new TownObjects.Place(30.7, 12.3, 64), TownObjects.place("world", 30.7, 64.5, 12.3, 24, 24));
+    // an NPC in another world, or none, leaves the banner at the place of the town
+    assertEquals(
+        new TownObjects.Place(24, 72, null),
+        TownObjects.place("world_nether", 30.7, 64.0, 12.3, 24, 72));
+    assertEquals(new TownObjects.Place(24, 72, null), TownObjects.place(null, 0, 0, 0, 24, 72));
   }
 
   @Test
@@ -290,7 +322,7 @@ class TownObjectsTest {
   void thePanelShowsTheDisplayNameOfTheNation() {
     Town t = loner(1, 0, 0);
     Town town =
-        new Town(t.id(), t.name(), t.x(), t.z(), t.corners(), "nord_reich", false, t.color(),
+        new Town(t.id(), t.name(), t.x(), t.z(), t.y(), t.corners(), "nord_reich", false, t.color(),
             null, null, 1, 1, 20, null, List.of(), List.of(), List.of());
 
     Panel.Lines info = (Panel.Lines) TownObjects.panel(town).blocks().get(1);

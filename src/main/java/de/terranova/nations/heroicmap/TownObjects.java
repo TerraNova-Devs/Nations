@@ -20,15 +20,18 @@ final class TownObjects {
   static final String WHITE_BANNER = "images/banner-white.png";
 
   /**
-   * What the map shows of a town. {@code corners} are the WorldGuard points, inclusive block
-   * coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code banner} may be null;
-   * {@code design} names the banner design of the layer, null with a HeroicMap without designs.
+   * What the map shows of a town. {@code x}, {@code z} is where the banner stands, {@code y} the
+   * block it stands on, null without a town NPC; {@code corners} are the WorldGuard points,
+   * inclusive block coordinates; {@code color} is {@code #RRGGBB}; {@code nation} and {@code
+   * banner} may be null; {@code design} names the banner design of the layer, null with a
+   * HeroicMap without designs.
    */
   record Town(
       UUID id,
       String name,
       double x,
       double z,
+      Integer y,
       List<Point> corners,
       String nation,
       boolean capital,
@@ -45,6 +48,24 @@ final class TownObjects {
 
   private TownObjects() {}
 
+  /** The world all towns lie in. */
+  static final String TOWN_WORLD = "world";
+
+  /** Where a banner stands: {@code y} is the block below it, null for none. */
+  record Place(double x, double z, Integer y) {}
+
+  /**
+   * At the town NPC, on the block it stands on, if it stands in the world of the towns ({@code
+   * npcWorld} null without NPC); otherwise at the stored place of the town, without height.
+   */
+  static Place place(
+      String npcWorld, double npcX, double npcY, double npcZ, double townX, double townZ) {
+    if (!TOWN_WORLD.equals(npcWorld)) {
+      return new Place(townX, townZ, null);
+    }
+    return new Place(npcX, npcZ, (int) Math.ceil(npcY) - 1);
+  }
+
   /**
    * The town as the banner of its nation, a white one without a nation or a banner, with its name
    * and panel. The name stays plain: ✪ marks a capital in the title of the panel only.
@@ -55,6 +76,9 @@ final class TownObjects {
         MapObject.Banner.at(t.id().toString(), t.x(), t.z(), image)
             .withName(t.name())
             .withPanel(panel(t));
+    if (t.y() != null) {
+      banner = banner.withY(t.y());
+    }
     // the image stays as the stand-in until the views draw banners from the design
     return t.design() == null ? banner : banner.withDesign(t.design()).withCapital(t.capital());
   }
