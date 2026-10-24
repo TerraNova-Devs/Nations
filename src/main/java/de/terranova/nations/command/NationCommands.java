@@ -203,7 +203,7 @@ public class NationCommands extends AbstractCommand {
       return false;
     }
 
-    if (!nation.getLeader().equals(p.getUniqueId())) {
+    if (!nation.isLeader(p.getUniqueId())) {
       p.sendMessage(Chat.errorFade("Du bist nicht der Anführer der Nation."));
       return false;
     }
@@ -234,7 +234,7 @@ public class NationCommands extends AbstractCommand {
       return false;
     }
 
-    if (!nation.getLeader().equals(p.getUniqueId())) {
+    if (!nation.isLeader(p.getUniqueId())) {
       p.sendMessage(Chat.errorFade("Du bist nicht der Anführer der Nation."));
       return false;
     }

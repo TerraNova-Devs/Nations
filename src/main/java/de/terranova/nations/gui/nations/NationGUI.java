@@ -64,7 +64,7 @@ public class NationGUI extends RoseGUI {
 
     // Invite Settlement Item (only for leaders)
     RoseItem inviteSettlementItem = null;
-    if (nation.getLeader().equals(player.getUniqueId())) {
+    if (nation.isLeader(player.getUniqueId())) {
       inviteSettlementItem =
           new RoseItem.Builder()
               .material(Material.WRITABLE_BOOK)
@@ -143,7 +143,9 @@ public class NationGUI extends RoseGUI {
     // No special action needed on close
   }
 
-  private String getPlayerName(UUID uuid) {
-    return Bukkit.getOfflinePlayer(uuid).getName();
+  /** The name of the player; "unbekannt" without a UUID (a nation without leader) or name. */
+  static String getPlayerName(UUID uuid) {
+    String name = uuid == null ? null : Bukkit.getOfflinePlayer(uuid).getName();
+    return name == null ? "unbekannt" : name;
   }
 }
