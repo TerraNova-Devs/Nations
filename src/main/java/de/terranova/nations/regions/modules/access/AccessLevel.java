@@ -18,8 +18,8 @@ public enum AccessLevel {
     return weight;
   }
 
-  /** The level a player acts with: ADMIN for ops, who may everything in every town, else own. */
-  public static AccessLevel acting(boolean op, AccessLevel own) {
-    return op ? ADMIN : own;
+  /** The level a player acts with: ADMIN for admins, who may everything in every town, else own. */
+  public static AccessLevel acting(boolean admin, AccessLevel own) {
+    return admin ? ADMIN : own;
   }
 }

@@ -45,11 +45,17 @@ public class Access implements RegionListener {
   }
 
   /**
-   * The level the player acts with here: ADMIN for ops, else their own. Only for the acting
-   * player; getAccessLevel stays plain, or an op would be a citizen of every town.
+   * Acts as ADMIN in every town. Ops have it (default op in plugin.yml), and so has a group with
+   * {@code *}, as the admins on the servers, who are no ops.
+   */
+  public static final String BYPASS = "nations.admin.bypass";
+
+  /**
+   * The level the player acts with here: ADMIN with {@link #BYPASS}, else their own. Only for the
+   * acting player; getAccessLevel stays plain, or an admin would be a citizen of every town.
    */
   public AccessLevel levelOf(Player p) {
-    return AccessLevel.acting(p.isOp(), getAccessLevel(p.getUniqueId()));
+    return AccessLevel.acting(p.hasPermission(BYPASS), getAccessLevel(p.getUniqueId()));
   }
 
   public void removeAccess(UUID uuid) {

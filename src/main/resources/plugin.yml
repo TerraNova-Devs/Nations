@@ -24,5 +24,9 @@ commands:
     permission-message: You do not have permission to use this command.
 depend: [WorldGuard, Citizens, TerranovaLib, Nexo]
 softdepend: [HeroicMap]
+permissions:
+  nations.admin.bypass:
+    description: Acts as ADMIN in every town, past all rank checks of towns.
+    default: op
 
 
