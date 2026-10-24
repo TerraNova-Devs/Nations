@@ -191,12 +191,18 @@ public final class TownMap {
     // stored location of the town is the anchor of the grid and stays the fallback.
     NPC npc = s.getNPC() == null ? null : s.getNPC().getNPC();
     Location at = npc == null ? null : npc.getStoredLocation();
+    TownObjects.Place place =
+        at == null || at.getWorld() == null
+            ? TownObjects.place(null, 0, 0, 0, s.getLocation().x, s.getLocation().z)
+            : TownObjects.place(
+                at.getWorld().getName(), at.getX(), at.getY(), at.getZ(),
+                s.getLocation().x, s.getLocation().z);
     return new Town(
         s.getId(),
         s.getName().replace("_", " "),
-        at == null ? s.getLocation().x : at.getX(),
-        at == null ? s.getLocation().z : at.getZ(),
-        at == null ? null : (int) Math.ceil(at.getY()) - 1, // the block the NPC stands on
+        place.x(),
+        place.z(),
+        place.y(),
         corners,
         nation == null ? null : nation.getName(),
         nation != null && s.getId().equals(nation.getCapital()),

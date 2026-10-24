@@ -48,6 +48,24 @@ final class TownObjects {
 
   private TownObjects() {}
 
+  /** The world all towns lie in. */
+  static final String TOWN_WORLD = "world";
+
+  /** Where a banner stands: {@code y} is the block below it, null for none. */
+  record Place(double x, double z, Integer y) {}
+
+  /**
+   * At the town NPC, on the block it stands on, if it stands in the world of the towns ({@code
+   * npcWorld} null without NPC); otherwise at the stored place of the town, without height.
+   */
+  static Place place(
+      String npcWorld, double npcX, double npcY, double npcZ, double townX, double townZ) {
+    if (!TOWN_WORLD.equals(npcWorld)) {
+      return new Place(townX, townZ, null);
+    }
+    return new Place(npcX, npcZ, (int) Math.ceil(npcY) - 1);
+  }
+
   /**
    * The town as the banner of its nation, a white one without a nation or a banner, with its name
    * and panel. The name stays plain: ✪ marks a capital in the title of the panel only.

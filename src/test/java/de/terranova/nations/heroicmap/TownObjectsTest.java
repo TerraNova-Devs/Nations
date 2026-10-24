@@ -170,6 +170,20 @@ class TownObjectsTest {
   }
 
   @Test
+  void theBannerStandsAtTheNpcInTheWorldOfTheTowns() {
+    // on a full block the feet are at 64.0, the block below is 63; on a slab at 64.5 it is 64
+    assertEquals(
+        new TownObjects.Place(30.7, 12.3, 63), TownObjects.place("world", 30.7, 64.0, 12.3, 24, 24));
+    assertEquals(
+        new TownObjects.Place(30.7, 12.3, 64), TownObjects.place("world", 30.7, 64.5, 12.3, 24, 24));
+    // an NPC in another world, or none, leaves the banner at the place of the town
+    assertEquals(
+        new TownObjects.Place(24, 72, null),
+        TownObjects.place("world_nether", 30.7, 64.0, 12.3, 24, 72));
+    assertEquals(new TownObjects.Place(24, 72, null), TownObjects.place(null, 0, 0, 0, 24, 72));
+  }
+
+  @Test
   void aTownWithoutANationFliesAWhiteBanner() {
     MapObject.Banner banner = TownObjects.banner(loner(1, 0, 0));
 
