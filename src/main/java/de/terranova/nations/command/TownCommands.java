@@ -74,9 +74,7 @@ public class TownCommands extends AbstractCommand {
                             .filter(
                                 entry -> Access.hasAccess(entry.getValue(), AccessLevel.CITIZEN))
                             .map(Map.Entry::getKey)
-                            .map(Bukkit::getOfflinePlayer)
-                            .map(OfflinePlayer::getName)
-                            .filter(Objects::nonNull)
+                            .map(TownCommands::shownName)
                             .collect(Collectors.toList());
                       })
                   .orElseGet(Collections::emptyList);
@@ -93,9 +91,7 @@ public class TownCommands extends AbstractCommand {
                             .filter(
                                 entry -> Access.hasAccess(entry.getValue(), AccessLevel.TRUSTED))
                             .map(Map.Entry::getKey)
-                            .map(Bukkit::getOfflinePlayer)
-                            .map(OfflinePlayer::getName)
-                            .filter(Objects::nonNull)
+                            .map(TownCommands::shownName)
                             .collect(Collectors.toList());
                       })
                   .orElseGet(Collections::emptyList);
@@ -300,9 +296,11 @@ public class TownCommands extends AbstractCommand {
       return false;
     }
 
+    // read before removeAccess, which drops the level
+    boolean citizen = Access.hasAccess(access.getAccessLevel(target), AccessLevel.CITIZEN);
     settle.removeMember(target);
     access.removeAccess(target);
-    if (Access.hasAccess(access.getAccessLevel(target), AccessLevel.CITIZEN)) {
+    if (citizen) {
       Nation nation = NationsPlugin.nationManager.getNationBySettlement(settle.getId());
       if (nation != null) {
         NationsPlugin.nationManager.getNation(nation.getId()).removePlayerRank(target);
@@ -1159,10 +1157,31 @@ public class TownCommands extends AbstractCommand {
     return true;
   }
 
+  /** The name the server knows for a player, also an old one after a rename; else the UUID. */
+  private static String shownName(UUID uuid) {
+    String name = Bukkit.getOfflinePlayer(uuid).getName();
+    return name == null ? uuid.toString() : name;
+  }
+
+  /**
+   * The player behind a name: first a member of the own town by the name tab completion shows or
+   * by UUID, then any player. A name lookup alone misses members who renamed since the server last
+   * saw them: Bukkit resolves the name to whoever holds it now, or to an offline UUID.
+   */
   private UUID getTargetPlayerUUID(Player p, String[] args, int index) {
     if (args.length <= index) {
       p.sendMessage(Chat.errorFade("Bitte gib den Spielernamen an."));
       return null;
+    }
+    Optional<UUID> member =
+        RegionManager.retrievePlayersSettlement(p.getUniqueId())
+            .flatMap(
+                settle ->
+                    settle.getAccess().getAccessLevels().keySet().stream()
+                        .filter(uuid -> shownName(uuid).equalsIgnoreCase(args[index]))
+                        .findFirst());
+    if (member.isPresent()) {
+      return member.get();
     }
     Player target = Bukkit.getPlayer(args[index]);
 
