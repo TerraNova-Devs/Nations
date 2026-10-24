@@ -44,7 +44,14 @@ final class TownObjects {
       String major,
       List<String> vices,
       List<String> council,
-      List<Panel.Row> professions) {}
+      List<Panel.Row> professions) {
+
+    /** This town with the image and design of its banner, known only once they are uploaded. */
+    Town withBanner(String banner, String design) {
+      return new Town(id, name, x, z, y, corners, nation, capital, color, banner, design, level,
+          claims, maxClaims, major, vices, council, professions);
+    }
+  }
 
   private TownObjects() {}
 
