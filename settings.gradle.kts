@@ -6,7 +6,7 @@ rootProject.name = "Nations"
 
 // Point to your local checkout of the lib
 val localLib = file("../TerranovaLib")
-val requiredLocalLibBranch = "DEV-26.3"
+val requiredLocalLibBranch = "main"
 
 fun currentGitBranch(repoDir: File): String? =
   runCatching {
